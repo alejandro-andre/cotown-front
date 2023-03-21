@@ -8,6 +8,15 @@
   </p>
 
   <pre>
-    consulta que se va ha a hacer
+    consulta que se va ha a hacer:
+    {{  query }}
+
+
+    <ul *ngFor="let prueba of rates">
+      <li>{{prueba.Address_min}} -- {{ prueba.Created_at }} -- {{prueba.__typename }} -- {{prueba.id}}</li>
+    </ul>
   </pre>
+
+
+
 </div>

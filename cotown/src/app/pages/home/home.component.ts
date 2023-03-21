@@ -9,7 +9,14 @@ import { AccessTokenService } from '../../services/access-token.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  rates: any[] = [];
+  public rates: any[] = [];
+  public query = `   {
+    Provider_ProviderList {
+      id,
+      Address_min,
+      Created_at,
+    }
+  }`;
   loading = true;
   error: any;
 
@@ -28,22 +35,17 @@ export class HomeComponent {
 
       this.apollo
       .watchQuery({
-        query: gql`
-          {
-            Provider_ProviderList {
-              id,
-              Address_min,
-              Created_at,
-            }
-          }
-        `,
+        query: gql`${this.query}`,
+        variables: {
+          authorization: `${this.accessToken.token}`
+        }
       })
       .valueChanges.subscribe((result: any) => {
-        this.rates = result.data?.rates;
+        this.rates = result.data?.Provider_ProviderList;
         this.loading = result.loading;
         this.error = result.error;
 
-        console.log(result)
+        console.log(result.data)
       });
     }
   }

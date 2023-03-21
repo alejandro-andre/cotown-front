@@ -8,6 +8,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { SecondComponent } from './pages/second/second.component';
+import { GraphQLModule } from './graphql.module';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -20,9 +22,10 @@ import { SecondComponent } from './pages/second/second.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatButtonModule
+    MatButtonModule,
+    GraphQLModule,
+    HttpClientModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

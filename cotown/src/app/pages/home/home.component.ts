@@ -30,7 +30,6 @@ export class HomeComponent {
     if (this.accessToken.token == '') {
       this.route.queryParams.subscribe(params => {
         this.accessToken.token = params['access_token'];
-        localStorage.setItem('token', this.accessToken.token);
       });
 
       this.apollo

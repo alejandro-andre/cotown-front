@@ -45,17 +45,16 @@ export class CotownModal {
   }
 
   onSelectCity() {
-    console.log('Im here; ', this.cityName)
     const  buildingQuery = `{
       Building_BuildingList{
         Name
         Code
-        DistrictViaDistrict_id(joinType: INNER){LocationViaLocation_id(joinType: INNER where:{Name:{EQ:"${this.cityName}"}}){Name}}}
+        DistrictViaDistrict_id(joinType: INNER){LocationViaLocation_id(joinType: INNER where:{Name:{EQ:"${this.cityName}"}}){Name}}}
     }`;
-  
-    console.log('Building Query: ', buildingQuery);
+
     this.apolloApi.getData(buildingQuery).subscribe(res => {
       console.log(res)
     })
+
   }
 }

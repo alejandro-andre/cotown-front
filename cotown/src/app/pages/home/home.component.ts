@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Apollo, gql } from 'apollo-angular';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { AccessTokenService } from '../../services/access-token.service';
 

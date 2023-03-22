@@ -1,0 +1,35 @@
+<div>
+  <h1>Cotown modal</h1>
+  <h2>Selector of cities</h2>
+  <div>
+    <h4>mat-select</h4>
+
+    
+
+    <form>
+      <h4>Ciudad</h4>
+      <mat-form-field appearance="fill">
+        <mat-label>Ciudad</mat-label>
+        <mat-select [(ngModel)]="selectedCitie" name="food" (selectionChange)="onSelectCity()">
+          <mat-option *ngFor="let citie of cities" [value]="citie.id">
+            {{ citie.Name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p> Selected food: {{ selectedCitie }} </p>
+
+      <!--
+      <mat-form-field appearance="fill">
+        <mat-label>Ciudad</mat-label>
+        <mat-select [(ngModel)]="selectedCitie" name="food">
+          <mat-option *ngFor="let citie of cities" [value]="citie.id">
+            {{ citie.Name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    -->
+
+    </form>
+
+  </div>
+</div>

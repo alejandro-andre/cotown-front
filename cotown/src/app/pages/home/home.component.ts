@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Apollo, gql } from 'apollo-angular';
+import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { AccessTokenService } from '../../services/access-token.service';
 
 @Component({
@@ -23,7 +24,7 @@ export class HomeComponent {
   constructor(
     private route: ActivatedRoute,
     public accessToken: AccessTokenService,
-    private apollo: Apollo
+    private apolloApi: ApoloQueryApi
   ) { }
 
   ngOnInit() {
@@ -31,20 +32,11 @@ export class HomeComponent {
       this.route.queryParams.subscribe(params => {
         this.accessToken.token = params['access_token'];
       });
-
-      this.apollo
-      .watchQuery({
-        query: gql`${this.query}`,
-        variables: {
-          authorization: `${this.accessToken.token}`
-        }
-      })
-      .valueChanges.subscribe((result: any) => {
+      
+      this.apolloApi.getData(this.query).subscribe((result: any) => {
         this.rates = result.data?.Provider_ProviderList;
         this.loading = result.loading;
         this.error = result.error;
-
-        console.log(result.data)
       });
     }
   }

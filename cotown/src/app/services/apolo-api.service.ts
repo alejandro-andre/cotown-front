@@ -21,4 +21,12 @@ export class ApoloQueryApi {
         }
     }).valueChanges;
   }
+
+  // TODO only for develop!
+  login() {
+    const loginQuery = `mutation {login(username:"modelsadmin", password: "Ciber$2022")}`
+    return this.apollo.mutate({
+      mutation: gql`${loginQuery}`,
+    })
+  }
 }

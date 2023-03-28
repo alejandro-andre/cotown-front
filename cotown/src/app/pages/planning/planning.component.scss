@@ -1,0 +1,22 @@
+h1 {
+	font-size: 1.25rem; 
+	font-weight: 500; 
+}
+a {
+	color: #000; 
+	text-decoration: none;
+}
+
+.container {
+	padding: 10px;
+}
+
+:host ::ng-deep .tiphead {
+	font-size: 1.3em;
+	font-weight: 700;
+}
+:host ::ng-deep .tipfield {
+	display: inline-flex;
+	font-weight: 700;
+	min-width: 100px;
+}

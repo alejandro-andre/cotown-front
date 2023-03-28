@@ -1,0 +1,37 @@
+<div class="timechart">
+
+	<!-- Header -->
+	<div class="timechart-row timechart-row-months">
+		<span 
+			*ngFor="let title of header; let i = index;" 
+			class="date"
+			style.grid-column="{{3+i*7}}/{{10+i*7}}">{{title}}
+		</span>
+		<div class="timechart-row-first">Recurso</div>
+		<div class="timechart-row-first">Características</div>
+		<span *ngFor="let day of days;">{{day}}</span>
+	</div>
+
+	<!-- Vertical lines and current date marker -->
+	<div class="timechart-row timechart-row-lines">
+		<span *ngFor="let day of days;"></span><span></span>
+	</div>
+
+	<!-- Rows -->
+	<div *ngFor="let bar of bars" class="timechart-row">
+		<div class="timechart-row-first {{bar.style}}">{{bar.code}}</div>
+		<div class="timechart-row-first">{{bar.info}}</div>
+		<ul class="timechart-row-bars">
+			<li *ngFor="let line of bar.lines" 
+				class="tooltip {{line.styles}}" 
+				style.background-color="{{line.color}}"
+				style.grid-column="{{line.from}}/{{line.to}}">
+				<div *ngIf="line.code != '' && (line.to - line.from) > 1 " class="bar">
+					<span class="tag">{{line.code}}</span>
+					<span>{{line.text}}</span>
+					<div class="tiptext" [innerHtml]="line.tooltip|safeHtml"></div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>

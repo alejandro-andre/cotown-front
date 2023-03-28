@@ -1,0 +1,15 @@
+<div class="container">
+
+    <h1>Planning</h1>
+
+    <div style="padding-bottom: 10px; text-align: right;">
+    <button (click)="goBackward()">&lt; Semana anterior</button>
+    &nbsp;
+    <button (click)="goForward()">Semana siguiente &gt;</button>
+    </div>
+
+    <div>
+        <app-time-chart-control [bars]="bars" [now]="now"></app-time-chart-control>
+    </div>
+
+</div>

@@ -10,13 +10,16 @@ import { HomeComponent } from './pages/home/home.component';
 import { SecondComponent } from './pages/second/second.component';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
+import { TimeChartModule } from './time-chart/time-chart.module';
+import { PlanningComponent } from './pages/planning/planning.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    SecondComponent
+    SecondComponent,
+    PlanningComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +27,8 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     MatButtonModule,
     GraphQLModule,
-    HttpClientModule
+    HttpClientModule,
+    TimeChartModule
   ],
   bootstrap: [AppComponent]
 })

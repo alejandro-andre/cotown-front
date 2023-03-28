@@ -1,0 +1,211 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,400,700");
+
+/* Time chart general style */
+.timechart {
+	display: grid;
+	border: 0;
+	border-radius: 5px;
+	position: relative;
+	box-sizing: border-box;
+	box-shadow: 0 75px 125px -57px #7e8f94;
+}
+.header {
+	color: #202125;
+	margin-bottom: 40px;
+}
+
+/* Time chart rows styles */
+.timechart-row {
+	display: grid;
+	grid-template-columns: 200px 200px 1fr;
+	background-color: #fff;
+}
+
+/* Even/odd rows color */
+.timechart-row:nth-child(odd) {
+	background-color: #f5f5f5;
+}
+.timechart-row:nth-child(odd) .timechart-row-first {
+	background-color: #f5f5f5;
+}
+.timechart-row:nth-child(3) .timechart-row-bars {
+	border-top: 0;
+}
+.timechart-row:nth-child(3) .timechart-row-first {
+	border-top: 0;
+}
+.timechart-row-empty {
+	background-color: #e0e0e0 !important;
+	z-index: 1;
+}
+.timechart-row-empty .timechart-row-first {
+	border-width: 1px 1px 0 0;
+}
+
+/* Time chart separation lines */
+.timechart-row-lines {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-color: transparent;
+	grid-template-columns: 200px 200px repeat(70, 1fr);
+}
+.timechart-row-lines span {
+	display: block;
+	border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+.timechart-row-lines span.marker {
+	background-color: rgba(10, 52, 68, 0.13);
+	z-index: 2;
+}
+.timechart-row-lines:after {
+	grid-row: 1;
+	grid-column: 0;
+	background-color: #1688b345;
+	z-index: 2;
+	height: 100%;
+}
+
+/* Time chart dates header */
+.timechart-row-months {
+	color: #fff;
+	background-color: #4a5050 !important;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	grid-template-columns: 200px 200px repeat(70, 1fr);
+}
+.timechart-row-months .timechart-row-first {
+	border-top: 0 !important;
+	background-color: #4a5050 !important;
+	padding:0 0 0 10px;
+}
+.timechart-row-months span {
+	text-align: center;
+	font-size: 13px;
+	align-self: center;
+	border-left: 1px solid white;
+	padding: 5px 0;
+}
+.timechart-row-months span {
+	font-weight: 300;
+}
+.timechart-row-months span.date {
+	font-weight: bold;
+}
+.rotate {
+	transform: rotate(-90deg);
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+/* Time chart first column */
+.timechart-row-first {
+	background-color: #fff;
+	border-width: 1px 0 0 0;
+	border-color: rgba(0, 0, 0, 0.1);
+	border-style: solid;
+	padding: 10px 10px 10px 10px;
+	font-size: 13px;
+}
+
+/* Time chart bars */
+.timechart-row-bars {
+	list-style: none;
+	display: grid;
+	padding: 3px 0;
+	margin: 0;
+	min-height: 30px;
+	grid-template-columns: repeat(70, 1fr);
+	grid-gap: 8px 0;
+	border-top: 1px solid rgba(221, 221, 221, 0.8);
+	white-space: nowrap; 
+}
+.timechart-row-bars li {
+	font-weight: 500;
+	text-align: left;
+	font-size: 14px;
+	min-height: 16px;
+	background-color: #55de84;
+	padding: 6px 5px;
+	color: #fff;
+	position: relative;
+	cursor: pointer;
+	border-radius: 15px;
+}
+.timechart-row-bars li.stripes {
+	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255, 0.1) 5px, rgba(255, 255, 255, 0.1) 12px);
+}
+.timechart-row-bars li:before, .timechart-row-bars li:after {
+	content: "";
+	height: 100%;
+	top: 0;
+	z-index: 4;
+	position: absolute;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+.timechart-row-bars li:before {
+	left: 0;
+}
+.timechart-row-bars li:after {
+	right: 0;
+}
+.timechart-row-bars li.continue-right {
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+.timechart-row-bars li.continue-left {
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+.timechart-row-bars li.show {
+	display: block;
+}
+.timechart-row-bars li.hide {
+	display: none;
+}
+.bar {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* Tooltips */
+.tooltip {
+	position: relative;
+	display: inline-block;
+	border-bottom: 1px dotted black;
+}
+.tooltip .tiptext {
+	visibility: hidden;
+	color: black;
+	background-color: #ffa;
+	padding: 5px;
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	z-index: 1;
+}
+.tooltip:hover .tiptext {
+	visibility: visible;
+}
+
+/* Custom styles */
+.tag {
+	overflow: hidden;
+	padding: 0 5px 0 5px;
+	border-radius: 5px;
+	background-color: rgba(0, 0, 0, 0.4);
+}
+.title_h1 {
+	font-size: .95em;
+	font-weight: 600;
+}
+.title_h2 {
+	font-weight: 600;
+	padding-left: 20px;
+}
+.title_h3 {
+	font-weight: 400;
+	padding-left: 40px;
+}

@@ -44,7 +44,6 @@ export class CotownModal {
     this.apolloApi.getData(this.citieQuery).subscribe((result) => {
       this.cities = result.data.Geo_LocationList;
     });
-
   }
 
   onSelectCity() {

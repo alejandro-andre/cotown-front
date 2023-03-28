@@ -2,11 +2,35 @@
 
     <h1>Planning</h1>
 
-    <div style="padding-bottom: 10px; text-align: right;">
-    <button (click)="goBackward()">&lt; Semana anterior</button>
-    &nbsp;
-    <button (click)="goForward()">Semana siguiente &gt;</button>
+    <div class="nav_container">
+            <form class="selectors_container">
+                <mat-form-field appearance="fill">
+                    <mat-label>Ciudad</mat-label>
+                    <mat-select [(ngModel)]="selectedCitie" name="cities" (selectionChange)="onSelectCity()">
+                        <mat-option *ngFor="let citie of cities" [value]="citie.id">
+                            {{ citie.Name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Edificio</mat-label>
+                    <mat-select [(ngModel)]="selectedBuilding" name="buildings" (selectionChange)="onSelectBuilding()">
+                        <mat-option *ngFor="let building of buildings" [value]="building.Code">
+                            {{ building.Name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </form>
+        
+    
+        <div class="time_line_buttons">
+            <button mat-raised-button color="primary" (click)="goBackward()">&lt; Semana anterior</button>
+            &nbsp;
+            <button mat-raised-button color="primary" (click)="goForward()">Semana siguiente &gt;</button>
+        </div>
     </div>
+
 
     <div>
         <app-time-chart-control [bars]="bars" [now]="now"></app-time-chart-control>

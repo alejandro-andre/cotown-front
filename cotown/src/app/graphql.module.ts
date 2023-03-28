@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { ApolloLink, InMemoryCache } from '@apollo/client/core';
 import { setContext } from '@apollo/client/link/context';
 
-const uri = 'https://experis.flows.ninja'; // <-- add the URL of the GraphQL server here
+const uri = 'https://experis.flows.ninja/graphql'; // <-- add the URL of the GraphQL server here
  
 export function createApollo(httpLink: HttpLink) {
   const basic = setContext((operation, context) => ({
@@ -14,21 +14,8 @@ export function createApollo(httpLink: HttpLink) {
     },
   }));
  
-  const auth = setContext((operation, context) => {
-    const token = localStorage.getItem('token');
  
-    if (token === null) {
-      return {};
-    } else {
-      return {
-        headers: {
-          Authorization: `${token}`,
-        },
-      };
-    }
-  });
- 
-  const link = ApolloLink.from([basic, auth, httpLink.create({ uri })]);
+  const link = ApolloLink.from([basic, httpLink.create({ uri })]);
   const cache = new InMemoryCache();
  
   return {

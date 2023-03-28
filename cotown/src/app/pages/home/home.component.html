@@ -4,10 +4,22 @@
     Token: {{accessToken.token}}
   </p>
   <p>
+    <a mat-raised-button color="primary" routerLink="/cotown-modal">Modal page</a>
+  </p>
+  <p>
     <a mat-raised-button color="primary" routerLink="/second">Segunda página</a>
   </p>
 
   <pre>
-    consulta que se va ha a hacer
+    consulta que se va ha a hacer:
+    {{  query }}
+
+
+    <ul *ngFor="let prueba of rates">
+      <li>{{prueba.Address_min}} -- {{ prueba.Created_at }} -- {{prueba.__typename }} -- {{prueba.id}}</li>
+    </ul>
   </pre>
+
+
+
 </div>

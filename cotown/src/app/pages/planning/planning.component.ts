@@ -1,4 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AccessTokenService } from 'src/app/services/access-token.service';
+import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
 import { TimeChartLine } from 'src/app/time-chart/models/time-chart-line.model';
 import { TimeChartControlComponent } from 'src/app/time-chart/time-chart-control/time-chart-control.component';
@@ -16,6 +19,23 @@ export class PlanningComponent {
   // Bars
   public bars: TimeChartBar[] = [];
 
+  // Cities
+  public cities: any [] = [];
+
+  // Query to get the cities
+  private citieQuery= `{
+    Geo_LocationList {
+      id,
+      Name
+    }
+  }`;
+  // Current citie
+  public selectedCitie = '';
+  // Buildings
+  public buildings: any [] = [];
+  // Selected building
+  public selectedBuilding = '';
+
   // Current date
   public now: Date = new Date();
 
@@ -27,16 +47,17 @@ export class PlanningComponent {
     checkout: '#57C5B6',
     finalizada: '#537FE7'
   };
-  
+
   // Types
   private types: any = {
     piso: 'title_h1',
     habitacion: 'title_h2',
     plaza: 'title_h3'
   };
-  
+
   // Resources
-  private resources = [
+  private resources: any[] = [];
+  /*private resources = [
     { 'Resource_code': 'ART030.AT.00',        'Resource_type': 'piso',       'Resource_info': '...' },
     { 'Resource_code': 'ART030.AT.00.H01',    'Resource_type': 'habitacion', 'Resource_info': '...' },
     { 'Resource_code': 'ART030.AT.00.H02',    'Resource_type': 'habitacion', 'Resource_info': '...' },
@@ -48,10 +69,12 @@ export class PlanningComponent {
     { 'Resource_code': 'ART030.AT.00.H06',    'Resource_type': 'habitacion', 'Resource_info': '...' },
     { 'Resource_code': 'ART030.AT.00.H06.P1', 'Resource_type': 'plaza',      'Resource_info': '...' },
     { 'Resource_code': 'ART030.AT.00.H06.P2', 'Resource_type': 'plaza',      'Resource_info': '...' },
-  ]
+  ]*/
 
   // Bookings
-  private bookings = [
+    private bookings: any [] = [];
+  
+  /*private bookings = [
     {
       'Booking_code': '1234', 'Booking_lock': true, 'Booking_status': '',
       'Booking_date_from': '2023-04-01', 'Booking_date_to': '2023-05-21',
@@ -108,12 +131,174 @@ export class PlanningComponent {
       'Resource_code': 'ART030.AT.00.H05.P2',
       'Customer_name': 'Alejandro André', 'Customer_gender': 'H', 'Customer_country': 'España', 'Customer_phone': '629 25 26 13', 'Customer_email': 'alejandroandre@hotmail.com', 
     }
-  ]
+  ]*/
+
+  // TODO use only on development mode
+  login() {
+    this.apolloApi.login().subscribe((res: any) => {
+      this.accessToken.token = res.data.login;
+
+      this.apolloApi.getData(this.citieQuery).subscribe((result) => {
+        this.cities = result.data.Geo_LocationList;
+      });
+      console.log(this.accessToken)
+    })
+  }
 
   // Constructor
-  constructor() {
+
+  constructor(
+    private route: ActivatedRoute,
+    public accessToken: AccessTokenService,
+    private apolloApi: ApoloQueryApi
+  ) {
+    this.login();
     this.now = new Date();
-    this.generateBars();
+  }
+
+  ngOnInit() {
+    this.login();
+  }
+
+  get cityName(): string {
+    if (this.selectedCitie) {
+      return this.cities.find((cit) => cit.id === this.selectedCitie).Name;
+    }
+
+    return '';
+  }
+
+  onSelectCity():void {
+    const  buildingQuery = `{
+      Building_BuildingList{
+        Name
+        Code
+        DistrictViaDistrict_id(joinType: INNER){LocationViaLocation_id(joinType: INNER where:{Name:{EQ:"${this.cityName}"}}){Name}}}
+    }`;
+
+    this.apolloApi.getData(buildingQuery).subscribe(res => {
+      this.buildings = res.data.Building_BuildingList;
+    })
+  }
+
+  onSelectBuilding(): void {
+    this.resources = [];
+
+    console.log('selected :', this.selectedBuilding)
+
+    const resourcesQuery = `
+    {
+      Resource_ResourceList {
+          Code,
+          Building_id,
+          Address,
+          Search,
+          Billing_type,
+          Resource_type,
+          Resource_place_typeViaPlace_type_id {
+              Name,
+              Code
+          }
+          BuildingViaBuilding_id(joinType: INNER where: {Code: {EQ: "${this.selectedBuilding}"}} ){
+              Name,
+              Code,
+              Address,
+              Booking_fee,
+          }
+      }
+    }`;
+
+
+    this.apolloApi.getData(resourcesQuery).subscribe((res: any) => {
+      const result = res.data.Resource_ResourceList;
+      for(const elem of result) {
+        this.resources.push({
+          Resource_code: elem.Code,
+          Resource_type: elem.Resource_place_typeViaPlace_type_id?.Code || '' ,
+          Resource_info: '...' as string
+        });
+      }
+
+      this.getBookings();
+    })
+  }
+
+  getBookings(): void {
+    const query =`{
+      Booking_Booking_detailList {
+        Building_id
+        BuildingViaBuilding_id(joinType: INNER where: { Code: { EQ: "${this.selectedBuilding}" } }) {
+          Code
+        }
+        Booking_id
+        Status
+        ResourceViaResource_id{
+          Code
+        }
+        Date_from
+        Date_to
+        Lock
+        Flat_type: Resource_flat_typeViaFlat_type_id {
+          Code
+          Name
+        }
+        Place_type: Resource_place_typeViaPlace_type_id {
+          Code
+          Name
+        }
+      }
+    }`;
+
+    this.apolloApi.getData(query).subscribe((response: any) => {
+      const bookingList = response.data.Booking_Booking_detailList;
+      /**
+       *  {
+      'Booking_code': '1234', 'Booking_lock': true, '': '',
+      'Booking_date_from': '2023-04-01', 'Booking_date_to': '2023-05-21',
+      'Resource_code': 'ART030.AT.00'
+    },
+
+
+    {
+    "__typename": "Booking_Booking_detailResultType",
+    "Building_id": 14,
+    "BuildingViaBuilding_id": {
+        "__typename": "Building_BuildingResultType",
+        "Code": "BAI033"
+    },
+    "Booking_id": 3,
+    "Status": "confirmada",
+    "ResourceViaResource_id": {
+        "__typename": "Resource_ResourceResultType",
+        "Code": "BAI033.01.01"
+    },
+    "Date_from": "2023-01-01",
+    "Date_to": "2023-07-31",
+    "Lock": true,
+    "Flat_type": {
+        "__typename": "Resource_Resource_flat_typeResultType",
+        "Code": "LARGE",
+        "Name": "Piso grande (8+ pax)"
+    },
+    "Place_type": null
+}
+       */
+      for (const booking of bookingList) {
+        this.bookings.push({
+          Booking_code: booking.Booking_id,
+          Booking_lock: booking.Lock,
+          Booking_status: booking.Status,
+          Booking_date_from: booking.Date_from,
+          Booking_date_to: booking.Date_to,
+          Resource_code: booking.ResourceViaResource_id?.Code || ''
+        })
+      }
+
+      console.log('Hello from your bookings: ', this.bookings)
+      this.generateBars()
+    })
+
+
   }
 
   // Go 1 week bacwards
@@ -186,7 +371,6 @@ export class PlanningComponent {
           break;
         }
       }
-      
     }
 
     // Consolidate bar lines
@@ -195,7 +379,6 @@ export class PlanningComponent {
         bar.lines = this.consolidateIntervals(bar.lines);
       }
     }
-    
   }
 
   // Consolidate bookings for lock types
@@ -209,7 +392,7 @@ export class PlanningComponent {
 
     // Get first booking as current
     let currentInterval = intervals[0];
-  
+
     // Loop thru all bookings
     for (let i = 1; i < intervals.length; i++) {
 

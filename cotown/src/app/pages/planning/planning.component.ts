@@ -1,5 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BookingListByBuildingCodeAndResourceTypeQuery, BookingListByBuildingCodeQuery } from 'src/app/schemas/querie-definitions/booking.query';
+import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/querie-definitions/building.query';
+import { CityListQuery } from 'src/app/schemas/querie-definitions/city.query';
+import { ResourceListByBuildingCodeAndResourceTypeQuery, ResourceListByBuldingCodeQuery, ResourceTypeQuery } from 'src/app/schemas/querie-definitions/resource.query';
 import { AccessTokenService } from 'src/app/services/access-token.service';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
@@ -18,12 +22,12 @@ export class PlanningComponent {
 
   public bars: TimeChartBar[] = []; // Bars
   public cities: any [] = []; // Cities
-  public selectedCitie = ''; // Current city
+  public selectedCitie = 'ALL'; // Current city
   public buildings: any [] = []; // Buildings
   public selectedBuilding = ''; // Selected building
   public now: Date = new Date(); // Current date
   public resourceTypes: any [] = []; // Type of resources
-  public selectedResouceType = '';
+  public selectedResouceType = 'ALL';
 
   // Colors
   private colors: any = {
@@ -53,36 +57,23 @@ export class PlanningComponent {
     this.now = new Date();
   }
 
-    // TODO use only on development mode
-    login() {
-      this.apolloApi.login().subscribe((res: any) => {
-        this.accessToken.token = res.data.login;
-        this.getCities();
-        this.getAllBuildings();
-      })
-    }
+  // TODO use only on development mode
+  login() {
+    this.apolloApi.login().subscribe((res: any) => {
+      this.accessToken.token = res.data.login;
+      this.getCities();
+      this.getAllBuildings();
+    })
+  }
 
-  getAllBuildings() {
-    const  buildingQuery = `
-    query BuildingList{
-      data: Building_BuildingList{
-        name: Name
-        code: Code
-      }
-    }`;
-    this.apolloApi.getData(buildingQuery).subscribe(res => {
+  getAllBuildings(): void {
+    this.apolloApi.getData(BuildingListQuery).subscribe(res => {
       this.buildings = res.data.data;
     });
   }
 
-  getCities() {
-    const  citieQuery= `{
-      data: Geo_LocationList {
-        id,
-        name: Name
-      }
-    }`;
-    this.apolloApi.getData(citieQuery).subscribe((result) => {
+  getCities(): void {
+    this.apolloApi.getData(CityListQuery).subscribe((result) => {
       this.cities = result.data.data;
     });
   }
@@ -100,105 +91,38 @@ export class PlanningComponent {
   }
 
   getResourceType() :void {
-    const resourceQuery = `
-    query ResourceQuery {
-      data: Resource_Resource_place_typeList {
-        code: Code
-        name: Name
-      }
-    }`;
-
-    this.apolloApi.getData(resourceQuery).subscribe(res => {
+    this.apolloApi.getData(ResourceTypeQuery).subscribe(res => {
       this.resourceTypes = res.data.data;
     })
   }
 
-  onSelectResourceType(): void {
+  applyResourceTypeFilter():void {
     // Remove all data
     this.bookings = [];
     this.resources = [];
-    const variables = { buidingCode: this.selectedBuilding, resourceType: this.selectedResouceType }
+    const variables = {
+      buidingCode: this.selectedBuilding,
+      resourceType: this.selectedResouceType
+    };
 
-    // Resource query
-    const resourcesQuery = `
-    query ResourceListByBuildingCodeAndResourceType($buidingCode: String, $resourceType: String){
-      data: Resource_ResourceList {
-        code: Code
-        building_id: Building_id
-        adress: Address
-        resource_type: Resource_type
-        resource_place_type: Resource_place_typeViaPlace_type_id(joinType: INNER where: { Code: { EQ: $resourceType } }) {
-          name: Name
-          code: Code
-        }
-        building: BuildingViaBuilding_id(joinType: INNER where: {Code: {EQ: $buidingCode}} ){
-          name: Name
-          code: Code
-          address: Address
-        }
-      }
-    }`;
-    this.getResourceList(resourcesQuery, variables);
+    this.getResourceList(ResourceListByBuildingCodeAndResourceTypeQuery, variables);
+    this.getBookings(BookingListByBuildingCodeAndResourceTypeQuery, variables);
+  }
 
-    // Booking query
-    const bookinsgQuery = `
-    query BuildingListByBuildingCodeAndResourceType($buidingCode: String, $resourceType: String){
-      data: Booking_Booking_detailList {
-        building_id: Building_id
-        building: BuildingViaBuilding_id(joinType: INNER where: { Code: { EQ: $buidingCode } }) {
-          code: Code,
-        }
-        booking_id: Booking_id
-        booking: BookingViaBooking_id {
-          customer: CustomerViaCustomer_id {
-            name: Name
-            birth_date: Birth_date
-            gender: GenderViaGender_id {
-              code: Code
-              name: Name
-            }
-            email: Email
-            phones: Phones
-            country: CountryViaCountry_id {
-              name: Name
-            }
-          }
-        }
-        status: Status
-        resource: ResourceViaResource_id{
-          code: Code
-        }
-        date_from: Date_from
-        date_to: Date_to
-        lock: Lock
-        flat_type: Resource_flat_typeViaFlat_type_id {
-          code: Code
-          name: Name
-        }
-        place_type: Resource_place_typeViaPlace_type_id(joinType: INNER where: { Code: { EQ: $resourceType } }) {
-          code: Code
-          name: Name
-        }
-      }
-    }`;
-
-    this.getBookings(bookinsgQuery, variables);
+  onSelectResourceType(): void {
+    if (this.selectedResouceType === 'ALL') { // Dont use filter
+      this.getResourcesAndBookings();
+    } else {
+      this.applyResourceTypeFilter();
+    }
   }
 
   onSelectCity():void {
-    const  buildingQuery = `
-    query BuildingListByCityName($cityName: String){
-      data: Building_BuildingList{
-        name: Name
-        code: Code
-        DistrictViaDistrict_id(joinType: INNER){LocationViaLocation_id(joinType: INNER where:{Name:{EQ: $cityName}}){Name}}}
-    }`;
-
     const variables = {
       cityName: this.cityName
     };
 
-    this.apolloApi.getData(buildingQuery, variables).subscribe(res => {
+    this.apolloApi.getData(BuildingListByCityNameQuery, variables).subscribe(res => {
       this.buildings = res.data.data;
     });
   }
@@ -217,70 +141,10 @@ export class PlanningComponent {
     })
   }
 
-  onSelectBuilding(): void {
+  getResourcesAndBookings(): void {
     this.resources = [];
-    const resourcesQuery = `
-    query ResourceListByBuldingCode($buildingCode: String){
-      data: Resource_ResourceList {
-        code: Code
-        building_id: Building_id
-        adress: Address
-        resource_type: Resource_type
-        resource_place_type: Resource_place_typeViaPlace_type_id {
-          name: Name
-          code: Code
-        }
-        building: BuildingViaBuilding_id(joinType: INNER where: {Code: {EQ: $buildingCode}} ){
-          name: Name
-          code: Code
-          address: Address
-        }
-      }
-    }`;
-
-    const bookinsgQuery = `
-    query BookingListByBuildingCode($buildingCode: String){
-      data: Booking_Booking_detailList {
-        building_id: Building_id
-        building: BuildingViaBuilding_id(joinType: INNER where: { Code: { EQ: $buildingCode } }) {
-          code: Code,
-        }
-        booking_id: Booking_id
-        booking: BookingViaBooking_id {
-          customer: CustomerViaCustomer_id {
-            name: Name
-            birth_date: Birth_date
-            gender: GenderViaGender_id {
-              code: Code
-              name: Name
-            }
-            email: Email
-            phones: Phones
-            country: CountryViaCountry_id {
-              name: Name
-            }
-          }
-        }
-        status: Status
-        resource: ResourceViaResource_id{
-          code: Code
-        }
-        date_from: Date_from
-        date_to: Date_to
-        lock: Lock
-        flat_type: Resource_flat_typeViaFlat_type_id {
-          code: Code
-          name: Name
-        }
-        place_type: Resource_place_typeViaPlace_type_id {
-          code: Code
-          name: Name
-        }
-      }
-    }`;
-
-    this.getResourceList(resourcesQuery, { 'buildingCode': this.selectedBuilding });
-    this.getBookings(bookinsgQuery, { 'buildingCode': this.selectedBuilding });
+    this.getResourceList(ResourceListByBuldingCodeQuery, { 'buildingCode': this.selectedBuilding });
+    this.getBookings(BookingListByBuildingCodeQuery, { 'buildingCode': this.selectedBuilding });
   }
 
   getBookings(query: string, variables: { [key: string]: string}): void {

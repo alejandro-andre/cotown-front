@@ -40,12 +40,8 @@ export class PlanningComponent {
     habitacion: 'title_h2',
     plaza: 'title_h3'
   };
-
-  // Resources
-  private resources: any[] = [];
-
-  // Bookings
-  private bookings: any [] = [];
+  private resources: any[] = []; // Resources
+  private bookings: any [] = []; // Bookings
 
   // TODO use only on development mode
   login() {
@@ -88,7 +84,8 @@ export class PlanningComponent {
   }
 
   getResourceType() :void {
-    const resourceQuery = `{
+    const resourceQuery = `
+    query ResourceQuery {
       data: Resource_Resource_place_typeList {
         code: Code
         name: Name
@@ -104,34 +101,35 @@ export class PlanningComponent {
     // Remove all data
     this.bookings = [];
     this.resources = [];
-
+    const variables = { buidingCode: this.selectedBuilding, resourceType: this.selectedResouceType }
 
     // Resource query
     const resourcesQuery = `
-    {
+    query ResourceListByBuildingCodeAndResourceType($buidingCode: String, $resourceType: String){
       data: Resource_ResourceList {
         code: Code
         building_id: Building_id
         adress: Address
         resource_type: Resource_type
-        resource_place_type: Resource_place_typeViaPlace_type_id(joinType: INNER where: { Code: { EQ: "${this.selectedResouceType}" } }) {
+        resource_place_type: Resource_place_typeViaPlace_type_id(joinType: INNER where: { Code: { EQ: $resourceType } }) {
           name: Name
           code: Code
         }
-        building: BuildingViaBuilding_id(joinType: INNER where: {Code: {EQ: "${this.selectedBuilding}"}} ){
+        building: BuildingViaBuilding_id(joinType: INNER where: {Code: {EQ: $buidingCode}} ){
           name: Name
           code: Code
           address: Address
         }
       }
     }`;
-    this.getResourceList(resourcesQuery);
+    this.getResourceList(resourcesQuery, variables);
 
     // Booking query
-    const bookinsgQuery = `{
+    const bookinsgQuery = `
+    query BuildingListByBuildingCodeAndResourceType($buidingCode: String, $resourceType: String){
       data: Booking_Booking_detailList {
         building_id: Building_id
-        building: BuildingViaBuilding_id(joinType: INNER where: { Code: { EQ: "${this.selectedBuilding}" } }) {
+        building: BuildingViaBuilding_id(joinType: INNER where: { Code: { EQ: $buidingCode } }) {
           code: Code,
         }
         booking_id: Booking_id
@@ -161,14 +159,14 @@ export class PlanningComponent {
           code: Code
           name: Name
         }
-        place_type: Resource_place_typeViaPlace_type_id(joinType: INNER where: { Code: { EQ: "${this.selectedResouceType}" } }) {
+        place_type: Resource_place_typeViaPlace_type_id(joinType: INNER where: { Code: { EQ: $resourceType } }) {
           code: Code
           name: Name
         }
       }
     }`;
 
-    this.getBookings(bookinsgQuery);
+    this.getBookings(bookinsgQuery, variables);
   }
 
   onSelectCity():void {
@@ -189,8 +187,8 @@ export class PlanningComponent {
     })
   }
 
-  getResourceList(query: string): void {
-    this.apolloApi.getData(query).subscribe((res: any) => {
+  getResourceList(query: string, variables: { [key: string]: string}): void {
+    this.apolloApi.getData(query, variables).subscribe((res: any) => {
       this.getResourceType();
       const result = res.data.data;
       for(const elem of result) {
@@ -206,7 +204,7 @@ export class PlanningComponent {
   onSelectBuilding(): void {
     this.resources = [];
     const resourcesQuery = `
-    {
+    query ResourceListByBuldingCode($buildingCode: String){
       data: Resource_ResourceList {
         code: Code
         building_id: Building_id
@@ -216,7 +214,7 @@ export class PlanningComponent {
           name: Name
           code: Code
         }
-        building: BuildingViaBuilding_id(joinType: INNER where: {Code: {EQ: "${this.selectedBuilding}"}} ){
+        building: BuildingViaBuilding_id(joinType: INNER where: {Code: {EQ: $buildingCode}} ){
           name: Name
           code: Code
           address: Address
@@ -224,10 +222,11 @@ export class PlanningComponent {
       }
     }`;
 
-    const bookinsgQuery = `{
+    const bookinsgQuery = `
+    query BookingListByBuildingCode($buildingCode: String){
       data: Booking_Booking_detailList {
         building_id: Building_id
-        building: BuildingViaBuilding_id(joinType: INNER where: { Code: { EQ: "${this.selectedBuilding}" } }) {
+        building: BuildingViaBuilding_id(joinType: INNER where: { Code: { EQ: $buildingCode } }) {
           code: Code,
         }
         booking_id: Booking_id
@@ -264,13 +263,13 @@ export class PlanningComponent {
       }
     }`;
 
-    this.getResourceList(resourcesQuery);
-    this.getBookings(bookinsgQuery);
+    this.getResourceList(resourcesQuery, { 'buildingCode': this.selectedBuilding });
+    this.getBookings(bookinsgQuery, { 'buildingCode': this.selectedBuilding });
   }
 
-  getBookings(query: string): void {
+  getBookings(query: string, variables: { [key: string]: string}): void {
     this.bookings = [];
-    this.apolloApi.getData(query).subscribe((response: any) => {
+    this.apolloApi.getData(query, variables).subscribe((response: any) => {
       const bookingList = response.data.data;
       for (const booking of bookingList) {
         this.bookings.push({

@@ -35,6 +35,7 @@
 				<mat-select
           [(ngModel)]="selectedResouceType"
           name="resourcesTypes"
+          (selectionChange)="onSelectResourceType()"
         >
 					<mat-option *ngFor="let resourceType of resourceTypes" [value]="resourceType.code">
 						{{ resourceType.code }}

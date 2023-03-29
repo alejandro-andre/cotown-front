@@ -102,16 +102,107 @@ export class PlanningComponent {
     })
   }
 
+  onSelectResourceType(): void {
+    // Remove all data
+    this.bookings = [];
+    this.resources = [];
+
+
+    // Resource query
+    const resourcesQuery = `
+    {
+      data: Resource_ResourceList {
+        code: Code
+        building_id: Building_id
+        adress: Address
+        resource_type: Resource_type
+        resource_place_type: Resource_place_typeViaPlace_type_id(joinType: INNER where: { Code: { EQ: "${this.selectedResouceType}" } }) {
+          name: Name
+          code: Code
+        }
+        building: BuildingViaBuilding_id(joinType: INNER where: {Code: {EQ: "${this.selectedBuilding}"}} ){
+          name: Name
+          code: Code
+          address: Address
+        }
+      }
+    }`;
+    this.getResourceList(resourcesQuery);
+
+    // Booking query
+    const bookinsgQuery = `{
+      data: Booking_Booking_detailList {
+        building_id: Building_id
+        building: BuildingViaBuilding_id(joinType: INNER where: { Code: { EQ: "${this.selectedBuilding}" } }) {
+          code: Code,
+        }
+        booking_id: Booking_id
+        booking: BookingViaBooking_id {
+          customer: CustomerViaCustomer_id {
+            name: Name
+            birth_date: Birth_date
+            gender: GenderViaGender_id {
+              code: Code
+              name: Name
+            }
+            email: Email
+            phones: Phones
+            country: CountryViaCountry_id {
+              name: Name
+            }
+          }
+        }
+        status: Status
+        resource: ResourceViaResource_id{
+          code: Code
+        }
+        date_from: Date_from
+        date_to: Date_to
+        lock: Lock
+        flat_type: Resource_flat_typeViaFlat_type_id {
+          code: Code
+          name: Name
+        }
+        place_type: Resource_place_typeViaPlace_type_id(joinType: INNER where: { Code: { EQ: "${this.selectedResouceType}" } }) {
+          code: Code
+          name: Name
+        }
+      }
+    }`;
+
+    this.getBookings(bookinsgQuery);
+  }
+
   onSelectCity():void {
-    const  buildingQuery = `{
+    const  buildingQuery = `query BuildingList($cityName: String){
       data: Building_BuildingList{
         name: Name
         code: Code
-        DistrictViaDistrict_id(joinType: INNER){LocationViaLocation_id(joinType: INNER where:{Name:{EQ:"${this.cityName}"}}){Name}}}
+        DistrictViaDistrict_id(joinType: INNER){LocationViaLocation_id(joinType: INNER where:{Name:{EQ: $cityName}}){Name}}}
     }`;
 
-    this.apolloApi.getData(buildingQuery).subscribe(res => {
+    const variables = {
+      cityName: this.cityName
+    }
+
+    this.apolloApi.getData(buildingQuery, variables).subscribe(res => {
+      console.log('Hello im here: ', res.data)
       this.buildings = res.data.data;
+    })
+  }
+
+  getResourceList(query: string): void {
+    this.apolloApi.getData(query).subscribe((res: any) => {
+      this.getResourceType();
+      const result = res.data.data;
+      console.log(result)
+      for(const elem of result) {
+        this.resources.push({
+          Resource_code: elem.code,
+          Resource_type: elem.resource_place_type?.code || '' ,
+          Resource_info: elem.resource_place_type?.code || ''
+        });
+      }
     })
   }
 
@@ -137,25 +228,7 @@ export class PlanningComponent {
     }`;
 
 
-    this.apolloApi.getData(resourcesQuery).subscribe((res: any) => {
-      this.getResourceType();
-      const result = res.data.data;
-      for(const elem of result) {
-        this.resources.push({
-          Resource_code: elem.code,
-          Resource_type: elem.resource_place_type?.code || '' ,
-          Resource_info: '...' as string
-        });
-      }
-
-      this.getBookings();
-    })
-  }
-
-  getBookings(): void {
-    this.bookings = [];
-
-    const query = `{
+    const bookinsgQuery = `{
       data: Booking_Booking_detailList {
         building_id: Building_id
         building: BuildingViaBuilding_id(joinType: INNER where: { Code: { EQ: "${this.selectedBuilding}" } }) {
@@ -195,6 +268,12 @@ export class PlanningComponent {
       }
     }`;
 
+    this.getResourceList(resourcesQuery);
+    this.getBookings(bookinsgQuery);
+  }
+
+  getBookings(query: string): void {
+    this.bookings = [];
     this.apolloApi.getData(query).subscribe((response: any) => {
       const bookingList = response.data.data;
       for (const booking of bookingList) {
@@ -215,7 +294,6 @@ export class PlanningComponent {
         })
       }
 
-      console.log('Hello from your bookings: ', this.bookings)
       this.generateBars()
     })
 

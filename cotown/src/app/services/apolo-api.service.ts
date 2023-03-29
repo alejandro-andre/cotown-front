@@ -13,12 +13,23 @@ export class ApoloQueryApi {
     private apollo: Apollo
   ) {}
 
-  getData(query: string): Observable<any> {
+  getData(query: string, variables: any = undefined): Observable<any> {
+    console.log(variables);
+    let  variablesToSend = {
+      authorization: `${this.accessToken.token}`
+    };
+
+    if (variables) {
+      variablesToSend = {...variables, authorization: `${this.accessToken.token}`}
+    }
+
     return this.apollo.watchQuery({
       query: gql`${query}`,
+      fetchPolicy: 'network-only',
+      nextFetchPolicy: 'no-cache',
       variables: {
-          authorization: `${this.accessToken.token}`
-        }
+        ...variablesToSend
+        },
     }).valueChanges;
   }
 

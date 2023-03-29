@@ -16,10 +16,21 @@ export function createApollo(httpLink: HttpLink) {
 
   const link = ApolloLink.from([basic, httpLink.create({ uri })]);
   const cache = new InMemoryCache();
+  const defaultOptions = {
+    watchQuery: {
+      fetchPolicy: 'network-only',
+      errorPolicy: 'ignore',
+    },
+    query: {
+      fetchPolicy: 'network-only',
+      errorPolicy: 'all',
+    }
+  };
 
   return {
     link,
     cache,
+    defaultOptions: defaultOptions,
   };
 }
 

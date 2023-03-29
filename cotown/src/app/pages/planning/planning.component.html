@@ -4,7 +4,7 @@
 
 	<div class="nav_container">
 		<form class="selectors_container">
-			<mat-form-field appearance="fill">
+			<mat-form-field appearance="fill" style="margin-right: 10px;">
 				<mat-label>Ciudad</mat-label>
 				<mat-select [(ngModel)]="selectedCitie" name="cities" (selectionChange)="onSelectCity()">
 					<mat-option *ngFor="let citie of cities" [value]="citie.id">

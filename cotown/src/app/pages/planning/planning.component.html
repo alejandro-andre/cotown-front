@@ -8,7 +8,7 @@
 				<mat-label>Ciudad</mat-label>
 				<mat-select [(ngModel)]="selectedCitie" name="cities" (selectionChange)="onSelectCity()">
 					<mat-option *ngFor="let citie of cities" [value]="citie.id">
-						{{ citie.Name }}
+						{{ citie.name }}
 					</mat-option>
 				</mat-select>
 			</mat-form-field>
@@ -16,8 +16,8 @@
 			<mat-form-field appearance="fill">
 				<mat-label>Edificio</mat-label>
 				<mat-select [(ngModel)]="selectedBuilding" name="buildings" (selectionChange)="onSelectBuilding()">
-					<mat-option *ngFor="let building of buildings" [value]="building.Code">
-						{{ building.Name }}
+					<mat-option *ngFor="let building of buildings" [value]="building.code">
+						{{ building.name }}
 					</mat-option>
 				</mat-select>
 			</mat-form-field>

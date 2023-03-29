@@ -16,28 +16,12 @@ export class PlanningComponent {
   @ViewChild(TimeChartControlComponent)
   private ganttChartControl!: TimeChartControlComponent;
 
-  // Bars
-  public bars: TimeChartBar[] = [];
-
-  // Cities
-  public cities: any [] = [];
-
-  // Query to get the cities
-  private citieQuery= `{
-    Geo_LocationList {
-      id,
-      Name
-    }
-  }`;
-  // Current citie
-  public selectedCitie = '';
-  // Buildings
-  public buildings: any [] = [];
-  // Selected building
-  public selectedBuilding = '';
-
-  // Current date
-  public now: Date = new Date();
+  public bars: TimeChartBar[] = []; // Bars
+  public cities: any [] = []; // Cities
+  public selectedCitie = ''; // Current city
+  public buildings: any [] = []; // Buildings
+  public selectedBuilding = ''; // Selected building
+  public now: Date = new Date(); // Current date
 
   // Colors
   private colors: any = {
@@ -57,91 +41,25 @@ export class PlanningComponent {
 
   // Resources
   private resources: any[] = [];
-  /*private resources = [
-    { 'Resource_code': 'ART030.AT.00',        'Resource_type': 'piso',       'Resource_info': '...' },
-    { 'Resource_code': 'ART030.AT.00.H01',    'Resource_type': 'habitacion', 'Resource_info': '...' },
-    { 'Resource_code': 'ART030.AT.00.H02',    'Resource_type': 'habitacion', 'Resource_info': '...' },
-    { 'Resource_code': 'ART030.AT.00.H03',    'Resource_type': 'habitacion', 'Resource_info': '...' },
-    { 'Resource_code': 'ART030.AT.00.H04',    'Resource_type': 'habitacion', 'Resource_info': '...' },
-    { 'Resource_code': 'ART030.AT.00.H05',    'Resource_type': 'habitacion', 'Resource_info': '...' },
-    { 'Resource_code': 'ART030.AT.00.H05.P1', 'Resource_type': 'plaza',      'Resource_info': '...' },
-    { 'Resource_code': 'ART030.AT.00.H05.P2', 'Resource_type': 'plaza',      'Resource_info': '...' },
-    { 'Resource_code': 'ART030.AT.00.H06',    'Resource_type': 'habitacion', 'Resource_info': '...' },
-    { 'Resource_code': 'ART030.AT.00.H06.P1', 'Resource_type': 'plaza',      'Resource_info': '...' },
-    { 'Resource_code': 'ART030.AT.00.H06.P2', 'Resource_type': 'plaza',      'Resource_info': '...' },
-  ]*/
 
   // Bookings
-    private bookings: any [] = [];
-
-  /*private bookings = [
-    {
-      'Booking_code': '1234', 'Booking_lock': true, 'Booking_status': '',
-      'Booking_date_from': '2023-04-01', 'Booking_date_to': '2023-05-21',
-      'Resource_code': 'ART030.AT.00'
-    },
-    {
-      'Booking_code': '1234', 'Booking_lock': true, 'Booking_status': '',
-      'Booking_date_from': '2023-03-21', 'Booking_date_to': '2023-06-20',
-      'Resource_code': 'ART030.AT.00'
-    },
-    {
-      'Booking_code': '1234', 'Booking_lock': false, 'Booking_status': 'confirmada',
-      'Booking_date_from': '2023-04-01', 'Booking_date_to': '2023-05-21',
-      'Resource_code': 'ART030.AT.00.H01',
-      'Customer_name': 'Alejandro André', 'Customer_gender': 'H', 'Customer_country': 'España', 'Customer_phone': '629 25 26 13', 'Customer_email': 'alejandroandre@hotmail.com', 
-    },
-    {
-      'Booking_code': '1234', 'Booking_lock': false, 'Booking_status': 'solicitud',
-      'Booking_date_from': '2023-03-21', 'Booking_date_to': '2023-05-11',
-      'Resource_code': 'ART030.AT.00.H02',
-      'Customer_name': 'Alejandro André', 'Customer_gender': 'H', 'Customer_country': 'España', 'Customer_phone': '629 25 26 13', 'Customer_email': 'alejandroandre@hotmail.com', 
-    },
-    {
-      'Booking_code': '1234', 'Booking_lock': false, 'Booking_status': 'checkin', 
-      'Booking_date_from': '2023-03-21', 'Booking_date_to': '2023-04-20',
-      'Resource_code': 'ART030.AT.00.H03',
-      'Customer_name': 'Alejandro André', 'Customer_gender': 'H', 'Customer_country': 'España', 'Customer_phone': '629 25 26 13', 'Customer_email': 'alejandroandre@hotmail.com', 
-    },
-    {
-      'Booking_code': '1234', 'Booking_lock': false, 'Booking_status': 'checkout', 
-      'Booking_date_from': '2023-04-21', 'Booking_date_to': '2023-06-20',
-      'Resource_code': 'ART030.AT.00.H03',
-      'Customer_name': 'Alejandro André', 'Customer_gender': 'H', 'Customer_country': 'España', 'Customer_phone': '629 25 26 13', 'Customer_email': 'alejandroandre@hotmail.com', 
-    },
-    {
-      'Booking_code': '1234', 'Booking_lock': true, 'Booking_status': '', 
-      'Booking_date_from': '2023-03-21', 'Booking_date_to': '2023-05-11',
-      'Resource_code': 'ART030.AT.00.H05',
-    },
-    {
-      'Booking_code': '1234', 'Booking_lock': true, 'Booking_status': 'finalizada', 
-      'Booking_date_from': '2023-04-21', 'Booking_date_to': '2023-05-21',
-      'Resource_code': 'ART030.AT.00.H05',
-    },
-    {
-      'Booking_code': '1234', 'Booking_lock': false, 'Booking_status': 'confirmada', 
-      'Booking_date_from': '2023-03-21', 'Booking_date_to': '2023-05-11',
-      'Resource_code': 'ART030.AT.00.H05.P1',
-      'Customer_name': 'Alejandro André', 'Customer_gender': 'H', 'Customer_country': 'España', 'Customer_phone': '629 25 26 13', 'Customer_email': 'alejandroandre@hotmail.com', 
-    },
-    {
-      'Booking_code': '1234', 'Booking_lock': false, 'Booking_status': 'solicitud', 
-      'Booking_date_from': '2023-04-21', 'Booking_date_to': '2023-05-21',
-      'Resource_code': 'ART030.AT.00.H05.P2',
-      'Customer_name': 'Alejandro André', 'Customer_gender': 'H', 'Customer_country': 'España', 'Customer_phone': '629 25 26 13', 'Customer_email': 'alejandroandre@hotmail.com', 
-    }
-  ]*/
+  private bookings: any [] = [];
 
   // TODO use only on development mode
   login() {
+    const  citieQuery= `{
+      data: Geo_LocationList {
+        id,
+        name: Name
+      }
+    }`;
+
     this.apolloApi.login().subscribe((res: any) => {
       this.accessToken.token = res.data.login;
 
-      this.apolloApi.getData(this.citieQuery).subscribe((result) => {
-        this.cities = result.data.Geo_LocationList;
+      this.apolloApi.getData(citieQuery).subscribe((result) => {
+        this.cities = result.data.data;
       });
-      console.log(this.accessToken)
     })
   }
 
@@ -162,7 +80,7 @@ export class PlanningComponent {
 
   get cityName(): string {
     if (this.selectedCitie) {
-      return this.cities.find((cit) => cit.id === this.selectedCitie).Name;
+      return this.cities.find((cit) => cit.id === this.selectedCitie).name;
     }
 
     return '';
@@ -170,14 +88,14 @@ export class PlanningComponent {
 
   onSelectCity():void {
     const  buildingQuery = `{
-      Building_BuildingList{
-        Name
-        Code
+      data: Building_BuildingList{
+        name: Name
+        code: Code
         DistrictViaDistrict_id(joinType: INNER){LocationViaLocation_id(joinType: INNER where:{Name:{EQ:"${this.cityName}"}}){Name}}}
     }`;
 
     this.apolloApi.getData(buildingQuery).subscribe(res => {
-      this.buildings = res.data.Building_BuildingList;
+      this.buildings = res.data.data;
     })
   }
 
@@ -185,33 +103,30 @@ export class PlanningComponent {
     this.resources = [];
     const resourcesQuery = `
     {
-      Resource_ResourceList {
-        Code,
-        Building_id,
-        Address,
-        Search,
-        Billing_type,
-        Resource_type,
-        Resource_place_typeViaPlace_type_id {
-          Name,
-          Code
+      data: Resource_ResourceList {
+        code: Code
+        building_id: Building_id
+        adress: Address
+        resource_type: Resource_type
+        resource_place_type: Resource_place_typeViaPlace_type_id {
+          name: Name
+          code: Code
         }
-        BuildingViaBuilding_id(joinType: INNER where: {Code: {EQ: "${this.selectedBuilding}"}} ){
-          Name,
-          Code,
-          Address,
-          Booking_fee,
+        building: BuildingViaBuilding_id(joinType: INNER where: {Code: {EQ: "${this.selectedBuilding}"}} ){
+          name: Name
+          code: Code
+          address: Address
         }
       }
     }`;
 
 
     this.apolloApi.getData(resourcesQuery).subscribe((res: any) => {
-      const result = res.data.Resource_ResourceList;
+      const result = res.data.data;
       for(const elem of result) {
         this.resources.push({
-          Resource_code: elem.Code,
-          Resource_type: elem.Resource_place_typeViaPlace_type_id?.Code || '' ,
+          Resource_code: elem.code,
+          Resource_type: elem.resource_place_type?.code || '' ,
           Resource_info: '...' as string
         });
       }
@@ -222,41 +137,64 @@ export class PlanningComponent {
 
   getBookings(): void {
     this.bookings = [];
-    const query =`{
-      Booking_Booking_detailList {
-        Building_id
-        BuildingViaBuilding_id(joinType: INNER where: { Code: { EQ: "${this.selectedBuilding}" } }) {
-          Code
+
+    const query = `{
+      data: Booking_Booking_detailList {
+        building_id: Building_id
+        building: BuildingViaBuilding_id(joinType: INNER where: { Code: { EQ: "${this.selectedBuilding}" } }) {
+          code: Code,
         }
-        Booking_id
-        Status
-        ResourceViaResource_id{
-          Code
+        booking_id: Booking_id
+        booking: BookingViaBooking_id {
+          customer: CustomerViaCustomer_id {
+            name: Name
+            birth_date: Birth_date
+            gender: GenderViaGender_id {
+              code: Code
+              name: Name
+            }
+            email: Email
+            phones: Phones
+            country: CountryViaCountry_id {
+              name: Name
+            }
+          }
         }
-        Date_from
-        Date_to
-        Lock
-        Flat_type: Resource_flat_typeViaFlat_type_id {
-          Code
-          Name
+        status: Status
+        resource: ResourceViaResource_id{
+          code: Code
         }
-        Place_type: Resource_place_typeViaPlace_type_id {
-          Code
-          Name
+        date_from: Date_from
+        date_to: Date_to
+        lock: Lock
+        flat_type: Resource_flat_typeViaFlat_type_id {
+          code: Code
+          name: Name
+        }
+        place_type: Resource_place_typeViaPlace_type_id {
+          code: Code
+          name: Name
         }
       }
     }`;
 
     this.apolloApi.getData(query).subscribe((response: any) => {
-      const bookingList = response.data.Booking_Booking_detailList;
+      const bookingList = response.data.data;
       for (const booking of bookingList) {
         this.bookings.push({
-          Booking_code: booking.Booking_id,
-          Booking_lock: booking.Lock,
-          Booking_status: booking.Status,
-          Booking_date_from: booking.Date_from,
-          Booking_date_to: booking.Date_to,
-          Resource_code: booking.ResourceViaResource_id?.Code || ''
+          Booking_code: booking.booking_id,
+          Booking_lock: booking.lock,
+          Booking_status: booking.status,
+          Booking_date_from: booking.date_from,
+          Booking_date_to: booking.date_to,
+          Resource_code: booking.resource?.code || '',
+          Customer_name: booking.booking.customer.name,
+          Customer_gender: booking.booking.customer.gender.code,
+          Customer_country: booking.booking.customer.country.name,
+          Customer_email: booking.booking.customer.email,
+          Customer_phone: booking.booking.customer.phones
+
+
         })
       }
 

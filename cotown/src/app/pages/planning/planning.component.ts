@@ -66,7 +66,6 @@ export class PlanningComponent {
   }
 
   // Constructor
-
   constructor(
     private route: ActivatedRoute,
     public accessToken: AccessTokenService,
@@ -95,7 +94,6 @@ export class PlanningComponent {
         name: Name
       }
     }`;
-
 
     this.apolloApi.getData(resourceQuery).subscribe(res => {
       this.resourceTypes = res.data.data;
@@ -174,7 +172,8 @@ export class PlanningComponent {
   }
 
   onSelectCity():void {
-    const  buildingQuery = `query BuildingList($cityName: String){
+    const  buildingQuery = `
+    query BuildingList($cityName: String){
       data: Building_BuildingList{
         name: Name
         code: Code
@@ -186,7 +185,6 @@ export class PlanningComponent {
     }
 
     this.apolloApi.getData(buildingQuery, variables).subscribe(res => {
-      console.log('Hello im here: ', res.data)
       this.buildings = res.data.data;
     })
   }
@@ -195,7 +193,6 @@ export class PlanningComponent {
     this.apolloApi.getData(query).subscribe((res: any) => {
       this.getResourceType();
       const result = res.data.data;
-      console.log(result)
       for(const elem of result) {
         this.resources.push({
           Resource_code: elem.code,
@@ -226,7 +223,6 @@ export class PlanningComponent {
         }
       }
     }`;
-
 
     const bookinsgQuery = `{
       data: Booking_Booking_detailList {
@@ -289,15 +285,11 @@ export class PlanningComponent {
           Customer_country: booking.booking.customer.country.name,
           Customer_email: booking.booking.customer.email,
           Customer_phone: booking.booking.customer.phones
-
-
         })
       }
 
       this.generateBars()
     })
-
-
   }
 
   // Go 1 week bacwards

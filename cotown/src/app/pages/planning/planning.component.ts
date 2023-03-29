@@ -43,24 +43,6 @@ export class PlanningComponent {
   private resources: any[] = []; // Resources
   private bookings: any [] = []; // Bookings
 
-  // TODO use only on development mode
-  login() {
-    const  citieQuery= `{
-      data: Geo_LocationList {
-        id,
-        name: Name
-      }
-    }`;
-
-    this.apolloApi.login().subscribe((res: any) => {
-      this.accessToken.token = res.data.login;
-
-      this.apolloApi.getData(citieQuery).subscribe((result) => {
-        this.cities = result.data.data;
-      });
-    })
-  }
-
   // Constructor
   constructor(
     private route: ActivatedRoute,
@@ -69,6 +51,40 @@ export class PlanningComponent {
   ) {
     this.login();
     this.now = new Date();
+  }
+
+    // TODO use only on development mode
+    login() {
+      this.apolloApi.login().subscribe((res: any) => {
+        this.accessToken.token = res.data.login;
+        this.getCities();
+        this.getAllBuildings();
+      })
+    }
+
+  getAllBuildings() {
+    const  buildingQuery = `
+    query BuildingList{
+      data: Building_BuildingList{
+        name: Name
+        code: Code
+      }
+    }`;
+    this.apolloApi.getData(buildingQuery).subscribe(res => {
+      this.buildings = res.data.data;
+    });
+  }
+
+  getCities() {
+    const  citieQuery= `{
+      data: Geo_LocationList {
+        id,
+        name: Name
+      }
+    }`;
+    this.apolloApi.getData(citieQuery).subscribe((result) => {
+      this.cities = result.data.data;
+    });
   }
 
   ngOnInit() {
@@ -171,7 +187,7 @@ export class PlanningComponent {
 
   onSelectCity():void {
     const  buildingQuery = `
-    query BuildingList($cityName: String){
+    query BuildingListByCityName($cityName: String){
       data: Building_BuildingList{
         name: Name
         code: Code
@@ -180,11 +196,11 @@ export class PlanningComponent {
 
     const variables = {
       cityName: this.cityName
-    }
+    };
 
     this.apolloApi.getData(buildingQuery, variables).subscribe(res => {
       this.buildings = res.data.data;
-    })
+    });
   }
 
   getResourceList(query: string, variables: { [key: string]: string}): void {

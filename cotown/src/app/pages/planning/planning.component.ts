@@ -73,7 +73,7 @@ export class PlanningComponent {
 
   // Bookings
     private bookings: any [] = [];
-  
+
   /*private bookings = [
     {
       'Booking_code': '1234', 'Booking_lock': true, 'Booking_status': '',
@@ -183,28 +183,25 @@ export class PlanningComponent {
 
   onSelectBuilding(): void {
     this.resources = [];
-
-    console.log('selected :', this.selectedBuilding)
-
     const resourcesQuery = `
     {
       Resource_ResourceList {
+        Code,
+        Building_id,
+        Address,
+        Search,
+        Billing_type,
+        Resource_type,
+        Resource_place_typeViaPlace_type_id {
+          Name,
+          Code
+        }
+        BuildingViaBuilding_id(joinType: INNER where: {Code: {EQ: "${this.selectedBuilding}"}} ){
+          Name,
           Code,
-          Building_id,
           Address,
-          Search,
-          Billing_type,
-          Resource_type,
-          Resource_place_typeViaPlace_type_id {
-              Name,
-              Code
-          }
-          BuildingViaBuilding_id(joinType: INNER where: {Code: {EQ: "${this.selectedBuilding}"}} ){
-              Name,
-              Code,
-              Address,
-              Booking_fee,
-          }
+          Booking_fee,
+        }
       }
     }`;
 
@@ -224,6 +221,7 @@ export class PlanningComponent {
   }
 
   getBookings(): void {
+    this.bookings = [];
     const query =`{
       Booking_Booking_detailList {
         Building_id
@@ -251,38 +249,6 @@ export class PlanningComponent {
 
     this.apolloApi.getData(query).subscribe((response: any) => {
       const bookingList = response.data.Booking_Booking_detailList;
-      /**
-       *  {
-      'Booking_code': '1234', 'Booking_lock': true, '': '',
-      'Booking_date_from': '2023-04-01', 'Booking_date_to': '2023-05-21',
-      'Resource_code': 'ART030.AT.00'
-    },
-
-
-    {
-    "__typename": "Booking_Booking_detailResultType",
-    "Building_id": 14,
-    "BuildingViaBuilding_id": {
-        "__typename": "Building_BuildingResultType",
-        "Code": "BAI033"
-    },
-    "Booking_id": 3,
-    "Status": "confirmada",
-    "ResourceViaResource_id": {
-        "__typename": "Resource_ResourceResultType",
-        "Code": "BAI033.01.01"
-    },
-    "Date_from": "2023-01-01",
-    "Date_to": "2023-07-31",
-    "Lock": true,
-    "Flat_type": {
-        "__typename": "Resource_Resource_flat_typeResultType",
-        "Code": "LARGE",
-        "Name": "Piso grande (8+ pax)"
-    },
-    "Place_type": null
-}
-       */
       for (const booking of bookingList) {
         this.bookings.push({
           Booking_code: booking.Booking_id,
@@ -313,24 +279,23 @@ export class PlanningComponent {
 
   // Generate bars for the time chart
   generateBars() {
-
-    var bar!: TimeChartBar;
+    this.bars = [];
+    let auxBar!: TimeChartBar;
 
     // Current resource
     let res = '';
 
     // Generate bars
-    for (var r of this.resources) {
-        bar = new TimeChartBar();
-        bar.code = r.Resource_code;
-        bar.info = r.Resource_info
-        bar.style = this.types[r.Resource_type];
-        this.bars.push(bar);
+    for (const r of this.resources) {
+      auxBar = new TimeChartBar();
+      auxBar.code = r.Resource_code;
+      auxBar.info = r.Resource_info
+      auxBar.style = this.types[r.Resource_type];
+        this.bars.push(auxBar);
     }
 
     // Generate lines
-    for (var b of this.bookings) {
-
+    for (const b of this.bookings) {
       // Dates
       let line: TimeChartLine = new TimeChartLine();
       line.datefrom = new Date(b.Booking_date_from);
@@ -341,31 +306,31 @@ export class PlanningComponent {
         line.lock = true;
         line.color = '#C0C0C0';
         line.type = 'stripes';
-      } 
-      
+      }
+
       // Real booking
       else {
         line.lock = false;
         line.code = b.Booking_code;
         line.color = this.colors[b.Booking_status];
-        line.text = b.Customer_name 
-                  + ' - ' + b.Customer_gender 
-                  + ' - ' + b.Customer_country 
-                  + ' - ' + b.Customer_email 
-                  + ' - ' + b.Customer_phone; 
+        line.text = b.Customer_name
+          + ' - ' + b.Customer_gender
+          + ' - ' + b.Customer_country
+          + ' - ' + b.Customer_email
+          + ' - ' + b.Customer_phone;
         line.tooltip = `
-                  <div><span class="tiphead">${b.Booking_code}</span></div>
-                  <div><span class="tipfield">${b.Booking_status}</span></div>
-                  <div><span class="tipfield">${b.Booking_date_from} a ${b.Booking_date_to}</span></div>
-                  <div><span class="tipfield">Nombre:</span><span>${b.Customer_name}</span></div>
-                  <div><span class="tipfield">Edad/Género:</span><span>${b.Customer_gender}</span></div>
-                  <div><span class="tipfield">País:</span><span>${b.Customer_country}</span></div>
-                  <div><span class="tipfield">Teléfono:</span><span>${b.Customer_phone}</span></div>
-                  <div><span class="tipfield">Email:</span><span>${b.Customer_email}</span></div>`
+          <div><span class="tiphead">${b.Booking_code}</span></div>
+          <div><span class="tipfield">${b.Booking_status}</span></div>
+          <div><span class="tipfield">${b.Booking_date_from} a ${b.Booking_date_to}</span></div>
+          <div><span class="tipfield">Nombre:</span><span>${b.Customer_name}</span></div>
+          <div><span class="tipfield">Edad/Género:</span><span>${b.Customer_gender}</span></div>
+          <div><span class="tipfield">País:</span><span>${b.Customer_country}</span></div>
+          <div><span class="tipfield">Teléfono:</span><span>${b.Customer_phone}</span></div>
+          <div><span class="tipfield">Email:</span><span>${b.Customer_email}</span></div>`
       }
 
       // Add line to proper bar
-      for (var bar of this.bars) { 
+      for (const bar of this.bars) {
         if (bar.code == b.Resource_code) {
           bar.lines.push(line);
           break;
@@ -374,7 +339,7 @@ export class PlanningComponent {
     }
 
     // Consolidate bar lines
-    for (var bar of this.bars) {
+    for (const bar of this.bars) {
       if (bar.lines.length > 1 && bar.lines[0].lock) {
         bar.lines = this.consolidateIntervals(bar.lines);
       }
@@ -412,9 +377,8 @@ export class PlanningComponent {
       }
     }
 
-    // Add last interval to list and return 
+    // Add last interval to list and return
     consolidatedIntervals.push(currentInterval);
     return consolidatedIntervals;
   }
-
 }

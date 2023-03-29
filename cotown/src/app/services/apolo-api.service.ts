@@ -14,7 +14,6 @@ export class ApoloQueryApi {
   ) {}
 
   getData(query: string, variables: any = undefined): Observable<any> {
-    console.log(variables);
     let  variablesToSend = {
       authorization: `${this.accessToken.token}`
     };

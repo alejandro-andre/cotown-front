@@ -22,6 +22,8 @@ export class PlanningComponent {
   public buildings: any [] = []; // Buildings
   public selectedBuilding = ''; // Selected building
   public now: Date = new Date(); // Current date
+  public resourceTypes: any [] = []; // Type of resources
+  public selectedResouceType = '';
 
   // Colors
   private colors: any = {
@@ -86,6 +88,20 @@ export class PlanningComponent {
     return '';
   }
 
+  getResourceType() :void {
+    const resourceQuery = `{
+      data: Resource_Resource_place_typeList {
+        code: Code
+        name: Name
+      }
+    }`;
+
+
+    this.apolloApi.getData(resourceQuery).subscribe(res => {
+      this.resourceTypes = res.data.data;
+    })
+  }
+
   onSelectCity():void {
     const  buildingQuery = `{
       data: Building_BuildingList{
@@ -122,6 +138,7 @@ export class PlanningComponent {
 
 
     this.apolloApi.getData(resourcesQuery).subscribe((res: any) => {
+      this.getResourceType();
       const result = res.data.data;
       for(const elem of result) {
         this.resources.push({

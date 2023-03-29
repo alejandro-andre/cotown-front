@@ -11,6 +11,7 @@
           name="cities"
           (selectionChange)="onSelectCity()"
         >
+				<mat-option  value="ALL">Todas</mat-option>
 					<mat-option *ngFor="let citie of cities" [value]="citie.id">
 						{{ citie.name }}
 					</mat-option>
@@ -22,7 +23,7 @@
 				<mat-select
           [(ngModel)]="selectedBuilding"
           name="buildings"
-          (selectionChange)="onSelectBuilding()"
+          (selectionChange)="getResourcesAndBookings()"
         >
 					<mat-option *ngFor="let building of buildings" [value]="building.code">
 						{{ building.name }}
@@ -37,6 +38,7 @@
           name="resourcesTypes"
           (selectionChange)="onSelectResourceType()"
         >
+				<mat-option  value="ALL">Todos</mat-option>
 					<mat-option *ngFor="let resourceType of resourceTypes" [value]="resourceType.code">
 						{{ resourceType.code }}
 					</mat-option>

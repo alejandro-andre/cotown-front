@@ -6,10 +6,11 @@ import { PlanningComponent } from './pages/planning/planning.component';
 import { SecondComponent } from './pages/second/second.component';
 
 const routes: Routes = [
-  { path: '', component: PlanningComponent },
+  { path: '', redirectTo: '/planning' ,  pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'second', component: SecondComponent },
-  { path: 'cotown-modal', component: CotownModal}
+  { path: 'cotown-modal', component: CotownModal},
+  { path: 'planning', component: PlanningComponent }
 ];
 
 @NgModule({

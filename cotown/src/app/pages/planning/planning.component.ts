@@ -140,7 +140,7 @@ export class PlanningComponent {
       for(const elem of result) {
         this.resources.push({
           Resource_code: elem.code,
-          Resource_type: elem.resource_place_type?.code || '' ,
+          Resource_type: elem.resource_type,
           Resource_info: elem.resource_place_type?.code || ''
         });
       }
@@ -245,8 +245,8 @@ export class PlanningComponent {
           <div><span class="tipfield">${b.Booking_date_from} a ${b.Booking_date_to}</span></div>
           <div><span class="tipfield">Nombre:</span><span>${b.Customer_name}</span></div>
           <div><span class="tipfield">Apellido:</span><span>${b.Customer_last_name}</span></div>
-          <div><span class="tipfield">Edad/Género:</span><span>${b.Customer_gender}</span></div>
-          <div><span class="tipfield">Edad/Género:</span><span>${b.Customer_age}</span></div>
+          <div><span class="tipfield">Género:</span><span>${b.Customer_gender}</span></div>
+          <div><span class="tipfield">Edad:</span><span>${b.Customer_age}</span></div>
           <div><span class="tipfield">País:</span><span>${b.Customer_country}</span></div>
           <div><span class="tipfield">Teléfono:</span><span>${b.Customer_phone}</span></div>
           <div><span class="tipfield">Email:</span><span>${b.Customer_email}</span></div>`

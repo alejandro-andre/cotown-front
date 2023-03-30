@@ -118,6 +118,11 @@ export class PlanningComponent {
   }
 
   onSelectCity():void {
+    this.bars = [];
+    this.resources = [];
+    this.bookings = [];
+    this.selectedBuilding = '';
+
     if (this.selectedCitie === 'ALL') {
       this.apolloApi.getData(BuildingListQuery).subscribe(res => {
         this.buildings = res.data.data;
@@ -185,7 +190,7 @@ export class PlanningComponent {
       }
 
       this.generateBars()
-    })
+    });
   }
 
   // Go 1 week bacwards

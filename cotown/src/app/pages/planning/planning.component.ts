@@ -118,13 +118,19 @@ export class PlanningComponent {
   }
 
   onSelectCity():void {
-    const variables = {
-      cityName: this.cityName
-    };
+    if (this.selectedCitie === 'ALL') {
+      this.apolloApi.getData(BuildingListQuery).subscribe(res => {
+        this.buildings = res.data.data;
+      });
+    } else {
+      const variables = {
+        cityName: this.cityName
+      };
 
-    this.apolloApi.getData(BuildingListByCityNameQuery, variables).subscribe(res => {
-      this.buildings = res.data.data;
-    });
+      this.apolloApi.getData(BuildingListByCityNameQuery, variables).subscribe(res => {
+        this.buildings = res.data.data;
+      });
+    }
   }
 
   getResourceList(query: string, variables: { [key: string]: string}): void {

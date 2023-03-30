@@ -11,10 +11,14 @@ export class TimeChartControlComponent implements OnInit {
   // Inputs
   @Input() bars: TimeChartBar[] = [];
   @Input() now: Date = new Date();
+  @Input() from: Date = new Date();
+  @Input() to: Date = new Date();
 
-  // Gant header
+  // Timechart header
   public header: string[] = [];
   public days: string[] = [];
+  public markerFrom: number = 0;
+  public markerTo: number = 0;
 
   // Constructor
   constructor() {;
@@ -35,6 +39,10 @@ export class TimeChartControlComponent implements OnInit {
 
     // Start on mondays
     this.now.setTime(this.now.getTime() - (1000*60*60*24*this.now.getDay()))
+
+    // Marker
+    this.markerFrom = Math.ceil((this.from.getTime() - this.now.getTime()) / (1000*60*60*24));
+    this.markerTo = Math.ceil((this.to.getTime() - this.now.getTime()) / (1000*60*60*24));
 
     // Dates
     this.header = [];

@@ -16,8 +16,10 @@ export class PlanningComponent {
   // Bars
   public bars: TimeChartBar[] = [];
 
-  // Current date
+  // Dates
   public now: Date = new Date();
+  public from: Date = new Date('2023-05-01');
+  public to: Date = new Date('2023-05-31');
 
   // Colors
   private colors: any = {

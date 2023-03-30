@@ -42,7 +42,10 @@ export class TimeChartControlComponent implements OnInit {
     for (var i = 0; i < 10; i++ ) {
       const fecha = new Date(date.getTime() + (1000*60*60*24*7*i));
       this.header.push(fecha.toLocaleDateString('es-ES', {day: '2-digit', month: 'short'}));
-      this.days.push(...['L','M','X','J','V','S','D',]);
+      for (var j = 0; j < 7; j++) {
+        const d = ((fecha.getDay() + j) % 7);
+        this.days.push("LMXJVSD".charAt(d));
+      }
     }
   }
 
@@ -64,20 +67,20 @@ export class TimeChartControlComponent implements OnInit {
         line.styles = line.type + ' show';
 
         // Set start
-        if (dfrom  < 1) {
-          line.from = 1;
+        if (dfrom < 0) {
+          line.from = 0;
           line.styles += ' continue-left';
-        } else if (dfrom > 71) {
-          line.from = 71;
+        } else if (dfrom > 70) {
+          line.from = 70;
         } else {
           line.from = dfrom;
         }
 
         // Set end
-        if (dto < 1) {
-          line.to = 1;
-        } else if (dto > 71) {
-          line.to = 71;
+        if (dto < 0) {
+          line.to = 0;
+        } else if (dto > 70) {
+          line.to = 70;
           line.styles += ' continue-right';
         } else {
           line.to = dto;
@@ -91,15 +94,15 @@ export class TimeChartControlComponent implements OnInit {
   }
 
   // Go a week bacwards
-  backward() {
-    this.now.setTime(this.now.getTime() - (1000*60*60*24*7));
+  backward(i: number = 7) {
+    this.now.setTime(this.now.getTime() - (1000*60*60*24*i));
     this.setHeader(this.now);
     this.moveLines();
   }
 
   // Go a week forward
-  forward() {
-    this.now.setTime(this.now.getTime() + (1000*60*60*24*7))
+  forward(i: number = 7) {
+    this.now.setTime(this.now.getTime() + (1000*60*60*24*i))
     this.setHeader(this.now);
     this.moveLines();
   }

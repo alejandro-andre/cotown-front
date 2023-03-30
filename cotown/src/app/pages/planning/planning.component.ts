@@ -9,6 +9,7 @@ import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
 import { TimeChartLine } from 'src/app/time-chart/models/time-chart-line.model';
 import { TimeChartControlComponent } from 'src/app/time-chart/time-chart-control/time-chart-control.component';
+import { orderByName } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-home',
@@ -53,7 +54,6 @@ export class PlanningComponent {
     public accessToken: AccessTokenService,
     private apolloApi: ApoloQueryApi
   ) {
-    this.login();
     this.now = new Date();
   }
 
@@ -68,13 +68,13 @@ export class PlanningComponent {
 
   getAllBuildings(): void {
     this.apolloApi.getData(BuildingListQuery).subscribe(res => {
-      this.buildings = res.data.data;
+      this.buildings = orderByName(res.data.data);
     });
   }
 
   getCities(): void {
     this.apolloApi.getData(CityListQuery).subscribe((result) => {
-      this.cities = result.data.data;
+      this.cities = orderByName(result.data.data);
     });
   }
 
@@ -105,11 +105,15 @@ export class PlanningComponent {
       resourceType: this.selectedResouceType
     };
 
-    this.getResourceList(ResourceListByBuildingCodeAndResourceTypeQuery, variables);
-    this.getBookings(BookingListByBuildingCodeAndResourceTypeQuery, variables);
+    this.getResourceList(ResourceListByBuildingCodeAndResourceTypeQuery, variables).then(() => {
+      this.getBookings(BookingListByBuildingCodeAndResourceTypeQuery, variables);
+    });
   }
 
   onSelectResourceType(): void {
+    this.bars = [];
+    this.resources = [];
+    this.bookings = [];
     if (this.selectedResouceType === 'ALL') { // Dont use filter
       this.getResourcesAndBookings();
     } else {
@@ -138,25 +142,29 @@ export class PlanningComponent {
     }
   }
 
-  getResourceList(query: string, variables: { [key: string]: string}): void {
-    this.apolloApi.getData(query, variables).subscribe((res: any) => {
-      this.getResourceType();
-      const result = res.data.data;
-      for(const elem of result) {
-        this.resources.push({
-          Resource_code: elem.code,
-          Resource_type: elem.resource_type,
-          Resource_info: elem.resource_place_type?.code || ''
-        });
-      }
+  async getResourceList(query: string, variables: { [key: string]: string}): Promise<void> {
+    new Promise<void>((resolve) => {
+      this.apolloApi.getData(query, variables).subscribe((res: any) => {
+        this.getResourceType();
+        const result = res.data.data;
+        for(const elem of result) {
+          this.resources.push({
+            Resource_code: elem.code,
+            Resource_type: elem.resource_type,
+            Resource_info: elem.resource_place_type?.code || ''
+          });
+        }
 
-      this.getBookings(BookingListByBuildingCodeQuery, { 'buildingCode': this.selectedBuilding });
-    })
+        resolve();
+      });
+    });
   }
 
   getResourcesAndBookings(): void {
     this.resources = [];
-    this.getResourceList(ResourceListByBuldingCodeQuery, { 'buildingCode': this.selectedBuilding });
+    this.getResourceList(ResourceListByBuldingCodeQuery, { 'buildingCode': this.selectedBuilding }).then(() => {
+      this.getBookings(BookingListByBuildingCodeQuery, { 'buildingCode': this.selectedBuilding });
+    });
   }
 
   getAge(birthdate: string) {

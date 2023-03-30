@@ -37,6 +37,7 @@
           [(ngModel)]="selectedResouceType"
           name="resourcesTypes"
           (selectionChange)="onSelectResourceType()"
+					[disabled]="!resourceTypes.length"
         >
 				<mat-option  value="ALL">Todos</mat-option>
 					<mat-option *ngFor="let resourceType of resourceTypes" [value]="resourceType.code">
@@ -47,7 +48,7 @@
 
 			<mat-form-field appearance="fill">
 				<mat-label>Rango de fechas</mat-label>
-				<mat-date-range-input [rangePicker]="picker">
+				<mat-date-range-input [rangePicker]="picker" [disabled]="!bars.length">
 					<input matStartDate placeholder="Desde">
 					<input matEndDate placeholder="Hasta">
 				</mat-date-range-input>

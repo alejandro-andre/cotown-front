@@ -25,7 +25,7 @@
 			<li *ngFor="let line of bar.lines" 
 				class="tooltip {{line.styles}}" 
 				style.background-color="{{line.color}}"
-				style.grid-column="{{line.from}}/{{line.to}}">
+				style.grid-column="{{1+line.from}}/{{1+line.to}}">
 				<div *ngIf="line.code != '' && (line.to - line.from) > 1 " class="bar">
 					<span class="tag">{{line.code}}</span>
 					<span>{{line.text}}</span>

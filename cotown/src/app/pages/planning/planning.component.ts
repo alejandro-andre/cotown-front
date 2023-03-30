@@ -144,23 +144,21 @@ export class PlanningComponent {
           Resource_info: elem.resource_place_type?.code || ''
         });
       }
+
+      this.getBookings(BookingListByBuildingCodeQuery, { 'buildingCode': this.selectedBuilding });
     })
   }
 
   getResourcesAndBookings(): void {
     this.resources = [];
     this.getResourceList(ResourceListByBuldingCodeQuery, { 'buildingCode': this.selectedBuilding });
-    this.getBookings(BookingListByBuildingCodeQuery, { 'buildingCode': this.selectedBuilding });
   }
 
-  
-  
   getAge(birthdate: string) {
       const timeDiff = Math.abs(Date.now() - new Date(birthdate).getTime());
       const age = Math.floor((timeDiff / (1000 * 3600 * 24))/365);
       return age;
   }
-
 
   getBookings(query: string, variables: { [key: string]: string}): void {
     this.bookings = [];
@@ -185,8 +183,6 @@ export class PlanningComponent {
           Customer_last_name: booking.booking.customer.last_name
         });
       }
-
-      console.log(this.bookings);
 
       this.generateBars()
     })

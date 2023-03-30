@@ -31,7 +31,7 @@
 				</mat-select>
 			</mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" style="margin-right: 10px;">
 				<mat-label>Tipos</mat-label>
 				<mat-select
           [(ngModel)]="selectedResouceType"
@@ -43,6 +43,17 @@
 						{{ resourceType.code }}
 					</mat-option>
 				</mat-select>
+			</mat-form-field>
+
+			<mat-form-field appearance="fill">
+				<mat-label>Rango de fechas</mat-label>
+				<mat-date-range-input [rangePicker]="picker">
+					<input matStartDate placeholder="Desde">
+					<input matEndDate placeholder="Hasta">
+				</mat-date-range-input>
+				<mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+				<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+				<mat-date-range-picker #picker></mat-date-range-picker>
 			</mat-form-field>
 		</form>
 

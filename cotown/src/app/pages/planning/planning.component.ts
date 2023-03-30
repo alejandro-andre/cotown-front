@@ -271,8 +271,6 @@ export class PlanningComponent {
         bar.lines = this.consolidateIntervals(bar.lines);
       }
     }
-
-    this.ganttChartControl.moveLines();
   }
 
   // Consolidate bookings for lock types

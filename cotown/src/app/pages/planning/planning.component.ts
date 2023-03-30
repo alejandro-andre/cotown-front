@@ -18,8 +18,8 @@ export class PlanningComponent {
 
   // Dates
   public now: Date = new Date();
-  public from: Date = new Date('2023-05-01');
-  public to: Date = new Date('2023-05-31');
+  public from: Date = new Date('2023-04-15');
+  public to: Date = new Date('2023-04-30');
 
   // Colors
   private colors: any = {
@@ -89,6 +89,11 @@ export class PlanningComponent {
       'Customer_name': 'Alejandro André', 'Customer_gender': 'H', 'Customer_country': 'España', 'Customer_phone': '629 25 26 13', 'Customer_email': 'alejandroandre@hotmail.com', 
     },
     {
+      'Booking_code': '', 'Booking_lock': false, 'Booking_status': 'available', 
+      'Booking_date_from': '2023-04-15', 'Booking_date_to': '2023-04-30',
+      'Resource_code': 'ART030.AT.00.H04'
+    },
+    {
       'Booking_code': '1234', 'Booking_lock': true, 'Booking_status': '', 
       'Booking_date_from': '2023-03-21', 'Booking_date_to': '2023-05-11',
       'Resource_code': 'ART030.AT.00.H05',
@@ -109,6 +114,21 @@ export class PlanningComponent {
       'Booking_date_from': '2023-04-21', 'Booking_date_to': '2023-05-21',
       'Resource_code': 'ART030.AT.00.H05.P2',
       'Customer_name': 'Alejandro André', 'Customer_gender': 'H', 'Customer_country': 'España', 'Customer_phone': '629 25 26 13', 'Customer_email': 'alejandroandre@hotmail.com', 
+    },
+    {
+      'Booking_code': '', 'Booking_lock': false, 'Booking_status': 'available', 
+      'Booking_date_from': '2023-04-15', 'Booking_date_to': '2023-04-30',
+      'Resource_code': 'ART030.AT.00.H06'
+    },
+    {
+      'Booking_code': '', 'Booking_lock': false, 'Booking_status': 'available', 
+      'Booking_date_from': '2023-04-15', 'Booking_date_to': '2023-04-30',
+      'Resource_code': 'ART030.AT.00.H06.P1'
+    },
+    {
+      'Booking_code': '', 'Booking_lock': false, 'Booking_status': 'available', 
+      'Booking_date_from': '2023-04-15', 'Booking_date_to': '2023-04-30',
+      'Resource_code': 'ART030.AT.00.H06.P2'
     }
   ]
 
@@ -117,7 +137,7 @@ export class PlanningComponent {
     this.now = new Date();
     this.generateBars();
   }
-
+  
   // Go 1 week bacwards
   goBackward() {
     this.ganttChartControl.backward();
@@ -133,11 +153,8 @@ export class PlanningComponent {
 
     var bar!: TimeChartBar;
 
-    // Current resource
-    let res = '';
-
     // Generate bars
-    for (var r of this.resources) {
+    for (const r of this.resources) {
         bar = new TimeChartBar();
         bar.code = r.Resource_code;
         bar.info = r.Resource_info
@@ -153,10 +170,15 @@ export class PlanningComponent {
       line.datefrom = new Date(b.Booking_date_from);
       line.dateto = new Date(b.Booking_date_to);
 
-      // Locking booking
-      if (b.Booking_lock) {
+      // Available slot
+      if (b.Booking_status === 'available') {
         line.lock = true;
-        line.color = '#C0C0C0';
+        line.type = 'available';
+      } 
+      
+      // Lock booking
+      else if (b.Booking_lock) {
+        line.lock = true;
         line.type = 'stripes';
       } 
       

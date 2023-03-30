@@ -11,14 +11,14 @@ export class TimeChartControlComponent implements OnInit {
   // Inputs
   @Input() bars: TimeChartBar[] = [];
   @Input() now: Date = new Date();
-  @Input() from: Date = new Date();
-  @Input() to: Date = new Date();
+  @Input() from!: Date;
+  @Input() to!: Date;
 
-  // Timechart header
+  // Timechart header info
   public header: string[] = [];
   public days: string[] = [];
-  public markerFrom: number = 0;
-  public markerTo: number = 0;
+  public markerFrom: number = -1;
+  public markerTo: number = -1;
 
   // Constructor
   constructor() {;
@@ -41,8 +41,10 @@ export class TimeChartControlComponent implements OnInit {
     this.now.setTime(this.now.getTime() - (1000*60*60*24*this.now.getDay()))
 
     // Marker
-    this.markerFrom = Math.ceil((this.from.getTime() - this.now.getTime()) / (1000*60*60*24));
-    this.markerTo = Math.ceil((this.to.getTime() - this.now.getTime()) / (1000*60*60*24));
+    if (this.from != null && this.to != null) {
+      this.markerFrom = Math.ceil((this.from.getTime() - this.now.getTime()) / (1000*60*60*24));
+      this.markerTo = Math.ceil((this.to.getTime() - this.now.getTime()) / (1000*60*60*24));
+    }
 
     // Dates
     this.header = [];
@@ -72,20 +74,20 @@ export class TimeChartControlComponent implements OnInit {
         line.styles = line.type + ' show';
 
         // Set start
-        if (dfrom  < 1) {
-          line.from = 1;
+        if (dfrom  < 0) {
+          line.from = 0;
           line.styles += ' continue-left';
-        } else if (dfrom > 71) {
-          line.from = 71;
+        } else if (dfrom > 70) {
+          line.from = 70;
         } else {
           line.from = dfrom;
         }
 
         // Set end
-        if (dto < 1) {
-          line.to = 1;
-        } else if (dto > 71) {
-          line.to = 71;
+        if (dto < 0) {
+          line.to = 0;
+        } else if (dto > 70) {
+          line.to = 70;
           line.styles += ' continue-right';
         } else {
           line.to = dto;

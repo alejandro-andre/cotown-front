@@ -8,6 +8,7 @@ export const BookingListByBuildingCodeAndResourceTypeQuery = `query BookingListB
       booking_id: Booking_id
       booking: BookingViaBooking_id {
         customer: CustomerViaCustomer_id {
+          last_name: Last_name
           name: Name
           birth_date: Birth_date
           gender: GenderViaGender_id {
@@ -50,6 +51,7 @@ export const BookingListByBuildingCodeAndResourceTypeQuery = `query BookingListB
         booking: BookingViaBooking_id {
           customer: CustomerViaCustomer_id {
             name: Name
+            last_name: Last_name
             birth_date: Birth_date
             gender: GenderViaGender_id {
               code: Code

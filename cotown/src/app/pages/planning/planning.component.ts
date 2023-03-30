@@ -153,11 +153,22 @@ export class PlanningComponent {
     this.getBookings(BookingListByBuildingCodeQuery, { 'buildingCode': this.selectedBuilding });
   }
 
+  
+  
+  getAge(birthdate: string) {
+      const timeDiff = Math.abs(Date.now() - new Date(birthdate).getTime());
+      const age = Math.floor((timeDiff / (1000 * 3600 * 24))/365);
+      return age;
+  }
+
+
   getBookings(query: string, variables: { [key: string]: string}): void {
     this.bookings = [];
     this.apolloApi.getData(query, variables).subscribe((response: any) => {
       const bookingList = response.data.data;
+      console.log(bookingList);
       for (const booking of bookingList) {
+        const age = this.getAge(booking.booking.customer.birth_date);
         this.bookings.push({
           Booking_code: booking.booking_id,
           Booking_lock: booking.lock,
@@ -169,9 +180,13 @@ export class PlanningComponent {
           Customer_gender: booking.booking.customer.gender.code,
           Customer_country: booking.booking.customer.country.name,
           Customer_email: booking.booking.customer.email,
-          Customer_phone: booking.booking.customer.phones
-        })
+          Customer_phone: booking.booking.customer.phones,
+          Customer_age: age,
+          Customer_last_name: booking.booking.customer.last_name
+        });
       }
+
+      console.log(this.bookings);
 
       this.generateBars()
     })
@@ -224,16 +239,18 @@ export class PlanningComponent {
         line.code = b.Booking_code;
         line.color = this.colors[b.Booking_status];
         line.text = b.Customer_name
+          + ' - ' + b.Customer_last_name
+          + ' - ' + b.Customer_age
           + ' - ' + b.Customer_gender
           + ' - ' + b.Customer_country
-          + ' - ' + b.Customer_email
-          + ' - ' + b.Customer_phone;
         line.tooltip = `
           <div><span class="tiphead">${b.Booking_code}</span></div>
           <div><span class="tipfield">${b.Booking_status}</span></div>
           <div><span class="tipfield">${b.Booking_date_from} a ${b.Booking_date_to}</span></div>
           <div><span class="tipfield">Nombre:</span><span>${b.Customer_name}</span></div>
+          <div><span class="tipfield">Apellido:</span><span>${b.Customer_last_name}</span></div>
           <div><span class="tipfield">Edad/Género:</span><span>${b.Customer_gender}</span></div>
+          <div><span class="tipfield">Edad/Género:</span><span>${b.Customer_age}</span></div>
           <div><span class="tipfield">País:</span><span>${b.Customer_country}</span></div>
           <div><span class="tipfield">Teléfono:</span><span>${b.Customer_phone}</span></div>
           <div><span class="tipfield">Email:</span><span>${b.Customer_email}</span></div>`
@@ -254,6 +271,8 @@ export class PlanningComponent {
         bar.lines = this.consolidateIntervals(bar.lines);
       }
     }
+
+    this.ganttChartControl.moveLines();
   }
 
   // Consolidate bookings for lock types

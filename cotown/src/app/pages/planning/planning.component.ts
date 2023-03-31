@@ -1,7 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
 import { TimeChartLine } from 'src/app/time-chart/models/time-chart-line.model';
-import { TimeChartControlComponent } from 'src/app/time-chart/time-chart-control/time-chart-control.component';
 
 @Component({
   selector: 'app-home',
@@ -9,9 +8,6 @@ import { TimeChartControlComponent } from 'src/app/time-chart/time-chart-control
   styleUrls: ['./planning.component.scss']
 })
 export class PlanningComponent {
-
-  @ViewChild(TimeChartControlComponent)
-  private ganttChartControl!: TimeChartControlComponent;
 
   // Bars
   public bars: TimeChartBar[] = [];
@@ -134,18 +130,19 @@ export class PlanningComponent {
 
   // Constructor
   constructor() {
-    this.now = new Date();
     this.generateBars();
   }
   
   // Go 1 week bacwards
   goBackward() {
-    this.ganttChartControl.backward();
+    const date = new Date(this.from.getTime() - (1000*60*60*24*7));
+    this.now = date;
   }
 
   // Go 1 week forward
   goForward() {
-    this.ganttChartControl.forward();
+    const date = new Date(this.now.getTime() + (1000*60*60*24*7));
+    this.now = date;
   }
 
   // Generate bars for the time chart

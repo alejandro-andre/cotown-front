@@ -11,10 +11,14 @@ export class TimeChartControlComponent implements OnInit {
   // Inputs
   @Input() bars: TimeChartBar[] = [];
   @Input() now: Date = new Date();
+  @Input() from!: Date;
+  @Input() to!: Date;
 
-  // Gant header
+  // Timechart header info
   public header: string[] = [];
   public days: string[] = [];
+  public markerFrom: number = -1;
+  public markerTo: number = -1;
 
   // Constructor
   constructor() {;
@@ -36,16 +40,19 @@ export class TimeChartControlComponent implements OnInit {
     // Start on mondays
     this.now.setTime(this.now.getTime() - (1000*60*60*24*this.now.getDay()))
 
+    // Marker
+    if (this.from != null && this.to != null) {
+      this.markerFrom = Math.ceil((this.from.getTime() - this.now.getTime()) / (1000*60*60*24));
+      this.markerTo = Math.ceil((this.to.getTime() - this.now.getTime()) / (1000*60*60*24));
+    }
+
     // Dates
     this.header = [];
     this.days = [];
     for (var i = 0; i < 10; i++ ) {
       const fecha = new Date(date.getTime() + (1000*60*60*24*7*i));
       this.header.push(fecha.toLocaleDateString('es-ES', {day: '2-digit', month: 'short'}));
-      for (var j = 0; j < 7; j++) {
-        const d = ((fecha.getDay() + j) % 7);
-        this.days.push("LMXJVSD".charAt(d));
-      }
+      this.days.push(...['L','M','X','J','V','S','D',]);
     }
   }
 
@@ -67,7 +74,7 @@ export class TimeChartControlComponent implements OnInit {
         line.styles = line.type + ' show';
 
         // Set start
-        if (dfrom < 0) {
+        if (dfrom  < 0) {
           line.from = 0;
           line.styles += ' continue-left';
         } else if (dfrom > 70) {
@@ -94,15 +101,15 @@ export class TimeChartControlComponent implements OnInit {
   }
 
   // Go a week bacwards
-  backward(i: number = 7) {
-    this.now.setTime(this.now.getTime() - (1000*60*60*24*i));
+  backward() {
+    this.now.setTime(this.now.getTime() - (1000*60*60*24*7));
     this.setHeader(this.now);
     this.moveLines();
   }
 
   // Go a week forward
-  forward(i: number = 7) {
-    this.now.setTime(this.now.getTime() + (1000*60*60*24*i))
+  forward() {
+    this.now.setTime(this.now.getTime() + (1000*60*60*24*7))
     this.setHeader(this.now);
     this.moveLines();
   }

@@ -9,12 +9,13 @@
 		</span>
 		<div class="timechart-row-first">Recurso</div>
 		<div class="timechart-row-first">Características</div>
-		<span *ngFor="let day of days;">{{day}}</span>
+		<span *ngFor="let day of days">{{day}}</span>
 	</div>
 
 	<!-- Vertical lines and current date marker -->
 	<div class="timechart-row timechart-row-lines">
-		<span *ngFor="let day of days;"></span><span></span>
+		<span></span><span></span>
+		<span *ngFor="let day of days; let i = index;" [class.marker]="i >= markerFrom && i <= markerTo"></span>
 	</div>
 
 	<!-- Rows -->

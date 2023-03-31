@@ -162,6 +162,9 @@ export class PlanningComponent {
 
   getResourcesAndBookings(): void {
     this.resources = [];
+    this.bookings = [];
+    this.bars = [];
+
     this.getResourceList(ResourceListByBuldingCodeQuery, { 'buildingCode': this.selectedBuilding }).then(() => {
       this.getBookings(BookingListByBuildingCodeQuery, { 'buildingCode': this.selectedBuilding });
     });

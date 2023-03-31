@@ -135,12 +135,10 @@
 	border-radius: 15px;
 }
 .timechart-row-bars li.stripes {
-	background-color: #c0c0c0;
 	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255, 0.1) 5px, rgba(255, 255, 255, 0.1) 12px);
 }
 .timechart-row-bars li.available {
 	border-radius: 0px;
-	background-color: rgba(100, 255, 100, 0.3);
 }
 .timechart-row-bars li:before, .timechart-row-bars li:after {
 	content: "";

@@ -85,9 +85,15 @@ export class PlanningComponent {
       'Customer_name': 'Alejandro André', 'Customer_gender': 'H', 'Customer_country': 'España', 'Customer_phone': '629 25 26 13', 'Customer_email': 'alejandroandre@hotmail.com', 
     },
     {
-      'Booking_code': '', 'Booking_lock': false, 'Booking_status': 'available', 
-      'Booking_date_from': '2023-04-15', 'Booking_date_to': '2023-04-30',
+      'Booking_code': 'capex', 'Booking_lock': true, 'Booking_status': 'unavailable', 
+      'Booking_date_from': '2023-03-15', 'Booking_date_to': '2023-04-23',
       'Resource_code': 'ART030.AT.00.H04'
+    },
+    {
+      'Booking_code': '4321', 'Booking_lock': false, 'Booking_status': 'checkin', 
+      'Booking_date_from': '2023-04-26', 'Booking_date_to': '2023-05-20',
+      'Resource_code': 'ART030.AT.00.H04',
+      'Customer_name': 'Alejandro André', 'Customer_gender': 'H', 'Customer_country': 'España', 'Customer_phone': '629 25 26 13', 'Customer_email': 'alejandroandre@hotmail.com', 
     },
     {
       'Booking_code': '1234', 'Booking_lock': true, 'Booking_status': '', 
@@ -170,12 +176,22 @@ export class PlanningComponent {
       // Available slot
       if (b.Booking_status === 'available') {
         line.lock = true;
+        line.color = "rgba(100, 255, 100, 0.3)";
         line.type = 'available';
+      } 
+      
+      // Capex
+      else if (b.Booking_status === 'unavailable') {
+        line.lock = true;
+        line.code = b.Booking_code;
+        line.color = "rgba(255, 100, 100, 0.7)";
+        line.type = 'stripes';
       } 
       
       // Lock booking
       else if (b.Booking_lock) {
         line.lock = true;
+        line.color = "#c0c0c0";
         line.type = 'stripes';
       } 
       

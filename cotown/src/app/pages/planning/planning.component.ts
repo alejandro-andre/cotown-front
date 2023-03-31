@@ -220,7 +220,7 @@ export class PlanningComponent {
   }
 
   goBackward() {
-    const date = new Date(this.initDate.getTime() - (1000*60*60*24*7));
+    const date = new Date(this.now.getTime() - (1000*60*60*24*7));
     this.now = date;
   }
 

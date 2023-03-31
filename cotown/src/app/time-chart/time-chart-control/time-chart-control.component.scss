@@ -17,7 +17,7 @@
 /* Time chart rows styles */
 .timechart-row {
 	display: grid;
-	grid-template-columns: 200px 200px 1fr;
+	grid-template-columns: 200px 100px 1fr;
 	background-color: #fff;
 }
 
@@ -48,7 +48,7 @@
 	height: 100%;
 	width: 100%;
 	background-color: transparent;
-	grid-template-columns: 200px 200px repeat(70, 1fr);
+	grid-template-columns: 200px 100px repeat(70, 1fr);
 }
 .timechart-row-lines span {
 	display: block;
@@ -71,7 +71,7 @@
 	color: #fff;
 	background-color: #4a5050 !important;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-	grid-template-columns: 200px 200px repeat(70, 1fr);
+	grid-template-columns: 200px 100px repeat(70, 1fr);
 }
 .timechart-row-months .timechart-row-first {
 	border-top: 0 !important;

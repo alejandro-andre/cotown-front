@@ -48,11 +48,10 @@
 
 			<mat-form-field appearance="fill">
 				<mat-label>Rango de fechas</mat-label>
-				<mat-date-range-input [rangePicker]="picker" [disabled]="!bars.length">
-					<input matStartDate placeholder="Desde">
-					<input matEndDate placeholder="Hasta">
+				<mat-date-range-input [rangePicker]="picker" [disabled]="!bars.length" [formGroup]="range">
+					<input matStartDate formControlName="start" placeholder="Desde">
+					<input matEndDate  formControlName="end" placeholder="Hasta" (dateChange)="onDateChange()">
 				</mat-date-range-input>
-				<mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
 				<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
 				<mat-date-range-picker #picker></mat-date-range-picker>
 			</mat-form-field>

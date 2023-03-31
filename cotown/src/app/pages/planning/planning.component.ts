@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BookingListByBuildingCodeAndResourceTypeQuery, BookingListByBuildingCodeQuery } from 'src/app/schemas/querie-definitions/booking.query';
 import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/querie-definitions/building.query';
@@ -30,6 +31,13 @@ export class PlanningComponent {
   public resourceTypes: any [] = []; // Type of resources
   public selectedResouceType = 'ALL';
 
+  public range = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
+  public initDate!: Date;
+  public endDate !: Date;
+
   // Colors
   private colors: any = {
     confirmada: '#002B5B',
@@ -55,6 +63,13 @@ export class PlanningComponent {
     private apolloApi: ApoloQueryApi
   ) {
     this.now = new Date();
+  }
+
+  onDateChange() {
+    if (this.range.valid && this.range.value &&this.range.value.start && this.range.value.end ) {
+      this.initDate = new Date(this.range.value.start);
+      this.endDate = new Date(this.range.value.end);
+    }
   }
 
   // TODO use only on development mode

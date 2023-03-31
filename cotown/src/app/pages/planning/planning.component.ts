@@ -141,7 +141,7 @@ export class PlanningComponent {
   
   // Go 1 week bacwards
   goBackward() {
-    const date = new Date(this.from.getTime() - (1000*60*60*24*7));
+    const date = new Date(this.now.getTime() - (1000*60*60*24*7));
     this.now = date;
   }
 

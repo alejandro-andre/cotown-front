@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatRadioModule } from '@angular/material/radio';
+
 import { TimeChartControlComponent } from './time-chart-control/time-chart-control.component';
 import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
 
@@ -9,7 +11,8 @@ import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
     SafeHtmlPipe
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MatRadioModule
   ],
   exports: [TimeChartControlComponent]
 })

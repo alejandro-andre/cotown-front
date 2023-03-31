@@ -219,14 +219,15 @@ export class PlanningComponent {
     });
   }
 
-  // Go 1 week bacwards
   goBackward() {
-    this.ganttChartControl.backward();
+    const date = new Date(this.initDate.getTime() - (1000*60*60*24*7));
+    this.now = date;
   }
 
   // Go 1 week forward
   goForward() {
-    this.ganttChartControl.forward();
+    const date = new Date(this.now.getTime() + (1000*60*60*24*7));
+    this.now = date;
   }
 
   // Generate bars for the time chart

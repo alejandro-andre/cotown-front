@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TimeChartBar } from '../models/time-chart-bar.model';
 
 @Component({
@@ -6,11 +6,11 @@ import { TimeChartBar } from '../models/time-chart-bar.model';
   templateUrl: './time-chart-control.component.html',
   styleUrls: ['./time-chart-control.component.scss']
 })
-export class TimeChartControlComponent implements OnInit {
+export class TimeChartControlComponent implements OnChanges {
 
   // Inputs
   @Input() bars: TimeChartBar[] = [];
-  @Input() now: Date = new Date();
+  @Input() now!: Date;
   @Input() from!: Date;
   @Input() to!: Date;
 
@@ -24,8 +24,9 @@ export class TimeChartControlComponent implements OnInit {
   constructor() {;
   }
 
-  // Inits control
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges) {
+    // Start on mondays
+    this.now.setTime(this.now.getTime() - (1000*60*60*24*this.now.getDay()))
 
     // Set headers
     this.setHeader(this.now);
@@ -35,10 +36,7 @@ export class TimeChartControlComponent implements OnInit {
   }
 
   // Generate header
-  setHeader(date: Date) {
-
-    // Start on mondays
-    this.now.setTime(this.now.getTime() - (1000*60*60*24*this.now.getDay()))
+  private setHeader(date: Date) {
 
     // Marker
     if (this.from != null && this.to != null) {
@@ -57,10 +55,7 @@ export class TimeChartControlComponent implements OnInit {
   }
 
   // Calculate bars position
-  moveLines() {
-
-    // Start on mondays
-    this.now.setTime(this.now.getTime() - (1000*60*60*24*this.now.getDay()))
+  private moveLines() {
 
     // Move each line
     for (var bar of this.bars) {
@@ -99,19 +94,4 @@ export class TimeChartControlComponent implements OnInit {
       }
     }
   }
-
-  // Go a week bacwards
-  backward() {
-    this.now.setTime(this.now.getTime() - (1000*60*60*24*7));
-    this.setHeader(this.now);
-    this.moveLines();
-  }
-
-  // Go a week forward
-  forward() {
-    this.now.setTime(this.now.getTime() + (1000*60*60*24*7))
-    this.setHeader(this.now);
-    this.moveLines();
-  }
-  
 }

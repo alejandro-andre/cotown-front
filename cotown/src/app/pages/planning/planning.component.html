@@ -25,7 +25,7 @@
           name="buildings"
           (selectionChange)="getResourcesAndBookings()"
         >
-					<mat-option *ngFor="let building of buildings" [value]="building.code">
+					<mat-option *ngFor="let building of buildings" [value]="building.id">
 						{{ building.name }}
 					</mat-option>
 				</mat-select>

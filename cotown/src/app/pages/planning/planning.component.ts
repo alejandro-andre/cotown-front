@@ -1,10 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { BookingListByBuildingCodeAndResourceTypeQuery, BookingListByBuildingCodeQuery } from 'src/app/schemas/querie-definitions/booking.query';
+import { BookingListByBuildingIdAndResourceTypeQuery, BookingListByBuildingIdQuery } from 'src/app/schemas/querie-definitions/booking.query';
 import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/querie-definitions/building.query';
 import { CityListQuery } from 'src/app/schemas/querie-definitions/city.query';
-import { ResourceListByBuildingCodeAndResourceTypeQuery, ResourceListByBuldingCodeQuery, ResourceTypeQuery } from 'src/app/schemas/querie-definitions/resource.query';
+import { ResourceListByBuildingIdAndResourceTypeQuery, ResourceListByBuldingIdQuery, ResourceTypeQuery } from 'src/app/schemas/querie-definitions/resource.query';
 import { AccessTokenService } from 'src/app/services/access-token.service';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
@@ -107,6 +107,7 @@ export class PlanningComponent {
 
   getResourceType() :void {
     this.apolloApi.getData(ResourceTypeQuery).subscribe(res => {
+      console.log('getResourceType:', res);
       this.resourceTypes = res.data.data;
     })
   }
@@ -116,12 +117,12 @@ export class PlanningComponent {
     this.bookings = [];
     this.resources = [];
     const variables = {
-      buildingCode: this.selectedBuilding,
+      buildingId: this.selectedBuilding,
       resourceType: this.selectedResouceType
     };
 
-    this.getResourceList(ResourceListByBuildingCodeAndResourceTypeQuery, variables).then(() => {
-      this.getBookings(BookingListByBuildingCodeAndResourceTypeQuery, variables);
+    this.getResourceList(ResourceListByBuildingIdAndResourceTypeQuery, variables).then(() => {
+      this.getBookings(BookingListByBuildingIdAndResourceTypeQuery, variables);
     });
   }
 
@@ -161,6 +162,8 @@ export class PlanningComponent {
     new Promise<void>((resolve) => {
       this.apolloApi.getData(query, variables).subscribe((res: any) => {
         this.getResourceType();
+
+        console.log('getResourceList: ', res);
         const result = res.data.data;
         for(const elem of result) {
           this.resources.push({
@@ -176,12 +179,13 @@ export class PlanningComponent {
   }
 
   getResourcesAndBookings(): void {
+    console.log('this.selectedBuilding : ', this.selectedBuilding );
     this.resources = [];
     this.bookings = [];
     this.bars = [];
 
-    this.getResourceList(ResourceListByBuldingCodeQuery, { 'buildingCode': this.selectedBuilding }).then(() => {
-      this.getBookings(BookingListByBuildingCodeQuery, { 'buildingCode': this.selectedBuilding });
+    this.getResourceList(ResourceListByBuldingIdQuery, { 'buildingId': this.selectedBuilding }).then(() => {
+      this.getBookings(BookingListByBuildingIdQuery, { 'buildingId': this.selectedBuilding });
     });
   }
 
@@ -194,6 +198,7 @@ export class PlanningComponent {
   getBookings(query: string, variables: { [key: string]: string}): void {
     this.bookings = [];
     this.apolloApi.getData(query, variables).subscribe((response: any) => {
+      console.log('Booking list: : ', response);
       const bookingList = response.data.data;
       console.log(bookingList);
       for (const booking of bookingList) {

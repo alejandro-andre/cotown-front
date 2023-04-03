@@ -1,8 +1,8 @@
-export const BookingListByBuildingCodeAndResourceTypeQuery = `query BookingListByBuildingCodeAndResourceType($buildingCode: String, $resourceType: String)
+export const BookingListByBuildingIdAndResourceTypeQuery = `query BookingListByBuildingIdAndResourceType($buildingId: Int, $resourceType: String)
   {
-    data: Booking_Booking_detailList {
+    data: Booking_Booking_detailList (where: { Building_id: { EQ: $buildingId } }) {
       building_id: Building_id
-      building: BuildingViaBuilding_id(joinType: INNER where: { Code: { EQ: $buildingCode } }) {
+      building: BuildingViaBuilding_id {
         code: Code,
       }
       booking_id: Booking_id
@@ -40,11 +40,11 @@ export const BookingListByBuildingCodeAndResourceTypeQuery = `query BookingListB
     }
   }`;
 
-  export const BookingListByBuildingCodeQuery = `query BookingListByBuildingCode($buildingCode: String)
+export const BookingListByBuildingIdQuery = `query BookingListByBuildingId($buildingId: Int)
     {
-      data: Booking_Booking_detailList {
+      data: Booking_Booking_detailList( where: { Building_id: { EQ: $buildingId } }) {
         building_id: Building_id
-        building: BuildingViaBuilding_id(joinType: INNER where: { Code: { EQ: $buildingCode } }) {
+        building: BuildingViaBuilding_id {
           code: Code,
         }
         booking_id: Booking_id

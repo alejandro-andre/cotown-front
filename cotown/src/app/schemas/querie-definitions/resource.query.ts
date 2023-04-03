@@ -1,6 +1,6 @@
-export const ResourceListByBuldingCodeQuery = `query ResourceListByBuldingCode($buildingCode: String)
+export const ResourceListByBuldingIdQuery = `query ResourceListByBuldingId($buildingId: Int)
   {
-    data: Resource_ResourceList {
+    data: Resource_ResourceList (where: {Building_id: {EQ: $buildingId}}) {
       code: Code
       building_id: Building_id
       adress: Address
@@ -9,7 +9,7 @@ export const ResourceListByBuldingCodeQuery = `query ResourceListByBuldingCode($
         name: Name
         code: Code
       }
-      building: BuildingViaBuilding_id(joinType: INNER where: {Code: {EQ: $buildingCode}} ){
+      building: BuildingViaBuilding_id{
         name: Name
         code: Code
         address: Address
@@ -17,8 +17,8 @@ export const ResourceListByBuldingCodeQuery = `query ResourceListByBuldingCode($
     }
   }`;
 
-export const ResourceListByBuildingCodeAndResourceTypeQuery = `query ResourceListByBuildingCodeAndResourceType($buildingCode: String, $resourceType: String){
-    data: Resource_ResourceList {
+export const ResourceListByBuildingIdAndResourceTypeQuery = `query ResourceListByBuildingIdAndResourceTypeId($buildingId: Int, $resourceType: String){
+    data: Resource_ResourceList (where: { Building_id: { EQ: $buildingId } }) {
       code: Code
       building_id: Building_id
       adress: Address
@@ -27,7 +27,7 @@ export const ResourceListByBuildingCodeAndResourceTypeQuery = `query ResourceLis
         name: Name
         code: Code
       }
-      building: BuildingViaBuilding_id(joinType: INNER where: {Code: {EQ: $buildingCode}} ){
+      building: BuildingViaBuilding_id{
         name: Name
         code: Code
         address: Address
@@ -39,6 +39,7 @@ export const ResourceTypeQuery = `query ResourceType
   {
     data: Resource_Resource_place_typeList {
       code: Code
-      name: Name
+      name: Name,
+      id
     }
   }`;

@@ -116,7 +116,7 @@ export class PlanningComponent {
     this.bookings = [];
     this.resources = [];
     const variables = {
-      buidingCode: this.selectedBuilding,
+      buildingCode: this.selectedBuilding,
       resourceType: this.selectedResouceType
     };
 

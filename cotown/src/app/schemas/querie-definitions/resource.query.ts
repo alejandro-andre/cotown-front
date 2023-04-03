@@ -17,7 +17,7 @@ export const ResourceListByBuldingCodeQuery = `query ResourceListByBuldingCode($
     }
   }`;
 
-export const ResourceListByBuildingCodeAndResourceTypeQuery = `query ResourceListByBuildingCodeAndResourceType($buidingCode: String, $resourceType: String){
+export const ResourceListByBuildingCodeAndResourceTypeQuery = `query ResourceListByBuildingCodeAndResourceType($buildingCode: String, $resourceType: String){
     data: Resource_ResourceList {
       code: Code
       building_id: Building_id
@@ -27,7 +27,7 @@ export const ResourceListByBuildingCodeAndResourceTypeQuery = `query ResourceLis
         name: Name
         code: Code
       }
-      building: BuildingViaBuilding_id(joinType: INNER where: {Code: {EQ: $buidingCode}} ){
+      building: BuildingViaBuilding_id(joinType: INNER where: {Code: {EQ: $buildingCode}} ){
         name: Name
         code: Code
         address: Address

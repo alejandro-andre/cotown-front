@@ -1,8 +1,8 @@
-export const BookingListByBuildingCodeAndResourceTypeQuery = `query BookingListByBuildingCodeAndResourceType($buidingCode: String, $resourceType: String)
+export const BookingListByBuildingCodeAndResourceTypeQuery = `query BookingListByBuildingCodeAndResourceType($buildingCode: String, $resourceType: String)
   {
     data: Booking_Booking_detailList {
       building_id: Building_id
-      building: BuildingViaBuilding_id(joinType: INNER where: { Code: { EQ: $buidingCode } }) {
+      building: BuildingViaBuilding_id(joinType: INNER where: { Code: { EQ: $buildingCode } }) {
         code: Code,
       }
       booking_id: Booking_id

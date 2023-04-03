@@ -136,6 +136,16 @@ export class PlanningComponent {
     }
   }
 
+  getBuildingsByCityName():void {
+    const variables = {
+      cityName: this.cityName
+    };
+
+    this.apolloApi.getData(BuildingListByCityNameQuery, variables).subscribe(res => {
+      this.buildings = orderByName(res.data.data);
+    });
+  }
+
   onSelectCity():void {
     this.bars = [];
     this.resources = [];
@@ -143,17 +153,9 @@ export class PlanningComponent {
     this.selectedBuilding = '';
 
     if (this.selectedCitie === 'ALL') {
-      this.apolloApi.getData(BuildingListQuery).subscribe(res => {
-        this.buildings = res.data.data;
-      });
+      this.getAllBuildings();
     } else {
-      const variables = {
-        cityName: this.cityName
-      };
-
-      this.apolloApi.getData(BuildingListByCityNameQuery, variables).subscribe(res => {
-        this.buildings = res.data.data;
-      });
+     this.getBuildingsByCityName();
     }
   }
 
@@ -179,9 +181,12 @@ export class PlanningComponent {
     this.resources = [];
     this.bookings = [];
     this.bars = [];
+    const variables = {
+       buildingId: this.selectedBuilding
+    };
 
-    this.getResourceList(ResourceListByBuldingIdQuery, { 'buildingId': this.selectedBuilding }).then(() => {
-      this.getBookings(BookingListByBuildingIdQuery, { 'buildingId': this.selectedBuilding });
+    this.getResourceList(ResourceListByBuldingIdQuery, variables ).then(() => {
+      this.getBookings(BookingListByBuildingIdQuery, variables);
     });
   }
 

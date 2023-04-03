@@ -39,8 +39,8 @@
           (selectionChange)="onSelectResourceType()"
 					[disabled]="!resourceTypes.length"
         >
-				<mat-option  value="ALL">Todos</mat-option>
-					<mat-option *ngFor="let resourceType of resourceTypes" [value]="resourceType.code">
+				<mat-option  [value]="-1">Todos</mat-option>
+					<mat-option *ngFor="let resourceType of resourceTypes" [value]="resourceType.id">
 						{{ resourceType.code }}
 					</mat-option>
 				</mat-select>

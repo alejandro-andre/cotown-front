@@ -29,7 +29,7 @@ export class PlanningComponent {
   public selectedBuilding = ''; // Selected building
   public now: Date = new Date(); // Current date
   public resourceTypes: any [] = []; // Type of resources
-  public selectedResouceType = 'ALL';
+  public selectedResouceType = -1;
 
   public range = new FormGroup({
     start: new FormControl<Date | null>(null),
@@ -107,7 +107,6 @@ export class PlanningComponent {
 
   getResourceType() :void {
     this.apolloApi.getData(ResourceTypeQuery).subscribe(res => {
-      console.log('getResourceType:', res);
       this.resourceTypes = res.data.data;
     })
   }
@@ -118,7 +117,7 @@ export class PlanningComponent {
     this.resources = [];
     const variables = {
       buildingId: this.selectedBuilding,
-      resourceType: this.selectedResouceType
+      resourceTypeId: this.selectedResouceType
     };
 
     this.getResourceList(ResourceListByBuildingIdAndResourceTypeQuery, variables).then(() => {
@@ -130,7 +129,7 @@ export class PlanningComponent {
     this.bars = [];
     this.resources = [];
     this.bookings = [];
-    if (this.selectedResouceType === 'ALL') { // Dont use filter
+    if (this.selectedResouceType === -1) { // Dont use filter
       this.getResourcesAndBookings();
     } else {
       this.applyResourceTypeFilter();
@@ -158,12 +157,10 @@ export class PlanningComponent {
     }
   }
 
-  async getResourceList(query: string, variables: { [key: string]: string}): Promise<void> {
+  async getResourceList(query: string, variables: { [key: string]: string | number}): Promise<void> {
     new Promise<void>((resolve) => {
       this.apolloApi.getData(query, variables).subscribe((res: any) => {
         this.getResourceType();
-
-        console.log('getResourceList: ', res);
         const result = res.data.data;
         for(const elem of result) {
           this.resources.push({
@@ -179,7 +176,6 @@ export class PlanningComponent {
   }
 
   getResourcesAndBookings(): void {
-    console.log('this.selectedBuilding : ', this.selectedBuilding );
     this.resources = [];
     this.bookings = [];
     this.bars = [];
@@ -195,12 +191,10 @@ export class PlanningComponent {
       return age;
   }
 
-  getBookings(query: string, variables: { [key: string]: string}): void {
+  getBookings(query: string, variables: { [key: string]: string | number}): void {
     this.bookings = [];
     this.apolloApi.getData(query, variables).subscribe((response: any) => {
-      console.log('Booking list: : ', response);
       const bookingList = response.data.data;
-      console.log(bookingList);
       for (const booking of bookingList) {
         const age = this.getAge(booking.booking.customer.birth_date);
         this.bookings.push({

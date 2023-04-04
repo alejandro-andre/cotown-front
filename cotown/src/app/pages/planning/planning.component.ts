@@ -13,6 +13,7 @@ import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
 import { TimeChartLine } from 'src/app/time-chart/models/time-chart-line.model';
 import { TimeChartControlComponent } from 'src/app/time-chart/time-chart-control/time-chart-control.component';
 import { orderByName } from 'src/app/utils/utils';
+import { getAvailability  } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-home',
@@ -82,6 +83,7 @@ export class PlanningComponent {
 
   ngOnInit() {
     this.login();
+    getAvailability();
   }
 
   get cityName(): string {

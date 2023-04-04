@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Constants } from 'src/app/constants/Constants';
+import { ApolloVariables } from 'src/app/constants/Interfaces';
 import { BookingListByBuildingIdAndResourceTypeQuery, BookingListByBuildingIdQuery } from 'src/app/schemas/querie-definitions/booking.query';
 import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/querie-definitions/building.query';
 import { CityListQuery } from 'src/app/schemas/querie-definitions/city.query';
@@ -24,35 +26,20 @@ export class PlanningComponent {
 
   public bars: TimeChartBar[] = []; // Bars
   public cities: any [] = []; // Cities
-  public selectedCitie = 'ALL'; // Current city
+  public selectedCitie = Constants.allStaticValue; // Current city
   public buildings: any [] = []; // Buildings
   public selectedBuilding = ''; // Selected building
   public now: Date = new Date(); // Current date
   public resourceTypes: any [] = []; // Type of resources
-  public selectedResouceType = -1;
+  public selectedResouceType = Constants.allStaticNumericValue;
 
   public range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
   });
+
   public initDate!: Date;
   public endDate !: Date;
-
-  // Colors
-  private colors: any = {
-    confirmada: '#002B5B',
-    solicitud: '#1A5F7A',
-    checkin: '#159895',
-    checkout: '#57C5B6',
-    finalizada: '#537FE7'
-  };
-
-  // Types
-  private types: any = {
-    piso: 'title_h1',
-    habitacion: 'title_h2',
-    plaza: 'title_h3'
-  };
   private resources: any[] = []; // Resources
   private bookings: any [] = []; // Bookings
 
@@ -129,7 +116,7 @@ export class PlanningComponent {
     this.bars = [];
     this.resources = [];
     this.bookings = [];
-    if (this.selectedResouceType === -1) { // Dont use filter
+    if (this.selectedResouceType === Constants.allStaticNumericValue) { // Dont use filter
       this.getResourcesAndBookings();
     } else {
       this.applyResourceTypeFilter();
@@ -152,14 +139,14 @@ export class PlanningComponent {
     this.bookings = [];
     this.selectedBuilding = '';
 
-    if (this.selectedCitie === 'ALL') {
+    if (this.selectedCitie === Constants.allStaticValue) {
       this.getAllBuildings();
     } else {
      this.getBuildingsByCityName();
     }
   }
 
-  async getResourceList(query: string, variables: { [key: string]: string | number}): Promise<void> {
+  async getResourceList(query: string, variables: ApolloVariables): Promise<void> {
     new Promise<void>((resolve) => {
       this.apolloApi.getData(query, variables).subscribe((res: any) => {
         this.getResourceType();
@@ -196,12 +183,17 @@ export class PlanningComponent {
       return age;
   }
 
-  getBookings(query: string, variables: { [key: string]: string | number}): void {
+  getBookings(query: string, variables: ApolloVariables): void {
     this.bookings = [];
     this.apolloApi.getData(query, variables).subscribe((response: any) => {
       const bookingList = response.data.data;
+      console.log(bookingList);
       for (const booking of bookingList) {
-        const age = this.getAge(booking.booking.customer.birth_date);
+        let age;
+        if (booking.booking && booking.booking.customer) {
+          age = this.getAge(booking.booking.customer.birth_date);
+        }
+
         this.bookings.push({
           Booking_code: booking.booking_id,
           Booking_lock: booking.lock,
@@ -209,16 +201,16 @@ export class PlanningComponent {
           Booking_date_from: booking.date_from,
           Booking_date_to: booking.date_to,
           Resource_code: booking.resource?.code || '',
-          Customer_name: booking.booking.customer.name,
-          Customer_gender: booking.booking.customer.gender.code,
-          Customer_country: booking.booking.customer.country.name,
-          Customer_email: booking.booking.customer.email,
-          Customer_phone: booking.booking.customer.phones,
+          Customer_name: booking.booking?.customer.name|| '',
+          Customer_gender: booking.booking?.customer.gender.code || '',
+          Customer_country: booking.booking?.customer.country.name || '',
+          Customer_email: booking.booking?.customer.email || '',
+          Customer_phone: booking.booking?.customer.phones || '',
           Customer_age: age,
-          Customer_last_name: booking.booking.customer.last_name
+          Customer_last_name: booking.booking?.customer.last_name || ''
         });
       }
-
+      console.log(this.bookings);
       this.generateBars()
     });
   }
@@ -247,7 +239,7 @@ export class PlanningComponent {
       auxBar = new TimeChartBar();
       auxBar.code = r.Resource_code;
       auxBar.info = r.Resource_info
-      auxBar.style = this.types[r.Resource_type];
+      auxBar.style = Constants.types[r.Resource_type];
         this.bars.push(auxBar);
     }
 
@@ -258,18 +250,18 @@ export class PlanningComponent {
       line.datefrom = new Date(b.Booking_date_from);
       line.dateto = new Date(b.Booking_date_to);
 
-      // Locking booking
-      if (b.Booking_lock) {
+      if (b.Booking_lock && !b.Booking_code) {
         line.lock = true;
-        line.color = '#C0C0C0';
-        line.type = 'stripes';
-      }
-
-      // Real booking
-      else {
+        line.color = Constants.resourceNotAvailable.color
+        line.type = Constants.resourceNotAvailable.type;
+      } else if (b.Booking_lock) { // Locking booking
+        line.lock = true;
+        line.color = Constants.blockedResource.color;
+        line.type = Constants.blockedResource.type;
+      } else { // Real booking
         line.lock = false;
         line.code = b.Booking_code;
-        line.color = this.colors[b.Booking_status];
+        line.color = Constants.colors[b.Booking_status];
         line.text = b.Customer_name
           + ' - ' + b.Customer_last_name
           + ' - ' + b.Customer_age

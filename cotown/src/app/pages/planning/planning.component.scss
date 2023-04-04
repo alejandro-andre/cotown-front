@@ -1,9 +1,25 @@
+
+/***
+	Angular theme
+***/
+
+@import '@angular/material/theming';
+@include mat-core();
+$my-app-primary: mat-palette($mat-teal, 300);
+$my-app-basic: mat-palette($mat-gray, 800);
+$my-app-theme: mat-light-theme($my-app-primary, $my-app-basic);
+@include angular-material-theme($my-app-theme);
+
+/**
+	Classes of css
+**/
+
 h1 {
-	font-size: 1.25rem; 
-	font-weight: 500; 
+	font-size: 1.25rem;
+	font-weight: 500;
 }
 a {
-	color: #000; 
+	color: #000;
 	text-decoration: none;
 }
 
@@ -29,12 +45,81 @@ a {
 
 .selectors_container {
 	display: flex;
-	width: 50%;
+	width: 60%;
 	align-items: flex-start;
 }
 
 .time_line_buttons {
 	display: flex;
-	width: 50%;
+	width: 40%;
 	justify-content: flex-end;
 }
+
+.airflows_container_selectors {
+	margin: 12px;
+	background-color: rgb(248, 248, 248);
+	border-width: 1px;
+	border-style: dashed;
+	border-color: rgb(221, 221, 221);
+	padding: 10px;
+}
+
+/**
+Override material css clases
+**/
+.mat-mdc-form-field-focus-overlay {
+	background: none !important;
+	color: black;
+}
+.mdc-text-field--filled  {
+	background: none !important;
+	border-radius: 0 !important;
+
+}
+.mdc-text-field--filled:hover  {
+	background: none !important;
+	border-radius: 0 !important;
+}
+
+
+.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
+	color: black !important;
+}
+.mat-mdc-form-field.mat-focused.mat-primary .mat-mdc-select-arrow {
+	color: rgba(0,0,0,.54) !important;
+}
+
+.mat-primary.mat-mdc-option .mdc-list-item--selected:not(.mdc-list-item--disabled).mdc-list-item__primary-text {
+	color: black !important;
+}
+
+.mat-mdc-option.mat-mdc-option-active.mat-mdc-option .mdc-list-item--selected:not(.mat-mdc-option-multiple):not(.mdc-list-item--disabled) {
+	background: rgba(0,0,0,.2) !important;
+}
+
+.mat-pseudo-checkbox {
+	display: none !important;
+}
+
+.mat-primary .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
+	//color: var(--mdc-theme-primary, #3f51b5);
+	color: black !important;
+}
+
+.mdc-line-ripple.mdc-line-ripple--active {
+	border-bottom-color: black !important;
+}
+
+.mat-mdc-form-field:not(.mat-form-field-no-animations) .mdc-line-ripple::after {
+	border-bottom-color: black !important;
+}
+
+.mat-mdc-select-panel {
+	border-radius: 0 !important;
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+	display: none !important;
+}
+
+

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
@@ -18,7 +18,8 @@ import { getAvailability  } from 'src/app/services/api.service';
 @Component({
   selector: 'app-home',
   templateUrl: './planning.component.html',
-  styleUrls: ['./planning.component.scss']
+  styleUrls: ['./planning.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class PlanningComponent {
 

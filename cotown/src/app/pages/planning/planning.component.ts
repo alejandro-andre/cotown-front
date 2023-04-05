@@ -2,7 +2,7 @@ import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
-import { ApolloVariables, AvailabilityPayload, Building, City, Resource, ResourceType } from 'src/app/constants/Interfaces';
+import { ApolloVariables, AvailabilityPayload, Booking, Building, City, Resource, ResourceType } from 'src/app/constants/Interfaces';
 import { BookingListByBuildingIdAndResourceTypeQuery, BookingListByBuildingIdQuery } from 'src/app/schemas/querie-definitions/booking.query';
 import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/querie-definitions/building.query';
 import { CityListQuery } from 'src/app/schemas/querie-definitions/city.query';
@@ -73,6 +73,21 @@ export class PlanningComponent {
 
       axiosApi.getAvailability(data).then((resp) => {
         this.availableResources = resp.data;
+        this.bars = [];
+        console.log('Availables!!', this.availableResources);
+        for(const available of this.availableResources) {
+          const finded: number = this.bookings.findIndex((elem: Booking) => elem.Resource_code === available);
+
+          console.log('finded: ', finded);
+
+          if(finded >= 0){
+            this.bookings[finded].Booking_status = 'available';
+          }
+        }
+
+        console.log(this.bookings);
+    
+        this.generateBars();
       })
     }
   }
@@ -239,6 +254,8 @@ export class PlanningComponent {
           Customer_last_name: booking.booking?.customer.last_name || ''
         });
       }
+
+      console.log(this.bookings);
       this.generateBars()
     });
   }
@@ -258,6 +275,7 @@ export class PlanningComponent {
   generateBars() {
     this.bars = [];
     let auxBar!: TimeChartBar;
+    const auxBars= []
 
     // Current resource
     let res = '';
@@ -268,8 +286,10 @@ export class PlanningComponent {
       auxBar.code = r.Resource_code;
       auxBar.info = r.Resource_info
       auxBar.style = Constants.types[r.Resource_type];
-        this.bars.push(auxBar);
+        auxBars.push(auxBar);
     }
+
+    this.bars = JSON.parse(JSON.stringify(auxBars));
 
     // Generate lines
     for (const b of this.bookings) {
@@ -278,7 +298,11 @@ export class PlanningComponent {
       line.datefrom = new Date(b.Booking_date_from);
       line.dateto = new Date(b.Booking_date_to);
 
-      if (b.Booking_lock && !b.Booking_code) {
+      if (b.Booking_status === 'available') {
+        line.lock = true;
+        line.color = "rgba(100, 255, 100, 0.3)";
+        line.type = 'available';
+      }  else if (b.Booking_lock && !b.Booking_code) {
         line.lock = true;
         line.color = Constants.resourceNotAvailable.color
         line.type = Constants.resourceNotAvailable.type;

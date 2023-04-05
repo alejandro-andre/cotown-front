@@ -21,9 +21,9 @@
 			<mat-form-field appearance="fill" style="margin-right: 10px;">
 				<mat-label>Edificio</mat-label>
 				<mat-select
-          [(ngModel)]="selectedBuilding"
+          [(ngModel)]="selectedBuildingId"
           name="buildings"
-          (selectionChange)="getResourcesAndBookings()"
+          (selectionChange)="onSelectBulding()"
         >
 					<mat-option *ngFor="let building of buildings" [value]="building.id">
 						{{ building.name }}
@@ -34,7 +34,7 @@
       <mat-form-field appearance="fill" style="margin-right: 10px;">
 				<mat-label>Tipos</mat-label>
 				<mat-select
-          [(ngModel)]="selectedResouceType"
+          [(ngModel)]="selectedResouceTypeId"
           name="resourcesTypes"
           (selectionChange)="onSelectResourceType()"
 					[disabled]="!resourceTypes.length"

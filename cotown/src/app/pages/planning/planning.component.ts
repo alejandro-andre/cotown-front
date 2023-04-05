@@ -2,7 +2,7 @@ import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
-import { ApolloVariables } from 'src/app/constants/Interfaces';
+import { ApolloVariables, AvailabilityPayload, Building, City, Resource, ResourceType } from 'src/app/constants/Interfaces';
 import { BookingListByBuildingIdAndResourceTypeQuery, BookingListByBuildingIdQuery } from 'src/app/schemas/querie-definitions/booking.query';
 import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/querie-definitions/building.query';
 import { CityListQuery } from 'src/app/schemas/querie-definitions/city.query';
@@ -12,8 +12,8 @@ import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
 import { TimeChartLine } from 'src/app/time-chart/models/time-chart-line.model';
 import { TimeChartControlComponent } from 'src/app/time-chart/time-chart-control/time-chart-control.component';
-import { orderByName } from 'src/app/utils/utils';
-import { getAvailability  } from 'src/app/services/api.service';
+import { formatDate, orderByName } from 'src/app/utils/utils';
+import axiosApi from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-home',
@@ -27,22 +27,24 @@ export class PlanningComponent {
   private ganttChartControl!: TimeChartControlComponent;
 
   public bars: TimeChartBar[] = []; // Bars
-  public cities: any [] = []; // Cities
-  public selectedCitie = Constants.allStaticValue; // Current city
-  public buildings: any [] = []; // Buildings
-  public selectedBuilding = ''; // Selected building
+  public cities: City [] = [] as City[]; // Cities
+  public selectedCitie: number = Constants.allStaticNumericValue; // Current city
+  public buildings: Building[] = [] as Building[]; // Buildings
+  public selectedBuildingId!: number; // Selected building
+  public selectedBuilding: Building = {} as Building;
   public now: Date = new Date(); // Current date
-  public resourceTypes: any [] = []; // Type of resources
-  public selectedResouceType = Constants.allStaticNumericValue;
-
+  public resourceTypes: ResourceType [] = [] as ResourceType []; // Type of resources
+  public selectedResouceTypeId = Constants.allStaticNumericValue;
+  public selectedResourceType: ResourceType = {} as ResourceType;
+  public availableResources: string[] = [];
+  public initDate!: Date;
+  public endDate !: Date;
   public range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
   });
 
-  public initDate!: Date;
-  public endDate !: Date;
-  private resources: any[] = []; // Resources
+  private resources: Resource[] = [] as Resource[] ; // Resources
   private bookings: any [] = []; // Bookings
 
   // Constructor
@@ -58,6 +60,20 @@ export class PlanningComponent {
     if (this.range.valid && this.range.value &&this.range.value.start && this.range.value.end ) {
       this.initDate = new Date(this.range.value.start);
       this.endDate = new Date(this.range.value.end);
+
+      const data: AvailabilityPayload = {
+        date_from: formatDate(this.initDate),
+        date_to: formatDate(this.endDate),
+        building: this.selectedBuilding.code,
+      };
+
+      if (this.selectedResouceTypeId !== Constants.allStaticNumericValue) {
+        data.place_type = this.selectedResourceType.code;
+      }
+
+      axiosApi.getAvailability(data).then((resp) => {
+        this.availableResources = resp.data;
+      })
     }
   }
 
@@ -84,12 +100,12 @@ export class PlanningComponent {
 
   ngOnInit() {
     this.login();
-    getAvailability();
   }
 
   get cityName(): string {
     if (this.selectedCitie) {
-      return this.cities.find((cit) => cit.id === this.selectedCitie).name;
+      const finded = this.cities.find((cit) => cit.id === this.selectedCitie);
+      return finded ? finded.name : ''
     }
 
     return '';
@@ -106,8 +122,8 @@ export class PlanningComponent {
     this.bookings = [];
     this.resources = [];
     const variables = {
-      buildingId: this.selectedBuilding,
-      resourceTypeId: this.selectedResouceType
+      buildingId: this.selectedBuildingId,
+      resourceTypeId: this.selectedResouceTypeId
     };
 
     this.getResourceList(ResourceListByBuildingIdAndResourceTypeQuery, variables).then(() => {
@@ -119,9 +135,11 @@ export class PlanningComponent {
     this.bars = [];
     this.resources = [];
     this.bookings = [];
-    if (this.selectedResouceType === Constants.allStaticNumericValue) { // Dont use filter
+    if (this.selectedResouceTypeId === Constants.allStaticNumericValue) { // Dont use filter
       this.getResourcesAndBookings();
     } else {
+      const findedResourceType = this.resourceTypes.find((elem:ResourceType) =>elem.id === this.selectedResouceTypeId);
+      this.selectedResourceType = findedResourceType!;
       this.applyResourceTypeFilter();
     }
   }
@@ -140,9 +158,9 @@ export class PlanningComponent {
     this.bars = [];
     this.resources = [];
     this.bookings = [];
-    this.selectedBuilding = '';
+    this.selectedBuildingId = -1;
 
-    if (this.selectedCitie === Constants.allStaticValue) {
+    if (this.selectedCitie === Constants.allStaticNumericValue) {
       this.getAllBuildings();
     } else {
      this.getBuildingsByCityName();
@@ -167,12 +185,21 @@ export class PlanningComponent {
     });
   }
 
+  onSelectBulding() {
+    const building = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
+    if (building) {
+      this.selectedBuilding = { ...building };
+    }
+
+    this.getResourcesAndBookings()
+  }
+
   getResourcesAndBookings(): void {
     this.resources = [];
     this.bookings = [];
     this.bars = [];
     const variables = {
-       buildingId: this.selectedBuilding
+       buildingId: this.selectedBuildingId
     };
 
     this.getResourceList(ResourceListByBuldingIdQuery, variables ).then(() => {
@@ -190,7 +217,6 @@ export class PlanningComponent {
     this.bookings = [];
     this.apolloApi.getData(query, variables).subscribe((response: any) => {
       const bookingList = response.data.data;
-      console.log(bookingList);
       for (const booking of bookingList) {
         let age;
         if (booking.booking && booking.booking.customer) {
@@ -213,7 +239,6 @@ export class PlanningComponent {
           Customer_last_name: booking.booking?.customer.last_name || ''
         });
       }
-      console.log(this.bookings);
       this.generateBars()
     });
   }

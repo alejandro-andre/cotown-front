@@ -28,7 +28,7 @@ export class PlanningComponent {
 
   public bars: TimeChartBar[] = []; // Bars
   public cities: City [] = [] as City[]; // Cities
-  public selectedCitie: number = Constants.allStaticNumericValue; // Current city
+  public selectedCity: number = Constants.allStaticNumericValue; // Current city
   public buildings: Building[] = [] as Building[]; // Buildings
   public selectedBuildingId!: number; // Selected building
   public selectedBuilding: Building = {} as Building;
@@ -77,8 +77,6 @@ export class PlanningComponent {
         for(const available of this.availableResources) {
           const finded: number = this.bookings.findIndex((elem: Booking) => elem.Resource_code === available);
 
-          console.log('finded: ', finded);
-
           if(finded >= 0){
             this.bookings[finded].Booking_status = 'available';
             this.bookings[finded].Booking_date_to = data.date_to;
@@ -117,8 +115,8 @@ export class PlanningComponent {
   }
 
   get cityName(): string {
-    if (this.selectedCitie) {
-      const finded = this.cities.find((cit) => cit.id === this.selectedCitie);
+    if (this.selectedCity) {
+      const finded = this.cities.find((cit) => cit.id === this.selectedCity);
       return finded ? finded.name : ''
     }
 
@@ -174,7 +172,7 @@ export class PlanningComponent {
     this.bookings = [];
     this.selectedBuildingId = -1;
 
-    if (this.selectedCitie === Constants.allStaticNumericValue) {
+    if (this.selectedCity === Constants.allStaticNumericValue) {
       this.getAllBuildings();
     } else {
      this.getBuildingsByCityName();
@@ -254,8 +252,7 @@ export class PlanningComponent {
         });
       }
 
-      console.log(this.bookings);
-      this.generateBars()
+      this.generateBars();
     });
   }
 

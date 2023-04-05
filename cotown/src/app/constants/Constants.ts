@@ -29,6 +29,5 @@ export class Constants {
     type: 'stripes'
   }
 
-  public static allStaticValue = 'ALL';
   public static allStaticNumericValue = -1;
 }

@@ -2,10 +2,12 @@
 
 	<!-- Header -->
 	<div class="timechart-row timechart-row-months">
-		<span 
-			*ngFor="let title of header; let i = index;" 
+		<span
+			*ngFor="let title of header; let i = index;"
 			class="date"
-			style.grid-column="{{4+i*7}}/{{11+i*7}}">{{title}}
+			style.grid-column="{{4+i*7}}/{{11+i*7}}"
+		>
+			{{title}}
 		</span>
 		<div class="timechart-row-first bold">&nbsp;</div>
 		<div class="timechart-row-first bold">Recurso</div>
@@ -21,23 +23,25 @@
 
 	<!-- Rows -->
 	<mat-radio-group>
-	<div *ngFor="let bar of bars" class="timechart-row">
-		<div class="timechart-row-sel"><mat-radio-button></mat-radio-button></div>
-		<div class="timechart-row-first {{bar.style}}">{{bar.code}}</div>
-		<div class="timechart-row-first">{{bar.info}}</div>
-		<ul class="timechart-row-bars">
-			<li *ngFor="let line of bar.lines" 
-				class="tooltip {{line.styles}}" 
-				style.background-color="{{line.color}}"
-				style.grid-column="{{1+line.from}}/{{1+line.to}}">
-				<div *ngIf="line.code != '' && (line.to - line.from) > 1 " class="bar">
-					<span class="tag">{{line.code}}</span>
-					<span>{{line.text}}</span>
-					<div class="tiptext" [innerHtml]="line.tooltip|safeHtml"></div>
-				</div>
-			</li>
-		</ul>
-	</div>
+		<div *ngFor="let bar of bars" class="timechart-row">
+			<div class="timechart-row-sel">
+				<mat-radio-button [value]="bar.code" [disabled]="!isAvailable(bar)"></mat-radio-button>
+			</div>
+			<div class="timechart-row-first {{bar.style}}">{{bar.code}}</div>
+			<div class="timechart-row-first">{{bar.info}}</div>
+			<ul class="timechart-row-bars">
+				<li *ngFor="let line of bar.lines"
+					class="tooltip {{line.styles}}"
+					style.background-color="{{line.color}}"
+					style.grid-column="{{1+line.from}}/{{1+line.to}}">
+					<div *ngIf="line.code != '' && (line.to - line.from) > 1 " class="bar">
+						<span class="tag">{{line.code}}</span>
+						<span>{{line.text}}</span>
+						<div class="tiptext" [innerHtml]="line.tooltip|safeHtml"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
 	</mat-radio-group>
 
 </div>

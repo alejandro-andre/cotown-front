@@ -17,7 +17,7 @@
 /* Time chart rows styles */
 .timechart-row {
 	display: grid;
-	grid-template-columns: 200px 100px 1fr;
+	grid-template-columns: 40px 180px 100px 1fr;
 	background-color: #fff;
 }
 
@@ -48,7 +48,7 @@
 	height: 100%;
 	width: 100%;
 	background-color: transparent;
-	grid-template-columns: 200px 100px repeat(70, 1fr);
+	grid-template-columns: 40px 180px 100px repeat(70, 1fr);
 }
 .timechart-row-lines span {
 	display: block;
@@ -71,7 +71,7 @@
 	color: #fff;
 	background-color: #4a5050 !important;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-	grid-template-columns: 200px 100px repeat(70, 1fr);
+	grid-template-columns: 40px 180px 100px repeat(70, 1fr);
 }
 .timechart-row-months .timechart-row-first {
 	border-top: 0 !important;
@@ -99,6 +99,9 @@
 	-o-transform: rotate(-90deg);
 	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
+.bold {
+	font-weight: 600;
+}
 
 /* Time chart first column */
 .timechart-row-first {
@@ -108,6 +111,18 @@
 	border-style: solid;
 	padding: 10px 10px 10px 10px;
 	font-size: 13px;
+}
+.timechart-row-sel {
+	background-color: #fff;
+	border-width: 1px 0 0 0;
+	border-color: rgba(0, 0, 0, 0.1);
+	border-style: solid;
+	padding: 0;
+	font-size: 13px;
+}.radio {
+	margin: 0px;
+	padding: 0px;
+	width: 20px;
 }
 
 /* Time chart bars */
@@ -135,12 +150,10 @@
 	border-radius: 15px;
 }
 .timechart-row-bars li.stripes {
-	background-color: #c0c0c0;
 	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255, 0.1) 5px, rgba(255, 255, 255, 0.1) 12px);
 }
 .timechart-row-bars li.available {
 	border-radius: 0px;
-	background-color: rgba(100, 255, 100, 0.3);
 }
 .timechart-row-bars li:before, .timechart-row-bars li:after {
 	content: "";
@@ -208,9 +221,9 @@
 }
 .title_h2 {
 	font-weight: 600;
-	padding-left: 20px;
+	padding-left: 15px;
 }
 .title_h3 {
 	font-weight: 400;
-	padding-left: 40px;
+	padding-left: 30px;
 }

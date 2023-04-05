@@ -5,21 +5,24 @@
 		<span 
 			*ngFor="let title of header; let i = index;" 
 			class="date"
-			style.grid-column="{{3+i*7}}/{{10+i*7}}">{{title}}
+			style.grid-column="{{4+i*7}}/{{11+i*7}}">{{title}}
 		</span>
-		<div class="timechart-row-first">Recurso</div>
-		<div class="timechart-row-first">Tipo</div>
+		<div class="timechart-row-first bold">&nbsp;</div>
+		<div class="timechart-row-first bold">Recurso</div>
+		<div class="timechart-row-first bold">Tipo</div>
 		<span *ngFor="let day of days">{{day}}</span>
 	</div>
 
 	<!-- Vertical lines and current date marker -->
 	<div class="timechart-row timechart-row-lines">
-		<span></span><span></span>
+		<span></span><span></span><span></span>
 		<span *ngFor="let day of days; let i = index;" [class.marker]="i >= markerFrom && i <= markerTo"></span>
 	</div>
 
 	<!-- Rows -->
+	<mat-radio-group>
 	<div *ngFor="let bar of bars" class="timechart-row">
+		<div class="timechart-row-sel"><mat-radio-button></mat-radio-button></div>
 		<div class="timechart-row-first {{bar.style}}">{{bar.code}}</div>
 		<div class="timechart-row-first">{{bar.info}}</div>
 		<ul class="timechart-row-bars">
@@ -35,4 +38,6 @@
 			</li>
 		</ul>
 	</div>
+	</mat-radio-group>
+
 </div>

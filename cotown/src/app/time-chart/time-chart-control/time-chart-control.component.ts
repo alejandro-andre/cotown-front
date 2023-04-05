@@ -58,9 +58,8 @@ export class TimeChartControlComponent implements OnChanges {
   private moveLines() {
 
     // Move each line
-    for (var bar of this.bars) {
-      for (var line of bar.lines) {
-      
+    for (let bar of this.bars) {
+      for (let line of bar.lines) {
         // Dates
         const dfrom = Math.ceil((line.datefrom.getTime() - this.now.getTime()) / (1000*60*60*24));
         const dto = 1 + Math.ceil((line.dateto.getTime() - this.now.getTime()) / (1000*60*60*24));
@@ -89,7 +88,7 @@ export class TimeChartControlComponent implements OnChanges {
         }
 
         // Hide bar
-        if ((line.to - line.from) < 1)  
+        if ((line.to - line.from) < 1)
           line.styles = 'hide';
       }
     }

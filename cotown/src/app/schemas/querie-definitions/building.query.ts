@@ -13,5 +13,5 @@ export const BuildingListByCityNameQuery = ` query BuildingListByCityName($cityN
       name: Name
       code: Code
       id,
-      DistrictViaDistrict_id(joinType: INNER){LocationViaLocation_id(joinType: INNER where:{Name:{EQ: $cityName}}){Name}}}
+      location: DistrictViaDistrict_id(joinType: INNER){city: LocationViaLocation_id(joinType: INNER where:{Name:{EQ: $cityName}}){Name}}}
   }`;

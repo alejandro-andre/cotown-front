@@ -4,15 +4,22 @@
 
 	<div class="nav_container">
 		<form class="selectors_container airflows_container_selectors ">
-			<mat-form-field class="cotown_selector" appearance="fill" style="margin-right: 10px;">
+			<mat-form-field
+				class="cotown_selector"
+				appearance="fill"
+				style="margin-right: 10px;"
+			>
 				<mat-label class="cotown_label">Ciudad</mat-label>
 				<mat-select
-          [(ngModel)]="selectedCitie"
+          [(ngModel)]="selectedCity"
           name="cities"
           (selectionChange)="onSelectCity()"
         >
-				<mat-option  value="ALL">Todas</mat-option>
-					<mat-option *ngFor="let citie of cities" [value]="citie.id">
+				<mat-option  [value]=-1>Todas</mat-option>
+					<mat-option
+						*ngFor="let citie of cities"
+						[value]="citie.id"
+					>
 						{{ citie.name }}
 					</mat-option>
 				</mat-select>
@@ -25,7 +32,10 @@
           name="buildings"
           (selectionChange)="onSelectBulding()"
         >
-					<mat-option *ngFor="let building of buildings" [value]="building.id">
+					<mat-option
+						*ngFor="let building of buildings"
+						[value]="building.id"
+					>
 						{{ building.name }}
 					</mat-option>
 				</mat-select>
@@ -40,7 +50,10 @@
 					[disabled]="!resourceTypes.length"
         >
 				<mat-option  [value]="-1">Todos</mat-option>
-					<mat-option *ngFor="let resourceType of resourceTypes" [value]="resourceType.id">
+					<mat-option
+						*ngFor="let resourceType of resourceTypes"
+						[value]="resourceType.id"
+					>
 						{{ resourceType.code }}
 					</mat-option>
 				</mat-select>
@@ -48,9 +61,22 @@
 
 			<mat-form-field appearance="fill">
 				<mat-label>Rango de fechas</mat-label>
-				<mat-date-range-input [rangePicker]="picker" [disabled]="!bars.length" [formGroup]="range">
-					<input matStartDate formControlName="start" placeholder="Desde">
-					<input matEndDate  formControlName="end" placeholder="Hasta" (dateChange)="onDateChange()">
+				<mat-date-range-input
+					[rangePicker]="picker"
+					[disabled]="!bars.length"
+					[formGroup]="range"
+				>
+					<input
+						matStartDate
+						formControlName="start"
+						placeholder="Desde"
+					>
+					<input
+						matEndDate
+						formControlName="end"
+						placeholder="Hasta"
+						(dateChange)="onDateChange()"
+					>
 				</mat-date-range-input>
 				<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
 				<mat-date-range-picker #picker></mat-date-range-picker>
@@ -59,14 +85,27 @@
 
 
 		<div class="time_line_buttons">
-			<button mat-raised-button color="primary" (click)="goBackward()">&lt; Semana anterior</button>
+			<button
+				mat-raised-button
+				color="primary"
+				(click)="goBackward()"
+			>&lt; Semana anterior</button>
 			&nbsp;
-			<button mat-raised-button color="primary" (click)="goForward()">Semana siguiente &gt;</button>
+			<button
+				mat-raised-button
+				color="primary"
+				(click)="goForward()"
+			>Semana siguiente &gt;</button>
 		</div>
 	</div>
 
 
 	<div *ngIf="bars.length">
-		<app-time-chart-control [bars]="bars" [now]="now" [from]="initDate" [to]="endDate"></app-time-chart-control>
+		<app-time-chart-control
+			[bars]="bars"
+			[now]="now"
+			[from]="initDate"
+			[to]="endDate"
+		></app-time-chart-control>
 	</div>
 </div>

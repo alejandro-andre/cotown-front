@@ -74,7 +74,6 @@ export class PlanningComponent {
       axiosApi.getAvailability(data).then((resp) => {
         this.availableResources = resp.data;
         this.bars = [];
-        console.log('Availables!!', this.availableResources);
         for(const available of this.availableResources) {
           const finded: number = this.bookings.findIndex((elem: Booking) => elem.Resource_code === available);
 
@@ -87,8 +86,6 @@ export class PlanningComponent {
           }
         }
 
-        console.log(this.bookings);
-    
         this.generateBars();
       })
     }

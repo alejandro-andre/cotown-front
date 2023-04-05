@@ -82,6 +82,8 @@ export class PlanningComponent {
 
           if(finded >= 0){
             this.bookings[finded].Booking_status = 'available';
+            this.bookings[finded].Booking_date_to = data.date_to;
+            this.bookings[finded].Booking_date_from = data.date_from;
           }
         }
 

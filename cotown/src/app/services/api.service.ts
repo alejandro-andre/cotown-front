@@ -1,15 +1,9 @@
+import { AxiosResponse } from 'axios';
 import { axiosInstance } from '../plugins/axios.plugin';
+import { AvailabilityPayload } from '../constants/Interfaces';
 
-export const getAvailability = () => {
-  console.log('Estoy en el availability');
-  const data = {
-    "date_from": "2023-05-01",
-    "date_to": "2023-06-01",
-    "building": "BLM335",
-    "place_type": "I_STA"
-  };
-
-  axiosInstance.post('availability',  data  ).then((resp) => {
-    console.log(resp);
-  })
+export default {
+  getAvailability(data: AvailabilityPayload): Promise<AxiosResponse> {
+    return axiosInstance.post('availability',  data);
+  }
 }

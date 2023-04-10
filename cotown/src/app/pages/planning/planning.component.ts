@@ -220,9 +220,12 @@ export class PlanningComponent {
   }
 
   getAge(birthdate: string) {
-      const timeDiff = Math.abs(Date.now() - new Date(birthdate).getTime());
-      const age = Math.floor((timeDiff / (1000 * 3600 * 24))/365);
-      return age;
+    const timeDiff = Math.abs(Date.now() - new Date(birthdate).getTime());
+    return Math.floor((timeDiff / (1000 * 3600 * 24))/365);
+  }
+
+  onSelectAvailable(code: string){
+    console.log('IM on onselectAvailable phather', code);
   }
 
   getBookings(query: string, variables: ApolloVariables): void {

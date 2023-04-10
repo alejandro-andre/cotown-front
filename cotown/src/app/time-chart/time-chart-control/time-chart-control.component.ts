@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { TimeChartBar } from '../models/time-chart-bar.model';
 
 @Component({
@@ -13,6 +13,7 @@ export class TimeChartControlComponent implements OnChanges {
   @Input() now!: Date;
   @Input() from!: Date;
   @Input() to!: Date;
+  @Output() onSelectAvailable: EventEmitter<string> = new EventEmitter();
 
   // Timechart header info
   public header: string[] = [];
@@ -25,6 +26,7 @@ export class TimeChartControlComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log(this.bars)
     // Start on mondays
     this.now.setTime(this.now.getTime() - (1000*60*60*24*this.now.getDay()))
 
@@ -92,5 +94,18 @@ export class TimeChartControlComponent implements OnChanges {
           line.styles = 'hide';
       }
     }
+  }
+
+  isAvailable(bar: any): boolean {
+    if (!bar.lines || bar.lines.length > 1) {
+      return false;
+    }
+
+    return bar.lines[0].type === "available";
+  }
+
+  emitSelectAvailableResource(code: string): void {
+    this.onSelectAvailable.emit(code);
+    console.log('The selected code is: ', code)
   }
 }

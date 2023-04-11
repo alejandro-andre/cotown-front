@@ -13,7 +13,7 @@ export class TimeChartControlComponent implements OnChanges {
   @Input() now!: Date;
   @Input() from!: Date;
   @Input() to!: Date;
-  @Output() onSelectAvailable: EventEmitter<string> = new EventEmitter();
+  @Output() onSelectAvailable: EventEmitter<number> = new EventEmitter();
 
   // Timechart header info
   public header: string[] = [];
@@ -26,7 +26,6 @@ export class TimeChartControlComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this.bars)
     // Start on mondays
     this.now.setTime(this.now.getTime() - (1000*60*60*24*this.now.getDay()))
 
@@ -110,8 +109,7 @@ export class TimeChartControlComponent implements OnChanges {
     return false;
   }
 
-  emitSelectAvailableResource(code: string): void {
-    this.onSelectAvailable.emit(code);
-    console.log('The selected code is: ', code)
+  emitSelectAvailableResource(id: number): void {
+    this.onSelectAvailable.emit(id);
   }
 }

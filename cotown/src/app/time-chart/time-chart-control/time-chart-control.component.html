@@ -25,7 +25,11 @@
 	<mat-radio-group>
 		<div *ngFor="let bar of bars" class="timechart-row">
 			<div class="timechart-row-sel">
-				<mat-radio-button [value]="bar.code" [disabled]="!isAvailable(bar)" (change)="emitSelectAvailableResource(bar.code)"></mat-radio-button>
+				<mat-radio-button
+					[value]="bar.code"
+					[disabled]="!isAvailable(bar)"
+					(change)="emitSelectAvailableResource(bar.id)"
+				></mat-radio-button>
 			</div>
 			<div class="timechart-row-first {{bar.style}}">{{bar.code}}</div>
 			<div class="timechart-row-first">{{bar.info}}</div>

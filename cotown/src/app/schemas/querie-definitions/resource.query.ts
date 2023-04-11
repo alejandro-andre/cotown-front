@@ -2,6 +2,7 @@ export const ResourceListByBuldingIdQuery = `query ResourceListByBuldingId($buil
   {
     data: Resource_ResourceList (where: {Building_id: {EQ: $buildingId}}) {
       code: Code
+      id
       building_id: Building_id
       adress: Address
       resource_type: Resource_type
@@ -20,6 +21,7 @@ export const ResourceListByBuldingIdQuery = `query ResourceListByBuldingId($buil
 export const ResourceListByBuildingIdAndResourceTypeQuery = `query ResourceListByBuildingIdAndResourceTypeId($buildingId: Int, $resourceTypeId: Int){
     data: Resource_ResourceList (where: { Building_id: { EQ: $buildingId }, Place_type_id: { EQ: $resourceTypeId } }) {
       code: Code
+      id
       building_id: Building_id
       adress: Address
       resource_type: Resource_type

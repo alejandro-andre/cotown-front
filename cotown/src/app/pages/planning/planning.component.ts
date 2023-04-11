@@ -185,6 +185,7 @@ export class PlanningComponent {
         const result = res.data.data;
         for(const elem of result) {
           this.resources.push({
+            Resource_id: elem.id,
             Resource_code: elem.code,
             Resource_type: elem.resource_type,
             Resource_info: elem.resource_place_type?.code || ''
@@ -222,8 +223,8 @@ export class PlanningComponent {
     return Math.floor((timeDiff / (1000 * 3600 * 24))/365);
   }
 
-  onSelectAvailable(code: string){
-    console.log('IM on onselectAvailable phather', code);
+  onSelectAvailable(resourceId: number){
+    console.log('IM on onselectAvailable phather', resourceId);
   }
 
   getBookings(query: string, variables: ApolloVariables): void {
@@ -280,6 +281,7 @@ export class PlanningComponent {
     // Generate bars
     for (const r of this.resources) {
       auxBar = new TimeChartBar();
+      auxBar.id = r.Resource_id;
       auxBar.code = r.Resource_code;
       auxBar.info = r.Resource_info
       auxBar.style = Constants.types[r.Resource_type];

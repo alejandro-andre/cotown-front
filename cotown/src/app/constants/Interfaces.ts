@@ -26,6 +26,7 @@ export interface ResourceType extends GraphQlResponse {
 }
 
 export interface Resource {
+  Resource_id: number,
   Resource_code: string,
   Resource_type: string,
   Resource_info: string

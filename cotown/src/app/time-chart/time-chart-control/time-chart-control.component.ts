@@ -97,11 +97,17 @@ export class TimeChartControlComponent implements OnChanges {
   }
 
   isAvailable(bar: any): boolean {
-    if (!bar.lines || bar.lines.length > 1) {
+    if (!bar.lines || !bar.lines.length) {
       return false;
     }
 
-    return bar.lines[0].type === "available";
+    for (const elem of bar.lines) {
+      if (elem.type === 'available') {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   emitSelectAvailableResource(code: string): void {

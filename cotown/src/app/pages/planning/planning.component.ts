@@ -129,7 +129,7 @@ export class PlanningComponent {
     })
   }
 
-  applyResourceTypeFilter():void {
+  async applyResourceTypeFilter():Promise<void> {
     // Remove all data
     this.bookings = [];
     this.resources = [];
@@ -138,9 +138,8 @@ export class PlanningComponent {
       resourceTypeId: this.selectedResouceTypeId
     };
 
-    this.getResourceList(ResourceListByBuildingIdAndResourceTypeQuery, variables).then(() => {
-      this.getBookings(BookingListByBuildingIdAndResourceTypeQuery, variables);
-    });
+    await this.getResourceList(ResourceListByBuildingIdAndResourceTypeQuery, variables);
+    this.getBookings(BookingListByBuildingIdAndResourceTypeQuery, variables);
   }
 
   onSelectResourceType(): void {
@@ -175,12 +174,12 @@ export class PlanningComponent {
     if (this.selectedCity === Constants.allStaticNumericValue) {
       this.getAllBuildings();
     } else {
-     this.getBuildingsByCityName();
+      this.getBuildingsByCityName();
     }
   }
 
   async getResourceList(query: string, variables: ApolloVariables): Promise<void> {
-    new Promise<void>((resolve) => {
+    return new Promise<void>((resolve) => {
       this.apolloApi.getData(query, variables).subscribe((res: any) => {
         this.getResourceType();
         const result = res.data.data;
@@ -206,7 +205,7 @@ export class PlanningComponent {
     this.getResourcesAndBookings()
   }
 
-  getResourcesAndBookings(): void {
+  async getResourcesAndBookings(): Promise<void> {
     this.resources = [];
     this.bookings = [];
     this.bars = [];
@@ -214,9 +213,8 @@ export class PlanningComponent {
        buildingId: this.selectedBuildingId
     };
 
-    this.getResourceList(ResourceListByBuldingIdQuery, variables ).then(() => {
-      this.getBookings(BookingListByBuildingIdQuery, variables);
-    });
+    await this.getResourceList(ResourceListByBuldingIdQuery, variables );
+    this.getBookings(BookingListByBuildingIdQuery, variables);
   }
 
   getAge(birthdate: string) {

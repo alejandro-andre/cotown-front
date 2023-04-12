@@ -11,22 +11,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './pages/home/home.component';
-import { SecondComponent } from './pages/second/second.component';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import { PlanningComponent } from './pages/planning/planning.component';
 import { TimeChartModule } from './time-chart/time-chart.module';
-import { CotownModal } from './pages/cotown-modal/cotown-modal.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    SecondComponent,
     PlanningComponent,
-    CotownModal
   ],
   imports: [
     BrowserModule,

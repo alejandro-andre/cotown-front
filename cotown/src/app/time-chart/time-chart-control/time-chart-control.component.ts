@@ -60,6 +60,13 @@ export class TimeChartControlComponent implements OnChanges {
 
     // Move each line
     for (let bar of this.bars) {
+
+      // Sort lines
+      bar.lines.sort(function(a, b) {
+        return new Date(a.datefrom).getTime() - new Date(b.datefrom).getTime();
+      });
+
+      // Move each line
       for (let line of bar.lines) {
         // Dates
         const dfrom = Math.ceil((line.datefrom.getTime() - this.now.getTime()) / (1000*60*60*24));

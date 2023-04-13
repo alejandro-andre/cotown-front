@@ -30,4 +30,6 @@ export class Constants {
   }
 
   public static allStaticNumericValue = -1;
+  public static availableStatus = 'available';
+  public static defaultLanguage = 'es';
 }

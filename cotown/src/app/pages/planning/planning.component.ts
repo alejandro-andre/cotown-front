@@ -197,13 +197,21 @@ export class PlanningComponent {
     });
   }
 
-  onSelectBulding() {
+  async onSelectBulding() {
     const building = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
     if (building) {
       this.selectedBuilding = { ...building };
     }
 
-    this.getResourcesAndBookings()
+    if (this.selectedResouceTypeId !== Constants.allStaticNumericValue) {
+      await this.applyResourceTypeFilter();
+    } else {
+      await this.getResourcesAndBookings();
+    }
+
+    if (this.initDate && this.endDate) {
+      this.onDateChange();
+    }
   }
 
   async getResourcesAndBookings(): Promise<void> {

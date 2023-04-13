@@ -87,18 +87,39 @@
 
 		<div class="time_line_buttons">
 			<button
+				[disabled]="!bars.length"
 				mat-raised-button
 				color="primary"
 				style="color:white"
-				(click)="goBackward()"
-			>&lt; Semana anterior</button>
+				(click)="goBackward('month')"
+			>&lt; Mes anterior</button>
 			&nbsp;
+
 			<button
 				mat-raised-button
+				[disabled]="!bars.length"
 				color="primary"
 				style="color:white"
-				(click)="goForward()"
+				(click)="goBackward('week')"
+			>&lt; Semana anterior</button>
+			&nbsp;
+
+			<button
+				[disabled]="!bars.length"
+				mat-raised-button
+				color="primary"
+				style="color:white"
+				(click)="goForward('week')"
 			>Semana siguiente &gt;</button>
+			&nbsp;
+
+			<button
+				[disabled]="!bars.length"
+				mat-raised-button
+				color="primary"
+				style="color:white"
+				(click)="goForward('month')"
+			>Mes siguiente &gt;</button>
 		</div>
 	</div>
 

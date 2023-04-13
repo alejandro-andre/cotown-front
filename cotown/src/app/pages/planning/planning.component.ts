@@ -290,15 +290,25 @@ export class PlanningComponent {
     });
   }
 
-  goBackward() {
-    const date = new Date(this.now.getTime() - (1000*60*60*24*7));
-    this.now = date;
+  goBackward(type: string) {
+    if(type === 'week'){
+      const date = new Date(this.now.getTime() - (1000*60*60*24*7));
+      this.now = date;
+    } else if(type === 'month'){
+      const date = new Date(this.now.getTime() - (1000*60*60*24*31));
+      this.now = date;
+    }
   }
 
   // Go 1 week forward
-  goForward() {
-    const date = new Date(this.now.getTime() + (1000*60*60*24*7));
-    this.now = date;
+  goForward(type: string) {
+    if(type === 'week') {
+      const date = new Date(this.now.getTime() + (1000*60*60*24*7));
+      this.now = date;
+    } else if (type === 'month') {
+      const date = new Date(this.now.getTime() + (1000*60*60*24*31));
+      this.now = date;
+    }
   }
 
   // Generate bars for the time chart

@@ -56,8 +56,21 @@ export class PlanningComponent {
     this.now = new Date();
   }
 
+  cleanBookings() {
+    const newBookings = [];
+    for (let i = 0; i < this.bookings.length; i++) {
+      const book = this.bookings[i];
+      if (book.Booking_status !== 'available') {
+        newBookings.push(book);
+      }
+    }
+
+    this.bookings = JSON.parse(JSON.stringify(newBookings));
+  }
+
   onDateChange() {
     if (this.range.valid && this.range.value &&this.range.value.start && this.range.value.end ) {
+      this.cleanBookings();
       this.initDate = new Date(this.range.value.start);
       this.endDate = new Date(this.range.value.end);
 
@@ -76,11 +89,21 @@ export class PlanningComponent {
         this.bars = [];
         for(const available of this.availableResources) {
           const finded: number = this.bookings.findIndex((elem: Booking) => elem.Resource_code === available);
-
           if(finded >= 0){
-            this.bookings[finded].Booking_status = 'available';
-            this.bookings[finded].Booking_date_to = data.date_to;
-            this.bookings[finded].Booking_date_from = data.date_from;
+            this.bookings.push({
+              ...this.bookings[finded],
+              Booking_status: 'available',
+              Booking_date_to: data.date_to,
+              Booking_date_from: data.date_from,
+            });
+          } else {
+            this.bookings.push({
+              Resource_code: available,
+              Booking_status: 'available',
+              Booking_date_to: data.date_to,
+              Booking_date_from: data.date_from,
+
+            });
           }
         }
 

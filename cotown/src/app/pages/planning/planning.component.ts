@@ -39,6 +39,7 @@ export class PlanningComponent {
   public availableResources: string[] = [];
   public initDate!: Date;
   public endDate !: Date;
+  public lang: string = Constants.defaultLanguage;
   public range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
@@ -60,7 +61,7 @@ export class PlanningComponent {
     const newBookings = [];
     for (let i = 0; i < this.bookings.length; i++) {
       const book = this.bookings[i];
-      if (book.Booking_status !== 'available') {
+      if (book.Booking_status !== Constants.availableStatus) {
         newBookings.push(book);
       }
     }
@@ -92,14 +93,14 @@ export class PlanningComponent {
           if(finded >= 0){
             this.bookings.push({
               ...this.bookings[finded],
-              Booking_status: 'available',
+              Booking_status: Constants.availableStatus,
               Booking_date_to: data.date_to,
               Booking_date_from: data.date_from,
             });
           } else {
             this.bookings.push({
               Resource_code: available,
-              Booking_status: 'available',
+              Booking_status: Constants.availableStatus,
               Booking_date_to: data.date_to,
               Booking_date_from: data.date_from,
 
@@ -328,10 +329,10 @@ export class PlanningComponent {
       line.datefrom = new Date(b.Booking_date_from);
       line.dateto = new Date(b.Booking_date_to);
 
-      if (b.Booking_status === 'available') {
+      if (b.Booking_status === Constants.availableStatus) {
         line.lock = true;
         line.color = "rgba(100, 255, 100, 0.3)";
-        line.type = 'available';
+        line.type = Constants.availableStatus;
       }  else if (b.Booking_lock && !b.Booking_code) {
         line.lock = true;
         line.color = Constants.resourceNotAvailable.color

@@ -15,6 +15,7 @@ import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import { PlanningComponent } from './pages/planning/planning.component';
 import { TimeChartModule } from './time-chart/time-chart.module';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { TimeChartModule } from './time-chart/time-chart.module';
     PlanningComponent,
   ],
   imports: [
+    MatIconModule,
     BrowserModule,
     FormsModule,
     AppRoutingModule,

@@ -41,6 +41,7 @@ a {
 	display: flex;
 	width: 40%;
 	justify-content: flex-end;
+	padding: 12px 12px 12px 0px
 }
 
 .airflows_container_selectors {
@@ -49,7 +50,7 @@ a {
 	border-width: 1px;
 	border-style: dashed;
 	border-color: rgb(221, 221, 221);
-	padding: 10px;
+	//padding: 10px;
 }
 
 /**
@@ -108,4 +109,15 @@ Override material css clases
 
 .mat-mdc-form-field-subscript-wrapper {
 	display: none !important;
+}
+
+/* FIX ROWS OF BUTTONS*/
+.next-arow {
+	margin-right: 0 !important;
+	margin-left: 4px !important;
+}
+
+.next-button {
+	display: flex !important;
+	flex-direction: row-reverse !important;
 }

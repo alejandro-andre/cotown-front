@@ -177,6 +177,10 @@ export class PlanningComponent {
       this.selectedResourceType = findedResourceType!;
       this.applyResourceTypeFilter();
     }
+
+    if (this.initDate && this.endDate) {
+      this.onDateChange();
+    }
   }
 
   getBuildingsByCityName():void {

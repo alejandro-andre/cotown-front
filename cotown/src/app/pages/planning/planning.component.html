@@ -92,7 +92,10 @@
 				color="primary"
 				style="color:white"
 				(click)="goBackward('month')"
-			>&lt; Mes anterior</button>
+			>
+				<mat-icon aria-hidden="false" color="black" fontIcon="arrow_back"></mat-icon>
+				Mes
+			</button>
 			&nbsp;
 
 			<button
@@ -101,25 +104,36 @@
 				color="primary"
 				style="color:white"
 				(click)="goBackward('week')"
-			>&lt; Semana anterior</button>
+			>
+				<mat-icon aria-hidden="false" color="black" fontIcon="arrow_back"></mat-icon>
+				Semana
+			</button>
 			&nbsp;
 
 			<button
+				class="next-button "
 				[disabled]="!bars.length"
 				mat-raised-button
 				color="primary"
 				style="color:white"
 				(click)="goForward('week')"
-			>Semana siguiente &gt;</button>
+			>
+				Semana
+				<mat-icon class="next-arow" aria-hidden="false" fontIcon="arrow_forward"></mat-icon>
+			</button>
 			&nbsp;
 
 			<button
+				class="next-button "
 				[disabled]="!bars.length"
 				mat-raised-button
 				color="primary"
 				style="color:white"
 				(click)="goForward('month')"
-			>Mes siguiente &gt;</button>
+			>
+				Mes
+				<mat-icon class="next-arow" aria-hidden="false" fontIcon="arrow_forward"></mat-icon>
+			</button>
 		</div>
 	</div>
 

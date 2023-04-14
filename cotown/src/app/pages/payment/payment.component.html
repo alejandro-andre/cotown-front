@@ -1,0 +1,14 @@
+<div>
+	<form name="from" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST" target="_top">
+		<input id="id" [value]="id" /><br />
+		<input id="Concept" [value]="concept" /><br />
+		<input id="Amount" [value]="amount" /><br />
+		<input id="Order" [value]="order" /><br />
+		<input id="Issued_date" [value]="issueDate" /><br />
+		<input type="hidden" id="Ds_SignatureVersion" name="Ds_SignatureVersion" [value]="Ds_SignatureVersion" /><br />
+		<input type="hidden" id="Ds_MerchantParameters" name="Ds_MerchantParameters"
+			[value]="Ds_MerchantParameters" /><br />
+		<input type="hidden" id="Ds_Signature" name="Ds_Signature" [value]="Ds_Signature" /><br />
+		<input type="submit"><br />
+	</form>
+</div>

@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,400,700");
+
+body {
+	font-family: 'Roboto Flex', sans-serif;
+	font-weight: 400;
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	font-size: 1.25rem;
+	font-weight: 500;
+	padding: 20px 15px 15px 25px;
+}
+
+a {
+	color: #000;
+	text-decoration: none;
+}
+
+.row {
+	width: 100%;
+	border-bottom: 1px solid #ddd;
+	padding: 15px 15px 15px 30px;
+	font-size: 0.9rem;
+}

@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PlanningComponent } from './pages/planning/planning.component';
+import { PaymentComponent } from './pages/payment/payment.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/planning' ,  pathMatch: 'full' },
-  { path: 'planning', component: PlanningComponent }
+  { path: 'planning', component: PlanningComponent },
+  { path: 'payment', component: PaymentComponent },
+
 ];
 
 @NgModule({

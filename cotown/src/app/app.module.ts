@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { PlanningComponent } from './pages/planning/planning.component';
 import { TimeChartModule } from './time-chart/time-chart.module';
 import { MatIconModule } from '@angular/material/icon';
+import { SpinnerModule } from './spinner/spinner.module';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { MatIconModule } from '@angular/material/icon';
     GraphQLModule,
     HttpClientModule,
     TimeChartModule,
+    SpinnerModule,
     ReactiveFormsModule
   ],
   bootstrap: [AppComponent]

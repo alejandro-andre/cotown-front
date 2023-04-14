@@ -137,6 +137,9 @@
 		</div>
 	</div>
 
+	<div class="spinner-box" *ngIf="spinnerActive">
+		<app-spinner-control></app-spinner-control>
+	</div>
 
 	<div *ngIf="bars.length">
 		<app-time-chart-control

@@ -26,6 +26,7 @@ export class PlanningComponent {
   @ViewChild(TimeChartControlComponent)
   private ganttChartControl!: TimeChartControlComponent;
 
+  public spinnerActive: boolean = false;
   public bars: TimeChartBar[] = []; // Bars
   public cities: City [] = [] as City[]; // Cities
   public selectedCity: number = Constants.allStaticNumericValue; // Current city
@@ -167,6 +168,7 @@ export class PlanningComponent {
   }
 
   onSelectResourceType(): void {
+    this.spinnerActive = true;
     this.bars = [];
     this.resources = [];
     this.bookings = [];
@@ -226,6 +228,7 @@ export class PlanningComponent {
   }
 
   async onSelectBulding() {
+    this.spinnerActive = true;
     const building = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
     if (building) {
       this.selectedBuilding = { ...building };
@@ -387,6 +390,8 @@ export class PlanningComponent {
         bar.lines = this.consolidateIntervals(bar.lines);
       }
     }
+
+    this.spinnerActive = false;
   }
 
   // Consolidate bookings for lock types

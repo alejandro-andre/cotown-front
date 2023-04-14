@@ -5,5 +5,9 @@ import { AvailabilityPayload } from '../constants/Interfaces';
 export default {
   getAvailability(data: AvailabilityPayload): Promise<AxiosResponse> {
     return axiosInstance.post('availability',  data);
+  },
+
+  getPaymentInfo(id: number): Promise<AxiosResponse> {
+    return axiosInstance.get(`/pay/${id}`);
   }
 }

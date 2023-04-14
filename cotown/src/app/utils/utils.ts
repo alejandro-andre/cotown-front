@@ -15,3 +15,34 @@ export const formatDate = (date: Date) : string => {
 
   return `${year}-${month}-${day}`;
 }
+
+export const  prevMonth = (date: Date): Date => {
+  date.setTime(date.getTime() + (1000*60*60*24*6));
+  let month = date.getMonth() - 1;
+  let year = date.getFullYear();
+  if (month < 0) {
+    month = 11;
+    year -= 1;
+  }
+
+  return new Date(year, month, 1);
+}
+
+
+export const nextMonth = (date: Date): Date => {
+  date.setTime(date.getTime() + (1000*60*60*24*6))
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+  if (month > 11) {
+    month = 0;
+    year += 1;
+  }
+
+  return new Date(year, month, 1);
+}
+
+export const getAge = (birthdate: string) => {
+  const timeDiff = Math.abs(Date.now() - new Date(birthdate).getTime());
+  return Math.floor((timeDiff / (1000 * 3600 * 24))/365);
+}
+

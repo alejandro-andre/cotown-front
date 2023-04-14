@@ -12,7 +12,7 @@ import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
 import { TimeChartLine } from 'src/app/time-chart/models/time-chart-line.model';
 import { TimeChartControlComponent } from 'src/app/time-chart/time-chart-control/time-chart-control.component';
-import { formatDate, orderByName } from 'src/app/utils/utils';
+import { formatDate, getAge, nextMonth, orderByName, prevMonth } from 'src/app/utils/utils';
 import axiosApi from 'src/app/services/api.service';
 
 @Component({
@@ -254,11 +254,6 @@ export class PlanningComponent {
     this.getBookings(BookingListByBuildingIdQuery, variables);
   }
 
-  getAge(birthdate: string) {
-    const timeDiff = Math.abs(Date.now() - new Date(birthdate).getTime());
-    return Math.floor((timeDiff / (1000 * 3600 * 24))/365);
-  }
-
   onSelectAvailable(resourceId: number){
     console.log('IM on onselectAvailable phather', resourceId);
   }
@@ -270,7 +265,7 @@ export class PlanningComponent {
       for (const booking of bookingList) {
         let age;
         if (booking.booking && booking.booking.customer) {
-          age = this.getAge(booking.booking.customer.birth_date);
+          age = getAge(booking.booking.customer.birth_date);
         }
 
         this.bookings.push({
@@ -299,7 +294,7 @@ export class PlanningComponent {
       const date = new Date(this.now.getTime() - (1000*60*60*24*7));
       this.now = date;
     } else if(type === 'month'){
-      const date = new Date(this.now.getTime() - (1000*60*60*24*31));
+      const date= prevMonth(this.now);
       this.now = date;
     }
   }
@@ -310,7 +305,7 @@ export class PlanningComponent {
       const date = new Date(this.now.getTime() + (1000*60*60*24*7));
       this.now = date;
     } else if (type === 'month') {
-      const date = new Date(this.now.getTime() + (1000*60*60*24*31));
+      const date = nextMonth(this.now);
       this.now = date;
     }
   }

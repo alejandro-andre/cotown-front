@@ -1,0 +1,39 @@
+<html>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Flex">
+<style>
+body{font-family: 'Roboto Flex',sans-serif; font-weight: 400; margin: 0; padding: 0;}
+h1{font-size: 1.25rem; font-weight: 500; padding: 20px 15px 15px 25px;}
+a{color: #000; text-decoration: none;}
+.row{width: 100%; border-bottom: 1px solid #ddd; padding: 15px 15px 15px 30px; font-size: 0.9rem; }
+</style>
+<body>
+    <form name="from" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST" target="_top">
+        <input id="id"/><br/>
+        <input id="Concept"/><br/>
+        <input id="Amount"/><br/>
+        <input id="Order"/><br/>
+        <input id="Issued_date"/><br/>
+        <input type="hidden" id="Ds_SignatureVersion"   name="Ds_SignatureVersion"/><br/>
+        <input type="hidden" id="Ds_MerchantParameters" name="Ds_MerchantParameters"/><br/>
+        <input type="hidden" id="Ds_Signature"          name="Ds_Signature"/><br/>
+        <input type="submit"><br/>
+    </form>
+	<script>
+        var params = new URLSearchParams(window.location.search);
+        var id = params.get('id');
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', 'https://dev.cotown.ciber.es/pay/' + id, true);
+		xhr.onload = function() {
+			if (xhr.status === 200) {
+                const datos = JSON.parse(xhr.responseText);
+                for (let k in datos) {
+                    document.getElementById(k).value = datos[k];    
+                };
+			}
+		};
+		xhr.send();
+	</script>
+</body>
+</html>
+
+

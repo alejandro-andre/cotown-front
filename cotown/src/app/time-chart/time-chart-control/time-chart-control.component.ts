@@ -27,7 +27,7 @@ export class TimeChartControlComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     // Start on mondays
-    this.now.setTime(this.now.getTime() - (1000*60*60*24*this.now.getDay()))
+    this.now.setTime(this.now.getTime() - (1000*60*60*24*this.getDay(this.now)))
 
     // Set headers
     this.setHeader(this.now);
@@ -118,5 +118,12 @@ export class TimeChartControlComponent implements OnChanges {
 
   emitSelectAvailableResource(id: number): void {
     this.onSelectAvailable.emit(id);
+  }
+
+  private getDay(date: Date): number {
+    let n = date.getDay() - 1;
+    if (n < 0)
+      n = 6;
+    return n;
   }
 }

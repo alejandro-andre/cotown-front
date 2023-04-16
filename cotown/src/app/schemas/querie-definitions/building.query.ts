@@ -1,5 +1,7 @@
 export const BuildingListQuery = `
-query BuildingList{
+query BuildingList (
+  orderBy: [{attribute: Name, direction:ASC, nullsGo: FIRST}]
+) {
   data: Building_BuildingList{
     name: Name
     code: Code,
@@ -9,7 +11,9 @@ query BuildingList{
 
 export const BuildingListByCityNameQuery = ` query BuildingListByCityName($cityName: String)
   {
-    data: Building_BuildingList{
+    data: Building_BuildingList (
+      orderBy: [{attribute: Name, direction:ASC, nullsGo: FIRST}]
+    ) {
       name: Name
       code: Code
       id,

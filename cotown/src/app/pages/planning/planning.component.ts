@@ -1,19 +1,40 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Constants } from 'src/app/constants/Constants';
-import { ApolloVariables, AvailabilityPayload, Booking, Building, City, Resource, ResourceType } from 'src/app/constants/Interfaces';
-import { BookingListByBuildingIdAndResourceTypeQuery, BookingListByBuildingIdQuery } from 'src/app/schemas/querie-definitions/booking.query';
-import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/querie-definitions/building.query';
-import { CityListQuery } from 'src/app/schemas/querie-definitions/city.query';
-import { ResourceListByBuildingIdAndResourceTypeQuery, ResourceListByBuldingIdQuery, ResourceTypeQuery } from 'src/app/schemas/querie-definitions/resource.query';
+import { DateAdapter } from '@angular/material/core';
+
+import axiosApi from 'src/app/services/api.service';
+
 import { AccessTokenService } from 'src/app/services/access-token.service';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
 import { TimeChartLine } from 'src/app/time-chart/models/time-chart-line.model';
 import { TimeChartControlComponent } from 'src/app/time-chart/time-chart-control/time-chart-control.component';
+
+import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/querie-definitions/building.query';
+import { CityListQuery } from 'src/app/schemas/querie-definitions/city.query';
+import {
+  BookingListByBuildingIdAndResourceTypeQuery,
+  BookingListByBuildingIdQuery
+} from 'src/app/schemas/querie-definitions/booking.query';
+
+import {
+  ResourceListByBuildingIdAndResourceTypeQuery,
+  ResourceListByBuldingIdQuery,
+  ResourceTypeQuery
+} from 'src/app/schemas/querie-definitions/resource.query';
+
 import { formatDate, getAge, nextMonth, orderByName, prevMonth } from 'src/app/utils/utils';
-import axiosApi from 'src/app/services/api.service';
+import { Constants } from 'src/app/constants/Constants';
+import {
+  ApolloVariables,
+  AvailabilityPayload,
+  Booking,
+  Building,
+  City,
+  Resource,
+  ResourceType
+} from 'src/app/constants/Interfaces';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +43,6 @@ import axiosApi from 'src/app/services/api.service';
   encapsulation: ViewEncapsulation.None
 })
 export class PlanningComponent {
-
   @ViewChild(TimeChartControlComponent)
   private ganttChartControl!: TimeChartControlComponent;
 
@@ -53,9 +73,11 @@ export class PlanningComponent {
   constructor(
     private route: ActivatedRoute,
     public accessToken: AccessTokenService,
-    private apolloApi: ApoloQueryApi
+    private apolloApi: ApoloQueryApi,
+    private _adapter: DateAdapter<any>
   ) {
     this.now = new Date();
+    this._adapter.setLocale(this.lang);
   }
 
   cleanBookings() {

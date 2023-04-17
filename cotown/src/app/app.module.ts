@@ -9,7 +9,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, DateAdapter } from '@angular/material/core';
 import { AppComponent } from './app.component';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -17,6 +17,7 @@ import { PlanningComponent } from './pages/planning/planning.component';
 import { TimeChartModule } from './time-chart/time-chart.module';
 import { MatIconModule } from '@angular/material/icon';
 import { SpinnerModule } from './spinner/spinner.module';
+import { CustomDateAdapter } from './plugins/CustomDateAdapter';
 
 
 @NgModule({
@@ -40,8 +41,11 @@ import { SpinnerModule } from './spinner/spinner.module';
     HttpClientModule,
     TimeChartModule,
     SpinnerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+    { provide: DateAdapter, useClass: CustomDateAdapter }
+  ]
 })
 export class AppModule { }

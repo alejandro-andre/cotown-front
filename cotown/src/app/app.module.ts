@@ -17,14 +17,12 @@ import { PlanningComponent } from './pages/planning/planning.component';
 import { TimeChartModule } from './time-chart/time-chart.module';
 import { MatIconModule } from '@angular/material/icon';
 import { SpinnerModule } from './spinner/spinner.module';
-import { PaymentComponent } from './pages/payment/payment.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     PlanningComponent,
-    PaymentComponent,
   ],
   imports: [
     MatIconModule,

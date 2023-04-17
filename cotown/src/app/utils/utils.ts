@@ -42,6 +42,10 @@ export const nextMonth = (date: Date): Date => {
 }
 
 export const getAge = (birthdate: string) => {
+  if(!birthdate) {
+    return '';
+  }
+
   const timeDiff = Math.abs(Date.now() - new Date(birthdate).getTime());
   return Math.floor((timeDiff / (1000 * 3600 * 24))/365);
 }

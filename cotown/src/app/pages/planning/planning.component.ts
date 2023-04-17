@@ -279,7 +279,7 @@ export class PlanningComponent {
           Booking_date_to: booking.date_to,
           Resource_code: booking.resource?.code || '',
           Customer_name: booking.booking?.customer.name|| '',
-          Customer_gender: booking.booking?.customer.gender.code || '',
+          Customer_gender: booking.booking?.customer.gender?.code || '',
           Customer_country: booking.booking?.customer.country.name || '',
           Customer_email: booking.booking?.customer.email || '',
           Customer_phone: booking.booking?.customer.phones || '',

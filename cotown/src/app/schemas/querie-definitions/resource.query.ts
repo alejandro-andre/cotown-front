@@ -1,6 +1,9 @@
 export const ResourceListByBuldingIdQuery = `query ResourceListByBuldingId($buildingId: Int)
   {
-    data: Resource_ResourceList (where: {Building_id: {EQ: $buildingId}}) {
+    data: Resource_ResourceList (
+      where: {Building_id: {EQ: $buildingId}}
+      orderBy: [{attribute: Code, direction:ASC, nullsGo: FIRST}]
+    ) {
       code: Code
       id
       building_id: Building_id
@@ -19,7 +22,10 @@ export const ResourceListByBuldingIdQuery = `query ResourceListByBuldingId($buil
   }`;
 
 export const ResourceListByBuildingIdAndResourceTypeQuery = `query ResourceListByBuildingIdAndResourceTypeId($buildingId: Int, $resourceTypeId: Int){
-    data: Resource_ResourceList (where: { Building_id: { EQ: $buildingId }, Place_type_id: { EQ: $resourceTypeId } }) {
+    data: Resource_ResourceList (
+      where: { Building_id: { EQ: $buildingId }, Place_type_id: { EQ: $resourceTypeId } }
+      orderBy: [{attribute: Code, direction:ASC, nullsGo: FIRST}]
+    ) {
       code: Code
       id
       building_id: Building_id
@@ -39,7 +45,9 @@ export const ResourceListByBuildingIdAndResourceTypeQuery = `query ResourceListB
 
 export const ResourceTypeQuery = `query ResourceType
   {
-    data: Resource_Resource_place_typeList {
+    data: Resource_Resource_place_typeList (
+      orderBy: [{attribute: Code, direction:ASC, nullsGo: FIRST}]
+    ) {
       code: Code
       name: Name,
       id

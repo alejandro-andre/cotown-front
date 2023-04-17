@@ -1,6 +1,8 @@
 export const BookingListByBuildingIdAndResourceTypeQuery = `query BookingListByBuildingIdAndResourceType($buildingId: Int, $resourceTypeId: Int)
   {
-    data: Booking_Booking_detailList (where: { Building_id: { EQ: $buildingId }, Place_type_id: { EQ: $resourceTypeId } }) {
+    data: Booking_Booking_detailList (
+      where: { Building_id: { EQ: $buildingId }, Place_type_id: { EQ: $resourceTypeId } }
+    ) {
       building_id: Building_id
       building: BuildingViaBuilding_id {
         code: Code,

@@ -32,6 +32,7 @@
           name="buildings"
           (selectionChange)="onSelectBulding()"
         >
+					<mat-option  [value]=-1>Todos</mat-option>
 					<mat-option
 						*ngFor="let building of buildings"
 						[value]="building.id"

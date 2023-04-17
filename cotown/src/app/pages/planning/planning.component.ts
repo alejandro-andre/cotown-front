@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DateAdapter } from '@angular/material/core';
@@ -13,17 +13,20 @@ import { TimeChartLine } from 'src/app/time-chart/models/time-chart-line.model';
 import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/querie-definitions/building.query';
 import { CityListQuery } from 'src/app/schemas/querie-definitions/city.query';
 import {
+  BookingList,
   BookingListByBuildingIdAndResourceTypeQuery,
-  BookingListByBuildingIdQuery
+  BookingListByBuildingIdQuery,
+  BookingListByResourceTypeQuery
 } from 'src/app/schemas/querie-definitions/booking.query';
 
 import {
   ResourceListByBuildingIdAndResourceTypeQuery,
   ResourceListByBuldingIdQuery,
+  ResourceListByResourceTypeQuery,
+  ResourceListQuery,
   ResourceTypeQuery
 } from 'src/app/schemas/querie-definitions/resource.query';
 
-import { formatDate, getAge, nextMonth, orderByName, prevMonth } from 'src/app/utils/utils';
 import { Constants } from 'src/app/constants/Constants';
 import {
   ApolloVariables,
@@ -34,6 +37,13 @@ import {
   Resource,
   ResourceType
 } from 'src/app/constants/Interfaces';
+import {
+  formatDate,
+  getAge,
+  nextMonth,
+  orderByName,
+  prevMonth
+} from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-home',
@@ -47,7 +57,7 @@ export class PlanningComponent {
   public cities: City [] = [] as City[]; // Cities
   public selectedCity: number = Constants.allStaticNumericValue; // Current city
   public buildings: Building[] = [] as Building[]; // Buildings
-  public selectedBuildingId!: number; // Selected building
+  public selectedBuildingId: number = Constants.allStaticNumericValue; // Selected building
   public selectedBuilding: Building = {} as Building;
   public now: Date = new Date(); // Current date
   public resourceTypes: ResourceType [] = [] as ResourceType []; // Type of resources
@@ -138,6 +148,7 @@ export class PlanningComponent {
       this.accessToken.token = res.data.login;
       this.getCities();
       this.getAllBuildings();
+      this.getResourcesAndBookingsOfAllBuildings();
     })
   }
 
@@ -177,12 +188,20 @@ export class PlanningComponent {
     this.bookings = [];
     this.resources = [];
     const variables = {
-      buildingId: this.selectedBuildingId,
       resourceTypeId: this.selectedResouceTypeId
     };
 
-    await this.getResourceList(ResourceListByBuildingIdAndResourceTypeQuery, variables);
-    this.getBookings(BookingListByBuildingIdAndResourceTypeQuery, variables);
+    if (this.selectedBuildingId === Constants.allStaticNumericValue) {
+      await this.getResourceList(ResourceListByResourceTypeQuery, variables);
+      this.getBookings(BookingListByResourceTypeQuery, variables);
+    } else {
+      const varToSend = {
+        ...variables,
+        buildingId: this.selectedBuildingId,
+      }
+      await this.getResourceList(ResourceListByBuildingIdAndResourceTypeQuery, varToSend);
+      this.getBookings(BookingListByBuildingIdAndResourceTypeQuery, varToSend);
+    }
   }
 
   onSelectResourceType(): void {
@@ -226,7 +245,7 @@ export class PlanningComponent {
     }
   }
 
-  async getResourceList(query: string, variables: ApolloVariables): Promise<void> {
+  async getResourceList(query: string, variables: ApolloVariables | undefined = undefined): Promise<void> {
     return new Promise<void>((resolve) => {
       this.apolloApi.getData(query, variables).subscribe((res: any) => {
         this.getResourceType();
@@ -240,6 +259,9 @@ export class PlanningComponent {
           });
         }
 
+
+        console.log(this.resources);
+
         resolve();
       });
     });
@@ -247,15 +269,22 @@ export class PlanningComponent {
 
   async onSelectBulding() {
     this.spinnerActive = true;
-    const building = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
-    if (building) {
-      this.selectedBuilding = { ...building };
-    }
-
-    if (this.selectedResouceTypeId !== Constants.allStaticNumericValue) {
-      await this.applyResourceTypeFilter();
+    if (
+      this.selectedBuildingId === Constants.allStaticNumericValue &&
+      this.selectedResouceTypeId === Constants.allStaticNumericValue
+    ) {
+      await this.getResourcesAndBookingsOfAllBuildings();
     } else {
-      await this.getResourcesAndBookings();
+      const building = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
+      if (building) {
+        this.selectedBuilding = { ...building };
+      }
+
+      if (this.selectedResouceTypeId !== Constants.allStaticNumericValue) {
+        await this.applyResourceTypeFilter();
+      } else {
+        await this.getResourcesAndBookings();
+      }
     }
 
     if (this.initDate && this.endDate) {
@@ -263,23 +292,38 @@ export class PlanningComponent {
     }
   }
 
+  async getResourcesAndBookingsOfAllBuildings() {
+    this.spinnerActive = true;
+    this.resources = [];
+    this.bookings = [];
+    this.bars = [];
+
+    await this.getResourceList(ResourceListQuery);
+    this.getBookings(BookingList);
+  }
+
   async getResourcesAndBookings(): Promise<void> {
     this.resources = [];
     this.bookings = [];
     this.bars = [];
-    const variables = {
-       buildingId: this.selectedBuildingId
-    };
 
-    await this.getResourceList(ResourceListByBuldingIdQuery, variables );
-    this.getBookings(BookingListByBuildingIdQuery, variables);
+    if (this.selectedBuildingId === Constants.allStaticNumericValue) {
+      await this.getResourcesAndBookingsOfAllBuildings();
+    } else {
+      const variables = {
+          buildingId: this.selectedBuildingId
+      };
+
+      await this.getResourceList(ResourceListByBuldingIdQuery, variables );
+      this.getBookings(BookingListByBuildingIdQuery, variables);
+    }
   }
 
   onSelectAvailable(resourceId: number){
     console.log('IM on onselectAvailable phather', resourceId);
   }
 
-  getBookings(query: string, variables: ApolloVariables): void {
+  getBookings(query: string, variables: ApolloVariables | undefined = undefined): void {
     this.bookings = [];
     this.apolloApi.getData(query, variables).subscribe((response: any) => {
       const bookingList = response.data.data;

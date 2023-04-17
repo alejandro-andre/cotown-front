@@ -170,3 +170,14 @@ export const BookingListByBuildingIdQuery = `query BookingListByBuildingId($buil
         }
       }
     }`;
+
+export const getBuildingDataWithBooking = ` query bookingQuery($id: Int)
+  {
+    bookings: Booking_Booking_detailList(where:{ Booking_id: { EQ: $id } }) {
+      building_id: Building_id
+      booking_id: Booking_id
+      date_from: Date_from
+      date_to: Date_to
+      lock: Lock
+   }
+  }`;

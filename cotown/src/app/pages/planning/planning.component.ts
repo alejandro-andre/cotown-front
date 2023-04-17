@@ -16,7 +16,8 @@ import {
   BookingList,
   BookingListByBuildingIdAndResourceTypeQuery,
   BookingListByBuildingIdQuery,
-  BookingListByResourceTypeQuery
+  BookingListByResourceTypeQuery,
+  getBuildingDataWithBooking
 } from 'src/app/schemas/querie-definitions/booking.query';
 
 import {
@@ -152,20 +153,54 @@ export class PlanningComponent {
     })
   }
 
-  getAllBuildings(): void {
-    this.apolloApi.getData(BuildingListQuery).subscribe(res => {
-      this.buildings = orderByName(res.data.data);
+  async initData(bookingId: number) {
+    const variables = {
+      id: bookingId,
+    };
+
+    this.apolloApi.getData(getBuildingDataWithBooking, variables).subscribe( async(res) =>{
+      const data = res.data.bookings[0];
+      console.log('data: ', data);
+      console.log(res.data.bookings);
+      this.selectedBuildingId = parseInt(data.building_id);
+      const finded = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
+
+      console.log(finded);
+      this.range.setValue({ start: new Date(data.date_from), end: new Date(data.date_to) });
+      await this.getResourcesAndBookings();
     });
   }
 
-  getCities(): void {
-    this.apolloApi.getData(CityListQuery).subscribe((result) => {
-      this.cities = orderByName(result.data.data);
-    });
+  async getAllBuildings(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.apolloApi.getData(BuildingListQuery).subscribe(res => {
+        this.buildings = orderByName(res.data.data);
+        resolve();
+      });
+    })
+
   }
 
-  ngOnInit() {
-    this.login();
+  async getCities(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.apolloApi.getData(CityListQuery).subscribe((result) => {
+        this.cities = orderByName(result.data.data);
+        resolve();
+      });
+    })
+
+  }
+
+  async ngOnInit() {
+    this.route.queryParams.subscribe(async (params) => {
+      const { language, entityId, accessToken } = params;
+      this.lang = language;
+      this.accessToken.token = accessToken;
+      await this.getCities();
+      await this.getAllBuildings();
+      this.initData(parseInt(entityId));
+    });
+    // this.login();
   }
 
   get cityName(): string {
@@ -258,9 +293,6 @@ export class PlanningComponent {
             Resource_info: elem.resource_place_type?.code || ''
           });
         }
-
-
-        console.log(this.resources);
 
         resolve();
       });

@@ -9,7 +9,6 @@ import { AccessTokenService } from 'src/app/services/access-token.service';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
 import { TimeChartLine } from 'src/app/time-chart/models/time-chart-line.model';
-import { TimeChartControlComponent } from 'src/app/time-chart/time-chart-control/time-chart-control.component';
 
 import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/querie-definitions/building.query';
 import { CityListQuery } from 'src/app/schemas/querie-definitions/city.query';
@@ -43,9 +42,6 @@ import {
   encapsulation: ViewEncapsulation.None
 })
 export class PlanningComponent {
-  @ViewChild(TimeChartControlComponent)
-  private ganttChartControl!: TimeChartControlComponent;
-
   public spinnerActive: boolean = false;
   public bars: TimeChartBar[] = []; // Bars
   public cities: City [] = [] as City[]; // Cities
@@ -339,10 +335,7 @@ export class PlanningComponent {
   generateBars() {
     this.bars = [];
     let auxBar!: TimeChartBar;
-    const auxBars= []
-
-    // Current resource
-    let res = '';
+    const auxBars= [];
 
     // Generate bars
     for (const r of this.resources) {

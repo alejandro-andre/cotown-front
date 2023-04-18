@@ -143,16 +143,6 @@ export class PlanningComponent {
     }
   }
 
-  // TODO use only on development mode
-  login() {
-    this.apolloApi.login().subscribe((res: any) => {
-      this.accessToken.token = res.data.login;
-      this.getCities();
-      this.getAllBuildings();
-      this.getResourcesAndBookingsOfAllBuildings();
-    })
-  }
-
   async initData(bookingId: number) {
     const variables = {
       id: bookingId,
@@ -203,7 +193,6 @@ export class PlanningComponent {
       await this.getAllBuildings();
       this.initData(parseInt(entityId));
     });
-    // this.login();
   }
 
   get cityName(): string {

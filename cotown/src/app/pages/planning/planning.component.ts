@@ -45,6 +45,7 @@ import {
   orderByName,
   prevMonth
 } from 'src/app/utils/utils';
+import { LanguageService } from 'src/app/services/language.service';
 
 @Component({
   selector: 'app-home',
@@ -67,7 +68,6 @@ export class PlanningComponent {
   public availableResources: string[] = [];
   public initDate!: Date;
   public endDate !: Date;
-  public lang: string = Constants.defaultLanguage;
   public range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
@@ -82,9 +82,10 @@ export class PlanningComponent {
     public accessToken: AccessTokenService,
     private apolloApi: ApoloQueryApi,
     private _adapter: DateAdapter<any>,
+    private language: LanguageService,
   ) {
     this.now = new Date();
-    this._adapter.setLocale(this.lang);
+    this._adapter.setLocale(this.language.lang.substring(0,2));
   }
 
   cleanBookings() {
@@ -187,13 +188,10 @@ export class PlanningComponent {
 
   async ngOnInit() {
     this.route.queryParams.subscribe(async (params) => {
-      const { language, entityId, access_token } = params;
-
-      this.accessToken.token = access_token;
+      const {  entityId } = params;
       await this.getCities();
       await this.getAllBuildings();
 
-      this.lang = language;
       if(entityId) {
         this.initData(parseInt(entityId));
       }

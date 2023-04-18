@@ -187,9 +187,9 @@ export class PlanningComponent {
 
   async ngOnInit() {
     this.route.queryParams.subscribe(async (params) => {
-      const { language, entityId, accessToken } = params;
+      const { language, entityId, access_token } = params;
 
-      this.accessToken.token = accessToken;
+      this.accessToken.token = access_token;
       await this.getCities();
       await this.getAllBuildings();
 

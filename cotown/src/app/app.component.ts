@@ -25,7 +25,7 @@ export class AppComponent {
     this.route.queryParams.subscribe(async (params) => {
       const {  language, access_token } = params;
       if(language) {
-        this.language.lang = language;
+        this.language.lang = language.substring(0,2);
       }
 
       this.accessToken.token = access_token;

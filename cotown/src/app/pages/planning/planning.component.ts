@@ -150,7 +150,8 @@ export class PlanningComponent {
     };
 
     this.apolloApi.getData(getBuildingDataWithBooking, variables).subscribe( async(res) =>{
-      if(res.data.bookings) {
+      if(res.data.bookings && res.data.bookings.length) {
+        console.log(res.data)
         const data = res.data?.bookings[0];
         this.selectedBuildingId = parseInt(data.building_id);
         const finded = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
@@ -354,6 +355,7 @@ export class PlanningComponent {
     this.bookings = [];
     this.apolloApi.getData(query, variables).subscribe((response: any) => {
       const bookingList = response.data.data;
+      console.log(bookingList)
       for (const booking of bookingList) {
         let age;
         if (booking.booking && booking.booking.customer) {
@@ -373,7 +375,6 @@ export class PlanningComponent {
           Customer_email: booking.booking?.customer.email || '',
           Customer_phone: booking.booking?.customer.phones || '',
           Customer_age: age,
-          Customer_last_name: booking.booking?.customer.last_name || ''
         });
       }
 
@@ -444,7 +445,6 @@ export class PlanningComponent {
         line.code = b.Booking_code;
         line.color = Constants.colors[b.Booking_status];
         line.text = b.Customer_name
-          + ' - ' + b.Customer_last_name
           + ' - ' + b.Customer_age
           + ' - ' + b.Customer_gender
           + ' - ' + b.Customer_country
@@ -453,7 +453,6 @@ export class PlanningComponent {
           <div><span class="tipfield">${b.Booking_status}</span></div>
           <div><span class="tipfield">${b.Booking_date_from} a ${b.Booking_date_to}</span></div>
           <div><span class="tipfield">Nombre:</span><span>${b.Customer_name}</span></div>
-          <div><span class="tipfield">Apellido:</span><span>${b.Customer_last_name}</span></div>
           <div><span class="tipfield">Género:</span><span>${b.Customer_gender}</span></div>
           <div><span class="tipfield">Edad:</span><span>${b.Customer_age}</span></div>
           <div><span class="tipfield">País:</span><span>${b.Customer_country}</span></div>

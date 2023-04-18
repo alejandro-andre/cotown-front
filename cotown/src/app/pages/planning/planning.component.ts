@@ -159,15 +159,15 @@ export class PlanningComponent {
     };
 
     this.apolloApi.getData(getBuildingDataWithBooking, variables).subscribe( async(res) =>{
-      const data = res.data.bookings[0];
-      console.log('data: ', data);
-      console.log(res.data.bookings);
-      this.selectedBuildingId = parseInt(data.building_id);
-      const finded = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
+      if(res.data.bookings) {
+        const data = res.data?.bookings[0];
+        this.selectedBuildingId = parseInt(data.building_id);
+        const finded = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
 
-      console.log(finded);
-      this.range.setValue({ start: new Date(data.date_from), end: new Date(data.date_to) });
-      await this.getResourcesAndBookings();
+        console.log(finded);
+        this.range.setValue({ start: new Date(data.date_from), end: new Date(data.date_to) });
+        await this.getResourcesAndBookings();
+      }
     });
   }
 

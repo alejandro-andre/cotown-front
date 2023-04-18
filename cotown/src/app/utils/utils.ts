@@ -1,4 +1,8 @@
 export const orderByName = (array: any[]): any[] => {
+  if (!array) {
+    return [];
+  }
+
   return array.slice().sort((a, b) => {
     if (a.name === b.name) {
       return a.name < b.name ? -1 : 1

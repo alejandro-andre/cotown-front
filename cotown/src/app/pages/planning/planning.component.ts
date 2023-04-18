@@ -160,6 +160,7 @@ export class PlanningComponent {
 
         this.range.setValue({ start: new Date(data.date_from), end: new Date(data.date_to) });
         await this.getResourcesAndBookings();
+        this.onDateChange()
       }
     });
   }
@@ -187,11 +188,15 @@ export class PlanningComponent {
   async ngOnInit() {
     this.route.queryParams.subscribe(async (params) => {
       const { language, entityId, accessToken } = params;
-      this.lang = language;
+
       this.accessToken.token = accessToken;
       await this.getCities();
       await this.getAllBuildings();
-      this.initData(parseInt(entityId));
+
+      this.lang = language;
+      if(entityId) {
+        this.initData(parseInt(entityId));
+      }
     });
   }
 

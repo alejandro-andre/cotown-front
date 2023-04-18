@@ -14,8 +14,8 @@
           [(ngModel)]="selectedCity"
           name="cities"
           (selectionChange)="onSelectCity()"
+					[placeholder]="'nothing' | translate"
         >
-				<mat-option  [value]=-1>{{ 'all' | translate }}</mat-option>
 					<mat-option
 						*ngFor="let citie of cities"
 						[value]="citie.id"
@@ -31,6 +31,8 @@
           [(ngModel)]="selectedBuildingId"
           name="buildings"
           (selectionChange)="onSelectBulding()"
+					[placeholder]="'nothing' | translate"
+					[disabled]="selectedCity === -1"
         >
 					<mat-option  [value]=-1>{{ 'allM' | translate }}</mat-option>
 					<mat-option
@@ -48,7 +50,7 @@
           [(ngModel)]="selectedResouceTypeId"
           name="resourcesTypes"
           (selectionChange)="onSelectResourceType()"
-					[disabled]="!resourceTypes.length"
+					[disabled]="!selectedBuildingId || selectedBuildingId === -99"
         >
 				<mat-option  [value]="-1">{{ 'allM' | translate }}</mat-option>
 					<mat-option

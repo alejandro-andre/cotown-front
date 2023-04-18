@@ -59,7 +59,7 @@ export class PlanningComponent {
   public cities: City [] = [] as City[]; // Cities
   public selectedCity: number = Constants.allStaticNumericValue; // Current city
   public buildings: Building[] = [] as Building[]; // Buildings
-  public selectedBuildingId: number = Constants.allStaticNumericValue; // Selected building
+  public selectedBuildingId: number = -99; // Selected building
   public selectedBuilding: Building = {} as Building;
   public now: Date = new Date(); // Current date
   public resourceTypes: ResourceType [] = [] as ResourceType []; // Type of resources
@@ -267,7 +267,7 @@ export class PlanningComponent {
     this.bars = [];
     this.resources = [];
     this.bookings = [];
-    this.selectedBuildingId = -1;
+    this.selectedBuildingId = -99;
 
     if (this.selectedCity === Constants.allStaticNumericValue) {
       this.getAllBuildings();

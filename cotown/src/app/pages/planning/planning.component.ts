@@ -164,7 +164,10 @@ export class PlanningComponent {
         this.selectedBuildingId = parseInt(data.building_id);
         const finded = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
 
-        console.log(finded);
+        if(finded) {
+          this.selectedCity = finded.location.city.id;
+        }
+
         this.range.setValue({ start: new Date(data.date_from), end: new Date(data.date_to) });
         await this.getResourcesAndBookings();
       }

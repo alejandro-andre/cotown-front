@@ -81,7 +81,7 @@ export class PlanningComponent {
     private route: ActivatedRoute,
     public accessToken: AccessTokenService,
     private apolloApi: ApoloQueryApi,
-    private _adapter: DateAdapter<any>
+    private _adapter: DateAdapter<any>,
   ) {
     this.now = new Date();
     this._adapter.setLocale(this.lang);

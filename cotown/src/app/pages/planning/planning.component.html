@@ -9,13 +9,13 @@
 				appearance="fill"
 				style="margin-right: 10px;"
 			>
-				<mat-label class="cotown_label">Ciudad</mat-label>
+				<mat-label class="cotown_label">{{ 'city' | translate }}</mat-label>
 				<mat-select
           [(ngModel)]="selectedCity"
           name="cities"
           (selectionChange)="onSelectCity()"
         >
-				<mat-option  [value]=-1>Todas</mat-option>
+				<mat-option  [value]=-1>{{ 'all' | translate }}</mat-option>
 					<mat-option
 						*ngFor="let citie of cities"
 						[value]="citie.id"
@@ -26,13 +26,13 @@
 			</mat-form-field>
 
 			<mat-form-field appearance="fill" style="margin-right: 10px;">
-				<mat-label>Edificio</mat-label>
+				<mat-label>{{ 'building' | translate}}</mat-label>
 				<mat-select
           [(ngModel)]="selectedBuildingId"
           name="buildings"
           (selectionChange)="onSelectBulding()"
         >
-					<mat-option  [value]=-1>Todos</mat-option>
+					<mat-option  [value]=-1>{{ 'allM' | translate }}</mat-option>
 					<mat-option
 						*ngFor="let building of buildings"
 						[value]="building.id"
@@ -43,14 +43,14 @@
 			</mat-form-field>
 
       <mat-form-field appearance="fill" style="margin-right: 10px;">
-				<mat-label>Tipos</mat-label>
+				<mat-label>{{ 'types' | translate }}</mat-label>
 				<mat-select
           [(ngModel)]="selectedResouceTypeId"
           name="resourcesTypes"
           (selectionChange)="onSelectResourceType()"
 					[disabled]="!resourceTypes.length"
         >
-				<mat-option  [value]="-1">Todos</mat-option>
+				<mat-option  [value]="-1">{{ 'allM' | translate }}</mat-option>
 					<mat-option
 						*ngFor="let resourceType of resourceTypes"
 						[value]="resourceType.id"
@@ -61,7 +61,7 @@
 			</mat-form-field>
 
 			<mat-form-field appearance="fill">
-				<mat-label>Rango de fechas</mat-label>
+				<mat-label>{{ 'date range' | translate }}</mat-label>
 				<mat-date-range-input
 					[rangePicker]="picker"
 					[disabled]="!bars.length"
@@ -70,12 +70,12 @@
 					<input
 						matStartDate
 						formControlName="start"
-						placeholder="Desde"
+						[placeholder]="'from' | translate"
 					>
 					<input
 						matEndDate
 						formControlName="end"
-						placeholder="Hasta"
+						[placeholder]="'to' | translate"
 						(dateChange)="onDateChange()"
 					>
 				</mat-date-range-input>
@@ -94,7 +94,7 @@
 				(click)="goBackward('month')"
 			>
 				<mat-icon aria-hidden="false" color="black" fontIcon="arrow_back"></mat-icon>
-				Mes
+				{{ 'month' | translate }}
 			</button>
 			&nbsp;
 
@@ -106,7 +106,7 @@
 				(click)="goBackward('week')"
 			>
 				<mat-icon aria-hidden="false" color="black" fontIcon="arrow_back"></mat-icon>
-				Semana
+				{{ 'week' | translate }}
 			</button>
 			&nbsp;
 
@@ -118,7 +118,7 @@
 				style="color:white"
 				(click)="goForward('week')"
 			>
-				Semana
+				{{ 'week' | translate }}
 				<mat-icon class="next-arow" aria-hidden="false" fontIcon="arrow_forward"></mat-icon>
 			</button>
 			&nbsp;
@@ -131,7 +131,7 @@
 				style="color:white"
 				(click)="goForward('month')"
 			>
-				Mes
+				{{ 'month' | translate }}
 				<mat-icon class="next-arow" aria-hidden="false" fontIcon="arrow_forward"></mat-icon>
 			</button>
 		</div>

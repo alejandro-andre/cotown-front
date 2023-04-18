@@ -5,7 +5,13 @@ query BuildingList{
   ){
     name: Name
     code: Code,
-    id
+    id,
+    location: DistrictViaDistrict_id{
+        city: LocationViaLocation_id {
+            name: Name,
+            id
+        }
+    }
   }
 }`;
 

@@ -16,6 +16,6 @@ export class AppComponent {
 
   setAppLanguage() {
     this.translate.setDefaultLang(Constants.defaultBaseLanguageForTranslation);
-    this.translate.use('es');
+    this.translate.use(this.translate.getBrowserLang() || 'es');
   }
 }

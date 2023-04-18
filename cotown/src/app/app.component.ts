@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Constants } from './constants/Constants';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'cotown';
+
+  constructor(private translate: TranslateService) {
+    this.setAppLanguage();
+  }
+
+  setAppLanguage() {
+    this.translate.setDefaultLang(Constants.defaultBaseLanguageForTranslation);
+    this.translate.use('es');
+  }
 }

@@ -12,13 +12,25 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, DateAdapter } from '@angular/material/core';
 import { AppComponent } from './app.component';
 import { GraphQLModule } from './graphql.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { PlanningComponent } from './pages/planning/planning.component';
 import { TimeChartModule } from './time-chart/time-chart.module';
 import { MatIconModule } from '@angular/material/icon';
 import { SpinnerModule } from './spinner/spinner.module';
 import { CustomDateAdapter } from './plugins/CustomDateAdapter';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { registerLocaleData } from '@angular/common';
+import localeEN from '@angular/common/locales/en-GB';
+import localeES from '@angular/common/locales/es';
 
+registerLocaleData(localeES, 'es-ES');
+registerLocaleData(localeEN, 'en-GB');
+
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -42,6 +54,13 @@ import { CustomDateAdapter } from './plugins/CustomDateAdapter';
     TimeChartModule,
     SpinnerModule,
     ReactiveFormsModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   bootstrap: [AppComponent],
   providers: [

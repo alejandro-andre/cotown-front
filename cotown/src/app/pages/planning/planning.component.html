@@ -89,6 +89,15 @@
 
 		<div class="time_line_buttons">
 			<button
+				mat-raised-button
+				color="primary"
+				style="color:white"
+				(click)="closeWindow()"
+			>Cerrar
+			</button>
+			&nbsp;
+
+			<button
 				[disabled]="!bars.length"
 				mat-raised-button
 				color="primary"

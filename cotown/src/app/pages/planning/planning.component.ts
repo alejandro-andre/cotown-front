@@ -46,6 +46,7 @@ import {
   prevMonth
 } from 'src/app/utils/utils';
 import { LanguageService } from 'src/app/services/language.service';
+import { WindowRef } from 'src/app/services/window-ref.service';
 
 @Component({
   selector: 'app-home',
@@ -83,6 +84,7 @@ export class PlanningComponent {
     private apolloApi: ApoloQueryApi,
     private _adapter: DateAdapter<any>,
     private language: LanguageService,
+    private windowRef: WindowRef
   ) {
     this.now = new Date();
     this._adapter.setLocale(this.language.lang.substring(0,2));
@@ -513,5 +515,26 @@ export class PlanningComponent {
     // Add last interval to list and return
     consolidatedIntervals.push(currentInterval);
     return consolidatedIntervals;
+  }
+
+  closeWindow() {
+    const hashParams = {
+      entity: "Booking.Booking",
+      entityId: 2,
+      attribute: "Resource_id",
+      value: {
+        id: 180,
+        Code: "ART030.AT.00.H05"
+      }
+    }
+    
+    // Respond
+    const opener = this.windowRef.nativeWindow.opener;
+    console.log(opener);
+    if (opener != null) {
+      console.log(hashParams);
+      opener.postMessage(hashParams, "*");
+    }
+    this.windowRef.nativeWindow.close();
   }
 }

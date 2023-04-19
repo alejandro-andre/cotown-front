@@ -13,7 +13,7 @@ export class TimeChartControlComponent implements OnChanges {
   @Input() now!: Date;
   @Input() from!: Date;
   @Input() to!: Date;
-  @Output() onSelectAvailable: EventEmitter<number> = new EventEmitter();
+  @Output() onSelectAvailable: EventEmitter<{ Code: string, id: number }> = new EventEmitter();
 
   // Timechart header info
   public header: string[] = [];
@@ -116,8 +116,8 @@ export class TimeChartControlComponent implements OnChanges {
     return false;
   }
 
-  emitSelectAvailableResource(id: number): void {
-    this.onSelectAvailable.emit(id);
+  emitSelectAvailableResource(bar: TimeChartBar): void {
+    this.onSelectAvailable.emit({ Code: bar.code, id: bar.id });
   }
 
   private getDay(date: Date): number {

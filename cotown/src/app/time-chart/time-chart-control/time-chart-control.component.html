@@ -28,7 +28,7 @@
 				<mat-radio-button
 					[value]="bar.code"
 					[disabled]="!isAvailable(bar)"
-					(change)="emitSelectAvailableResource(bar.id)"
+					(change)="emitSelectAvailableResource(bar)"
 				></mat-radio-button>
 			</div>
 			<div class="timechart-row-first {{bar.style}}">{{bar.code}}</div>

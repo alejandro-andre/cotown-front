@@ -47,3 +47,13 @@ export interface Booking {
   Customer_age?: number,
   Customer_last_name?: string,
 }
+
+export interface Params {
+  entityId: number,
+  entity: string,
+  attribute: string,
+  value: {
+    id: number,
+    Code: string
+  }
+}

@@ -35,6 +35,7 @@ import {
   Booking,
   Building,
   City,
+  Params,
   Resource,
   ResourceType
 } from 'src/app/constants/Interfaces';
@@ -76,6 +77,8 @@ export class PlanningComponent {
 
   private resources: Resource[] = [] as Resource[] ; // Resources
   private bookings: any [] = []; // Bookings
+  private params: Params = {} as Params;
+
 
   // Constructor
   constructor(
@@ -191,12 +194,22 @@ export class PlanningComponent {
 
   async ngOnInit() {
     this.route.queryParams.subscribe(async (params) => {
-      const {  entityId } = params;
+      const {  entityId, entity, attribute } = params;
       await this.getCities();
       await this.getAllBuildings();
 
       if(entityId) {
-        this.initData(parseInt(entityId));
+        const entityIdParsed = parseInt(entityId);
+        this.initData(entityIdParsed);
+        this.params.entityId = entityIdParsed;
+      }
+
+      if(entity) {
+        this.params.entity = entity;
+      }
+
+      if(attribute) {
+        this.params.attribute = attribute;
       }
     });
   }
@@ -349,8 +362,8 @@ export class PlanningComponent {
     }
   }
 
-  onSelectAvailable(resourceId: number){
-    console.log('IM on onselectAvailable phather', resourceId);
+  onSelectAvailable(available: { Code: string, id: number }){
+    this.params.value = available;
   }
 
   getBookings(query: string, variables: ApolloVariables | undefined = undefined): void {
@@ -518,22 +531,10 @@ export class PlanningComponent {
   }
 
   closeWindow() {
-    const hashParams = {
-      entity: "Booking.Booking",
-      entityId: 2,
-      attribute: "Resource_id",
-      value: {
-        id: 180,
-        Code: "ART030.AT.00.H05"
-      }
-    }
-    
-    // Respond
     const opener = this.windowRef.nativeWindow.opener;
-    console.log(opener);
     if (opener != null) {
-      console.log(hashParams);
-      opener.postMessage(hashParams, "*");
+      console.log(this.params);
+      opener.postMessage(this.params, "*");
     }
     this.windowRef.nativeWindow.close();
   }

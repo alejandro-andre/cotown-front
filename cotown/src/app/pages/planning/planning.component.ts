@@ -223,6 +223,22 @@ export class PlanningComponent {
     return '';
   }
 
+  get isSelectButtonActive(): boolean {
+    if(this.params && this.params.entityId !== undefined && this.params.value !== undefined) {
+      return true;
+    }
+
+    return false;
+  }
+
+  get isSelectButtonVisible(): boolean {
+    if(this.params && this.params.entityId === undefined) {
+      return false;
+    }
+
+    return true;
+  }
+
   getResourceType() :void {
     this.apolloApi.getData(ResourceTypeQuery).subscribe(res => {
       this.resourceTypes = res.data.data;

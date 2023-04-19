@@ -86,9 +86,11 @@
 			</mat-form-field>
 
 			<button
+			*ngIf="isSelectButtonVisible"
+				[disabled]="!isSelectButtonActive"
 				mat-raised-button
 				color="primary"
-				style="color: white"
+				style="color: white;"
 				(click)="closeWindow()"
 			>
 				{{ 'select' | translate }}

@@ -62,7 +62,7 @@
 				</mat-select>
 			</mat-form-field>
 
-			<mat-form-field appearance="fill">
+			<mat-form-field appearance="fill" style="margin-right: 10px;">
 				<mat-label>{{ 'date range' | translate }}</mat-label>
 				<mat-date-range-input
 					[rangePicker]="picker"
@@ -84,25 +84,23 @@
 				<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
 				<mat-date-range-picker #picker></mat-date-range-picker>
 			</mat-form-field>
+
+			<button
+				mat-raised-button
+				color="primary"
+				style="color: white"
+				(click)="closeWindow()"
+			>
+				{{ 'select' | translate }}
+			</button>
 		</form>
 
 
 		<div class="time_line_buttons">
 			<button
-				mat-raised-button
-				color="primary"
-				style="color:white"
-				(click)="closeWindow()"
-			>
-				{{ 'close' | translate }}
-			</button>
-			&nbsp;
-
-			<button
 				[disabled]="!bars.length"
 				mat-raised-button
-				color="primary"
-				style="color:white"
+				color="basic"
 				(click)="goBackward('month')"
 			>
 				<mat-icon aria-hidden="false" color="black" fontIcon="arrow_back"></mat-icon>
@@ -113,8 +111,7 @@
 			<button
 				mat-raised-button
 				[disabled]="!bars.length"
-				color="primary"
-				style="color:white"
+				color="basic"
 				(click)="goBackward('week')"
 			>
 				<mat-icon aria-hidden="false" color="black" fontIcon="arrow_back"></mat-icon>
@@ -126,8 +123,7 @@
 				class="next-button "
 				[disabled]="!bars.length"
 				mat-raised-button
-				color="primary"
-				style="color:white"
+				color="basic"
 				(click)="goForward('week')"
 			>
 				{{ 'week' | translate }}
@@ -139,8 +135,7 @@
 				class="next-button "
 				[disabled]="!bars.length"
 				mat-raised-button
-				color="primary"
-				style="color:white"
+				color="basic"
 				(click)="goForward('month')"
 			>
 				{{ 'month' | translate }}

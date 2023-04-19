@@ -151,7 +151,6 @@ export class PlanningComponent {
 
     this.apolloApi.getData(getBuildingDataWithBooking, variables).subscribe( async(res) =>{
       if(res.data.bookings && res.data.bookings.length) {
-        console.log(res.data)
         const data = res.data?.bookings[0];
         this.selectedBuildingId = parseInt(data.building_id);
         const finded = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
@@ -161,6 +160,7 @@ export class PlanningComponent {
         }
 
         this.range.setValue({ start: new Date(data.date_from), end: new Date(data.date_to) });
+        this.now = new Date(data.date_from)
         await this.getResourcesAndBookings();
         this.onDateChange()
       }

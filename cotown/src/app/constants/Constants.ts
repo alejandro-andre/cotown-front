@@ -2,12 +2,23 @@ export class Constants {
   /**
    * Colors of status of rooms
    */
-  public static colors: any = {
-    confirmada: '#002B5B',
+
+
+  public static colors: {[key: string]: string} = {
     solicitud: '#1A5F7A',
+    pendientepago: '#025CF2',
+    caducada: '#F52828' ,
+    confirmada: '#002B5B',
+    cancelada: '#7B17F5',
+    firmacontrato: '#63F202',
+    contrato: '#0ED0E6',
+    checkinconfirmado: '#0A4A37',
     checkin: '#159895',
+    inhouse: '#FFB145',
     checkout: '#57C5B6',
-    finalizada: '#537FE7'
+    devolvergarantia: '#45FF0A',
+    finalizada: '#537FE7',
+    penalizacion: '#E6CF07'
   }
 
   /**

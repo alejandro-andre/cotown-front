@@ -14,15 +14,24 @@ import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/
 import { CityListQuery } from 'src/app/schemas/querie-definitions/city.query';
 import {
   BookingList,
+  BookingListByBuildingIdAndResourceAndFlatTypeQuery,
+  BookingListByBuildingIdAndResourceFlatTypeQuery,
   BookingListByBuildingIdAndResourceTypeQuery,
   BookingListByBuildingIdQuery,
+  BookingListByResourceTypeAndFlatQuery,
+  BookingListByResourceTypeFlatQuery,
   BookingListByResourceTypeQuery,
   getBuildingDataWithBooking
 } from 'src/app/schemas/querie-definitions/booking.query';
 
 import {
+  ResourceFlatTypeQuery,
+  ResourceListByBuildingIdAndResourceFlatTypeQuery,
+  ResourceListByBuildingIdAndResourceTypeAndFlatQuery,
   ResourceListByBuildingIdAndResourceTypeQuery,
   ResourceListByBuldingIdQuery,
+  ResourceListByResourceFlatTypeQuery,
+  ResourceListByResourceTypeAndFlatQuery,
   ResourceListByResourceTypeQuery,
   ResourceListQuery,
   ResourceTypeQuery
@@ -65,7 +74,9 @@ export class PlanningComponent {
   public selectedBuilding: Building = {} as Building;
   public now: Date = new Date(); // Current date
   public resourceTypes: ResourceType [] = [] as ResourceType []; // Type of resources
+  public resourceTypesFlat: ResourceType [] = [] as ResourceType [];
   public selectedResouceTypeId = Constants.allStaticNumericValue;
+  public selectedResouceTypeFlatId=  Constants.allStaticNumericValue;
   public selectedResourceType: ResourceType = {} as ResourceType;
   public availableResources: string[] = [];
   public initDate!: Date;
@@ -214,6 +225,7 @@ export class PlanningComponent {
     });
   }
 
+  /**Getters */
   get cityName(): string {
     if (this.selectedCity) {
       const finded = this.cities.find((cit) => cit.id === this.selectedCity);
@@ -243,6 +255,12 @@ export class PlanningComponent {
     this.apolloApi.getData(ResourceTypeQuery).subscribe(res => {
       this.resourceTypes = res.data.data;
     })
+  }
+
+  getResourceTypeFlat(): void {
+    this.apolloApi.getData(ResourceFlatTypeQuery).subscribe(res => {
+      this.resourceTypesFlat = res.data.data;
+    });
   }
 
   async applyResourceTypeFilter():Promise<void> {
@@ -284,6 +302,76 @@ export class PlanningComponent {
     }
   }
 
+
+  async applyResourceTypeFlatFilter():Promise<void> {
+    // Remove all data
+    this.bookings = [];
+    this.resources = [];
+    const variables = {
+      resourceTypeFlatId: this.selectedResouceTypeFlatId
+    };
+
+    // Apply to all buildings
+    if (this.selectedBuildingId === Constants.allStaticNumericValue) {
+      // There are one type of room selected
+      if (this.selectedResouceTypeId !== Constants.allStaticNumericValue) {
+
+        const toSend = {
+          ...variables,
+          resourceTypeId: this.selectedResouceTypeId
+        }
+
+        await this.getResourceList(ResourceListByResourceTypeAndFlatQuery, toSend);
+        this.getBookings(BookingListByResourceTypeAndFlatQuery, variables);
+
+      } else { // No type of room selected
+        await this.getResourceList(ResourceListByResourceFlatTypeQuery, variables);
+        this.getBookings(BookingListByResourceTypeFlatQuery, variables);
+      }
+    } else { // building selected
+      const varToSend = {
+        ...variables,
+        buildingId: this.selectedBuildingId,
+      };
+
+      if (this.selectedResouceTypeId !== Constants.allStaticNumericValue) {
+        const toSend = {
+          ...varToSend,
+          resourceTypeId: this.selectedResouceTypeId
+        }
+
+        await this.getResourceList(ResourceListByBuildingIdAndResourceTypeAndFlatQuery, toSend);
+        this.getBookings(BookingListByBuildingIdAndResourceAndFlatTypeQuery, toSend);
+      } else {
+
+        await this.getResourceList(ResourceListByBuildingIdAndResourceFlatTypeQuery, varToSend);
+        this.getBookings(BookingListByBuildingIdAndResourceFlatTypeQuery, varToSend);
+      }
+    }
+  }
+
+
+  onSelectResourceTypeFlat(): void {
+    this.spinnerActive = true;
+    this.bars = [];
+    this.resources = [];
+    this.bookings = [];
+    if (this.selectedResouceTypeFlatId === Constants.allStaticNumericValue) { // Dont use filter
+      if(this.selectedResouceTypeId !== Constants.allStaticNumericValue) {
+        this.applyResourceTypeFilter();
+      } else {
+        this.getResourcesAndBookings();
+      }
+
+    } else {
+      this.applyResourceTypeFlatFilter();
+    }
+
+    if (this.initDate && this.endDate) {
+      this.onDateChange();
+    }
+  }
+
   getBuildingsByCityName():void {
     const variables = {
       cityName: this.cityName
@@ -311,13 +399,18 @@ export class PlanningComponent {
     return new Promise<void>((resolve) => {
       this.apolloApi.getData(query, variables).subscribe((res: any) => {
         this.getResourceType();
+        this.getResourceTypeFlat();
         const result = res.data.data;
+        console.log(result);
         for(const elem of result) {
+
+          const type = elem.resource_type === 'habitacion' ? elem.resource_place_type?.code : elem.flat.code
+
           this.resources.push({
             Resource_id: elem.id,
             Resource_code: elem.code,
             Resource_type: elem.resource_type,
-            Resource_info: elem.resource_place_type?.code || ''
+            Resource_info: type || ''
           });
         }
 

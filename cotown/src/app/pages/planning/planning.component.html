@@ -44,6 +44,24 @@
 				</mat-select>
 			</mat-form-field>
 
+			<mat-form-field appearance="fill" style="margin-right: 10px;">
+				<mat-label>{{ 'flatType' | translate }}</mat-label>
+				<mat-select
+          [(ngModel)]="selectedResouceTypeFlatId"
+          name="resourcesTypes"
+          (selectionChange)="onSelectResourceTypeFlat()"
+					[disabled]="!selectedBuildingId || selectedBuildingId === -99"
+        >
+				<mat-option  [value]="-1">{{ 'allM' | translate }}</mat-option>
+					<mat-option
+						*ngFor="let resourceType of resourceTypesFlat"
+						[value]="resourceType.id"
+					>
+						{{ resourceType.code }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+
       <mat-form-field appearance="fill" style="margin-right: 10px;">
 				<mat-label>{{ 'types' | translate }}</mat-label>
 				<mat-select

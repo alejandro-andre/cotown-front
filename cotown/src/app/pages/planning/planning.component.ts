@@ -386,7 +386,6 @@ export class PlanningComponent {
     this.bookings = [];
     this.apolloApi.getData(query, variables).subscribe((response: any) => {
       const bookingList = response.data.data;
-      console.log(bookingList)
       for (const booking of bookingList) {
         let age;
         if (booking.booking && booking.booking.customer) {
@@ -549,7 +548,6 @@ export class PlanningComponent {
   closeWindow() {
     const opener = this.windowRef.nativeWindow.opener;
     if (opener != null) {
-      console.log(this.params);
       opener.postMessage(this.params, "*");
     }
     this.windowRef.nativeWindow.close();

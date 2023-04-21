@@ -404,7 +404,7 @@ export class PlanningComponent {
         console.log(result);
         for(const elem of result) {
 
-          const type = elem.resource_type === 'habitacion' ? elem.resource_place_type?.code : elem.flat.code
+          const type = elem.resource_type === 'piso' ? elem.flat.code : elem.resource_place_type?.code;
 
           this.resources.push({
             Resource_id: elem.id,

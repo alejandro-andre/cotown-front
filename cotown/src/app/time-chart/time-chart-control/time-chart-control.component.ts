@@ -16,8 +16,8 @@ export class TimeChartControlComponent implements OnChanges {
   @Output() onSelectAvailable: EventEmitter<{ Code: string, id: number }> = new EventEmitter();
 
   // Timechart header info
-  public header: string[] = [];
-  public days: string[] = [];
+  public header: {date: string, month: number, start: number, end: number}[] = [];
+  public days: {day: string, holiday: boolean, month: number}[] = [];
   public markerFrom: number = -1;
   public markerTo: number = -1;
 
@@ -48,11 +48,28 @@ export class TimeChartControlComponent implements OnChanges {
     // Dates
     this.header = [];
     this.days = [];
-    for (var i = 0; i < 10; i++ ) {
-      const fecha = new Date(date.getTime() + (1000*60*60*24*7*i));
-      this.header.push(fecha.toLocaleDateString('es-ES', {day: '2-digit', month: 'short'}));
-      this.days.push(...['L','M','X','J','V','S','D',]);
+    let month = -1;
+    for (var i = 0; i < 70; i++ ) {
+      const fecha = new Date(date.getTime() + (1000*60*60*24*i));
+      if (month != fecha.getMonth()) {
+        const dmin = fecha.getDate();
+        const dmax = new Date(fecha.getFullYear(), fecha.getMonth() + 1, 0).getDate();
+        this.header.push({
+          date: fecha.toLocaleDateString('es-ES', {month: 'short', year: 'numeric'}), 
+          month: fecha.getMonth() % 2, 
+          start: i, 
+          end: i+dmax-dmin
+        });
+        month = fecha.getMonth();
+      }
+      this.days.push({
+        day: fecha.getDate().toString(), 
+        holiday: fecha.getDay() == 0 || fecha.getDay() == 6,
+        month: fecha.getMonth() % 2
+      });
     }
+    console.log(this.header);
+    console.log(this.days);
   }
 
   // Calculate bars position

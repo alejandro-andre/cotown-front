@@ -54,11 +54,12 @@ export class TimeChartControlComponent implements OnChanges {
       if (month != fecha.getMonth()) {
         const dmin = fecha.getDate();
         const dmax = new Date(fecha.getFullYear(), fecha.getMonth() + 1, 0).getDate();
+        const j = Math.min(i + dmax - dmin, 69);
         this.header.push({
-          date: fecha.toLocaleDateString('es-ES', {month: 'short', year: 'numeric'}), 
+          date: (j - i) < 3 ? '' : fecha.toLocaleDateString('es-ES', {month: 'short', year: 'numeric'}), 
           month: fecha.getMonth() % 2, 
           start: i, 
-          end: Math.min(i + dmax - dmin, 73)
+          end: j
         });
         month = fecha.getMonth();
       }

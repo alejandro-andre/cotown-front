@@ -58,7 +58,7 @@ export class TimeChartControlComponent implements OnChanges {
           date: fecha.toLocaleDateString('es-ES', {month: 'short', year: 'numeric'}), 
           month: fecha.getMonth() % 2, 
           start: i, 
-          end: i+dmax-dmin
+          end: Math.min(i + dmax - dmin, 73)
         });
         month = fecha.getMonth();
       }

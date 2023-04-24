@@ -421,22 +421,30 @@ export class PlanningComponent {
 
   async onSelectBulding() {
     this.spinnerActive = true;
-    if (
-      this.selectedBuildingId === Constants.allStaticNumericValue &&
-      this.selectedResouceTypeId === Constants.allStaticNumericValue
-    ) {
-      await this.getResourcesAndBookingsOfAllBuildings();
-    } else {
-      const building = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
-      if (building) {
-        this.selectedBuilding = { ...building };
-      }
+    this.bars = [];
+    this.resources = [];
+    this.bookings = [];
 
-      if (this.selectedResouceTypeId !== Constants.allStaticNumericValue) {
-        await this.applyResourceTypeFilter();
+    if (this.selectedResouceTypeFlatId === Constants.allStaticNumericValue){
+      if (
+        this.selectedBuildingId === Constants.allStaticNumericValue &&
+        this.selectedResouceTypeId === Constants.allStaticNumericValue
+      ) {
+        await this.getResourcesAndBookingsOfAllBuildings();
       } else {
-        await this.getResourcesAndBookings();
+        const building = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
+        if (building) {
+          this.selectedBuilding = { ...building };
+        }
+
+        if (this.selectedResouceTypeId !== Constants.allStaticNumericValue) {
+          await this.applyResourceTypeFilter();
+        } else {
+          await this.getResourcesAndBookings();
+        }
       }
+    } else {
+      this.applyResourceTypeFlatFilter();
     }
 
     if (this.initDate && this.endDate) {

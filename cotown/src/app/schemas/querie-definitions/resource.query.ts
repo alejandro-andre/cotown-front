@@ -26,7 +26,6 @@ export const ResourceListByBuldingIdQuery = `query ResourceListByBuldingId($buil
     }
   }`;
 
-
 export const ResourceListQuery = `query ResourceList
   {
     data: Resource_ResourceList (
@@ -53,7 +52,6 @@ export const ResourceListQuery = `query ResourceList
       }
     }
   }`;
-
 
 export const ResourceListByBuildingIdAndResourceTypeQuery = `query ResourceListByBuildingIdAndResourceTypeId($buildingId: Int, $resourceTypeId: Int){
     data: Resource_ResourceList (
@@ -82,7 +80,7 @@ export const ResourceListByBuildingIdAndResourceTypeQuery = `query ResourceListB
     }
   }`;
 
-  export const ResourceListByBuildingIdAndResourceFlatTypeQuery = `query ResourceListByBuildingIdAndResourceTypeFlatId($buildingId: Int, $resourceTypeFlatId: Int){
+export const ResourceListByBuildingIdAndResourceFlatTypeQuery = `query ResourceListByBuildingIdAndResourceTypeFlatId($buildingId: Int, $resourceTypeFlatId: Int){
     data: Resource_ResourceList (
       where: { Building_id: { EQ: $buildingId }, Flat_type_id: { EQ: $resourceTypeFlatId } }
       orderBy: [{attribute: Code, direction:ASC, nullsGo: FIRST}]
@@ -109,7 +107,7 @@ export const ResourceListByBuildingIdAndResourceTypeQuery = `query ResourceListB
     }
   }`;
 
-  export const ResourceListByBuildingIdAndResourceTypeAndFlatQuery = `query ResourceListByBuildingIdAndResourceTypeIdAndFlatId($buildingId: Int, $resourceTypeId: Int, $resourceTypeFlatId: Int){
+export const ResourceListByBuildingIdAndResourceTypeAndFlatQuery = `query ResourceListByBuildingIdAndResourceTypeIdAndFlatId($buildingId: Int, $resourceTypeId: Int, $resourceTypeFlatId: Int){
     data: Resource_ResourceList (
       where: { Building_id: { EQ: $buildingId }, Place_type_id: { EQ: $resourceTypeId }, Flat_type_id: { EQ: $resourceTypeFlatId } }
       orderBy: [{attribute: Code, direction:ASC, nullsGo: FIRST}]
@@ -136,7 +134,7 @@ export const ResourceListByBuildingIdAndResourceTypeQuery = `query ResourceListB
     }
   }`;
 
-  export const ResourceListByResourceTypeQuery = `query ResourceListByResourceTypeId($resourceTypeId: Int){
+export const ResourceListByResourceTypeQuery = `query ResourceListByResourceTypeId($resourceTypeId: Int){
     data: Resource_ResourceList (
       where: { Place_type_id: { EQ: $resourceTypeId } }
       orderBy: [{attribute: Code, direction:ASC, nullsGo: FIRST}]
@@ -163,7 +161,7 @@ export const ResourceListByBuildingIdAndResourceTypeQuery = `query ResourceListB
     }
   }`;
 
-  export const ResourceListByResourceTypeAndFlatQuery = `query ResourceListByResourceTypeIdAndFlatId($resourceTypeId: Int, $resourceTypeFlatId: Int){
+export const ResourceListByResourceTypeAndFlatQuery = `query ResourceListByResourceTypeIdAndFlatId($resourceTypeId: Int, $resourceTypeFlatId: Int){
     data: Resource_ResourceList (
       where: { Place_type_id: { EQ: $resourceTypeId },  Flat_type_id: { EQ: $resourceTypeFlatId } }
       orderBy: [{attribute: Code, direction:ASC, nullsGo: FIRST}]
@@ -190,7 +188,7 @@ export const ResourceListByBuildingIdAndResourceTypeQuery = `query ResourceListB
     }
   }`;
 
-  export const ResourceListByResourceFlatTypeQuery = `query ResourceListByResourceFlatTypeQuery($resourceTypeFlatId: Int)
+export const ResourceListByResourceFlatTypeQuery = `query ResourceListByResourceFlatTypeQuery($resourceTypeFlatId: Int)
   {
     data: Resource_ResourceList (
       orderBy: [{attribute: Code, direction:ASC, nullsGo: FIRST}]

@@ -8,11 +8,35 @@
 .nav {
   min-width: 100px;
   width: 10%;
-  border: 1px black solid;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 1px;
+  background-color: antiquewhite;
+  border: none;
 }
 
 .content {
-  width: 80%;
+  width: 90%;
+  height: 100%;
   display: flex;
   overflow: hidden;
+  flex-direction: column;
+}
+
+.header-content {
+  background: #00BFB2;
+  height: 60px !important;
+  min-height: 60px;
+  width: 100%;
+  display: flex;
+}
+
+.header-nav {
+  background-color: #00BFB2;
+  height: 60px !important;
+  min-height: 60px;
+  width: 100%;
+  display: flex;
+  margin-bottom: 5px;
 }

@@ -1,8 +1,10 @@
 <div class="container">
   <div class="nav">
+    <div class="header-nav"></div>
     <app-nav (onSelectOption)="onSelectOption($event)"></app-nav>
   </div>
   <div class="content">
+    <div class="header-content"></div>
     <router-outlet></router-outlet>
   </div>
 </div>

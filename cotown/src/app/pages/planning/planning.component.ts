@@ -302,7 +302,6 @@ export class PlanningComponent {
     }
   }
 
-
   async applyResourceTypeFlatFilter():Promise<void> {
     // Remove all data
     this.bookings = [];
@@ -349,7 +348,6 @@ export class PlanningComponent {
       }
     }
   }
-
 
   onSelectResourceTypeFlat(): void {
     this.spinnerActive = true;
@@ -401,7 +399,6 @@ export class PlanningComponent {
         this.getResourceType();
         this.getResourceTypeFlat();
         const result = res.data.data;
-        console.log(result);
         for(const elem of result) {
 
           const type = elem.resource_type === 'piso' ? elem.flat.code : elem.resource_place_type?.code;
@@ -488,24 +485,40 @@ export class PlanningComponent {
     this.apolloApi.getData(query, variables).subscribe((response: any) => {
       const bookingList = response.data.data;
       for (const booking of bookingList) {
-        let age;
+        let age, email, phone, name, code;
         if (booking.booking && booking.booking.customer) {
           age = getAge(booking.booking.customer.birth_date);
+          name = booking.booking?.customer.name;
+          phone = booking.booking?.customer.phones;
+          email = booking.booking?.customer.email;
+          code = booking.booking_id
+        }
+
+        if (!booking.booking_id && booking.rooming && booking.group) {
+          email = booking.group.customer.email;
+          phone = booking.group.customer.phones;
+          name = booking.group.customer.name
+          code = `G${booking.group_id}`
+
+          if(booking.room_user && booking.room_user.name !== null) {
+            const aux = `${name} (${booking.room_user.name})`;
+            name = aux;
+          }
         }
 
         this.bookings.push({
-          Booking_code: booking.booking_id,
+          Booking_code: code,
           Booking_lock: booking.lock,
           Booking_status: booking.status,
           Booking_date_from: booking.date_from,
           Booking_date_to: booking.date_to,
           Resource_code: booking.resource?.code || '',
-          Customer_name: booking.booking?.customer.name|| '',
+          Customer_name: name || '',
           Customer_gender: booking.booking?.customer.gender?.code || '',
           Customer_country: booking.booking?.customer.country.name || '',
-          Customer_email: booking.booking?.customer.email || '',
-          Customer_phone: booking.booking?.customer.phones || '',
-          Customer_age: age,
+          Customer_email: email || '',
+          Customer_phone: phone || '',
+          Customer_age: age || '',
         });
       }
 
@@ -583,12 +596,12 @@ export class PlanningComponent {
           <div><span class="tiphead">${b.Booking_code}</span></div>
           <div><span class="tipfield">${b.Booking_status}</span></div>
           <div><span class="tipfield">${b.Booking_date_from} a ${b.Booking_date_to}</span></div>
-          <div><span class="tipfield">Nombre:</span><span>${b.Customer_name}</span></div>
-          <div><span class="tipfield">Género:</span><span>${b.Customer_gender}</span></div>
-          <div><span class="tipfield">Edad:</span><span>${b.Customer_age}</span></div>
-          <div><span class="tipfield">País:</span><span>${b.Customer_country}</span></div>
-          <div><span class="tipfield">Teléfono:</span><span>${b.Customer_phone}</span></div>
-          <div><span class="tipfield">Email:</span><span>${b.Customer_email}</span></div>`
+          <div><span class="tipfield">Nombre: </span><span>${b.Customer_name}</span></div>
+          <div><span class="tipfield">Género: </span><span>${b.Customer_gender}</span></div>
+          <div><span class="tipfield">Edad: </span><span>${b.Customer_age}</span></div>
+          <div><span class="tipfield">País: </span><span>${b.Customer_country}</span></div>
+          <div><span class="tipfield">Teléfono: </span><span>${b.Customer_phone}</span></div>
+          <div><span class="tipfield">Email: </span><span>${b.Customer_email}</span></div>`
       }
 
       // Add line to proper bar

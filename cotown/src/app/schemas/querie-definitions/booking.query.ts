@@ -4,8 +4,22 @@ export const BookingListByBuildingIdAndResourceTypeQuery = `query BookingListByB
       where: { Building_id: { EQ: $buildingId }, Place_type_id: { EQ: $resourceTypeId } }
     ) {
       building_id: Building_id
+      rooming: Booking_rooming_id
+      group_id: Booking_group_id
       building: BuildingViaBuilding_id {
         code: Code,
+      }
+      room_user: Booking_roomingViaBooking_rooming_id {
+        email: Email
+        name: Name,
+        phones: Phones
+      }
+      group: Booking_groupViaBooking_group_id {
+        customer: CustomerViaPayer_id {
+          name: Name
+          email: Email
+          phones: Phones
+        }
       }
       booking_id: Booking_id
       booking: BookingViaBooking_id {
@@ -48,8 +62,22 @@ export const BookingListByBuildingIdAndResourceFlatTypeQuery = `query BookingLis
       where: { Building_id: { EQ: $buildingId }, Flat_type_id: { EQ: $resourceTypeFlatId } }
     ) {
       building_id: Building_id
+      group_id: Booking_group_id
+      rooming: Booking_rooming_id
       building: BuildingViaBuilding_id {
         code: Code,
+      }
+      group: Booking_groupViaBooking_group_id {
+        customer: CustomerViaPayer_id {
+          name: Name
+          email: Email
+          phones: Phones
+        }
+      }
+      room_user: Booking_roomingViaBooking_rooming_id {
+        email: Email
+        name: Name,
+        phones: Phones
       }
       booking_id: Booking_id
       booking: BookingViaBooking_id {
@@ -92,8 +120,22 @@ export const BookingListByBuildingIdAndResourceAndFlatTypeQuery = `query Booking
       where: { Building_id: { EQ: $buildingId }, Place_type_id: { EQ: $resourceTypeId }, Flat_type_id: { EQ: $resourceTypeFlatId } }
     ) {
       building_id: Building_id
+      group_id: Booking_group_id
+      rooming: Booking_rooming_id
       building: BuildingViaBuilding_id {
         code: Code,
+      }
+      group: Booking_groupViaBooking_group_id {
+        customer: CustomerViaPayer_id {
+          name: Name
+          email: Email
+          phones: Phones
+        }
+      }
+      room_user: Booking_roomingViaBooking_rooming_id {
+        email: Email
+        name: Name,
+        phones: Phones
       }
       booking_id: Booking_id
       booking: BookingViaBooking_id {
@@ -139,7 +181,21 @@ export const BookingListByResourceTypeQuery = `query BookingListByResourceType($
       building: BuildingViaBuilding_id {
         code: Code,
       }
+      group: Booking_groupViaBooking_group_id {
+        customer: CustomerViaPayer_id {
+          name: Name
+          email: Email
+          phones: Phones
+        }
+      }
+      room_user: Booking_roomingViaBooking_rooming_id {
+        email: Email
+        name: Name,
+        phones: Phones
+      }
       booking_id: Booking_id
+      group_id: Booking_group_id
+      rooming: Booking_rooming_id
       booking: BookingViaBooking_id {
         customer: CustomerViaCustomer_id {
           name: Name
@@ -182,7 +238,21 @@ export const BookingListByResourceTypeAndFlatQuery = `query BookingListByResourc
       building: BuildingViaBuilding_id {
         code: Code,
       }
+      group: Booking_groupViaBooking_group_id {
+        customer: CustomerViaPayer_id {
+          name: Name
+          email: Email
+          phones: Phones
+        }
+      }
+      room_user: Booking_roomingViaBooking_rooming_id {
+        email: Email
+        name: Name,
+        phones: Phones
+      }
       booking_id: Booking_id
+      rooming: Booking_rooming_id
+      group_id: Booking_group_id
       booking: BookingViaBooking_id {
         customer: CustomerViaCustomer_id {
           name: Name
@@ -225,6 +295,20 @@ export const BookingListByResourceTypeFlatQuery = `query BookingListByResourceTy
       building: BuildingViaBuilding_id {
         code: Code,
       }
+      group: Booking_groupViaBooking_group_id {
+        customer: CustomerViaPayer_id {
+          name: Name
+          email: Email
+          phones: Phones
+        }
+      }
+      room_user: Booking_roomingViaBooking_rooming_id {
+        email: Email
+        name: Name,
+        phones: Phones
+      }
+      group_id: Booking_group_id
+      rooming: Booking_rooming_id
       booking_id: Booking_id
       booking: BookingViaBooking_id {
         customer: CustomerViaCustomer_id {
@@ -264,8 +348,23 @@ export const BookingListByBuildingIdQuery = `query BookingListByBuildingId($buil
     {
       data: Booking_Booking_detailList( where: { Building_id: { EQ: $buildingId } }) {
         building_id: Building_id
+        rooming: Booking_rooming_id
+        group_id: Booking_group_id
         building: BuildingViaBuilding_id {
           code: Code,
+        }
+        group: Booking_groupViaBooking_group_id {
+          customer: CustomerViaPayer_id {
+            id
+            name: Name
+            email: Email
+            phones: Phones
+          }
+        }
+        room_user: Booking_roomingViaBooking_rooming_id {
+          email: Email
+          name: Name,
+          phones: Phones
         }
         booking_id: Booking_id
         booking: BookingViaBooking_id {
@@ -305,9 +404,23 @@ export const BookingListByBuildingIdQuery = `query BookingListByBuildingId($buil
 export const BookingList = `query BookingList
   {
     data: Booking_Booking_detailList {
+      rooming: Booking_rooming_id
+      group_id: Booking_group_id
       building_id: Building_id
       building: BuildingViaBuilding_id {
         code: Code,
+      }
+      group: Booking_groupViaBooking_group_id {
+        customer: CustomerViaPayer_id {
+          name: Name
+          email: Email
+          phones: Phones
+        }
+      }
+      room_user: Booking_roomingViaBooking_rooming_id {
+        email: Email
+        name: Name,
+        phones: Phones
       }
       booking_id: Booking_id
       booking: BookingViaBooking_id {

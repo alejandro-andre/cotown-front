@@ -1,7 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './auth/auth.guard';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'customer',
+    pathMatch: 'full'
+  },
+  {
+    path: 'customer',
+    loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule),
+    canActivate: [AuthGuard],
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -23,7 +23,6 @@ export class ApoloQueryApi {
       nextFetchPolicy: 'no-cache',
       variables: {...variables, authorization: `${this.token}`},
     }).valueChanges;
-    
   }
 
 }

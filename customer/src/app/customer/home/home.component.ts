@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getAirflowsToken();
   }
-  
+
   public login(): void {
     this.authService.login();
   }

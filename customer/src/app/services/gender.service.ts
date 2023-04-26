@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Gender, GenderInterface } from '../models/Gender.model';
-
-
+import { Gender } from '../models/Gender.model';
+import { BasicInterface } from '../models/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,7 @@ export class GenderService {
 
   constructor() {}
 
-  setGenderData(data: GenderInterface []) {
+  setGenderData(data: BasicInterface []) {
     this.gendersModel.genders = data;
   }
 }

@@ -1,13 +1,9 @@
-export interface GenderInterface {
-  name: string,
-  id: number | null
-}
-
+import { BasicInterface } from "./interfaces";
 
 export class Gender {
-  genders: GenderInterface[] = [];
+  genders: BasicInterface[] = [];
 
-  constructor(data: GenderInterface[] = [] as GenderInterface []) {
+  constructor(data: BasicInterface[] = [] as BasicInterface []) {
     this.genders = data;
   }
 };

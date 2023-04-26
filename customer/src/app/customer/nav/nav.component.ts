@@ -13,7 +13,6 @@ export class NavComponent {
 
 
   onSelect(data: string) {
-    console.log('IM on select');
     this.onSelectOption.next(data);
   }
 }

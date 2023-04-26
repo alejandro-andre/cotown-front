@@ -107,6 +107,27 @@
 					</mat-option>
 				</mat-select>
 			</mat-form-field>
+
+      <mat-form-field appearance="fill" style="margin-right: 10px;">
+				<mat-label>Nacionalidad</mat-label>
+				<mat-select
+          [(ngModel)]="customerService.customer.nationality"
+					(ngModelChange)="changed()"
+        >
+					<mat-option
+						*ngFor="let country of countryService.countryModel.countries"
+						[value]="country.id"
+					>
+						{{ country.name }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+    </p>
+    <p>
+      <mat-form-field class="example-full-width">
+        <mat-label>Tutor</mat-label>
+        <input matInput placeholder="Tutor" [(ngModel)]="customerService.customer.tutor" readonly>
+      </mat-form-field>
     </p>
   </div>
 </div>

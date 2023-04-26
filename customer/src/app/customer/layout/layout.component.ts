@@ -71,12 +71,12 @@ export class LayoutComponent implements OnInit {
         if (value && value.data && value.data.length) {
           const {
             name , province, city, country,adress, postal_code, document, email, phones,
-            gender_id, language, origin
+            gender_id, language, origin,tutor
           } = value.data[0];
 
           const customer = new Customer(
             name, province, city, country, adress, postal_code, document, email, phones, gender_id,
-            language, origin
+            language, origin, tutor?.name || ''
           );
 
           this.customerService.setCustomerData(customer);

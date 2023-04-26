@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { CountryService } from 'src/app/services/country.service';
 
-import { AuthService } from 'src/app/auth/service/auth.service';
-import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
+import { CustomerService } from 'src/app/services/customer.service';
+import { GenderService } from 'src/app/services/gender.service';
+import { LanguageService } from 'src/app/services/languages.service';
+import { FormControl } from '@angular/forms';
+
 
 @Component({
   selector: 'app-home',
@@ -9,13 +13,20 @@ import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
   styleUrls: ['./myData.component.scss']
 })
 
-export class MyDataComponent implements OnInit {
+export class MyDataComponent implements OnInit{
 
   constructor(
-    private apolloApi: ApoloQueryApi
-  ) { }
-
+    public customerService: CustomerService,
+    public genderService: GenderService,
+    public countryService: CountryService,
+    public languageService: LanguageService
+  ) {}
   ngOnInit(): void {
   }
 
+
+
+  changed() {
+    console.log(this.customerService.customer)
+  }
 }

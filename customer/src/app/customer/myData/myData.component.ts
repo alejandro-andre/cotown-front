@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AuthService } from 'src/app/auth/service/auth.service';
-import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
+import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
   selector: 'app-home',
@@ -9,13 +8,9 @@ import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
   styleUrls: ['./myData.component.scss']
 })
 
-export class MyDataComponent implements OnInit {
+export class MyDataComponent{
 
   constructor(
-    private apolloApi: ApoloQueryApi
-  ) { }
-
-  ngOnInit(): void {
-  }
-
+    public customerService: CustomerService
+  ) {}
 }

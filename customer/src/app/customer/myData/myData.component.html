@@ -124,6 +124,18 @@
 			</mat-form-field>
     </p>
     <p>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Choose a date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          [formControl]="customerService.customer.formControl"
+        >
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
       <mat-form-field class="example-full-width">
         <mat-label>Tutor</mat-label>
         <input matInput placeholder="Tutor" [(ngModel)]="customerService.customer.tutor" readonly>

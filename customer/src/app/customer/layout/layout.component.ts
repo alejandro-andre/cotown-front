@@ -71,16 +71,18 @@ export class LayoutComponent implements OnInit {
         if (value && value.data && value.data.length) {
           const {
             name , province, city, country,adress, postal_code, document, email, phones,
-            gender_id, language, origin,tutor
+            gender_id, language, origin,tutor, birth_date, nationality
           } = value.data[0];
+
+          const birthDate = birth_date !== null ? new Date(birth_date) : null;
 
           const customer = new Customer(
             name, province, city, country, adress, postal_code, document, email, phones, gender_id,
-            language, origin, tutor?.name || ''
+            language, origin, nationality, tutor?.name || '', birthDate
           );
 
           this.customerService.setCustomerData(customer);
-          console.log('COSTYM', value[0]);
+          console.log('COSTYM', this.customerService);
         }
       });
 

@@ -4,6 +4,8 @@ import { CountryService } from 'src/app/services/country.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { GenderService } from 'src/app/services/gender.service';
 import { LanguageService } from 'src/app/services/languages.service';
+import { FormControl } from '@angular/forms';
+
 
 @Component({
   selector: 'app-home',
@@ -11,7 +13,7 @@ import { LanguageService } from 'src/app/services/languages.service';
   styleUrls: ['./myData.component.scss']
 })
 
-export class MyDataComponent{
+export class MyDataComponent implements OnInit{
 
   constructor(
     public customerService: CustomerService,
@@ -19,6 +21,10 @@ export class MyDataComponent{
     public countryService: CountryService,
     public languageService: LanguageService
   ) {}
+  ngOnInit(): void {
+  }
+
+
 
   changed() {
     console.log(this.customerService.customer)

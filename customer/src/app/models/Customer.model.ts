@@ -1,3 +1,4 @@
+import { FormControl } from '@angular/forms';
 export class Customer {
   name: string = '';
   province: string = '';
@@ -13,6 +14,9 @@ export class Customer {
   originId: number | null = null;
   nationality: number | null = null;
   tutor: string = '';
+  birthDate: Date | null = null;
+  public formControl = new FormControl<Date | null>(null);
+
 
   constructor(
     name: string = '',
@@ -29,6 +33,7 @@ export class Customer {
     origin: number | null = null,
     nationality: number | null = null,
     tutor: string = '',
+    birthDate: Date | null = null,
     ) {
     this.name = name;
     this.province = province;
@@ -44,5 +49,7 @@ export class Customer {
     this.originId = origin;
     this.nationality = nationality;
     this.tutor = tutor;
+    this.birthDate = birthDate;
+    this.formControl = new FormControl(this.birthDate)
   }
 };

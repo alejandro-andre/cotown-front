@@ -5,10 +5,12 @@ import { Customer } from 'src/app/models/Customer.model';
 import { countryQuery } from 'src/app/schemas/query-definitions/countries.query';
 import { customerQuery } from 'src/app/schemas/query-definitions/customer.query';
 import { genderQuery } from 'src/app/schemas/query-definitions/gender.query';
+import { languageQuery } from 'src/app/schemas/query-definitions/languages.query';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { CountryService } from 'src/app/services/country.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { GenderService } from 'src/app/services/gender.service';
+import { LanguageService } from 'src/app/services/languages.service';
 
 @Component({
   selector: 'app-layout',
@@ -23,7 +25,8 @@ export class LayoutComponent implements OnInit {
     private customerService: CustomerService,
     public authService: AuthService,
     public genderService: GenderService,
-    public countryService: CountryService
+    public countryService: CountryService,
+    public languageSerice: LanguageService
 
   ) {}
 
@@ -37,6 +40,14 @@ export class LayoutComponent implements OnInit {
     }
 
     this.authService.getAirflowsToken().then(() => {
+
+      this.apolloApi.getData(languageQuery).subscribe((res) => {
+        console.log(res.data)
+        const value = res.data;
+        if (value && value.languages) {
+          this.languageSerice.setLanguageData(value.languages);
+        }
+      })
 
       this.apolloApi.getData(genderQuery).subscribe((res) => {
         const value = res.data;
@@ -55,19 +66,21 @@ export class LayoutComponent implements OnInit {
       })
 
       this.apolloApi.getData(customerQuery, variables).subscribe((res) => {
-        const value = res.data.data;
-        if (value && value.length) {
+        const value = res.data;
+        console.log(res)
+        if (value && value.data && value.data.length) {
           const {
             name , province, city, country,adress, postal_code, document, email, phones,
-            gender_id
-          } = value[0];
+            gender_id, language, origin
+          } = value.data[0];
 
           const customer = new Customer(
-            name, province, city, country.id, adress, postal_code, document, email, phones, gender_id
+            name, province, city, country, adress, postal_code, document, email, phones, gender_id,
+            language, origin
           );
 
           this.customerService.setCustomerData(customer);
-          console.log(value[0]);
+          console.log('COSTYM', value[0]);
         }
       });
 

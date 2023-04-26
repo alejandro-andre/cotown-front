@@ -77,6 +77,36 @@
 					</mat-option>
 				</mat-select>
 			</mat-form-field>
+
+      <mat-form-field appearance="fill" style="margin-right: 10px;">
+				<mat-label>Pais de origen</mat-label>
+				<mat-select
+          [(ngModel)]="customerService.customer.originId"
+					(ngModelChange)="changed()"
+        >
+					<mat-option
+						*ngFor="let country of countryService.countryModel.countries"
+						[value]="country.id"
+					>
+						{{ country.name }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+
+      <mat-form-field appearance="fill" style="margin-right: 10px;">
+				<mat-label>Language</mat-label>
+				<mat-select
+          [(ngModel)]="customerService.customer.languageId"
+					(ngModelChange)="changed()"
+        >
+					<mat-option
+						*ngFor="let lang of languageService.languageModel.languages"
+						[value]="lang.id"
+					>
+						{{ lang.name }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
     </p>
   </div>
 </div>

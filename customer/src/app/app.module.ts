@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { GraphQLModule } from './graphql.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { GraphQLModule } from './graphql.module';
     BrowserModule,
     AppRoutingModule,
     AuthModule,
-    GraphQLModule
+    GraphQLModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

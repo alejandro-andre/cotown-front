@@ -3,22 +3,20 @@ export class Constants {
    * Colors of status of rooms
    */
 
-
   public static colors: {[key: string]: string} = {
-    solicitud: '#1A5F7A',
-    pendientepago: '#025CF2',
-    caducada: '#F52828' ,
-    confirmada: '#002B5B',
-    cancelada: '#7B17F5',
-    firmacontrato: '#63F202',
-    contrato: '#0ED0E6',
-    checkinconfirmado: '#0A4A37',
-    checkin: '#159895',
-    inhouse: '#FFB145',
-    checkout: '#57C5B6',
-    devolvergarantia: '#45FF0A',
-    finalizada: '#537FE7',
-    penalizacion: '#E6CF07'
+    grupobloqueado: 'ffd0ff',
+    grupoconfirmado: 'ff80ff',
+    pendientepago: '#ffd080',
+    caducada: '#000000' ,
+    confirmada: '#ffa000',
+    firmacontrato: '#ffffd0',
+    contrato: '#ffff00',
+    checkinconfirmado: '#b0f0b0',
+    checkin: '#70f070',
+    inhouse: '#40c040',
+    checkout: '#a0d0f0',
+    devolvergarantia: '#60a0f0',
+    finalizada: '#d0d0d0',
   }
 
   /**
@@ -31,12 +29,12 @@ export class Constants {
   }
 
   public static resourceNotAvailable = {
-    color: 'rgba(255, 100, 100, 0.7)',
+    color: 'rgba(128, 128, 128, 0.7)',
     type:  'stripes'
   }
 
   public static blockedResource = {
-    color: '#C0C0C0',
+    color: 'rgba(64, 64, 64, 0.7)',
     type: 'stripes'
   }
 

@@ -15,10 +15,7 @@ export const customerQuery = `query customerQuery($id: Int) {
         name: Name
         id
     }
-    gender: GenderViaGender_id {
-        name: Name
-        id
-    }
+    gender_id:  Gender_id
     country: CountryViaCountry_id {
       name: Name,
       id

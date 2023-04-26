@@ -11,26 +11,18 @@ export const customerQuery = `query customerQuery($id: Int) {
     comments: Comments
     phones: Phones
     document: Document
+    origin: Country_origin_id
     tutor: CustomerViaTutor_id {
         name: Name
         id
     }
     gender_id:  Gender_id
-    country: CountryViaCountry_id {
-      name: Name,
-      id
-    }
+    language: Language_id
+    nationality: Nationality_id
+    country: Country_id
     school: SchoolViaSchool_id {
       name: Name,
       id
-    }
-    nacionalty: CountryViaNationality_id {
-      name: Name,
-      id
-    }
-    origin: CountryViaCountry_origin_id {
-      id,
-      name: Name
     }
   }
 }`;

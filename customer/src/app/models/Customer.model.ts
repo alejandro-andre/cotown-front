@@ -9,7 +9,8 @@ export class Customer {
   email: string = '';
   phone: string  ='';
   genderId: number | null = null;
-
+  languageId: number | null = null;
+  originId: number | null = null;
 
   constructor(
     name: string = '',
@@ -21,7 +22,9 @@ export class Customer {
     document: string = '',
     email: string = '',
     phone: string  ='',
-    genderId: number | null = null
+    genderId: number | null = null,
+    language: number | null = null,
+    origin: number | null = null,
     ) {
     this.name = name;
     this.province = province;
@@ -33,6 +36,8 @@ export class Customer {
     this.email = email;
     this.phone = phone;
     this.genderId = genderId
+    this.languageId = language
+    this.originId = origin
   }
 
 

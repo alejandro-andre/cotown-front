@@ -49,5 +49,24 @@
         <input matInput placeholder="Province" [(ngModel)]="customerService.customer.country">
       </mat-form-field>
     </p>
+
+
+    <p>
+      <mat-form-field appearance="fill" style="margin-right: 10px;">
+				<mat-label>Genero</mat-label>
+				<mat-select
+          [(ngModel)]="customerService.customer.genderId"
+          name="resourcesTypes"
+					(ngModelChange)="changed()"
+        >
+					<mat-option
+						*ngFor="let gender of genderService.gendersModel.genders"
+						[value]="gender.id"
+					>
+						{{ gender.name }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+    </p>
   </div>
 </div>

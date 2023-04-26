@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { MatFormFieldModule,  } from '@angular/material/form-field';
 import { MatInputModule  } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select'
 
 import { HomeComponent } from './home/home.component';
 import { LayoutComponent } from './layout/layout.component';
@@ -25,13 +26,15 @@ import { MyDataComponent } from './myData/myData.component';
     RouterModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule
   ],
   exports: [
     LayoutComponent,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

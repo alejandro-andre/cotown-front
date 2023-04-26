@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { CustomerService } from 'src/app/services/customer.service';
+import { GenderService } from 'src/app/services/gender.service';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +12,11 @@ import { CustomerService } from 'src/app/services/customer.service';
 export class MyDataComponent{
 
   constructor(
-    public customerService: CustomerService
+    public customerService: CustomerService,
+    public genderService: GenderService
   ) {}
+
+  changed() {
+    console.log(this.customerService.customer)
+  }
 }

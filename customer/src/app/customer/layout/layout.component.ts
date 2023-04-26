@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { Customer } from 'src/app/models/Customer.model';
+import { countryQuery } from 'src/app/schemas/query-definitions/countries.query';
 import { customerQuery } from 'src/app/schemas/query-definitions/customer.query';
 import { genderQuery } from 'src/app/schemas/query-definitions/gender.query';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
+import { CountryService } from 'src/app/services/country.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { GenderService } from 'src/app/services/gender.service';
 
@@ -20,7 +22,9 @@ export class LayoutComponent implements OnInit {
     private apolloApi: ApoloQueryApi,
     private customerService: CustomerService,
     public authService: AuthService,
-    public genderService: GenderService
+    public genderService: GenderService,
+    public countryService: CountryService
+
   ) {}
 
   onSelectOption(data: string): void {
@@ -40,8 +44,15 @@ export class LayoutComponent implements OnInit {
         if (value && value.genders) {
           this.genderService.setGenderData(value.genders);
         }
-        console.log('The data is : ', value)
       });
+
+      this.apolloApi.getData(countryQuery).subscribe((res) => {
+        const value = res.data;
+        if (value && value.countries && value.countries.length) {
+          this.countryService.setCountryData(value.countries);
+        }
+        console.log(res)
+      })
 
       this.apolloApi.getData(customerQuery, variables).subscribe((res) => {
         const value = res.data.data;

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CountryService } from 'src/app/services/country.service';
 
 import { CustomerService } from 'src/app/services/customer.service';
 import { GenderService } from 'src/app/services/gender.service';
@@ -13,7 +14,8 @@ export class MyDataComponent{
 
   constructor(
     public customerService: CustomerService,
-    public genderService: GenderService
+    public genderService: GenderService,
+    public countryService: CountryService
   ) {}
 
   changed() {

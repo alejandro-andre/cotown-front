@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Customer } from '../models/Customer.model';
 
-
-
 @Injectable({
   providedIn: 'root'
 })

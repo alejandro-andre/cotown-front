@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { GraphQLModule } from './graphql.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CustomerModule } from './customer/customer.module';
 
 @NgModule({
   declarations: [
@@ -16,10 +17,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     AuthModule,
     GraphQLModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CustomerModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [ ],
+  bootstrap: [AppComponent],
 })
 
 export class AppModule { }

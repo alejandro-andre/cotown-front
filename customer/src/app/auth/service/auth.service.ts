@@ -54,19 +54,24 @@ export class AuthService {
     return this.keycloakService.getToken();
   }
 
-  public getAirflowsToken() {
-    this.keycloakService.getToken().then(token => {
-      this.keycloakToken = token;
-      this.loggedIn = true;
-      console.log("Logged in");
-      this.apolloApi.getData(`{ refreshToken(token:"${token}") }`).subscribe(res => {
-        this.airflowsToken = res.data.refreshToken;
-        this.apolloApi.token = res.data.refreshToken;
+  public getAirflowsToken(): Promise<void> {
+    return new Promise ((resolve, reject) => {
+      this.keycloakService.getToken().then(token => {
+        this.keycloakToken = token;
+        this.loggedIn = true;
+        console.log("Logged in");
+        this.apolloApi.getData(`{ refreshToken(token:"${token}") }`).subscribe(res => {
+          this.airflowsToken = res.data.refreshToken;
+          this.apolloApi.token = res.data.refreshToken;
+          resolve();
+        });
+      })
+      .catch(error => {
+        console.error(error);
+        reject(error);
       });
     })
-    .catch(error => {
-      console.error(error);
-    });
+
   }
 
 }

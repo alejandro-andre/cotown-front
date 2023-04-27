@@ -8,7 +8,7 @@ import { IdentificationDocTypesService } from 'src/app/services/identificationDo
 
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-my-data',
   templateUrl: './myData.component.html',
   styleUrls: ['./myData.component.scss']
 })

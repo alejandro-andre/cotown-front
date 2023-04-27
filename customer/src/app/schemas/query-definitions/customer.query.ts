@@ -13,6 +13,7 @@ export const customerQuery = `query customerQuery($id: Int) {
     document: Document
     origin: Country_origin_id
     type_doc: Id_type_id
+    school_id: School_id
     tutor: CustomerViaTutor_id {
         name: Name
         id
@@ -21,9 +22,5 @@ export const customerQuery = `query customerQuery($id: Int) {
     language: Language_id
     nationality: Nationality_id
     country: Country_id
-    school: SchoolViaSchool_id {
-      name: Name,
-      id
-    }
   }
 }`;

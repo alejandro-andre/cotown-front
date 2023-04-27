@@ -112,6 +112,23 @@
         <mat-label>Tutor</mat-label>
         <input matInput placeholder="Tutor" [(ngModel)]="customerService.customer.tutor" readonly>
       </mat-form-field>
+
+      <mat-form-field appearance="fill" style="margin-right: 10px;">
+        <mat-label>Escuela/Empresa</mat-label>
+        <mat-select [(ngModel)]="customerService.customer.schoolOrCompany" (ngModelChange)="changed()">
+          <mat-option *ngFor="let school of schoolOrCompaniesService.schoolOrCompaniesModel.schoolOrCompanies"
+            [value]="school.id">
+            {{ school.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </p>
+
+    <p>
+      <mat-form-field>
+        <mat-label>Cuenta bancaria</mat-label>
+        <input matInput placeholder="Cuenta bancaria" [(ngModel)]="customerService.customer.bankAcount" readonly>
+      </mat-form-field>
     </p>
   </div>
 </div>

@@ -1,18 +1,23 @@
 <div>
-  <div class="example-form" >
+  <div class="example-form">
     <mat-form-field class="example-full-width">
       <mat-label>Nombre</mat-label>
-      <input matInput  [(ngModel)]="customerService.customer.name">
+      <input matInput [(ngModel)]="customerService.customer.name">
     </mat-form-field>
+    <mat-form-field appearance="fill" style="margin-right: 10px;">
+      <mat-label>Tipo de documento</mat-label>
+      <mat-select [(ngModel)]="customerService.customer.typeDoc" (ngModelChange)="changed()">
+        <mat-option *ngFor="let doc of identificationTypesService.identificationTypesModel.types" [value]="doc.id">
+          {{ doc.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <mat-form-field class="example-full-width">
       <mat-label>Document</mat-label>
-      <input matInput  [(ngModel)]="customerService.customer.document">
+      <input matInput [(ngModel)]="customerService.customer.document">
     </mat-form-field>
 
-
-    <p>
-
-    </p>
     <p>
       <mat-form-field class="example-full-width">
         <mat-label>Email</mat-label>
@@ -23,7 +28,8 @@
         <mat-label>Phone</mat-label>
         <input readonly matInput placeholder="Email" [(ngModel)]="customerService.customer.phone">
       </mat-form-field>
-
+    </p>
+    <p>
       <mat-form-field class="example-full-width">
         <mat-label>Address</mat-label>
         <textarea matInput placeholder="Adress" [(ngModel)]="customerService.customer.adress"></textarea>
@@ -46,92 +52,58 @@
 
 
       <mat-form-field appearance="fill" style="margin-right: 10px;">
-				<mat-label>country</mat-label>
-				<mat-select
-          [(ngModel)]="customerService.customer.country"
-					(ngModelChange)="changed()"
-        >
-					<mat-option
-						*ngFor="let country of countryService.countryModel.countries"
-						[value]="country.id"
-					>
-						{{ country.name }}
-					</mat-option>
-				</mat-select>
-			</mat-form-field>
+        <mat-label>country</mat-label>
+        <mat-select [(ngModel)]="customerService.customer.country" (ngModelChange)="changed()">
+          <mat-option *ngFor="let country of countryService.countryModel.countries" [value]="country.id">
+            {{ country.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </p>
 
 
     <p>
       <mat-form-field appearance="fill" style="margin-right: 10px;">
-				<mat-label>Genero</mat-label>
-				<mat-select
-          [(ngModel)]="customerService.customer.genderId"
-					(ngModelChange)="changed()"
-        >
-					<mat-option
-						*ngFor="let gender of genderService.gendersModel.genders"
-						[value]="gender.id"
-					>
-						{{ gender.name }}
-					</mat-option>
-				</mat-select>
-			</mat-form-field>
+        <mat-label>Genero</mat-label>
+        <mat-select [(ngModel)]="customerService.customer.genderId" (ngModelChange)="changed()">
+          <mat-option *ngFor="let gender of genderService.gendersModel.genders" [value]="gender.id">
+            {{ gender.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
       <mat-form-field appearance="fill" style="margin-right: 10px;">
-				<mat-label>Pais de origen</mat-label>
-				<mat-select
-          [(ngModel)]="customerService.customer.originId"
-					(ngModelChange)="changed()"
-        >
-					<mat-option
-						*ngFor="let country of countryService.countryModel.countries"
-						[value]="country.id"
-					>
-						{{ country.name }}
-					</mat-option>
-				</mat-select>
-			</mat-form-field>
+        <mat-label>Pais de origen</mat-label>
+        <mat-select [(ngModel)]="customerService.customer.originId" (ngModelChange)="changed()">
+          <mat-option *ngFor="let country of countryService.countryModel.countries" [value]="country.id">
+            {{ country.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
       <mat-form-field appearance="fill" style="margin-right: 10px;">
-				<mat-label>Language</mat-label>
-				<mat-select
-          [(ngModel)]="customerService.customer.languageId"
-					(ngModelChange)="changed()"
-        >
-					<mat-option
-						*ngFor="let lang of languageService.languageModel.languages"
-						[value]="lang.id"
-					>
-						{{ lang.name }}
-					</mat-option>
-				</mat-select>
-			</mat-form-field>
+        <mat-label>Idioma</mat-label>
+        <mat-select [(ngModel)]="customerService.customer.languageId" (ngModelChange)="changed()">
+          <mat-option *ngFor="let lang of languageService.languageModel.languages" [value]="lang.id">
+            {{ lang.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
       <mat-form-field appearance="fill" style="margin-right: 10px;">
-				<mat-label>Nacionalidad</mat-label>
-				<mat-select
-          [(ngModel)]="customerService.customer.nationality"
-					(ngModelChange)="changed()"
-        >
-					<mat-option
-						*ngFor="let country of countryService.countryModel.countries"
-						[value]="country.id"
-					>
-						{{ country.name }}
-					</mat-option>
-				</mat-select>
-			</mat-form-field>
+        <mat-label>Nacionalidad</mat-label>
+        <mat-select [(ngModel)]="customerService.customer.nationality" (ngModelChange)="changed()">
+          <mat-option *ngFor="let country of countryService.countryModel.countries" [value]="country.id">
+            {{ country.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </p>
     <p>
 
       <mat-form-field appearance="fill">
         <mat-label>Choose a date</mat-label>
-        <input
-          matInput
-          [matDatepicker]="picker"
-          [formControl]="customerService.customer.formControl"
-        >
+        <input matInput [matDatepicker]="picker" [formControl]="customerService.customer.formControl">
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>

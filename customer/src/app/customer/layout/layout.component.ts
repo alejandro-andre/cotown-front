@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { Customer } from 'src/app/models/Customer.model';
+import { identificationDocTypesQuery } from 'src/app/schemas/query-definitions/IdentificationDocTypes.query';
 import { countryQuery } from 'src/app/schemas/query-definitions/countries.query';
 import { customerQuery } from 'src/app/schemas/query-definitions/customer.query';
 import { genderQuery } from 'src/app/schemas/query-definitions/gender.query';
@@ -10,6 +11,7 @@ import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { CountryService } from 'src/app/services/country.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { GenderService } from 'src/app/services/gender.service';
+import { IdentificationDocTypesService } from 'src/app/services/identificationDocTypes.service';
 import { LanguageService } from 'src/app/services/languages.service';
 
 @Component({
@@ -26,7 +28,8 @@ export class LayoutComponent implements OnInit {
     public authService: AuthService,
     public genderService: GenderService,
     public countryService: CountryService,
-    public languageSerice: LanguageService
+    public languageSerice: LanguageService,
+    public identificationTypes: IdentificationDocTypesService
 
   ) {}
 
@@ -40,6 +43,13 @@ export class LayoutComponent implements OnInit {
     }
 
     this.authService.getAirflowsToken().then(() => {
+
+      this.apolloApi.getData(identificationDocTypesQuery).subscribe((res) => {
+        const value = res.data;
+        if (value && value.types) {
+          this.identificationTypes.setTypesData(value.types);
+        }
+      });
 
       this.apolloApi.getData(languageQuery).subscribe((res) => {
         console.log(res.data)
@@ -71,18 +81,17 @@ export class LayoutComponent implements OnInit {
         if (value && value.data && value.data.length) {
           const {
             name , province, city, country,adress, postal_code, document, email, phones,
-            gender_id, language, origin,tutor, birth_date, nationality
+            gender_id, language, origin,tutor, birth_date, nationality, type_doc
           } = value.data[0];
 
           const birthDate = birth_date !== null ? new Date(birth_date) : null;
 
           const customer = new Customer(
             name, province, city, country, adress, postal_code, document, email, phones, gender_id,
-            language, origin, nationality, tutor?.name || '', birthDate
+            language, origin, nationality, tutor?.name || '', birthDate, type_doc
           );
 
           this.customerService.setCustomerData(customer);
-          console.log('COSTYM', this.customerService);
         }
       });
 

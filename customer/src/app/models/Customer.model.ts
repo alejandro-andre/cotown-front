@@ -15,7 +15,8 @@ export class Customer {
   nationality: number | null = null;
   tutor: string = '';
   birthDate: Date | null = null;
-  public formControl = new FormControl<Date | null>(null);
+  typeDoc: number | null = null;
+  formControl = new FormControl<Date | null>(null);
 
 
   constructor(
@@ -34,6 +35,7 @@ export class Customer {
     nationality: number | null = null,
     tutor: string = '',
     birthDate: Date | null = null,
+    typeDoc: number | null = null,
     ) {
     this.name = name;
     this.province = province;
@@ -51,5 +53,6 @@ export class Customer {
     this.tutor = tutor;
     this.birthDate = birthDate;
     this.formControl = new FormControl(this.birthDate)
+    this.typeDoc = typeDoc;
   }
 };

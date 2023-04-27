@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BasicInterface } from 'src/app/models/interfaces';
+import { ContactTypeService } from 'src/app/services/contactType.service';
 import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
@@ -9,9 +11,19 @@ import { CustomerService } from 'src/app/services/customer.service';
 })
 
 export class NewContactComponent {
-
   constructor(
     public customerService: CustomerService,
+    private contactTypeService: ContactTypeService,
     private router: Router,
   ) {}
+
+  public contactType: number | null = null;
+
+  get contactTypes(): BasicInterface[] {
+    return this.contactTypeService.contacts;
+  }
+
+  changed() {
+    console.log(' HERE AT THE CONTACT')
+  }
 }

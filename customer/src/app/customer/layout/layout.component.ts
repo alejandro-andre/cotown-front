@@ -22,6 +22,8 @@ import { customerQuery } from 'src/app/schemas/query-definitions/customer.query'
 import { genderQuery } from 'src/app/schemas/query-definitions/gender.query';
 import { languageQuery } from 'src/app/schemas/query-definitions/languages.query';
 import { schoolOrCompaniesQuery } from 'src/app/schemas/query-definitions/schoolOrCompanies.query';
+import { contactTypeQuery } from 'src/app/schemas/query-definitions/contactType.query';
+import { ContactTypeService } from 'src/app/services/contactType.service';
 
 @Component({
   selector: 'app-layout',
@@ -39,7 +41,8 @@ export class LayoutComponent implements OnInit {
     public countryService: CountryService,
     public languageSerice: LanguageService,
     public identificationTypes: IdentificationDocTypesService,
-    public schoolOrCompaniesService: schoolOrCompaniesService
+    private schoolOrCompaniesService: schoolOrCompaniesService,
+    private contactTypeService: ContactTypeService
 
   ) {}
 
@@ -92,6 +95,15 @@ export class LayoutComponent implements OnInit {
       const value = res.data;
       if(value && value.data && value.data.length) {
         this.schoolOrCompaniesService.setSchoolOrCompaniesData(value.data);
+      }
+    });
+  }
+
+  loadContactTypes() {
+    this.apolloApi.getData(contactTypeQuery).subscribe((res) => {
+      const value = res.data;
+      if(value && value.contacts && value.data.contacts) {
+        this.contactTypeService.setContactTypesData(value.contacts);
       }
     });
   }

@@ -1,3 +1,17 @@
 <div>
-  <h2>Contactos</h2>
+  <h2>Nuevo contacto</h2>
+
+  <div>
+    <mat-form-field appearance="fill" style="margin-right: 10px;">
+      <mat-label>Tipo de contacto</mat-label>
+      <mat-select
+        [(ngModel)]="contactType"
+        (ngModelChange)="changed()"
+      >
+        <mat-option *ngFor="let contact of contactTypes" [value]="contact.id">
+          {{ contact.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 </div>

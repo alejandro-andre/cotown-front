@@ -18,6 +18,10 @@ export class NewContactComponent {
   ) {}
 
   public contactType: number | null = null;
+  public name: string = '';
+  public surName: string = '';
+  public email: string = '';
+  public phone: string = '';
 
   get contactTypes(): BasicInterface[] {
     return this.contactTypeService.contacts;

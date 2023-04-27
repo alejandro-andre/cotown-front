@@ -1,12 +1,16 @@
+// Core
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+// Modules
+import { CustomerModule } from './customer/customer.module';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { GraphQLModule } from './graphql.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CustomerModule } from './customer/customer.module';
+
+// Components
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [

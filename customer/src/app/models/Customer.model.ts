@@ -19,6 +19,7 @@ export class Customer {
   formControl = new FormControl<Date | null>(null);
   schoolOrCompany: string = '';
   bankAcount: string = '';
+  contacts: Array<any> = [];
 
   constructor(
     name: string = '',
@@ -38,7 +39,8 @@ export class Customer {
     birthDate: Date | null = null,
     typeDoc: number | null = null,
     schoolOrCompany: string = '',
-    bankAcount: string = ''
+    bankAcount: string = '',
+    contacts: Array<any> = [],
     ) {
     this.name = name;
     this.province = province;
@@ -59,5 +61,6 @@ export class Customer {
     this.typeDoc = typeDoc;
     this.schoolOrCompany = schoolOrCompany;
     this.bankAcount = bankAcount;
+    this.contacts = contacts;
   }
 };

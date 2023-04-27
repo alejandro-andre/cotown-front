@@ -7,6 +7,8 @@ import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
 import { MyDataComponent } from './myData/myData.component';
 import { MyContactsComponent } from './myContacts/myContacts.component';
+import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
+import { NewContactComponent } from './myContacts/newContacts/newContact.component';
 
 const routes: Routes = [
   {
@@ -24,6 +26,14 @@ const routes: Routes = [
       {
         path: "cantacts",
         component: MyContactsComponent
+      },
+      {
+        path: "cantacts/new",
+        component: NewContactComponent
+      },
+      {
+        path: "documents",
+        component: MyDocumentsComponent
       },
     ]
   },

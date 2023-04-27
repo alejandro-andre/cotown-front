@@ -4,23 +4,15 @@ import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './myContacts.component.html',
-  styleUrls: ['./myContacts.component.scss']
+  templateUrl: './myDocuments.component.html',
+  styleUrls: ['./myDocuments.component.scss']
 })
 
-export class MyContactsComponent {
+export class MyDocumentsComponent {
 
   constructor(
     public customerService: CustomerService,
     private router: Router,
 
   ) {}
-
-  get contacts(): Array<any> {
-    return this.customerService.customer.contacts || [];
-  }
-
-  goToAdd() {
-    this.router.navigate(['customer/cantacts/new']);
-  }
 }

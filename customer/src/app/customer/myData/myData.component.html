@@ -1,6 +1,6 @@
 <div>
-  <div class="example-form">
-    <mat-form-field class="example-full-width">
+  <div>
+    <mat-form-field>
       <mat-label>Nombre</mat-label>
       <input matInput [(ngModel)]="customerService.customer.name">
     </mat-form-field>
@@ -13,39 +13,39 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="example-full-width">
+    <mat-form-field>
       <mat-label>Document</mat-label>
       <input matInput [(ngModel)]="customerService.customer.document">
     </mat-form-field>
 
     <p>
-      <mat-form-field class="example-full-width">
+      <mat-form-field>
         <mat-label>Email</mat-label>
         <input readonly matInput placeholder="Email" [(ngModel)]="customerService.customer.email">
       </mat-form-field>
 
-      <mat-form-field class="example-full-width">
+      <mat-form-field>
         <mat-label>Phone</mat-label>
         <input readonly matInput placeholder="Email" [(ngModel)]="customerService.customer.phone">
       </mat-form-field>
     </p>
     <p>
-      <mat-form-field class="example-full-width">
+      <mat-form-field>
         <mat-label>Address</mat-label>
         <textarea matInput placeholder="Adress" [(ngModel)]="customerService.customer.adress"></textarea>
       </mat-form-field>
 
-      <mat-form-field class="example-full-width">
+      <mat-form-field>
         <mat-label>Postal code</mat-label>
         <input matInput placeholder="Postal code" maxlength="5" [(ngModel)]="customerService.customer.postalCode">
       </mat-form-field>
 
-      <mat-form-field class="example-full-width">
+      <mat-form-field>
         <mat-label>City</mat-label>
         <input matInput placeholder="City" [(ngModel)]="customerService.customer.city">
       </mat-form-field>
 
-      <mat-form-field class="example-full-width">
+      <mat-form-field>
         <mat-label>Province</mat-label>
         <input matInput placeholder="Province" [(ngModel)]="customerService.customer.province">
       </mat-form-field>
@@ -108,7 +108,7 @@
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field class="example-full-width">
+      <mat-form-field>
         <mat-label>Tutor</mat-label>
         <input matInput placeholder="Tutor" [(ngModel)]="customerService.customer.tutor" readonly>
       </mat-form-field>

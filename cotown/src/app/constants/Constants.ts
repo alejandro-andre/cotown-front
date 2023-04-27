@@ -4,8 +4,8 @@ export class Constants {
    */
 
   public static colors: {[key: string]: string} = {
-    grupobloqueado: 'ffd0ff',
-    grupoconfirmado: 'ff80ff',
+    grupobloqueado: '#ffd0ff',
+    grupoconfirmado: '#ff80ff',
     pendientepago: '#ffd080',
     caducada: '#000000' ,
     confirmada: '#ffa000',

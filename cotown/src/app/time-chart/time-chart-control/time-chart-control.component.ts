@@ -69,8 +69,6 @@ export class TimeChartControlComponent implements OnChanges {
         month: fecha.getMonth() % 2
       });
     }
-    console.log(this.header);
-    console.log(this.days);
   }
 
   // Calculate bars position

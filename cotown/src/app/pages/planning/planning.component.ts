@@ -576,7 +576,7 @@ export class PlanningComponent {
         line.lock = true;
         line.color = "rgba(100, 255, 100, 0.3)";
         line.type = Constants.availableStatus;
-      }  else if (b.Booking_lock && !b.Booking_code) {
+      } else if (b.Booking_lock && !b.Booking_code) {
         line.lock = true;
         line.color = Constants.resourceNotAvailable.color
         line.type = Constants.resourceNotAvailable.type;

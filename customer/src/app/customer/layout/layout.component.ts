@@ -33,17 +33,16 @@ import { ContactTypeService } from 'src/app/services/contactType.service';
 
 export class LayoutComponent implements OnInit {
   constructor(
+    private authService: AuthService,
     private router: Router,
     private apolloApi: ApoloQueryApi,
     private customerService: CustomerService,
-    public authService: AuthService,
-    public genderService: GenderService,
-    public countryService: CountryService,
-    public languageSerice: LanguageService,
-    public identificationTypes: IdentificationDocTypesService,
+    private genderService: GenderService,
+    private countryService: CountryService,
+    private languageSerice: LanguageService,
+    private identificationTypes: IdentificationDocTypesService,
     private schoolOrCompaniesService: schoolOrCompaniesService,
     private contactTypeService: ContactTypeService
-
   ) {}
 
   onSelectOption(data: string): void {

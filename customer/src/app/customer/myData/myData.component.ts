@@ -20,11 +20,11 @@ export class MyDataComponent implements OnInit{
 
   constructor(
     public customerService: CustomerService,
-    public genderService: GenderService,
-    public countryService: CountryService,
-    public languageService: LanguageService,
-    public identificationTypesService: IdentificationDocTypesService,
-    public schoolOrCompaniesService: schoolOrCompaniesService
+    private genderService: GenderService,
+    private countryService: CountryService,
+    private languageService: LanguageService,
+    private identificationTypesService: IdentificationDocTypesService,
+    private schoolOrCompaniesService: schoolOrCompaniesService
   ) {}
   ngOnInit(): void {
   }
@@ -34,23 +34,23 @@ export class MyDataComponent implements OnInit{
   }
 
   get identificationTypes(): BasicInterface [] {
-    return this.identificationTypesService.identificationTypesModel.types || [];
+    return this.identificationTypesService.types;
   }
 
   get countries(): BasicInterface [] {
-    return this.countryService.countryModel.countries || [];
+    return this.countryService.countries;
   }
 
   get schoolOrCompanies() :BasicInterface [] {
-    return this.schoolOrCompaniesService.schoolOrCompaniesModel.schoolOrCompanies || [];
+    return this.schoolOrCompaniesService.schoolOrCompanies;
   }
 
   get genders(): BasicInterface [] {
-    return this.genderService.gendersModel.genders || [];
+    return this.genderService.genders;
   }
 
   get languages(): BasicInterface [] {
-    return this.languageService.languageModel.languages || [];
+    return this.languageService.languages;
   }
 
 }

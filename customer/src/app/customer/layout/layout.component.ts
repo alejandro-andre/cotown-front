@@ -101,7 +101,7 @@ export class LayoutComponent implements OnInit {
   loadContactTypes() {
     this.apolloApi.getData(contactTypeQuery).subscribe((res) => {
       const value = res.data;
-      if(value && value.contacts && value.data.contacts) {
+      if(value && value.contacts && value.contacts.length) {
         this.contactTypeService.setContactTypesData(value.contacts);
       }
     });
@@ -143,6 +143,7 @@ export class LayoutComponent implements OnInit {
       this.loadGenders();
       this.loadCountries();
       this.loadSchoolOrCompanies();
+      this.loadContactTypes();
       this.loadCustomer();
     })
   }

@@ -20,6 +20,7 @@ export class Customer {
   schoolOrCompany: string = '';
   bankAcount: string = '';
   contacts: Array<any> = [];
+  documents: Array<any> = []
 
   constructor(
     name: string = '',
@@ -41,6 +42,7 @@ export class Customer {
     schoolOrCompany: string = '',
     bankAcount: string = '',
     contacts: Array<any> = [],
+    doc: Array<any> = [],
     ) {
     this.name = name;
     this.province = province;
@@ -62,5 +64,6 @@ export class Customer {
     this.schoolOrCompany = schoolOrCompany;
     this.bankAcount = bankAcount;
     this.contacts = contacts;
+    this.documents = doc;
   }
 };

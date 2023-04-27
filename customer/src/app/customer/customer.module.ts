@@ -22,6 +22,7 @@ import { NewContactComponent } from './myContacts/newContacts/newContact.compone
 
 // Routing
 import { CustomerRoutingModule } from './customer-routing.module';
+import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { CustomerRoutingModule } from './customer-routing.module';
     LayoutComponent,
     MyDataComponent,
     MyContactsComponent,
-    NewContactComponent
+    NewContactComponent,
+    MyDocumentsComponent
   ],
   imports: [
     CommonModule,

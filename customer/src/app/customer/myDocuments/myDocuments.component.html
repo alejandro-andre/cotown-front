@@ -1,3 +1,28 @@
 <div>
   <h2>Documentos</h2>
+
+  <div>
+    <label>Foto</label>
+    <input
+      placeholder="Foto"
+      [(ngModel)]="image"
+      type="file"
+      (change)="upload($event)"
+    >
+  </div>
+
+  <div  *ngIf="documents.length; then thenBlock else elseBlock"></div>
+  <ng-template #thenBlock>
+    <div *ngFor="let document of documents">
+      <pre>{{ document }}</pre>
+
+
+    </div>
+  </ng-template>
+<ng-template #elseBlock>
+  <div>
+    No se han encontrado resultados
+  </div>
+</ng-template>
+
 </div>

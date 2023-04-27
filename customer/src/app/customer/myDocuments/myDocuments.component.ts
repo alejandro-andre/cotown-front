@@ -13,6 +13,15 @@ export class MyDocumentsComponent {
   constructor(
     public customerService: CustomerService,
     private router: Router,
-
   ) {}
+
+  public image: File | null = null;
+
+  upload($event: any) {
+    console.log('The event is: ', $event, ' and este es el image: ', this.image);
+  }
+
+  get documents():Array<any> {
+    return this.customerService.customer.documents;
+  }
 }

@@ -24,7 +24,9 @@ export const customerQuery = `query customerQuery($id: Int) {
     }
     contacts: Customer_contactListViaCustomer_id {
       name: Name,
-      id
+      id,
+      phone: Phones,
+      email: Email
     }
   }
 }`;

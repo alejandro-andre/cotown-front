@@ -3,7 +3,10 @@
   <div  *ngIf="contacts.length; then thenBlock else elseBlock"></div>
   <ng-template #thenBlock>
     <div *ngFor="let contact of contacts">
-      {{ contact }}
+      <p>{{ contact.name }}</p>
+      <p>{{ contact.email }}</p>
+      <p>{{ contact.phone }}</p>
+
     </div>
   </ng-template>
 <ng-template #elseBlock>

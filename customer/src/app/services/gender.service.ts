@@ -14,4 +14,8 @@ export class GenderService {
   setGenderData(data: BasicInterface []) {
     this.gendersModel.genders = data;
   }
+
+  get genders(): BasicInterface [] {
+    return this.gendersModel.genders || [];
+  }
 }

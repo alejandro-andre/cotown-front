@@ -14,4 +14,8 @@ export class schoolOrCompaniesService {
   setSchoolOrCompaniesData(data: BasicInterface []) {
     this.schoolOrCompaniesModel.schoolOrCompanies = data;
   }
+
+  get schoolOrCompanies(): BasicInterface[] {
+    return this.schoolOrCompaniesModel.schoolOrCompanies ||[];
+  }
 }

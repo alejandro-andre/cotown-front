@@ -14,4 +14,8 @@ export class LanguageService {
   setLanguageData(data: BasicInterface []) {
     this.languageModel.languages = data;
   }
+
+  get languages(): BasicInterface[] {
+    return this.languageModel.languages || [];
+  }
 }

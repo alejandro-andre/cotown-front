@@ -14,4 +14,8 @@ export class CountryService {
   setCountryData(data: BasicInterface []) {
     this.countryModel.countries = data;
   }
+
+  get countries(): BasicInterface [] {
+    return this.countryModel.countries || [];
+  }
 }

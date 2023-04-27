@@ -14,4 +14,8 @@ export class IdentificationDocTypesService {
   setTypesData(data: BasicInterface []) {
     this.identificationTypesModel.types = data;
   }
+
+  get types(): BasicInterface [] {
+    return this.identificationTypesModel.types || [];
+  }
 }

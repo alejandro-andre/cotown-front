@@ -98,7 +98,7 @@ export class LayoutComponent implements OnInit {
 
   loadCustomer() {
     const variables = {
-      id: 1
+      id: 2
     }
 
     this.apolloApi.getData(customerQuery, variables).subscribe((res) => {

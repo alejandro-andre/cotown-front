@@ -15,8 +15,10 @@ export class Customer {
   nationality: number | null = null;
   tutor: string = '';
   birthDate: Date | null = null;
-  public formControl = new FormControl<Date | null>(null);
-
+  typeDoc: number | null = null;
+  formControl = new FormControl<Date | null>(null);
+  schoolOrCompany: string = '';
+  bankAcount: string = '';
 
   constructor(
     name: string = '',
@@ -34,6 +36,9 @@ export class Customer {
     nationality: number | null = null,
     tutor: string = '',
     birthDate: Date | null = null,
+    typeDoc: number | null = null,
+    schoolOrCompany: string = '',
+    bankAcount: string = ''
     ) {
     this.name = name;
     this.province = province;
@@ -50,6 +55,9 @@ export class Customer {
     this.nationality = nationality;
     this.tutor = tutor;
     this.birthDate = birthDate;
-    this.formControl = new FormControl(this.birthDate)
+    this.formControl = new FormControl(this.birthDate);
+    this.typeDoc = typeDoc;
+    this.schoolOrCompany = schoolOrCompany;
+    this.bankAcount = bankAcount;
   }
 };

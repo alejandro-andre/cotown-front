@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
   selector: 'app-home',
@@ -6,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./myContacts.component.scss']
 })
 
-export class MyContactsComponent implements OnInit{
+export class MyContactsComponent {
 
-  constructor() {}
-  ngOnInit(): void {
+  constructor(
+    public customerService: CustomerService,
+    private router: Router,
+
+  ) {}
+
+  get contacts(): Array<any> {
+    return this.customerService.customer.contacts || [];
+  }
+
+  goToAdd() {
+    this.router.navigate(['customer/cantacts/add']);
   }
 }

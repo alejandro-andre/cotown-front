@@ -1,2 +1,16 @@
 <div>
+  <h2>Contactos</h2>
+  <div  *ngIf="contacts.length; then thenBlock else elseBlock"></div>
+  <ng-template #thenBlock>
+    <div *ngFor="let contact of contacts">
+      {{ contact }}
+    </div>
+  </ng-template>
+<ng-template #elseBlock>
+  <div>
+    No se han encontrado resultados
+  </div>
+</ng-template>
+
+<button (click)="goToAdd()">Añadir Contacto</button>
 </div>

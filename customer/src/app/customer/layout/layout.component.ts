@@ -108,14 +108,16 @@ export class LayoutComponent implements OnInit {
         const {
           name , province, city, country, adress, postal_code, document, email, phones,
           gender_id, language, origin,tutor, birth_date, nationality, type_doc, school_id,
-          bank
+          bank, contacts
         } = value.data[0];
 
         const birthDate = birth_date !== null ? new Date(birth_date) : null;
+        const contactsToSend = contacts !== null ? contacts : [];
 
         const customer = new Customer(
           name, province, city, country, adress, postal_code, document, email, phones, gender_id,
-          language, origin, nationality, tutor?.name || '', birthDate, type_doc, school_id, bank
+          language, origin, nationality, tutor?.name || '', birthDate, type_doc, school_id, bank,
+          contactsToSend
         );
 
         this.customerService.setCustomerData(customer);

@@ -1,6 +1,7 @@
 // Core
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 // Sevices
 import { AuthService } from 'src/app/auth/service/auth.service';
@@ -31,8 +32,10 @@ import { ContactTypeService } from 'src/app/services/contactType.service';
   styleUrls: ['./layout.component.scss']
 })
 
-export class LayoutComponent implements OnInit {
+export class LayoutComponent implements OnInit, OnDestroy {
+  private _mobileQueryListener: () => void;
   constructor(
+    private elRef:ElementRef,
     private authService: AuthService,
     private router: Router,
     private apolloApi: ApoloQueryApi,
@@ -42,8 +45,41 @@ export class LayoutComponent implements OnInit {
     private languageSerice: LanguageService,
     private identificationTypes: IdentificationDocTypesService,
     private schoolOrCompaniesService: schoolOrCompaniesService,
-    private contactTypeService: ContactTypeService
-  ) {}
+    private contactTypeService: ContactTypeService,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher
+  ) {
+    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+
+  /**
+   * Started config of nav
+   */
+  public mobileQuery!: MediaQueryList;
+  public navWidth: number = 160;
+
+  get getStyles(): any {
+    if(this.mobileQuery.matches) {
+      return {
+        width: `${this.navWidth}px`
+      };
+    }
+  }
+
+  ngAfterViewInit() {
+    const snav = this.elRef.nativeElement.querySelector('#snav');
+    this.navWidth = snav.offsetWidth;
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+
+  /**
+   * Endded the configuration of nav
+   */
 
   onSelectOption(data: string): void {
     this.router.navigate([`customer/${data}`]);

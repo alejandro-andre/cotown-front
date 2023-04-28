@@ -1,14 +1,18 @@
 .container {
   display: flex;
-  flex-direction: row;
   width: 100%;
   height: 100%;
+  flex-direction: row;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 .nav {
-  min-width: 100px;
-  width: 10%;
-  height: 100%;
+  min-width: 160px;
+  height: calc(100% - 60px);
   display: flex;
   flex-direction: column;
   box-shadow: 0px 1px;
@@ -17,11 +21,11 @@
 }
 
 .content {
-  width: 90%;
+  width: 100%;
   height: 100%;
   display: flex;
-  overflow: hidden;
   flex-direction: column;
+  margin-top: 70px; // To respect the nav
 }
 
 .header-content {
@@ -30,6 +34,9 @@
   min-height: 60px;
   width: 100%;
   display: flex;
+  position: fixed;
+  z-index: 1;
+  top: 0;
 }
 
 .header-nav {
@@ -38,5 +45,15 @@
   min-height: 60px;
   width: 100%;
   display: flex;
-  margin-bottom: 5px;
+}
+
+
+.example-is-mobile .toolbar {
+  position: fixed;
+  z-index: 2;
+}
+
+
+.example-sidenav-container {
+  flex: 1;
 }

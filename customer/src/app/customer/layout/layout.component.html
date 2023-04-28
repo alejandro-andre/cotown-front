@@ -1,10 +1,38 @@
-<div class="container">
-  <div class="nav">
+<!--
+<mat-drawer-container class="container" [class.example-is-mobile]="mobileQuery.matches">
+  <mat-drawer mode="side" opened class="nav">
     <div class="header-nav"></div>
     <app-nav (onSelectOption)="onSelectOption($event)"></app-nav>
-  </div>
-  <div class="content">
+  </mat-drawer>
+  <mat-drawer-content class="content">
     <div class="header-content"></div>
     <router-outlet></router-outlet>
-  </div>
+  </mat-drawer-content>
+</mat-drawer-container>
+-->
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+
+  <mat-sidenav-container class="container">
+    <mat-sidenav id="snav" #snav [opened]="mobileQuery.matches ? false: true" [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches">
+      <div class="header-nav toolbar"
+        [ngStyle]="getStyles"
+      >
+        <button *ngIf="!mobileQuery.matches" (click)="snav.toggle()" mat-icon-button >
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+
+      <app-nav class="nav"  (onSelectOption)="onSelectOption($event)"
+        [style.marginTop.px]="mobileQuery.matches ? 60 : 0"></app-nav>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="content">
+      <div class="header-content">
+        <button *ngIf="mobileQuery.matches || !snav.opened" (click)="snav.toggle()" mat-icon-button >
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>

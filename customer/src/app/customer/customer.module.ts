@@ -12,6 +12,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule,  } from '@angular/material/form-field';
 import { MatInputModule  } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table'
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 // Components
 import { HomeComponent } from './home/home.component';
@@ -35,7 +38,7 @@ import { MyBookingsComponent } from './myBookings/myBookings.component';
     MyContactsComponent,
     NewContactComponent,
     MyDocumentsComponent,
-    MyBookingsComponent
+    MyBookingsComponent,
   ],
   imports: [
     CommonModule,
@@ -48,7 +51,10 @@ import { MyBookingsComponent } from './myBookings/myBookings.component';
     MatDatepickerModule,
     MatNativeDateModule,
     ReactiveFormsModule,
-    MatTableModule
+    MatTableModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatButtonModule
   ],
   exports: [
     LayoutComponent,
@@ -59,7 +65,10 @@ import { MyBookingsComponent } from './myBookings/myBookings.component';
     MatDatepickerModule,
     MatNativeDateModule,
     ReactiveFormsModule,
-    MatTableModule
+    MatTableModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatButtonModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

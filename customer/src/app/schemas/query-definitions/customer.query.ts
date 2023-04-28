@@ -37,6 +37,10 @@ export const customerQuery = `query customerQuery($id: Int) {
       resource_type: Resource_type
       created_at: Created_at
       services: Services
+      request_date: Request_date
+      confirmation_date: Confirmation_date
+      expiry_date: Expiry_date
+      limit: Limit
       flat: Resource_flat_typeViaFlat_type_id{
           name: Name,
           id
@@ -50,6 +54,12 @@ export const customerQuery = `query customerQuery($id: Int) {
         id
         code: Code
         name: Name
+      }
+      price_list: Booking_priceListViaBooking_id {
+        rent: Rent
+        services: Services
+        id
+        rent_date:Rent_date
       }
     }
   }

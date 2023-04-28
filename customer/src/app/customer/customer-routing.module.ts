@@ -9,6 +9,7 @@ import { MyDataComponent } from './myData/myData.component';
 import { MyContactsComponent } from './myContacts/myContacts.component';
 import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
 import { NewContactComponent } from './myContacts/newContacts/newContact.component';
+import { MyBookingsComponent } from './myBookings/myBookings.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,10 @@ const routes: Routes = [
         path: "documents",
         component: MyDocumentsComponent
       },
+      {
+        path: "bookings",
+        component: MyBookingsComponent
+      }
     ]
   },
 ];

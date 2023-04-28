@@ -11,6 +11,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker'
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule,  } from '@angular/material/form-field';
 import { MatInputModule  } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table'
 
 // Components
 import { HomeComponent } from './home/home.component';
@@ -23,6 +24,7 @@ import { NewContactComponent } from './myContacts/newContacts/newContact.compone
 // Routing
 import { CustomerRoutingModule } from './customer-routing.module';
 import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
+import { MyBookingsComponent } from './myBookings/myBookings.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
     MyDataComponent,
     MyContactsComponent,
     NewContactComponent,
-    MyDocumentsComponent
+    MyDocumentsComponent,
+    MyBookingsComponent
   ],
   imports: [
     CommonModule,
@@ -45,6 +48,7 @@ import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
     MatDatepickerModule,
     MatNativeDateModule,
     ReactiveFormsModule,
+    MatTableModule
   ],
   exports: [
     LayoutComponent,
@@ -55,6 +59,7 @@ import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
     MatDatepickerModule,
     MatNativeDateModule,
     ReactiveFormsModule,
+    MatTableModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

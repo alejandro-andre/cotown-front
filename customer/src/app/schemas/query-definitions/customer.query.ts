@@ -27,6 +27,30 @@ export const customerQuery = `query customerQuery($id: Int) {
       id,
       phone: Phones,
       email: Email
+    },
+    bookings: BookingListViaCustomer_id {
+      id
+      start: Date_from
+      end: Date_to
+      status: Status
+      building_id: Building_id
+      resource_type: Resource_type
+      created_at: Created_at
+      services: Services
+      flat: Resource_flat_typeViaFlat_type_id{
+          name: Name,
+          id
+          code: Code
+      }
+      resource: ResourceViaResource_id {
+        code: Code
+        id
+      }
+      place: Resource_place_typeViaPlace_type_id {
+        id
+        code: Code
+        name: Name
+      }
     }
   }
 }`;

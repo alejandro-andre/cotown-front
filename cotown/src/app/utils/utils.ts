@@ -1,22 +1,7 @@
-export const orderByName = (array: any[]): any[] => {
-  if (!array) {
-    return [];
-  }
-
-  return array.slice().sort((a, b) => {
-    if (a.name === b.name) {
-      return a.name < b.name ? -1 : 1
-    } else {
-      return a.name < b.name ? -1 : 1
-    }
-  });
-};
-
 export const formatDate = (date: Date) : string => {
   const day = date.getDate();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
-
   return `${year}-${month}-${day}`;
 }
 
@@ -28,10 +13,8 @@ export const  prevMonth = (date: Date): Date => {
     month = 11;
     year -= 1;
   }
-
   return new Date(year, month, 1);
 }
-
 
 export const nextMonth = (date: Date): Date => {
   date.setTime(date.getTime() + (1000*60*60*24*6))
@@ -41,7 +24,6 @@ export const nextMonth = (date: Date): Date => {
     month = 0;
     year += 1;
   }
-
   return new Date(year, month, 1);
 }
 
@@ -49,7 +31,6 @@ export const getAge = (birthdate: string) => {
   if(!birthdate) {
     return '';
   }
-
   const timeDiff = Math.abs(Date.now() - new Date(birthdate).getTime());
   return Math.floor((timeDiff / (1000 * 3600 * 24))/365);
 }

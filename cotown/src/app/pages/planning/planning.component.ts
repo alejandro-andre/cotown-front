@@ -52,7 +52,6 @@ import {
   formatDate,
   getAge,
   nextMonth,
-  orderByName,
   prevMonth
 } from 'src/app/utils/utils';
 import { LanguageService } from 'src/app/services/language.service';
@@ -186,7 +185,7 @@ export class PlanningComponent {
   async getAllBuildings(): Promise<void> {
     return new Promise<void>((resolve) => {
       this.apolloApi.getData(BuildingListQuery).subscribe(res => {
-        this.buildings = orderByName(res.data.data);
+        this.buildings = res.data.data;
         resolve();
       });
     })
@@ -196,7 +195,7 @@ export class PlanningComponent {
   async getCities(): Promise<void> {
     return new Promise<void>((resolve) => {
       this.apolloApi.getData(CityListQuery).subscribe((result) => {
-        this.cities = orderByName(result.data.data);
+        this.cities = result.data.data;
         resolve();
       });
     })
@@ -376,7 +375,7 @@ export class PlanningComponent {
     };
 
     this.apolloApi.getData(BuildingListByCityNameQuery, variables).subscribe(res => {
-      this.buildings = orderByName(res.data.data);
+      this.buildings = res.data.data;
     });
   }
 

@@ -10,7 +10,9 @@ import { ApoloQueryApi } from './services/apolo-api.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent {
+
   title = 'cotown';
 
   constructor(
@@ -18,19 +20,16 @@ export class AppComponent {
     private route: ActivatedRoute,
     private language: LanguageService,
     private apolloApi: ApoloQueryApi,
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(async (params) => {
-      const {  language, access_token } = params;
-      if(language) {
+      const { language, access_token } = params;
+      if (language) {
         this.language.lang = language.substring(0,2);
       }
-
       this.apolloApi.token = access_token;
       this.setAppLanguage();
-
     });
   }
 

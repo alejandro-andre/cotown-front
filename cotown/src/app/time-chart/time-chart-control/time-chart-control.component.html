@@ -53,7 +53,7 @@
 			<div class="timechart-row-first">{{row.info}}</div>
 			<ul class="timechart-row-bars">
 				<li *ngFor="let bar of row.bars"
-					(click)="go_booking(bar.code);"
+					(click)="go_booking(bar.link);"
 					class="tooltip {{bar.styles}}"
 					style.background-color="{{bar.color}}"
 					style.grid-column="{{1+bar.from}}/{{1+bar.to}}">

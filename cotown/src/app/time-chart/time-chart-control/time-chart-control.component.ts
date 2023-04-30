@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { TimeChartRow } from '../models/time-chart-row.model';
-import { WindowRef } from 'src/app/services/window-ref.service';
 
 @Component({
   selector: 'app-time-chart-control',
@@ -143,16 +142,13 @@ export class TimeChartControlComponent implements OnChanges {
     return n;
   }
 
-  public go_booking(code: string) {
-    if (code == '')
+  public go_booking(link: string) {
+    if (link == '')
       return;
-    let u = "/admin/Booking.Booking/" + code + "/view";
-    if (typeof code != 'number')
-      u = "/admin/Booking.Booking_group/" + code.substring(1) + "/view";
-    parent.history.pushState("", "", u);
+    parent.history.pushState("", "", link);
     parent.history.go(-1);
     parent.history.go(1);
-    parent.history.pushState("", "", u);
+    parent.history.pushState("", "", link);
     parent.history.go(-1);
     parent.history.go(1);
   }

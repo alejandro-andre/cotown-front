@@ -9,6 +9,7 @@ export class TimeChartBar {
     type: string = '';
     text: string = '';
     tooltip: string = '';
+    link: string = '';
 
     // Calculated
     from: number = 0;

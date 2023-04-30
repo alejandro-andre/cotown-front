@@ -571,11 +571,11 @@ export class PlanningComponent {
       bar.datefrom = new Date(b.Booking_date_from);
       bar.dateto = new Date(b.Booking_date_to);
 
-      if (b.Booking_status === Constants.availableStatus) {
+      if (b.Booking_status === Constants.availableStatus) { // Resource is available
         bar.lock = true;
         bar.color = "rgba(100, 255, 100, 0.3)";
         bar.type = Constants.availableStatus;
-      } else if (b.Booking_lock && !b.Booking_code) {
+      } else if (b.Booking_lock && !b.Booking_code) { // Resource lock
         bar.lock = true;
         bar.color = Constants.resourceNotAvailable.color
         bar.type = Constants.resourceNotAvailable.type;
@@ -587,6 +587,10 @@ export class PlanningComponent {
         bar.lock = false;
         bar.code = b.Booking_code;
         bar.color = Constants.colors[b.Booking_status];
+        if (typeof bar.code != 'number')
+          bar.link = "/admin/Booking.Booking_group/" + bar.code.substring(1) + "/view";
+        else
+          bar.link = "/admin/Booking.Booking/" + bar.code + "/view";
         bar.text = b.Customer_name
           + ' - ' + b.Customer_age
           + ' - ' + b.Customer_gender

@@ -19,7 +19,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { TimeChartModule } from './time-chart/time-chart.module';
 import { GraphQLModule } from './graphql.module';
 import { SpinnerModule } from './spinner/spinner.module';
-import { CustomDateAdapter } from './plugins/CustomDateAdapter';
+import { CustomDateAdapter } from './plugins/custom-date-adapter';
 import { PlanningComponent } from './pages/planning/planning.component';
 
 import localeEN from '@angular/common/locales/en';

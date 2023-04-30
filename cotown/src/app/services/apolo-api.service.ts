@@ -15,29 +15,12 @@ export class ApoloQueryApi {
   ) {}
 
   getData(query: string, variables: any = undefined): Observable<any> {
-    let  variablesToSend = {
-      authorization: `${this.token}`
-    };
-
-    if (variables) {
-      variablesToSend = {...variables, authorization: `${this.token}`}
-    }
-
     return this.apollo.watchQuery({
       query: gql`${query}`,
       fetchPolicy: 'network-only',
       nextFetchPolicy: 'no-cache',
-      variables: {
-        ...variablesToSend
-        },
+      variables: {...variables, authorization: `${this.token}`},
     }).valueChanges;
   }
 
-  // TODO only for develop!
-  login() {
-    const loginQuery = `mutation {login(username:"modelsadmin", password: "Ciber$2022")}`
-    return this.apollo.mutate({
-      mutation: gql`${loginQuery}`,
-    })
-  }
 }

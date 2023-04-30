@@ -9,8 +9,8 @@ import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { TimeChartRow } from 'src/app/time-chart/models/time-chart-row.model';
 import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
 
-import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/querie-definitions/building.query';
-import { CityListQuery } from 'src/app/schemas/querie-definitions/city.query';
+import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/query-definitions/building.query';
+import { CityListQuery } from 'src/app/schemas/query-definitions/city.query';
 import {
   BookingList,
   BookingListByBuildingIdAndResourceAndFlatTypeQuery,
@@ -21,7 +21,7 @@ import {
   BookingListByResourceTypeFlatQuery,
   BookingListByResourceTypeQuery,
   getBuildingDataWithBooking
-} from 'src/app/schemas/querie-definitions/booking.query';
+} from 'src/app/schemas/query-definitions/booking.query';
 
 import {
   ResourceFlatTypeQuery,
@@ -34,7 +34,7 @@ import {
   ResourceListByResourceTypeQuery,
   ResourceListQuery,
   ResourceTypeQuery
-} from 'src/app/schemas/querie-definitions/resource.query';
+} from 'src/app/schemas/query-definitions/resource.query';
 
 import { Constants } from 'src/app/constants/Constants';
 import {
@@ -62,7 +62,9 @@ import { WindowRef } from 'src/app/services/window-ref.service';
   styleUrls: ['./planning.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
+
 export class PlanningComponent {
+
   public spinnerActive: boolean = false;
   public rows: TimeChartRow[] = []; // Rows
   public cities: City [] = [] as City[]; // Cities
@@ -87,7 +89,6 @@ export class PlanningComponent {
   private resources: Resource[] = [] as Resource[] ; // Resources
   private bookings: any [] = []; // Bookings
   private params: Params = {} as Params;
-
 
   // Constructor
   constructor(
@@ -546,9 +547,10 @@ export class PlanningComponent {
 
   // Generate rows for the time chart
   generateRows() {
+
     this.rows = [];
-    let auxRow!: TimeChartRow;
     const auxRows= [];
+    let auxRow!: TimeChartRow;
 
     // Generate rows
     for (const r of this.resources) {
@@ -663,4 +665,5 @@ export class PlanningComponent {
     }
     this.windowRef.nativeWindow.close();
   }
+  
 }

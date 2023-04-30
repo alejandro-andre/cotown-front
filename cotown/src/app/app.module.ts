@@ -21,12 +21,12 @@ import { CustomDateAdapter } from './plugins/CustomDateAdapter';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { registerLocaleData } from '@angular/common';
+
 import localeEN from '@angular/common/locales/en-GB';
 import localeES from '@angular/common/locales/es';
 
 registerLocaleData(localeES, 'es-ES');
 registerLocaleData(localeEN, 'en-GB');
-
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');

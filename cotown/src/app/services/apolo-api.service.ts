@@ -1,25 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
-import { AccessTokenService } from './access-token.service';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ApoloQueryApi {
+
+  token: string = '';
+
   constructor(
-    private accessToken: AccessTokenService,
     private apollo: Apollo
   ) {}
 
   getData(query: string, variables: any = undefined): Observable<any> {
     let  variablesToSend = {
-      authorization: `${this.accessToken.token}`
+      authorization: `${this.token}`
     };
 
     if (variables) {
-      variablesToSend = {...variables, authorization: `${this.accessToken.token}`}
+      variablesToSend = {...variables, authorization: `${this.token}`}
     }
 
     return this.apollo.watchQuery({

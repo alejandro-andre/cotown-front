@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Constants } from './constants/Constants';
 import { ActivatedRoute } from '@angular/router';
 import { LanguageService } from './services/language.service';
-import { AccessTokenService } from './services/access-token.service';
+import { ApoloQueryApi } from './services/apolo-api.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +17,7 @@ export class AppComponent {
     private translate: TranslateService,
     private route: ActivatedRoute,
     private language: LanguageService,
-    public accessToken: AccessTokenService,
+    private apolloApi: ApoloQueryApi,
   ) {
   }
 
@@ -28,7 +28,7 @@ export class AppComponent {
         this.language.lang = language.substring(0,2);
       }
 
-      this.accessToken.token = access_token;
+      this.apolloApi.token = access_token;
       this.setAppLanguage();
 
     });

@@ -5,7 +5,6 @@ import { DateAdapter } from '@angular/material/core';
 
 import axiosApi from 'src/app/services/api.service';
 
-import { AccessTokenService } from 'src/app/services/access-token.service';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { TimeChartRow } from 'src/app/time-chart/models/time-chart-row.model';
 import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
@@ -93,14 +92,13 @@ export class PlanningComponent {
   // Constructor
   constructor(
     private route: ActivatedRoute,
-    public accessToken: AccessTokenService,
     private apolloApi: ApoloQueryApi,
-    private _adapter: DateAdapter<any>,
+    private adapter: DateAdapter<any>,
     private language: LanguageService,
     private windowRef: WindowRef
   ) {
     this.now = new Date();
-    this._adapter.setLocale(this.language.lang.substring(0,2));
+    this.adapter.setLocale(this.language.lang.substring(0,2));
   }
 
   cleanBookings() {

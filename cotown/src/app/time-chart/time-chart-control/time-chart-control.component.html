@@ -40,25 +40,25 @@
 
 	<!-- Rows -->
 	<mat-radio-group>
-		<div *ngFor="let bar of bars" class="timechart-row">
+		<div *ngFor="let row of rows" class="timechart-row">
 			<div class="timechart-row-sel">
 				<mat-radio-button
-					[value]="bar.code"
-					[disabled]="!isAvailable(bar)"
-					(change)="emitSelectAvailableResource(bar)"
+					[value]="row.code"
+					[disabled]="!isAvailable(row)"
+					(change)="emitSelectAvailableResource(row)"
 				></mat-radio-button>
 			</div>
-			<div class="timechart-row-first {{bar.style}}">{{bar.code}}</div>
-			<div class="timechart-row-first">{{bar.info}}</div>
+			<div class="timechart-row-first {{row.style}}">{{row.code}}</div>
+			<div class="timechart-row-first">{{row.info}}</div>
 			<ul class="timechart-row-bars">
-				<li *ngFor="let line of bar.lines"
-					class="tooltip {{line.styles}}"
-					style.background-color="{{line.color}}"
-					style.grid-column="{{1+line.from}}/{{1+line.to}}">
-					<div *ngIf="line.code != '' && (line.to - line.from) > 1 " class="bar">
-						<span class="tag">{{line.code}}</span>
-						<span>{{line.text}}</span>
-						<div class="tiptext" [innerHtml]="line.tooltip|safeHtml"></div>
+				<li *ngFor="let bar of row.bars"
+					class="tooltip {{bar.styles}}"
+					style.background-color="{{bar.color}}"
+					style.grid-column="{{1+bar.from}}/{{1+bar.to}}">
+					<div *ngIf="bar.code != '' && (bar.to - bar.from) > 1 " class="bar">
+						<span class="tag">{{bar.code}}</span>
+						<span>{{bar.text}}</span>
+						<div class="tiptext" [innerHtml]="bar.tooltip|safeHtml"></div>
 					</div>
 				</li>
 			</ul>

@@ -1,6 +1,4 @@
-/**
-	Classes of css
-**/
+/* Classes of css */
 
 h1 {
 	font-size: 1.2rem;
@@ -50,9 +48,8 @@ a {
 	height: 100%;
 }
 
-/**
-Override material css clases
-**/
+/* Override material css clases */
+
 .mdc-text-field--filled  {
 	background: none !important;
 	border-radius: 0 !important;
@@ -92,7 +89,8 @@ Override material css clases
 	display: none !important;
 }
 
-/* FIX ROWS OF BUTTONS*/
+/* Fix rows of buttons */
+
 .next-arrow {
 	margin-right: 0 !important;
 	margin-left: 4px !important;

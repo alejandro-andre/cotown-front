@@ -7,8 +7,8 @@ import axiosApi from 'src/app/services/api.service';
 
 import { AccessTokenService } from 'src/app/services/access-token.service';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
+import { TimeChartRow } from 'src/app/time-chart/models/time-chart-row.model';
 import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
-import { TimeChartLine } from 'src/app/time-chart/models/time-chart-line.model';
 
 import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/querie-definitions/building.query';
 import { CityListQuery } from 'src/app/schemas/querie-definitions/city.query';
@@ -66,7 +66,7 @@ import { WindowRef } from 'src/app/services/window-ref.service';
 })
 export class PlanningComponent {
   public spinnerActive: boolean = false;
-  public bars: TimeChartBar[] = []; // Bars
+  public rows: TimeChartRow[] = []; // Rows
   public cities: City [] = [] as City[]; // Cities
   public selectedCity: number = Constants.allStaticNumericValue; // Current city
   public buildings: Building[] = [] as Building[]; // Buildings
@@ -134,7 +134,7 @@ export class PlanningComponent {
 
       axiosApi.getAvailability(data).then((resp) => {
         this.availableResources = resp.data;
-        this.bars = [];
+        this.rows = [];
         for(const available of this.availableResources) {
           const finded: number = this.bookings.findIndex((elem: Booking) => elem.Resource_code === available);
           if(finded >= 0){
@@ -155,7 +155,7 @@ export class PlanningComponent {
           }
         }
 
-        this.generateBars();
+        this.generateRows();
       })
     }
   }
@@ -286,7 +286,7 @@ export class PlanningComponent {
 
   onSelectResourceType(): void {
     this.spinnerActive = true;
-    this.bars = [];
+    this.rows = [];
     this.resources = [];
     this.bookings = [];
     if (this.selectedResouceTypeId === Constants.allStaticNumericValue) { // Dont use filter
@@ -351,7 +351,7 @@ export class PlanningComponent {
 
   onSelectResourceTypeFlat(): void {
     this.spinnerActive = true;
-    this.bars = [];
+    this.rows = [];
     this.resources = [];
     this.bookings = [];
     if (this.selectedResouceTypeFlatId === Constants.allStaticNumericValue) { // Dont use filter
@@ -381,7 +381,7 @@ export class PlanningComponent {
   }
 
   onSelectCity():void {
-    this.bars = [];
+    this.rows = [];
     this.resources = [];
     this.bookings = [];
     this.selectedBuildingId = -99;
@@ -418,7 +418,7 @@ export class PlanningComponent {
 
   async onSelectBulding() {
     this.spinnerActive = true;
-    this.bars = [];
+    this.rows = [];
     this.resources = [];
     this.bookings = [];
 
@@ -453,7 +453,7 @@ export class PlanningComponent {
     this.spinnerActive = true;
     this.resources = [];
     this.bookings = [];
-    this.bars = [];
+    this.rows = [];
 
     await this.getResourceList(ResourceListQuery);
     this.getBookings(BookingList);
@@ -462,7 +462,7 @@ export class PlanningComponent {
   async getResourcesAndBookings(): Promise<void> {
     this.resources = [];
     this.bookings = [];
-    this.bars = [];
+    this.rows = [];
 
     if (this.selectedBuildingId === Constants.allStaticNumericValue) {
       await this.getResourcesAndBookingsOfAllBuildings();
@@ -522,7 +522,7 @@ export class PlanningComponent {
         });
       }
 
-      this.generateBars();
+      this.generateRows();
     });
   }
 
@@ -547,52 +547,52 @@ export class PlanningComponent {
     }
   }
 
-  // Generate bars for the time chart
-  generateBars() {
-    this.bars = [];
-    let auxBar!: TimeChartBar;
-    const auxBars= [];
+  // Generate rows for the time chart
+  generateRows() {
+    this.rows = [];
+    let auxRow!: TimeChartRow;
+    const auxRows= [];
 
-    // Generate bars
+    // Generate rows
     for (const r of this.resources) {
-      auxBar = new TimeChartBar();
-      auxBar.id = r.Resource_id;
-      auxBar.code = r.Resource_code;
-      auxBar.info = r.Resource_info
-      auxBar.style = Constants.types[r.Resource_type];
-        auxBars.push(auxBar);
+      auxRow = new TimeChartRow();
+      auxRow.id = r.Resource_id;
+      auxRow.code = r.Resource_code;
+      auxRow.info = r.Resource_info
+      auxRow.style = Constants.types[r.Resource_type];
+        auxRows.push(auxRow);
     }
 
-    this.bars = JSON.parse(JSON.stringify(auxBars));
+    this.rows = JSON.parse(JSON.stringify(auxRows));
 
-    // Generate lines
+    // Generate bars
     for (const b of this.bookings) {
       // Dates
-      let line: TimeChartLine = new TimeChartLine();
-      line.datefrom = new Date(b.Booking_date_from);
-      line.dateto = new Date(b.Booking_date_to);
+      let bar: TimeChartBar = new TimeChartBar();
+      bar.datefrom = new Date(b.Booking_date_from);
+      bar.dateto = new Date(b.Booking_date_to);
 
       if (b.Booking_status === Constants.availableStatus) {
-        line.lock = true;
-        line.color = "rgba(100, 255, 100, 0.3)";
-        line.type = Constants.availableStatus;
+        bar.lock = true;
+        bar.color = "rgba(100, 255, 100, 0.3)";
+        bar.type = Constants.availableStatus;
       } else if (b.Booking_lock && !b.Booking_code) {
-        line.lock = true;
-        line.color = Constants.resourceNotAvailable.color
-        line.type = Constants.resourceNotAvailable.type;
+        bar.lock = true;
+        bar.color = Constants.resourceNotAvailable.color
+        bar.type = Constants.resourceNotAvailable.type;
       } else if (b.Booking_lock) { // Locking booking
-        line.lock = true;
-        line.color = Constants.blockedResource.color;
-        line.type = Constants.blockedResource.type;
+        bar.lock = true;
+        bar.color = Constants.blockedResource.color;
+        bar.type = Constants.blockedResource.type;
       } else { // Real booking
-        line.lock = false;
-        line.code = b.Booking_code;
-        line.color = Constants.colors[b.Booking_status];
-        line.text = b.Customer_name
+        bar.lock = false;
+        bar.code = b.Booking_code;
+        bar.color = Constants.colors[b.Booking_status];
+        bar.text = b.Customer_name
           + ' - ' + b.Customer_age
           + ' - ' + b.Customer_gender
           + ' - ' + b.Customer_country
-        line.tooltip = `
+        bar.tooltip = `
           <div><span class="tiphead">${b.Booking_code}</span></div>
           <div><span class="tipfield">${b.Booking_status}</span></div>
           <div><span class="tipfield">${b.Booking_date_from} a ${b.Booking_date_to}</span></div>
@@ -604,19 +604,19 @@ export class PlanningComponent {
           <div><span class="tipfield">Email: </span><span>${b.Customer_email}</span></div>`
       }
 
-      // Add line to proper bar
-      for (const bar of this.bars) {
-        if (bar.code == b.Resource_code) {
-          bar.lines.push(line);
+      // Add bar to proper row
+      for (const row of this.rows) {
+        if (row.code == b.Resource_code) {
+          row.bars.push(bar);
           break;
         }
       }
     }
 
-    // Consolidate bar lines
-    for (const bar of this.bars) {
-      if (bar.lines.length > 1 && bar.lines[0].lock) {
-        bar.lines = this.consolidateIntervals(bar.lines);
+    // Consolidate bars
+    for (const row of this.rows) {
+      if (row.bars.length > 1 && row.bars[0].lock) {
+        row.bars = this.consolidateIntervals(row.bars);
       }
     }
 
@@ -624,7 +624,7 @@ export class PlanningComponent {
   }
 
   // Consolidate bookings for lock types
-  consolidateIntervals(intervals: TimeChartLine[]) {
+  consolidateIntervals(intervals: TimeChartBar[]) {
 
     // Sort by date
     intervals.sort((a, b) => a.datefrom.getTime() - b.datefrom.getTime());

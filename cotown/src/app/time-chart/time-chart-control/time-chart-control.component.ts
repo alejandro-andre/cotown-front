@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { TimeChartBar } from '../models/time-chart-bar.model';
+import { TimeChartRow } from '../models/time-chart-row.model';
 
 @Component({
   selector: 'app-time-chart-control',
@@ -9,7 +9,7 @@ import { TimeChartBar } from '../models/time-chart-bar.model';
 export class TimeChartControlComponent implements OnChanges {
 
   // Inputs
-  @Input() bars: TimeChartBar[] = [];
+  @Input() rows: TimeChartRow[] = [];
   @Input() now!: Date;
   @Input() from!: Date;
   @Input() to!: Date;
@@ -32,8 +32,8 @@ export class TimeChartControlComponent implements OnChanges {
     // Set headers
     this.setHeader(this.now);
 
-    // Set bars and lines
-    this.moveLines();
+    // Set rows and bars
+    this.moveBars();
   }
 
   // Generate header
@@ -72,58 +72,58 @@ export class TimeChartControlComponent implements OnChanges {
   }
 
   // Calculate bars position
-  private moveLines() {
+  private moveBars() {
 
-    // Move each line
-    for (let bar of this.bars) {
+    // Move each bar
+    for (let row of this.rows) {
 
-      // Sort lines
-      bar.lines.sort(function(a, b) {
+      // Sort bars
+      row.bars.sort(function(a, b) {
         return new Date(a.datefrom).getTime() - new Date(b.datefrom).getTime();
       });
 
-      // Move each line
-      for (let line of bar.lines) {
+      // Move each bar
+      for (let bar of row.bars) {
         // Dates
-        const dfrom = Math.ceil((line.datefrom.getTime() - this.now.getTime()) / (1000*60*60*24));
-        const dto = 1 + Math.ceil((line.dateto.getTime() - this.now.getTime()) / (1000*60*60*24));
+        const dfrom = Math.ceil((bar.datefrom.getTime() - this.now.getTime()) / (1000*60*60*24));
+        const dto = 1 + Math.ceil((bar.dateto.getTime() - this.now.getTime()) / (1000*60*60*24));
 
         // Show bar
-        line.styles = line.type + ' show';
+        bar.styles = bar.type + ' show';
 
         // Set start
         if (dfrom  < 0) {
-          line.from = 0;
-          line.styles += ' continue-left';
+          bar.from = 0;
+          bar.styles += ' continue-left';
         } else if (dfrom > 70) {
-          line.from = 70;
+          bar.from = 70;
         } else {
-          line.from = dfrom;
+          bar.from = dfrom;
         }
 
         // Set end
         if (dto < 0) {
-          line.to = 0;
+          bar.to = 0;
         } else if (dto > 70) {
-          line.to = 70;
-          line.styles += ' continue-right';
+          bar.to = 70;
+          bar.styles += ' continue-right';
         } else {
-          line.to = dto;
+          bar.to = dto;
         }
 
         // Hide bar
-        if ((line.to - line.from) < 1)
-          line.styles = 'hide';
+        if ((bar.to - bar.from) < 1)
+          bar.styles = 'hide';
       }
     }
   }
 
-  isAvailable(bar: any): boolean {
-    if (!bar.lines || !bar.lines.length) {
+  isAvailable(row: any): boolean {
+    if (!row.bars || !row.bars.length) {
       return false;
     }
 
-    for (const elem of bar.lines) {
+    for (const elem of row.bars) {
       if (elem.type === 'available') {
         return true;
       }
@@ -132,8 +132,8 @@ export class TimeChartControlComponent implements OnChanges {
     return false;
   }
 
-  emitSelectAvailableResource(bar: TimeChartBar): void {
-    this.onSelectAvailable.emit({ Code: bar.code, id: bar.id });
+  emitSelectAvailableResource(row: TimeChartRow): void {
+    this.onSelectAvailable.emit({ Code: row.code, id: row.id });
   }
 
   private getDay(date: Date): number {

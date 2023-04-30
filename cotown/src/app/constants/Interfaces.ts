@@ -14,12 +14,12 @@ export interface AvailabilityPayload {
   place_type?: String
 };
 
-export interface Building  extends GraphQlResponse{
+export interface Building extends GraphQlResponse{
   code: string,
   location?: any
 };
 
-export interface City  extends GraphQlResponse{}
+export interface City extends GraphQlResponse{}
 
 export interface ResourceType extends GraphQlResponse {
   code: string,

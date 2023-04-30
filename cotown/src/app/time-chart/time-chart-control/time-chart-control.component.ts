@@ -144,9 +144,11 @@ export class TimeChartControlComponent implements OnChanges {
   }
 
   public go_booking(code: string) {
-    if (code == '' || code.charAt(0) == 'G')
+    if (code == '')
       return;
-    const u = "/admin/Booking.Booking/" + code + "/view";
+    let u = "/admin/Booking.Booking/" + code + "/view";
+    if (typeof code != 'number')
+      u = "/admin/Booking.Booking_group/" + code.substring(1) + "/view";
     parent.history.pushState("", "", u);
     parent.history.go(-1);
     parent.history.go(1);

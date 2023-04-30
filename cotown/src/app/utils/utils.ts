@@ -5,7 +5,7 @@ export const formatDate = (date: Date) : string => {
   return `${year}-${month}-${day}`;
 }
 
-export const  prevMonth = (date: Date): Date => {
+export const prevMonth = (date: Date): Date => {
   date.setTime(date.getTime() + (1000*60*60*24*6));
   let month = date.getMonth() - 1;
   let year = date.getFullYear();
@@ -31,7 +31,12 @@ export const getAge = (birthdate: string) => {
   if(!birthdate) {
     return '';
   }
-  const timeDiff = Math.abs(Date.now() - new Date(birthdate).getTime());
-  return Math.floor((timeDiff / (1000 * 3600 * 24))/365);
+  var bdt = new Date(birthdate);
+  var now = new Date();
+  var age = now.getFullYear() - bdt.getFullYear();
+  if (bdt.getMonth() > now.getMonth() || (bdt.getMonth() == now.getMonth() && bdt.getDate() > now.getDate())) {
+    age--;
+  }
+  return age;
 }
 

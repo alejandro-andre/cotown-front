@@ -12,9 +12,9 @@
 			class="datewrapper"
 			[class.odd]="date.month"
 			[class.even]="!date.month"
-			style.grid-column="{{date.start + 4}}/{{date.end + 4}}"
-		>
-		<span class="date">{{date.date}}</span></span>
+			style.grid-column="{{date.start + 4}}/{{date.end + 4}}">
+			<span class="date">{{date.date}}</span>
+		</span>
 			
 		<!-- Title -->
 		<div class="timechart-row-first bold" style="grid-column: 2;">Recurso</div>
@@ -25,8 +25,9 @@
 			*ngFor="let day of days"
 			[class.holiday]="day.holiday"
 			[class.odd]="day.month"
-			[class.even]="!day.month"
-		>{{day.day}}</span>
+			[class.even]="!day.month">
+			{{day.day}}
+		</span>
 	</div>
 
 	<!-- Vertical lines and current date marker -->
@@ -34,8 +35,8 @@
 		<span></span><span></span><span></span>
 		<span 
 			*ngFor="let day 	of days; let i = index;" 
-			[class.marker]="i >= markerFrom && i <= markerTo"
-		></span>
+			[class.marker]="i >= markerFrom && i <= markerTo">
+		</span>
 	</div>
 
 	<!-- Rows -->
@@ -45,13 +46,14 @@
 				<mat-radio-button
 					[value]="row.code"
 					[disabled]="!isAvailable(row)"
-					(change)="emitSelectAvailableResource(row)"
-				></mat-radio-button>
+					(change)="emitSelectAvailableResource(row)">
+				</mat-radio-button>
 			</div>
 			<div class="timechart-row-first {{row.style}}">{{row.code}}</div>
 			<div class="timechart-row-first">{{row.info}}</div>
 			<ul class="timechart-row-bars">
 				<li *ngFor="let bar of row.bars"
+					(click)="go_booking(bar.code);"
 					class="tooltip {{bar.styles}}"
 					style.background-color="{{bar.color}}"
 					style.grid-column="{{1+bar.from}}/{{1+bar.to}}">

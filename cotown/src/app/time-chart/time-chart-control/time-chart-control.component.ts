@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { TimeChartRow } from '../models/time-chart-row.model';
+import { WindowRef } from 'src/app/services/window-ref.service';
 
 @Component({
   selector: 'app-time-chart-control',
@@ -22,8 +23,7 @@ export class TimeChartControlComponent implements OnChanges {
   public markerTo: number = -1;
 
   // Constructor
-  constructor() {;
-  }
+  constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
     // Start on mondays
@@ -142,4 +142,17 @@ export class TimeChartControlComponent implements OnChanges {
       n = 6;
     return n;
   }
+
+  public go_booking(code: string) {
+    if (code == '' || code.charAt(0) == 'G')
+      return;
+    const u = "/admin/Booking.Booking/" + code + "/view";
+    parent.history.pushState("", "", u);
+    parent.history.go(-1);
+    parent.history.go(1);
+    parent.history.pushState("", "", u);
+    parent.history.go(-1);
+    parent.history.go(1);
+  }
+
 }

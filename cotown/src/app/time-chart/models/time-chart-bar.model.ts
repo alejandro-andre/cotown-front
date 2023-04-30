@@ -1,5 +1,6 @@
 export class TimeChartBar {
     // Set
+    id!: number;
     code: string = '';
     color: string = '';
     lock: boolean = false;

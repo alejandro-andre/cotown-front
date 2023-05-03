@@ -1,14 +1,6 @@
 <div>
-  <li (click)="onSelect('data')">
-    My data
-  </li>
-  <li (click)="onSelect('cantacts')">
-    My Contacts
-  </li>
-  <li (click)="onSelect('documents')">
-    My Documents
-  </li>
-  <li (click)="onSelect('bookings')">
-    My BooKings
+  <li *ngFor="let path of navs" (click)="onSelect(path.url)">
+    {{ path.name }}
+
   </li>
 </div>

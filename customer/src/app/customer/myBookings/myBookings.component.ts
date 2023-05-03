@@ -38,6 +38,7 @@ export class MyBookingsComponent {
 
   public displayedColumns: Array<string> = ['recurso', 'desde', 'hasta', 'estado', 'piso', 'plaza', 'tiporecurso'];
   clickedRow(row: any) {
-    console.log(row);
+    const id = row.id;
+    this.router.navigate(['/booking-detail', id])
   }
 }

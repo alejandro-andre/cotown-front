@@ -42,3 +42,9 @@ export interface Booking {
   school: BasicResponse,
   deposit: number
 };
+
+export interface TableObject {
+  header: string,
+  property: string,
+  name: string
+}

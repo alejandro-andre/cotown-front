@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-bookings',
   templateUrl: './myBookings.component.html',
   styleUrls: ['./myBookings.component.scss']
 })

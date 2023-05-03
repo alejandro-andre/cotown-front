@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-contacts',
   templateUrl: './myContacts.component.html',
   styleUrls: ['./myContacts.component.scss']
 })

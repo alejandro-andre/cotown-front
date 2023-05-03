@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Constants } from 'src/app/constants/Constants';
+import { TableObject } from 'src/app/constants/Interface';
 import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
@@ -14,10 +16,59 @@ export class MyBookingsComponent {
     private router: Router,
   ) {}
 
-  public dataSource: Array<any>  = [];
+  public tableFormat: TableObject[] = [
+    {
+      header: Constants.BOOKING_RESOURCE,
+      property: 'resource',
+      name: 'Recurso'
+    },
+    {
+      header: Constants.BOOKING_FROM,
+      property: 'start',
+      name: 'Fecha desde'
+    },
+    {
+      header: Constants.BOOKING_TO,
+      property: 'end',
+      name: 'Fecha hasta'
+    },
+    {
+      header: Constants.BOOKING_STATUS,
+      property: 'status',
+      name: 'Estado'
+    },
+    {
+      header: Constants.BOOKING_FLAT,
+      property: 'flat',
+      name: 'Tipo de piso'
+    },
+    {
+      header: Constants.BOOKING_PLACE,
+      property: 'place',
+      name: 'Tipo de plaza'
+    },
+    {
+      header: Constants.BOOKING_RESOURCE_TYPE,
+      property: 'resource_type',
+      name: 'Tipo de recurso'
+    },
+  ];
+
+  public RESOURCE_PROPERTY = Constants.BOOKING_RESOURCE;
+  public FLAT_TYPE_PROPERTY = Constants.BOOKING_FLAT;
+  public PLACE_TYPE_PROPERTY = Constants.BOOKING_PLACE;
+  get displayedColumns() :string[] {
+    return this.tableFormat.map((elem) => elem.header);
+  }
 
   get bookings():Array<any> {
     return this.customerService.customer.bookings;
+  }
+
+  isNormalHeader (value :string): boolean {
+    return value !== this.RESOURCE_PROPERTY &&
+      value !== this.FLAT_TYPE_PROPERTY &&
+      value !== this.PLACE_TYPE_PROPERTY;
   }
 
   getComposedName(data: any): string {
@@ -36,7 +87,6 @@ export class MyBookingsComponent {
     return '';
   }
 
-  public displayedColumns: Array<string> = ['recurso', 'desde', 'hasta', 'estado', 'piso', 'plaza', 'tiporecurso'];
   clickedRow(row: any) {
     const id = row.id;
     this.router.navigate(['/booking-detail', id])

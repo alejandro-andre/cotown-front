@@ -150,7 +150,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
     this.apolloApi.getData(customerQuery, variables).subscribe((res) => {
       const value = res.data;
-      console.log(res)
       if (value && value.data && value.data.length) {
         const {
           name , province, city, country, adress, postal_code, document, email, phones,
@@ -168,8 +167,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
           language, origin, nationality, tutor?.name || '', birthDate, type_doc, school_id, bank,
           contactsToSend, docToSend, bookingsToSend
         );
-
-        console.log('The bookings are: ', bookingsToSend)
 
         this.customerService.setCustomerData(customer);
       }

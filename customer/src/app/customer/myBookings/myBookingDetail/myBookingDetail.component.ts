@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
-import { Booking } from 'src/app/constants/Interface';
+import { Booking, TableObject } from 'src/app/constants/Interface';
 import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
@@ -10,37 +10,41 @@ import { CustomerService } from 'src/app/services/customer.service';
   styleUrls: ['./myBookingDetail.component.scss']
 })
 
-export class MyBookingDetailComponent implements OnInit {
+export class MyBookingDetailComponent {
   public booking!: Booking;
   public showNotFound: boolean = false;
 
-  public tableFormat = [
+  public tableFormat: TableObject[] = [
     {
-      header: Constants.BOOKING_DATE_HEADER,
+      header: Constants.BOOKING_DETAIL_DATE_HEADER,
       property: 'rent_date',
       name: 'Mes'
     },
     {
-      header: Constants.BOOKING_RENT_HEADER,
+      header: Constants.BOOKING_DETAIL_RENT_HEADER,
       property: 'rent',
       name: 'Renta'
     },
     {
-      header: Constants.BOOKING_SERVICE_HEADER,
+      header: Constants.BOOKING_DETAIL_SERVICE_HEADER,
       property: 'services',
       name: 'Servicios'
     },
     {
-      header: Constants.BOOKING_RENT_DISCOUN_HEADER,
+      header: Constants.BOOKING_DETAIL_RENT_DISCOUN_HEADER,
       property: 'rent_discount',
       name: 'Suplementos(+)/Descuentos(-) a la renta'
     },
     {
-      header: Constants.BOOKING_SERVICE_DISCOUNT_HEADER,
+      header: Constants.BOOKING_DETAIL_SERVICE_DISCOUNT_HEADER,
       property: 'service_discount',
       name: 'Suplementos(+)/Descuentos(-) a los servicios'
     },
   ];
+
+  get displayedColumns() :string[] {
+    return this.tableFormat.map((elem) => elem.header);
+  }
 
   constructor(
     public customerService: CustomerService,
@@ -86,11 +90,4 @@ export class MyBookingDetailComponent implements OnInit {
     return '';
   }
 
-  get displayedColumns() :string[] {
-    return this.tableFormat.map((elem) => elem.header);
-  }
-
-  ngOnInit(): void {
-
-  }
 }

@@ -10,35 +10,43 @@ import { MyContactsComponent } from './myContacts/myContacts.component';
 import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
 import { NewContactComponent } from './myContacts/newContacts/newContact.component';
 import { MyBookingsComponent } from './myBookings/myBookings.component';
+import { MyInvoiceComponent } from './myInvoice/myInvoice.component';
+import { Constants } from '../constants/Constants';
+
+
 
 const routes: Routes = [
   {
-    path: "",
+    path: '',
     component: LayoutComponent,
     children:  [
       {
-        path: "",
+        path: '',
         component: HomeComponent
       },
       {
-        path: "data",
+        path: Constants.DATA.url,
         component: MyDataComponent
       },
       {
-        path: "cantacts",
+        path: Constants.CONTACTS.url,
         component: MyContactsComponent
       },
       {
-        path: "cantacts/new",
+        path: 'cantacts/new',
         component: NewContactComponent
       },
       {
-        path: "documents",
+        path: Constants.DOCUMENTS.url,
         component: MyDocumentsComponent
       },
       {
-        path: "bookings",
+        path: Constants.BOOKINGS.url,
         component: MyBookingsComponent
+      },
+      {
+        path: Constants.INVOICES.url,
+        component: MyInvoiceComponent
       }
     ]
   },

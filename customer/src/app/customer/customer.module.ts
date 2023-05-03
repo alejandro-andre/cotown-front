@@ -28,6 +28,7 @@ import { NewContactComponent } from './myContacts/newContacts/newContact.compone
 import { CustomerRoutingModule } from './customer-routing.module';
 import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
 import { MyBookingsComponent } from './myBookings/myBookings.component';
+import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBookingDetail.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { MyBookingsComponent } from './myBookings/myBookings.component';
     NewContactComponent,
     MyDocumentsComponent,
     MyBookingsComponent,
+    MyBookingDetailComponent
   ],
   imports: [
     CommonModule,

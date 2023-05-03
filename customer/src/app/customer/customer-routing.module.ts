@@ -12,6 +12,7 @@ import { NewContactComponent } from './myContacts/newContacts/newContact.compone
 import { MyBookingsComponent } from './myBookings/myBookings.component';
 import { MyInvoiceComponent } from './myInvoice/myInvoice.component';
 import { Constants } from '../constants/Constants';
+import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBookingDetail.component';
 
 
 
@@ -43,6 +44,10 @@ const routes: Routes = [
       {
         path: Constants.BOOKINGS.url,
         component: MyBookingsComponent
+      },
+      {
+        path: 'booking-detail/:id',
+        component: MyBookingDetailComponent
       },
       {
         path: Constants.INVOICES.url,

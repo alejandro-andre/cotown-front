@@ -26,11 +26,21 @@ export class Constants {
     url: 'invoices'
   };
 
-  public static BOOKING_DATE_HEADER = 'date';
-  public static BOOKING_RENT_HEADER = 'rent';
-  public static BOOKING_SERVICE_HEADER = 'service';
-  public static BOOKING_RENT_DISCOUN_HEADER = 'rent_discount';
-  public static BOOKING_SERVICE_DISCOUNT_HEADER = 'service_discount';
+  // Table header constants of myBookingDetail components
+  public static BOOKING_DETAIL_DATE_HEADER = 'date';
+  public static BOOKING_DETAIL_RENT_HEADER = 'rent';
+  public static BOOKING_DETAIL_SERVICE_HEADER = 'service';
+  public static BOOKING_DETAIL_RENT_DISCOUN_HEADER = 'rent_discount';
+  public static BOOKING_DETAIL_SERVICE_DISCOUNT_HEADER = 'service_discount';
+
+  // Table header constants of myBooking component
+  public static BOOKING_RESOURCE = 'resource';
+  public static BOOKING_FROM = 'from';
+  public static BOOKING_TO = 'to';
+  public static BOOKING_STATUS = 'status';
+  public static BOOKING_FLAT = 'flat';
+  public static BOOKING_PLACE = 'place';
+  public static BOOKING_RESOURCE_TYPE = 'resourceType';
 
   /**
    * Urls of nav

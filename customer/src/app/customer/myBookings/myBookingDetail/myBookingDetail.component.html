@@ -5,7 +5,7 @@
   </ng-container>
 
   <ng-template #showData>
-    <div>
+    <div class="box-content">
       <p>
         <mat-form-field>
           <mat-label>Estado</mat-label>
@@ -236,31 +236,12 @@
       </p>
 
       <!--Table of prices -->
-      <table mat-table *ngIf="booking.price_list && booking.price_list.length" [dataSource]="booking.price_list" class="mat-elevation-z8">
-        <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef>Mes</th>
-          <td mat-cell *matCellDef="let element"> {{ element.rent_date}} </td>
+      <table style="margin-bottom: 10px;" mat-table *ngIf="booking.price_list && booking.price_list.length" [dataSource]="booking.price_list" class="mat-elevation-z8">
+        <ng-container [matColumnDef]="col.header" *ngFor="let col of tableFormat" >
+          <th mat-header-cell *matHeaderCellDef>{{ col.name }}</th>
+          <td mat-cell *matCellDef="let element"> {{ element[col.property]}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="rent">
-          <th mat-header-cell *matHeaderCellDef>Renta</th>
-          <td mat-cell *matCellDef="let element"> {{ element.rent }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="service">
-          <th mat-header-cell *matHeaderCellDef>Servicios</th>
-          <td mat-cell *matCellDef="let element"> {{ element.services }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="rent_discount">
-          <th mat-header-cell *matHeaderCellDef> Suplementos(+)/Descuentos(-) a la renta </th>
-          <td mat-cell *matCellDef="let element"> {{ element.rent_discount }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="service_discount">
-          <th mat-header-cell *matHeaderCellDef>Suplementos(+)/Descuentos(-) a los servicios</th>
-          <td mat-cell *matCellDef="let element">{{ element.service_discount }}</td>
-        </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>

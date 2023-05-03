@@ -26,6 +26,12 @@ export class Constants {
     url: 'invoices'
   };
 
+  public static BOOKING_DATE_HEADER = 'date';
+  public static BOOKING_RENT_HEADER = 'rent';
+  public static BOOKING_SERVICE_HEADER = 'service';
+  public static BOOKING_RENT_DISCOUN_HEADER = 'rent_discount';
+  public static BOOKING_SERVICE_DISCOUNT_HEADER = 'service_discount';
+
   /**
    * Urls of nav
    */

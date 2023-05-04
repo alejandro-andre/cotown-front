@@ -154,18 +154,20 @@ export class LayoutComponent implements OnInit, OnDestroy {
         const {
           name , province, city, country, adress, postal_code, document, email, phones,
           gender_id, language, origin,tutor, birth_date, nationality, type_doc, school_id,
-          bank, contacts, documents, bookings
+          bank, contacts, documents, bookings, invoices, payments
         } = value.data[0];
 
         const birthDate = birth_date !== null ? new Date(birth_date) : null;
         const contactsToSend = contacts !== null ? contacts : [];
         const docToSend = documents !== null ? documents : [];
-        const bookingsToSend = bookings !== null ? bookings : []
+        const bookingsToSend = bookings !== null ? bookings : [];
+        const invoidesToSend = invoices !== null ? invoices : [];
+        const paymentsToSend = payments !== null ? payments : [];
 
         const customer = new Customer(
           name, province, city, country, adress, postal_code, document, email, phones, gender_id,
           language, origin, nationality, tutor?.name || '', birthDate, type_doc, school_id, bank,
-          contactsToSend, docToSend, bookingsToSend
+          contactsToSend, docToSend, bookingsToSend, invoidesToSend, paymentsToSend
         );
 
         this.customerService.setCustomerData(customer);

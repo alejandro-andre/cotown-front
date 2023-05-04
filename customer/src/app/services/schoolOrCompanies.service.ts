@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BasicInterface } from '../models/interfaces';
 import { schoolOrCompany } from '../models/SchoolOrCompany.model';
+import { BasicResponse } from '../constants/Interface';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +11,11 @@ export class schoolOrCompaniesService {
 
   constructor() {}
 
-  setSchoolOrCompaniesData(data: BasicInterface []) {
+  setSchoolOrCompaniesData(data: BasicResponse []) {
     this.schoolOrCompaniesModel.schoolOrCompanies = data;
   }
 
-  get schoolOrCompanies(): BasicInterface[] {
+  get schoolOrCompanies(): BasicResponse[] {
     return this.schoolOrCompaniesModel.schoolOrCompanies ||[];
   }
 }

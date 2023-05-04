@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BasicInterface } from '../models/interfaces';
 import { Languages } from '../models/Language.model';
+import { BasicResponse } from '../constants/Interface';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +11,11 @@ export class LanguageService {
 
   constructor() {}
 
-  setLanguageData(data: BasicInterface []) {
+  setLanguageData(data: BasicResponse []) {
     this.languageModel.languages = data;
   }
 
-  get languages(): BasicInterface[] {
+  get languages(): BasicResponse[] {
     return this.languageModel.languages || [];
   }
 }

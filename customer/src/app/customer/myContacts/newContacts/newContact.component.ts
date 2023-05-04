@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BasicInterface } from 'src/app/models/interfaces';
+import { BasicResponse } from 'src/app/constants/Interface';
 import { ContactTypeService } from 'src/app/services/contactType.service';
 import { CustomerService } from 'src/app/services/customer.service';
 
@@ -23,7 +23,7 @@ export class NewContactComponent {
   public email: string = '';
   public phone: string = '';
 
-  get contactTypes(): BasicInterface[] {
+  get contactTypes(): BasicResponse[] {
     return this.contactTypeService.contacts;
   }
 

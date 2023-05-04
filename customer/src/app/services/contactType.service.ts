@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BasicInterface } from '../models/interfaces';
+
 import { ContactType } from '../models/ContactsType.model';
+import { BasicResponse } from '../constants/Interface';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +12,11 @@ export class ContactTypeService {
 
   constructor() {}
 
-  setContactTypesData(data: BasicInterface []) {
+  setContactTypesData(data: BasicResponse []) {
     this.contactTypeModel.contacts = data;
   }
 
-  get contacts(): BasicInterface[] {
+  get contacts(): BasicResponse[] {
     return this.contactTypeModel.contacts || [];
   }
 }

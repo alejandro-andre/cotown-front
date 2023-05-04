@@ -7,7 +7,8 @@ import { GenderService } from 'src/app/services/gender.service';
 import { LanguageService } from 'src/app/services/languages.service';
 import { IdentificationDocTypesService } from 'src/app/services/identificationDocTypes.service';
 import { schoolOrCompaniesService } from 'src/app/services/schoolOrCompanies.service';
-import { BasicInterface } from 'src/app/models/interfaces';
+import { BasicResponse } from 'src/app/constants/Interface';
+
 
 
 @Component({
@@ -33,23 +34,23 @@ export class MyDataComponent implements OnInit{
     console.log(this.customerService.customer)
   }
 
-  get identificationTypes(): BasicInterface [] {
+  get identificationTypes(): BasicResponse [] {
     return this.identificationTypesService.types;
   }
 
-  get countries(): BasicInterface [] {
+  get countries(): BasicResponse [] {
     return this.countryService.countries;
   }
 
-  get schoolOrCompanies() :BasicInterface [] {
+  get schoolOrCompanies() :BasicResponse [] {
     return this.schoolOrCompaniesService.schoolOrCompanies;
   }
 
-  get genders(): BasicInterface [] {
+  get genders(): BasicResponse [] {
     return this.genderService.genders;
   }
 
-  get languages(): BasicInterface [] {
+  get languages(): BasicResponse [] {
     return this.languageService.languages;
   }
 

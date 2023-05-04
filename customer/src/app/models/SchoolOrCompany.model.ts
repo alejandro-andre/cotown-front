@@ -1,9 +1,9 @@
-import { BasicInterface } from "./interfaces";
+import { BasicResponse } from "../constants/Interface";
 
 export class schoolOrCompany {
-  schoolOrCompanies: BasicInterface[] = [];
+  schoolOrCompanies: BasicResponse[] = [];
 
-  constructor(data: BasicInterface[] = [] as BasicInterface []) {
+  constructor(data: BasicResponse[] = [] as BasicResponse[]) {
     this.schoolOrCompanies = data;
   }
 };

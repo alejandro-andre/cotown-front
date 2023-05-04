@@ -1,9 +1,9 @@
-import { BasicInterface } from "./interfaces";
+import { BasicResponse } from "../constants/Interface";
 
 export class IdentificationDocTypes {
-  types: BasicInterface[] = [];
+  types: BasicResponse[] = [];
 
-  constructor(data: BasicInterface[] = [] as BasicInterface []) {
+  constructor(data: BasicResponse[] = [] as BasicResponse []) {
     this.types = data;
   }
 };

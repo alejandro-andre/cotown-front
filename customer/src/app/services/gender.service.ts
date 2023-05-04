@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Gender } from '../models/Gender.model';
-import { BasicInterface } from '../models/interfaces';
+import { BasicResponse } from '../constants/Interface';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +11,11 @@ export class GenderService {
 
   constructor() {}
 
-  setGenderData(data: BasicInterface []) {
+  setGenderData(data: BasicResponse []) {
     this.gendersModel.genders = data;
   }
 
-  get genders(): BasicInterface [] {
+  get genders(): BasicResponse [] {
     return this.gendersModel.genders || [];
   }
 }

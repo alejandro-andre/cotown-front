@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BasicInterface } from '../models/interfaces';
 import { Country } from '../models/Country.model';
+import { BasicResponse } from '../constants/Interface';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +11,11 @@ export class CountryService {
 
   constructor() {}
 
-  setCountryData(data: BasicInterface []) {
+  setCountryData(data: BasicResponse []) {
     this.countryModel.countries = data;
   }
 
-  get countries(): BasicInterface [] {
+  get countries(): BasicResponse [] {
     return this.countryModel.countries || [];
   }
 }

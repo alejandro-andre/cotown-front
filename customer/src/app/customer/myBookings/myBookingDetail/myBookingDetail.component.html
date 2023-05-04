@@ -131,7 +131,7 @@
           <input
             matInput
             placeholder="Motivo de estancia"
-            [ngModel]="booking.reason?.name || ''"
+            [ngModel]="reasonName"
             readonly
           >
         </mat-form-field>
@@ -141,7 +141,7 @@
           <input
             matInput
             placeholder="Escuela/Empresa"
-            [ngModel]="booking.school?.name || ''"
+            [ngModel]="schoolName"
             readonly
           >
         </mat-form-field>
@@ -164,7 +164,7 @@
           <input
             matInput
             placeholder="Recurso"
-            [ngModel]="booking.resource?.code || ''"
+            [ngModel]="resourceCode"
             readonly
           >
         </mat-form-field>

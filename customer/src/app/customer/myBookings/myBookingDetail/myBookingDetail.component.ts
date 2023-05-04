@@ -90,4 +90,16 @@ export class MyBookingDetailComponent {
     return '';
   }
 
+  get resourceCode(): string {
+    return this.booking?.resource?.code || '';
+  }
+
+  get reasonName(): string {
+    return this.booking?.reason?.name || '';
+  }
+
+  get schoolName(): string{
+    return this.booking?.school?.name || '';
+  }
+
 }

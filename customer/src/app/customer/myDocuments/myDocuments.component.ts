@@ -22,6 +22,7 @@ export class MyDocumentsComponent {
   }
 
   get documents():Array<any> {
+    console.log(this.customerService.customer.documents);
     return this.customerService.customer.documents;
   }
 }

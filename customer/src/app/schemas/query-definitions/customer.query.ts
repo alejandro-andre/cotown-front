@@ -23,11 +23,20 @@ export const customerQuery = `query customerQuery($id: Int) {
       id
     }
     contacts: Customer_contactListViaCustomer_id {
-      name: Name,
-      id,
-      phone: Phones,
+      name: Name
+      id
+      phone: Phones
       email: Email
-    },
+    }
+    documents: Customer_docListViaCustomer_id {
+      id
+      expirity_date: Expiry_date
+      created_at: Created_at
+      doctype: Customer_doc_typeViaCustomer_doc_type_id {
+        name: Name
+        id
+      }
+    }
     bookings: BookingListViaCustomer_id {
       id
       start: Date_from
@@ -48,20 +57,20 @@ export const customerQuery = `query customerQuery($id: Int) {
         name: Name
       }
       shool: SchoolViaSchool_id {
-        name: Name,
+        name: Name
         id
       }
       building: BuildingViaBuilding_id {
-        name: Name,
+        name: Name
         code: Code
         id
       }
       payer: CustomerViaPayer_id {
-        id,
-        name: Name,
+        id
+        name: Name
       }
       flat: Resource_flat_typeViaFlat_type_id{
-          name: Name,
+          name: Name
           id
           code: Code
       }
@@ -79,7 +88,7 @@ export const customerQuery = `query customerQuery($id: Int) {
         services: Services
         id
         rent_date:Rent_date
-        rent_discount: Rent_discount,
+        rent_discount: Rent_discount
         service_discount: Services_discount
       }
     }

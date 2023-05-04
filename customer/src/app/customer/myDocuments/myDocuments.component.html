@@ -13,8 +13,9 @@
 
   <div  *ngIf="documents.length; then thenBlock else elseBlock"></div>
   <ng-template #thenBlock>
-    <div *ngFor="let document of documents">
-      <pre>{{ document }}</pre>
+    <div *ngFor="let document of documents" style="margin-top: 10px;">
+      <p>Document type {{ document.doctype.name }}</p>
+      <p>Exprity Date {{ document.expirity_date }}</p>
 
 
     </div>

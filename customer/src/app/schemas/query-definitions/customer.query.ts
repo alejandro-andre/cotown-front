@@ -37,6 +37,34 @@ export const customerQuery = `query customerQuery($id: Int) {
         id
       }
     }
+
+    invoices: InvoiceListViaCustomer_id {
+      id,
+      code: Code
+      concept: Concept
+      total: Total
+      issue_date: Issued_date
+      booking: BookingViaBooking_id {
+        resource: ResourceViaResource_id {
+          code: Code
+          id
+        }
+      }
+    }
+
+    payments: PaymentListViaCustomer_id {
+      amount: Amount
+      concept: Concept
+      issue_date: Issued_date
+      pay: Pay
+      booking: BookingViaBooking_id{
+        resource: ResourceViaResource_id {
+          code: Code
+          id
+        }
+      }
+    }
+
     bookings: BookingListViaCustomer_id {
       id
       start: Date_from

@@ -48,3 +48,33 @@ export interface TableObject {
   property: string,
   name: string
 }
+
+export interface BookingResource {
+  resource: BasicResponse
+}
+
+export interface Invoice extends BasicResponse {
+  concept: string,
+  total: number,
+  issue_date: string,
+  booking: BookingResource,
+};
+
+export interface Payment extends BasicResponse {
+  amount: number,
+  concept: string,
+  issue_date: string,
+  pay: string,
+  booking: BookingResource
+}
+
+export interface Document extends BasicResponse {
+  expirity_date: string | null ,
+  created_at: string,
+  doctype: BasicResponse
+}
+
+export interface Contact extends BasicResponse {
+  phone: string
+  email: string
+}

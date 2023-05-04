@@ -1,4 +1,5 @@
 import { FormControl } from '@angular/forms';
+import { Booking, Contact, Invoice, Payment } from '../constants/Interface';
 export class Customer {
   name: string = '';
   province: string = '';
@@ -8,7 +9,7 @@ export class Customer {
   postalCode: string = '';
   document: string = '';
   email: string = '';
-  phone: string  ='';
+  phone: string = '';
   genderId: number | null = null;
   languageId: number | null = null;
   originId: number | null = null;
@@ -19,9 +20,12 @@ export class Customer {
   formControl = new FormControl<Date | null>(null);
   schoolOrCompany: string = '';
   bankAcount: string = '';
-  contacts: Array<any> = [];
-  documents: Array<any> = [];
-  bookings: Array<any> = [];
+
+  contacts: Contact[] = [] as Contact[];
+  documents: Document[] = [] as Document[];
+  bookings: Booking[] = [] as Booking[];
+  invoices: Invoice[] = [] as Invoice[];
+  payments: Payment[] = [] as Payment[];
 
   constructor(
     name: string = '',
@@ -32,7 +36,7 @@ export class Customer {
     postalCode: string = '',
     document: string = '',
     email: string = '',
-    phone: string  ='',
+    phone: string = '',
     genderId: number | null = null,
     language: number | null = null,
     origin: number | null = null,
@@ -42,10 +46,12 @@ export class Customer {
     typeDoc: number | null = null,
     schoolOrCompany: string = '',
     bankAcount: string = '',
-    contacts: Array<any> = [],
-    doc: Array<any> = [],
-    bookings: Array<any> = [],
-    ) {
+    contacts: Contact[] = [],
+    doc: Document[] = [],
+    bookings: Booking[] = [],
+    invoices: Invoice[] = [],
+    payments: Payment[] = [],
+  ) {
     this.name = name;
     this.province = province;
     this.city = city;
@@ -68,5 +74,7 @@ export class Customer {
     this.contacts = contacts;
     this.documents = doc;
     this.bookings = bookings;
+    this.invoices = invoices;
+    this.payments = payments;
   }
 };

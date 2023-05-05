@@ -68,10 +68,15 @@ export interface Payment extends BasicResponse {
   booking: BookingResource
 }
 
+export interface DocType extends BasicResponse {
+  images: number,
+  arrayOfImages?: Array<any>
+}
+
 export interface Document extends BasicResponse {
   expirity_date: string | null ,
   created_at: string,
-  doctype: BasicResponse
+  doctype: DocType
 }
 
 export interface Contact extends BasicResponse {

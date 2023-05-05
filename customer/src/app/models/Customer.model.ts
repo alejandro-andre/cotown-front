@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { Booking, Contact, Invoice, Payment } from '../constants/Interface';
+import { Booking, Contact, Invoice, Payment, Document } from '../constants/Interface';
 export class Customer {
   name: string = '';
   province: string = '';

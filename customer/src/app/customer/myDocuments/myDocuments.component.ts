@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { Document } from 'src/app/constants/Interface';
 import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
@@ -9,7 +11,6 @@ import { CustomerService } from 'src/app/services/customer.service';
 })
 
 export class MyDocumentsComponent {
-
   constructor(
     public customerService: CustomerService,
     private router: Router,
@@ -21,8 +22,7 @@ export class MyDocumentsComponent {
     console.log('The event is: ', $event, ' and este es el image: ', this.image);
   }
 
-  get documents():Array<any> {
-    console.log(this.customerService.customer.documents);
+  get documents(): Document[] {
     return this.customerService.customer.documents;
   }
 }

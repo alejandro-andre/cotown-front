@@ -1,29 +1,34 @@
 <div>
   <h2>Documentos</h2>
 
-  <div>
-    <label>Foto</label>
-    <input
-      placeholder="Foto"
-      [(ngModel)]="image"
-      type="file"
-      (change)="upload($event)"
-    >
-  </div>
 
-  <div  *ngIf="documents.length; then thenBlock else elseBlock"></div>
+
+  <div *ngIf="documents.length; then thenBlock else elseBlock"></div>
   <ng-template #thenBlock>
     <div *ngFor="let document of documents" style="margin-top: 10px;">
-      <p>Document type {{ document.doctype.name }}</p>
-      <p>Exprity Date {{ document.expirity_date }}</p>
+      <div class="box">
+        <div>
+          <p>Document type {{ document.doctype.name }}</p>
+          <p>Exprity Date {{ document.expirity_date }}</p>
+        </div>
 
-
+        <div *ngFor="let doc of document.doctype.arrayOfImages">
+          <label>Foto</label>
+          <input
+            placeholder="Foto"
+            [(ngModel)]="doc.file"
+            type="file"
+            (change)="upload($event)"
+          >
+        </div>
+      </div>
     </div>
   </ng-template>
-<ng-template #elseBlock>
-  <div>
-    No se han encontrado resultados
-  </div>
-</ng-template>
+
+  <ng-template #elseBlock>
+    <div>
+      No se han encontrado resultados
+    </div>
+  </ng-template>
 
 </div>

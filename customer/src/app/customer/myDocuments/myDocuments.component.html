@@ -8,14 +8,14 @@
     <div *ngFor="let document of documents" style="margin-top: 10px;">
       <div class="box">
         <div>
-          <p>Document type {{ document.doctype.name }}</p>
-          <p>Exprity Date {{ document.expirity_date }}</p>
+          <p>Document type: {{ document.doctype.name }}</p>
+          <p>Exprity Date: {{ document.expirity_date }}</p>
         </div>
 
         <div *ngFor="let doc of document.doctype.arrayOfImages">
-          <label>Foto</label>
+          <label>Documento</label>
           <input
-            placeholder="Foto"
+            placeholder="Document"
             [(ngModel)]="doc.file"
             type="file"
             (change)="upload($event)"

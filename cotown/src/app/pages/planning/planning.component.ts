@@ -513,7 +513,7 @@ export class PlanningComponent {
           Resource_code: booking.resource?.code || '',
           Customer_name: name || '',
           Customer_gender: booking.booking?.customer.gender?.code || '',
-          Customer_country: booking.booking?.customer.country.name || '',
+          Customer_country: booking.booking?.customer.country?.name || '',
           Customer_email: email || '',
           Customer_phone: phone || '',
           Customer_age: age || '',

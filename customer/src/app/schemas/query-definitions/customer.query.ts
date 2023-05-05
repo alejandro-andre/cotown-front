@@ -34,6 +34,7 @@ export const customerQuery = `query customerQuery($id: Int) {
       created_at: Created_at
       doctype: Customer_doc_typeViaCustomer_doc_type_id {
         name: Name
+        images:Images
         id
       }
     }

@@ -12,9 +12,11 @@ import { GenderService } from 'src/app/services/gender.service';
 import { IdentificationDocTypesService } from 'src/app/services/identificationDocTypes.service';
 import { LanguageService } from 'src/app/services/languages.service';
 import { schoolOrCompaniesService } from 'src/app/services/schoolOrCompanies.service';
+import { ContactTypeService } from 'src/app/services/contactType.service';
 
 // Models
 import { Customer } from 'src/app/models/Customer.model';
+import { Document } from 'src/app/constants/Interface';
 
 // Queries
 import { identificationDocTypesQuery } from 'src/app/schemas/query-definitions/IdentificationDocTypes.query';
@@ -24,7 +26,8 @@ import { genderQuery } from 'src/app/schemas/query-definitions/gender.query';
 import { languageQuery } from 'src/app/schemas/query-definitions/languages.query';
 import { schoolOrCompaniesQuery } from 'src/app/schemas/query-definitions/schoolOrCompanies.query';
 import { contactTypeQuery } from 'src/app/schemas/query-definitions/contactType.query';
-import { ContactTypeService } from 'src/app/services/contactType.service';
+
+
 
 @Component({
   selector: 'app-layout',
@@ -143,6 +146,43 @@ export class LayoutComponent implements OnInit, OnDestroy {
     });
   }
 
+  loadDocuments (documents: Document[]): Document[] {
+    if (documents === null) {
+      return [] as Document[];
+    }
+
+    const returnData: Document[] = [] ;
+
+    documents.forEach((doc: Document) => {
+      const numOfImages = doc.doctype.images;
+      const images = [];
+
+      for(let i = 0; i < numOfImages; i++) {
+        images.push({
+          file: '',
+          id: doc.id,
+          index: i
+        })
+      }
+
+      const docObject = {
+        expirity_date: doc.expirity_date,
+        id: doc.id,
+        created_at: doc.created_at,
+        doctype: {
+          name: doc.doctype.name,
+          images: doc.doctype.images,
+          id: doc.doctype.id,
+          arrayOfImages: images
+        }
+      };
+
+      returnData.push(docObject);
+    });
+
+    return returnData;
+  }
+
   loadCustomer() {
     const variables = {
       id: 916
@@ -159,7 +199,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
         const birthDate = birth_date !== null ? new Date(birth_date) : null;
         const contactsToSend = contacts !== null ? contacts : [];
-        const docToSend = documents !== null ? documents : [];
+        const docToSend = this.loadDocuments(documents);
+
         const bookingsToSend = bookings !== null ? bookings : [];
         const invoidesToSend = invoices !== null ? invoices : [];
         const paymentsToSend = payments !== null ? payments : [];

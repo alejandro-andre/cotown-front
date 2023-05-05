@@ -64,6 +64,11 @@ export class Constants {
   public static PAYMENT_PAY = 'pay';
   public static PAYMENT_DATE = this.DATE;
 
+  // Table header constats of Contacts
+  public static CONTACT_NAME = 'name';
+  public static CONTACT_EMAIL = 'email';
+  public static CONTACT_PHONE = 'phone';
+
 
   /**
    * Urls of nav

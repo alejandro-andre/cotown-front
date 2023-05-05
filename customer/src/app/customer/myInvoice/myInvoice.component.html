@@ -1,8 +1,55 @@
 <div>
   <h2>Facturas</h2>
 
-  <div>
-    No se han encontrado resultados
-  </div>
+  <div *ngIf="invoices.length; then thenBlock else elseBlock"></div>
 
+  <ng-template #thenBlock>
+    <!--Table of invoices -->
+    <table style="margin-bottom: 10px;" mat-table *ngIf="invoices && invoices.length" [dataSource]="invoices"
+      class="mat-elevation-z8">
+      <ng-container [matColumnDef]="col.header" *ngFor="let col of invoceTableFormat">
+        <th mat-header-cell *matHeaderCellDef>{{ col.name }}</th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="col.header === INVOICE_PROPERTY">
+            {{ getResource(element[col.property]) }}
+          </span>
+          <span *ngIf="col.header !== INVOICE_PROPERTY">
+            {{ element[col.property]}}
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedInvoiceColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedInvoiceColumns;"></tr>
+    </table>
+
+    <p>Pagos</p>
+    <!--Table of pays-->
+    <table style="margin-bottom: 10px;" mat-table *ngIf="payments && payments.length" [dataSource]="payments"
+      class="mat-elevation-z8">
+      <ng-container [matColumnDef]="col.header" *ngFor="let col of payTableFormat">
+        <th mat-header-cell *matHeaderCellDef>{{ col.name }}</th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="col.header === PAY_PROPERTY">
+            <button mat-raised-button (click)="pay(element[col.property])">Pay</button>
+          </span>
+          <span *ngIf="col.header === INVOICE_PROPERTY && col.header !== PAY_PROPERTY">
+            {{ getResource(element[col.property]) }}
+          </span>
+          <span *ngIf="col.header !== INVOICE_PROPERTY && col.header !== PAY_PROPERTY">
+            {{ element[col.property] }}
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedPaymentColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedPaymentColumns;"></tr>
+    </table>
+  </ng-template>
+
+  <ng-template #elseBlock>
+    <div>
+      No se han encontrado resultados
+    </div>
+  </ng-template>
 </div>

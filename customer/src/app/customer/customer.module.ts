@@ -29,6 +29,7 @@ import { CustomerRoutingModule } from './customer-routing.module';
 import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
 import { MyBookingsComponent } from './myBookings/myBookings.component';
 import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBookingDetail.component';
+import { MyInvoiceComponent } from './myInvoice/myInvoice.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBooking
     NewContactComponent,
     MyDocumentsComponent,
     MyBookingsComponent,
-    MyBookingDetailComponent
+    MyBookingDetailComponent,
+    MyInvoiceComponent
   ],
   imports: [
     CommonModule,

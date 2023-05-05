@@ -50,4 +50,16 @@
       </mat-form-field>
     </p>
   </div>
+
+  <div>
+    <button
+      [disabled]="isDisabled"
+      mat-raised-button
+      color="basic"
+      (click)="save()"
+    >
+      Guardar
+    </button>
+
+  </div>
 </div>

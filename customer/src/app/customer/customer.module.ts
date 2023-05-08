@@ -1,9 +1,14 @@
 // Core
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import localeEN from '@angular/common/locales/en';
+import localeES from '@angular/common/locales/es';
 
 // Material
 import { MatSelectModule } from '@angular/material/select'
@@ -30,6 +35,14 @@ import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
 import { MyBookingsComponent } from './myBookings/myBookings.component';
 import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBookingDetail.component';
 import { MyInvoiceComponent } from './myInvoice/myInvoice.component';
+
+// Config of translation
+registerLocaleData(localeES, 'es-ES');
+registerLocaleData(localeEN, 'en-US');
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -58,7 +71,16 @@ import { MyInvoiceComponent } from './myInvoice/myInvoice.component';
     MatTableModule,
     MatSidenavModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
+
+
   ],
   exports: [
     LayoutComponent,
@@ -72,7 +94,8 @@ import { MyInvoiceComponent } from './myInvoice/myInvoice.component';
     MatTableModule,
     MatSidenavModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    TranslateModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

@@ -18,27 +18,27 @@ export class MyBookingDetailComponent {
     {
       header: Constants.BOOKING_DETAIL_DATE_HEADER,
       property: 'rent_date',
-      name: 'Mes'
+      name: 'month'
     },
     {
       header: Constants.BOOKING_DETAIL_RENT_HEADER,
       property: 'rent',
-      name: 'Renta'
+      name: 'rent'
     },
     {
       header: Constants.BOOKING_DETAIL_SERVICE_HEADER,
       property: 'services',
-      name: 'Servicios'
+      name: 'services'
     },
     {
       header: Constants.BOOKING_DETAIL_RENT_DISCOUN_HEADER,
       property: 'rent_discount',
-      name: 'Suplementos(+)/Descuentos(-) a la renta'
+      name: 'rentSupplement'
     },
     {
       header: Constants.BOOKING_DETAIL_SERVICE_DISCOUNT_HEADER,
       property: 'service_discount',
-      name: 'Suplementos(+)/Descuentos(-) a los servicios'
+      name: 'serviceSupplement'
     },
   ];
 

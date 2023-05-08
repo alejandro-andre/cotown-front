@@ -1,31 +1,35 @@
 <div>
-  <h2>Contactos</h2>
-  <div  *ngIf="contacts.length; then thenBlock else elseBlock"></div>
+  <h2>{{ 'contacts' | translate }}</h2>
+  <div *ngIf="contacts.length; then thenBlock else elseBlock"></div>
   <ng-template #thenBlock>
-        <!--Table of pays-->
-        <table style="margin-bottom: 10px;" mat-table *ngIf="contacts && contacts.length" [dataSource]="contacts"
-        class="mat-elevation-z8">
-        <ng-container [matColumnDef]="col.header" *ngFor="let col of tableFormat">
-          <th mat-header-cell *matHeaderCellDef>{{ col.name }}</th>
-          <td mat-cell *matCellDef="let element">
-            <span>
-              {{ element[col.property] }}
-            </span>
-          </td>
-        </ng-container>
-  
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
+    <!--Table of pays-->
+    <table
+      style="margin-bottom: 10px;"
+      mat-table *ngIf="contacts && contacts.length"
+      [dataSource]="contacts"
+      class="mat-elevation-z8"
+    >
+      <ng-container [matColumnDef]="col.header" *ngFor="let col of tableFormat">
+        <th mat-header-cell *matHeaderCellDef>{{ col.name | translate }}</th>
+        <td mat-cell *matCellDef="let element">
+          <span>
+            {{ element[col.property] }}
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
 
 
 
   </ng-template>
-<ng-template #elseBlock>
-  <div>
-    No se han encontrado resultados
+  <ng-template #elseBlock>
+    <div>
+    {{ 'notFoundResults' | translate }}
   </div>
 </ng-template>
 
-<button mat-raised-button color="basic" (click)="goToAdd()">Añadir Contacto</button>
+<button mat-raised-button color="basic" (click)="goToAdd()">{{ 'addContact' | translate }}</button>
 </div>

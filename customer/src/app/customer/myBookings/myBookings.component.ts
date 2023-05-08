@@ -20,37 +20,37 @@ export class MyBookingsComponent {
     {
       header: Constants.BOOKING_RESOURCE,
       property: 'resource',
-      name: 'Recurso'
+      name: 'resource'
     },
     {
       header: Constants.BOOKING_FROM,
       property: 'start',
-      name: 'Fecha desde'
+      name: 'dateFrom'
     },
     {
       header: Constants.BOOKING_TO,
       property: 'end',
-      name: 'Fecha hasta'
+      name: 'dateTo'
     },
     {
       header: Constants.BOOKING_STATUS,
       property: 'status',
-      name: 'Estado'
+      name: 'status'
     },
     {
       header: Constants.BOOKING_FLAT,
       property: 'flat',
-      name: 'Tipo de piso'
+      name: 'flatType'
     },
     {
       header: Constants.BOOKING_PLACE,
       property: 'place',
-      name: 'Tipo de plaza'
+      name: 'placeType'
     },
     {
       header: Constants.BOOKING_RESOURCE_TYPE,
       property: 'resource_type',
-      name: 'Tipo de recurso'
+      name: 'resourceType'
     },
   ];
 

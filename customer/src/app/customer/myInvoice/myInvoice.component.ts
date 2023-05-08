@@ -24,27 +24,27 @@ export class MyInvoiceComponent {
     {
       header: Constants.INVOICE_CODE,
       property: 'code',
-      name: 'Nº Factura'
+      name: 'invoiceNumber'
     },
     {
       header: Constants.INVOICE_DATE,
       property: 'issue_date',
-      name: 'Fecha de emisión'
+      name: 'issueDate'
     },
     {
       header: Constants.INVOICE_CONCEPT,
       property: 'concept',
-      name: 'Concepto'
+      name: 'concept'
     },
     {
       header: Constants.INVOICE_TOTAL,
       property: 'total',
-      name: 'Total'
+      name: 'total'
     },
     {
       header: Constants.INVOICE_RESOURCE,
       property: 'booking',
-      name: 'Reserva'
+      name: 'booking'
     },
   ];
 
@@ -52,32 +52,32 @@ export class MyInvoiceComponent {
     {
       header: Constants.PAYMENT_PAY,
       property: 'pay',
-      name: 'Pay'
+      name: 'pay'
     },
     {
       header: Constants.PAYMENT_CODE,
       property: 'id',
-      name: 'Nº de pago'
+      name: 'paymentNumber'
     },
     {
       header: Constants.PAYMENT_DATE,
       property: 'issue_date',
-      name: 'Fecha de emisión'
+      name: 'issueDate'
     },
     {
       header: Constants.PAYMENT_CONCEPT,
       property: 'concept',
-      name: 'Concepto'
+      name: 'concept'
     },
     {
       header: Constants.PAYMENT_AMOUNT,
       property: 'amount',
-      name: 'Total'
+      name: 'total'
     },
     {
       header: Constants.PAYMENT_RESOURCE,
       property: 'booking',
-      name: 'Reserva'
+      name: 'booking'
     },
   ];
 

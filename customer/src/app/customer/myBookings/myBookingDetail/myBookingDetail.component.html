@@ -1,5 +1,5 @@
 <div>
-  <h2>Booking Detail </h2>
+  <h2>{{ 'bookingDetail' | translate}}</h2>
 
   <ng-container *ngIf="booking && booking.id && !showNotFound;  then showData; else showNotData">
   </ng-container>
@@ -8,60 +8,60 @@
     <div class="box-content">
       <p>
         <mat-form-field>
-          <mat-label>Estado</mat-label>
+          <mat-label>{{ 'status' | translate }}</mat-label>
           <input
             matInput
-            placeholder="Estado"
+            placeholder="{{'status' | translate}}"
             [(ngModel)]="booking.status"
           >
         </mat-form-field>
       </p>
       <p>
         <mat-form-field>
-          <mat-label>Pagador</mat-label>
+          <mat-label>{{ 'payer' | translate }}</mat-label>
           <input
             matInput
-            placeholder="Pagador"
+            placeholder="{{'payer' | translate}}"
             [(ngModel)]="booking.payer.name"
           >
         </mat-form-field>
       </p>
 
       <p>
-        Fechas:
+        {{ 'dates' | translate }}:
 
         <mat-form-field>
-          <mat-label>Fecha desde</mat-label>
+          <mat-label>{{ 'dateFrom' | translate }}</mat-label>
           <input
             matInput
-            placeholder="Fecha desde"
+            placeholder="{{'dateFrom' | translate}}"
             [(ngModel)]="booking.start"
             readonly
           >
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Fecha hasta</mat-label>
+          <mat-label>{{ 'dateTo' | translate }}</mat-label>
           <input
             matInput
-            placeholder="Fecha hasta"
+            placeholder="{{'dateTo' | translate}}"
             [(ngModel)]="booking.end"
             readonly
           >
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Pagador</mat-label>
+          <mat-label>{{ 'applicationDate' | translate }}</mat-label>
           <input
             matInput
-            placeholder="Fecha solicitud"
+            placeholder="{{'applicationDate' | translate}}"
             [(ngModel)]="booking.request_date"
             readonly
           >
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Valido hasta</mat-label>
+          <mat-label>{{ 'validUntil' | translate }}</mat-label>
           <input
             matInput
-            placeholder="Valido hasta"
+            placeholder="{{'validUntil' | translate}}"
             [(ngModel)]="booking.expiry_date"
             readonly
           >
@@ -69,7 +69,7 @@
 
 
         <mat-form-field>
-          <mat-label>Fecha de confirmacion</mat-label>
+          <mat-label>{{ 'confirmationDate' | translate }}</mat-label>
           <input
             matInput
             placeholder="dd/mm/yyyy"
@@ -79,25 +79,25 @@
         </mat-form-field>
       </p>
       <p>
-        solicitud
+        {{ 'application' | translate }}
       </p>
       <p>
 
         <mat-form-field>
-          <mat-label>Edificio: </mat-label>
+          <mat-label>{{ 'building' | translate }}: </mat-label>
           <input
             matInput
-            placeholder="Edificio"
+            placeholder="{{'building' | translate}}"
             readonly
             [value]="buildingName"
           >
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Tipo de recurso</mat-label>
+          <mat-label>{{ 'resourceType' | translate }}</mat-label>
           <input
             matInput
-            placeholder="Tipo de recurso"
+            placeholder="{{'resourceType' | translate}}"
             [ngModel]="booking.resource_type"
             readonly
           >
@@ -105,20 +105,20 @@
       </p>
       <p>
         <mat-form-field>
-          <mat-label>Tipo de psio</mat-label>
+          <mat-label>{{ 'flatType' | translate }}</mat-label>
           <input
             matInput
-            placeholder="Tipo de piso"
+            placeholder="{{'flatType' | translate}}"
             [ngModel]="flatTypeName"
             readonly
           >
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Tipo de plaza</mat-label>
+          <mat-label>{{ 'placeType' | translate }}</mat-label>
           <input
             matInput
-            placeholder="Tipo de plaza"
+            placeholder="{{'placeType' | translate}}"
             [ngModel]="placeTypeName"
             readonly
           >
@@ -127,20 +127,20 @@
 
       <p>
         <mat-form-field>
-          <mat-label>Motivo de estancia</mat-label>
+          <mat-label>{{ 'reasonForStay' | translate }}</mat-label>
           <input
             matInput
-            placeholder="Motivo de estancia"
+            placeholder="{{'reasonForStay' | translate}}"
             [ngModel]="reasonName"
             readonly
           >
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Escuela/Empresa</mat-label>
+          <mat-label>{{ 'school/company' | translate }}</mat-label>
           <input
             matInput
-            placeholder="Escuela/Empresa"
+            placeholder="{{ 'school/company' | translate}}"
             [ngModel]="schoolName"
             readonly
           >
@@ -156,20 +156,20 @@
       </p>
 
       <p>
-        RESERVA
+        {{ 'booking' | translate }}
       </p>
       <p>
         <mat-form-field>
-          <mat-label>Recurso</mat-label>
+          <mat-label>{{ 'resource' | translate }}</mat-label>
           <input
             matInput
-            placeholder="Recurso"
+            placeholder="{{ 'resource' | translate }}"
             [ngModel]="resourceCode"
             readonly
           >
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <mat-label>Desde</mat-label>
+          <mat-label>{{ 'from' | translate }}</mat-label>
           <input
             matInput
             [matDatepicker]="pickerFrom"
@@ -180,7 +180,7 @@
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-          <mat-label>Hasta</mat-label>
+          <mat-label>{{ 'to' | translate }}</mat-label>
           <input
             matInput
             [matDatepicker]="pickerTo"
@@ -193,42 +193,42 @@
       </p>
 
       <p>
-        Precios
+        {{ 'prices' | translate }}
       </p>
 
       <p>
         <mat-form-field>
-        <mat-label>Renta</mat-label>
+        <mat-label>{{ 'rent' | translate }}</mat-label>
         <input
           matInput
-          placeholder="Renta"
-          [ngModel]="booking.rent "
+          placeholder="{{ 'rent' | translate }}"
+          [ngModel]="booking.rent"
           readonly
         >
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Servicios</mat-label>
+        <mat-label>{{ 'services' | translate }}</mat-label>
         <input
           matInput
-          placeholder="Servicis"
+          placeholder="{{ 'services' | translate }}"
           [ngModel]="booking.services "
           readonly
         >
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Limite de consumo</mat-label>
+        <mat-label>{{ 'consumptionLimit' | translate }}</mat-label>
         <input
           matInput
-          placeholder="Limite de consumo"
-          [ngModel]="booking.limit "
+          placeholder="{{ 'consumptionLimit' | translate }}"
+          [ngModel]="booking.limit"
           readonly
         >
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Garantía teórica</mat-label>
+        <mat-label>{{ 'theoricalGuarantee' | translate }}</mat-label>
         <input
           matInput
-          placeholder="Garantía teórica"
+          placeholder="{{ 'theoricalGuarantee' | translate }}"
           [ngModel]="booking.deposit "
           readonly
         >
@@ -236,9 +236,15 @@
       </p>
 
       <!--Table of prices -->
-      <table style="margin-bottom: 10px;" mat-table *ngIf="booking.price_list && booking.price_list.length" [dataSource]="booking.price_list" class="mat-elevation-z8">
+      <table
+        style="margin-bottom: 10px;"
+        mat-table
+        *ngIf="booking.price_list && booking.price_list.length"
+        [dataSource]="booking.price_list"
+        class="mat-elevation-z8"
+      >
         <ng-container [matColumnDef]="col.header" *ngFor="let col of tableFormat" >
-          <th mat-header-cell *matHeaderCellDef>{{ col.name }}</th>
+          <th mat-header-cell *matHeaderCellDef>{{ col.name | translate }}</th>
           <td mat-cell *matCellDef="let element"> {{ element[col.property]}} </td>
         </ng-container>
 

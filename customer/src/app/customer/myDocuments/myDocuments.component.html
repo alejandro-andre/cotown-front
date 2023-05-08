@@ -1,19 +1,17 @@
 <div>
-  <h2>Documentos</h2>
-
-
+  <h2>{{ 'documents' | translate }}</h2>
 
   <div *ngIf="documents.length; then thenBlock else elseBlock"></div>
   <ng-template #thenBlock>
     <div *ngFor="let document of documents" style="margin-top: 10px;">
       <div class="box">
         <div>
-          <p>Document type: {{ document.doctype.name }}</p>
-          <p>Exprity Date: {{ document.expirity_date }}</p>
+          <p>{{ 'documentType' | translate }}: {{ document.doctype.name }}</p>
+          <p>{{ 'expirityDate' | translate }}: {{ document.expirity_date }}</p>
         </div>
 
         <div *ngFor="let doc of document.doctype.arrayOfImages">
-          <label>Documento</label>
+          <label>{{ 'document' | translate }}</label>
           <input
             placeholder="Document"
             [(ngModel)]="doc.file"
@@ -27,8 +25,7 @@
 
   <ng-template #elseBlock>
     <div>
-      No se han encontrado resultados
+      {{ 'notFoundResults' | translate }}
     </div>
   </ng-template>
-
 </div>

@@ -1,11 +1,11 @@
 <div>
   <div>
     <mat-form-field>
-      <mat-label>Nombre</mat-label>
+      <mat-label>{{ 'name' | translate }}</mat-label>
       <input matInput [(ngModel)]="customerService.customer.name">
     </mat-form-field>
     <mat-form-field appearance="fill" style="margin-right: 10px;">
-      <mat-label>Tipo de documento</mat-label>
+      <mat-label>{{ 'documentType' | translate }}</mat-label>
       <mat-select
         [(ngModel)]="customerService.customer.typeDoc"
         (ngModelChange)="changed()"
@@ -17,72 +17,72 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Document</mat-label>
+      <mat-label>{{ 'document' | translate}}</mat-label>
       <input matInput [(ngModel)]="customerService.customer.document">
     </mat-form-field>
 
     <p>
       <mat-form-field>
-        <mat-label>Email</mat-label>
+        <mat-label>{{ 'email' | translate }}</mat-label>
         <input
           readonly
           matInput
-          placeholder="Email"
+          placeholder="{{'email' | translate}}"
           [(ngModel)]="customerService.customer.email"
         >
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Phone</mat-label>
+        <mat-label>{{ 'phone' | translate }}</mat-label>
         <input
           readonly
           matInput
-          placeholder="Email"
+          placeholder="{{'phone' | translate}}"
           [(ngModel)]="customerService.customer.phone"
         >
       </mat-form-field>
     </p>
     <p>
       <mat-form-field>
-        <mat-label>Address</mat-label>
+        <mat-label>{{ 'address' | translate }}</mat-label>
         <textarea
           matInput
-          placeholder="Adress"
+          placeholder="{{'address' | translate}}"
           [(ngModel)]="customerService.customer.adress"
         ></textarea>
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Postal code</mat-label>
+        <mat-label>{{ 'postalCode' | translate }}</mat-label>
         <input
           matInput
-          placeholder="Postal code"
+          placeholder="{{'postalCode' | translate}}"
           maxlength="5"
           [(ngModel)]="customerService.customer.postalCode"
         >
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>City</mat-label>
+        <mat-label>{{ 'city' | translate }}</mat-label>
         <input
           matInput
-          placeholder="City"
+          placeholder="{{'city' | translate}}"
           [(ngModel)]="customerService.customer.city"
         >
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Province</mat-label>
+        <mat-label>{{ 'province' | translate }}</mat-label>
         <input
           matInput
-          placeholder="Province"
+          placeholder="{{'province' | translate}}"
           [(ngModel)]="customerService.customer.province"
         >
       </mat-form-field>
 
 
       <mat-form-field appearance="fill" style="margin-right: 10px;">
-        <mat-label>country</mat-label>
+        <mat-label>{{ 'country' | translate }}</mat-label>
         <mat-select
           [(ngModel)]="customerService.customer.country"
           (ngModelChange)="changed()"
@@ -97,7 +97,7 @@
 
     <p>
       <mat-form-field appearance="fill" style="margin-right: 10px;">
-        <mat-label>Genero</mat-label>
+        <mat-label>{{ 'gender' | translate }}</mat-label>
         <mat-select
           [(ngModel)]="customerService.customer.genderId"
           (ngModelChange)="changed()"
@@ -109,7 +109,7 @@
       </mat-form-field>
 
       <mat-form-field appearance="fill" style="margin-right: 10px;">
-        <mat-label>Pais de origen</mat-label>
+        <mat-label>{{ 'countryOfOrigin' | translate }}</mat-label>
         <mat-select
           [(ngModel)]="customerService.customer.originId"
           (ngModelChange)="changed()"
@@ -121,7 +121,7 @@
       </mat-form-field>
 
       <mat-form-field appearance="fill" style="margin-right: 10px;">
-        <mat-label>Idioma</mat-label>
+        <mat-label>{{ 'language' | translate }}</mat-label>
         <mat-select
           [(ngModel)]="customerService.customer.languageId"
           (ngModelChange)="changed()"
@@ -136,7 +136,7 @@
       </mat-form-field>
 
       <mat-form-field appearance="fill" style="margin-right: 10px;">
-        <mat-label>Nacionalidad</mat-label>
+        <mat-label>{{ 'nationality' | translate}}</mat-label>
         <mat-select
           [(ngModel)]="customerService.customer.nationality"
           (ngModelChange)="changed()"
@@ -150,7 +150,7 @@
     <p>
 
       <mat-form-field appearance="fill">
-        <mat-label>Fecha de nacimiento</mat-label>
+        <mat-label>{{ 'birthdate' | translate }}</mat-label>
         <input
           matInput
           [matDatepicker]="picker"
@@ -161,17 +161,17 @@
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Tutor</mat-label>
+        <mat-label>{{ 'advisor' | translate }}</mat-label>
         <input
           matInput
-          placeholder="Tutor"
+          placeholder="{{'advisor' | translate}}"
           [(ngModel)]="customerService.customer.tutor"
           readonly
         >
       </mat-form-field>
 
       <mat-form-field appearance="fill" style="margin-right: 10px;">
-        <mat-label>Escuela/Empresa</mat-label>
+        <mat-label>{{ 'school/company' | translate }}</mat-label>
         <mat-select
           [(ngModel)]="customerService.customer.schoolOrCompany"
           (ngModelChange)="changed()"
@@ -188,10 +188,10 @@
 
     <p>
       <mat-form-field>
-        <mat-label>Cuenta bancaria</mat-label>
+        <mat-label>{{ 'bankAccount' | translate }}</mat-label>
         <input
           matInput
-          placeholder="Cuenta bancaria"
+          placeholder="{{'bankAccount' | translate}}"
           [(ngModel)]="customerService.customer.bankAcount"
           readonly
         >

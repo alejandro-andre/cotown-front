@@ -1,8 +1,8 @@
 <div>
-  <h2>Nuevo contacto</h2>
+  <h2>{{ 'newContact' | translate }}</h2>
   <div>
     <mat-form-field appearance="fill" style="margin-right: 10px;">
-      <mat-label>Tipo de contacto</mat-label>
+      <mat-label>{{ 'contactType' | translate }}</mat-label>
       <mat-select [(ngModel)]="contactType">
         <mat-option *ngFor="let contact of contactTypes" [value]="contact.id">
           {{ contact.name }}
@@ -11,29 +11,29 @@
     </mat-form-field>
     <p>
       <mat-form-field>
-        <mat-label>Nombre</mat-label>
+        <mat-label>{{ 'name' | translate }}</mat-label>
         <input
           matInput
-          placeholder="Nombre"
+          placeholder="{{'name' | translate}}"
           [(ngModel)]="name"
         >
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Apellidos</mat-label>
+        <mat-label>{{ 'surname' | translate }}</mat-label>
         <input
           matInput
-          placeholder="Apellidos"
+          placeholder="{{'surname' | translate}}"
           [(ngModel)]="surName"
         >
       </mat-form-field>
     </p>
     <p>
       <mat-form-field>
-        <mat-label>Email</mat-label>
+        <mat-label>{{ 'email' | translate }}</mat-label>
         <input
           matInput
-          placeholder="Email"
+          placeholder="{{'email' | translate}}"
           [(ngModel)]="email"
           [formControl]="emailFormControl"
         >
@@ -41,14 +41,14 @@
           class="mat-error"
           *ngIf="emailFormControl.hasError('pattern') && !emailFormControl.hasError('required')"
         >
-          EMAIL INVALIDO
+          {{ 'invalidEmail' | translate }}
         </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Telefono</mat-label>
+        <mat-label>{{ 'phone' | translate }}</mat-label>
         <input
           matInput
-          placeholder="Telefono"
+          placeholder="{{'phone' | translate}}"
           [(ngModel)]="phone"
         >
       </mat-form-field>
@@ -62,7 +62,7 @@
       color="basic"
       (click)="save()"
     >
-      Guardar
+      {{ 'save' | translate }}
     </button>
   </div>
 </div>

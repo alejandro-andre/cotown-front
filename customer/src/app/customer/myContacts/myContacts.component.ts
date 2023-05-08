@@ -22,17 +22,17 @@ export class MyContactsComponent {
     {
       header: Constants.CONTACT_NAME,
       property: 'name',
-      name: 'Nombre'
+      name: 'name'
     },
     {
       header: Constants.CONTACT_EMAIL,
       property: 'email',
-      name: 'Email'
+      name: 'email'
     },
     {
       header: Constants.CONTACT_PHONE,
       property: 'phone',
-      name: 'Teléfono'
+      name: 'phone'
     }
   ];
 

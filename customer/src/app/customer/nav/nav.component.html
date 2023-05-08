@@ -1,5 +1,9 @@
 <div>
-  <li *ngFor="let path of navs" (click)="onSelect(path.url)">
+  <li
+    *ngFor="let path of navs"
+    (click)="onSelect(path.url)"
+    [ngClass]="{'active': selected === path.url }"
+  >
     {{ path.name | translate}}
 
   </li>

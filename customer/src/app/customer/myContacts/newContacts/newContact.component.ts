@@ -1,10 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { BasicResponse } from 'src/app/constants/Interface';
-import { SET_NEW_CONTACT } from 'src/app/schemas/query-definitions/contact.query';
+import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+
+// Services
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { ContactTypeService } from 'src/app/services/contactType.service';
 import { CustomerService } from 'src/app/services/customer.service';
+
+// Interface
+import { BasicResponse } from 'src/app/constants/Interface';
+
+// Queries
+import { GET_CONTACTS_BY_CUSTOMERID, SET_NEW_CONTACT } from 'src/app/schemas/query-definitions/contact.query';
+
 
 @Component({
   selector: 'app-contact-new',
@@ -17,7 +24,7 @@ export class NewContactComponent {
     public customerService: CustomerService,
     private contactTypeService: ContactTypeService,
     private apollo: ApoloQueryApi,
-    private router: Router,
+    private location: Location
   ) {}
 
   public contactType: number | null = null;
@@ -30,15 +37,12 @@ export class NewContactComponent {
     return this.contactTypeService.contacts;
   }
 
-  changed() {
-    console.log(' HERE AT THE CONTACT')
-  }
-
   get isDisabled (): boolean {
     return this.contactType === null || this.name === '' || (this.email === '' && this.phone === '');
   }
 
   save() {
+    const id =916;
     const variables:{
       id: number,
       cid: number | null,
@@ -46,7 +50,7 @@ export class NewContactComponent {
       email: string | undefined,
       phone: string | undefined
     } = {
-      id: 916,
+      id,
       cid: this.contactType,
       name: this.name,
       email: this.email,
@@ -62,7 +66,16 @@ export class NewContactComponent {
     }
 
     this.apollo.setData(SET_NEW_CONTACT, variables).subscribe((ev) => {
-      console.log('subscription on apollo: ', ev);
-    })
+      const varToSend = {
+        customerId: id
+      };
+
+      this.apollo.getData(GET_CONTACTS_BY_CUSTOMERID, varToSend).subscribe((res) => {
+        if(res.data && res.data.contacts) {
+          this.customerService.setContacts(res.data.contacts);
+          this.location.back();
+        }
+      });
+    });
   }
 }

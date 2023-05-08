@@ -3,10 +3,7 @@
   <div>
     <mat-form-field appearance="fill" style="margin-right: 10px;">
       <mat-label>Tipo de contacto</mat-label>
-      <mat-select
-        [(ngModel)]="contactType"
-        (ngModelChange)="changed()"
-      >
+      <mat-select [(ngModel)]="contactType">
         <mat-option *ngFor="let contact of contactTypes" [value]="contact.id">
           {{ contact.name }}
         </mat-option>
@@ -60,6 +57,5 @@
     >
       Guardar
     </button>
-
   </div>
 </div>

@@ -26,8 +26,8 @@ import { genderQuery } from 'src/app/schemas/query-definitions/gender.query';
 import { languageQuery } from 'src/app/schemas/query-definitions/languages.query';
 import { schoolOrCompaniesQuery } from 'src/app/schemas/query-definitions/schoolOrCompanies.query';
 import { contactTypeQuery } from 'src/app/schemas/query-definitions/contactType.query';
-
-
+import { TranslateService } from '@ngx-translate/core';
+import { Constants } from 'src/app/constants/Constants';
 
 @Component({
   selector: 'app-layout',
@@ -49,6 +49,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private identificationTypes: IdentificationDocTypesService,
     private schoolOrCompaniesService: schoolOrCompaniesService,
     private contactTypeService: ContactTypeService,
+    private translate: TranslateService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher
   ) {
@@ -69,6 +70,12 @@ export class LayoutComponent implements OnInit, OnDestroy {
         width: `${this.navWidth}px`
       };
     }
+  }
+
+  // TODO this function is temporal set spanish as default language
+  setAppLanguage() {
+    this.translate.setDefaultLang(Constants.defaultBaseLanguageForTranslation);
+    this.translate.use('es');
   }
 
   ngAfterViewInit() {
@@ -217,6 +224,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.setAppLanguage();
     this.authService.getAirflowsToken().then(() => {
       this.loadIdentificationDocTypes();
       this.loadLanguages();

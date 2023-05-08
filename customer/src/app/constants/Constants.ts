@@ -1,28 +1,30 @@
 import { Nav } from "./Interface";
 
 export class Constants {
+  public static defaultBaseLanguageForTranslation = 'es';
+
   public static DATA: Nav = {
-    name: 'My data',
+    name: 'myData',
     url: 'data'
   };
 
   public static CONTACTS: Nav = {
-    name: 'My Contacts',
+    name: 'myContacts',
     url: 'contact'
   };
 
   public static DOCUMENTS: Nav = {
-    name: 'My documents',
+    name: 'myDocuments',
     url: 'documents'
   };
 
   public static BOOKINGS: Nav = {
-    name: 'My Bookings',
+    name: 'myBookings',
     url: 'bookings'
   };
 
   public static INVOICES: Nav = {
-    name: 'My invoice',
+    name: 'myInvoices',
     url: 'invoices'
   };
 

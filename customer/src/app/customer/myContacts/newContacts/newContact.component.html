@@ -35,7 +35,14 @@
           matInput
           placeholder="Email"
           [(ngModel)]="email"
+          [formControl]="emailFormControl"
         >
+        <mat-error
+          class="mat-error"
+          *ngIf="emailFormControl.hasError('pattern') && !emailFormControl.hasError('required')"
+        >
+          EMAIL INVALIDO
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Telefono</mat-label>

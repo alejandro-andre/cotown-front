@@ -11,6 +11,7 @@ import { BasicResponse } from 'src/app/constants/Interface';
 
 // Queries
 import { GET_CONTACTS_BY_CUSTOMERID, SET_NEW_CONTACT } from 'src/app/schemas/query-definitions/contact.query';
+import { FormControl, Validators } from '@angular/forms';
 
 
 @Component({
@@ -32,6 +33,11 @@ export class NewContactComponent {
   public surName: string = '';
   public email: string = '';
   public phone: string = '';
+
+  public emailFormControl = new FormControl('', [
+    Validators.required,
+    Validators.pattern('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$')
+  ]);
 
   get contactTypes(): BasicResponse[] {
     return this.contactTypeService.contacts;

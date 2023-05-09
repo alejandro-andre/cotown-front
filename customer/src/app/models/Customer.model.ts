@@ -1,11 +1,12 @@
 import { FormControl } from '@angular/forms';
 import { Booking, Contact, Invoice, Payment, Document } from '../constants/Interface';
 export class Customer {
+  id: number = 916
   name: string = '';
   province: string = '';
   city: string = '';
-  country: string = '';
-  adress: string = '';
+  country: number | null = null;
+  address: string = '';
   postalCode: string = '';
   document: string = '';
   email: string = '';
@@ -18,9 +19,8 @@ export class Customer {
   birthDate: Date | null = null;
   typeDoc: number | null = null;
   formControl = new FormControl<Date | null>(null);
-  schoolOrCompany: string = '';
+  schoolOrCompany: number | null = null;
   bankAcount: string = '';
-
   contacts: Contact[] = [] as Contact[];
   documents: Document[] = [] as Document[];
   bookings: Booking[] = [] as Booking[];
@@ -31,8 +31,8 @@ export class Customer {
     name: string = '',
     province: string = '',
     city: string = '',
-    country: string = '',
-    adress: string = '',
+    country: number | null = null,
+    address: string = '',
     postalCode: string = '',
     document: string = '',
     email: string = '',
@@ -44,7 +44,7 @@ export class Customer {
     tutor: string = '',
     birthDate: Date | null = null,
     typeDoc: number | null = null,
-    schoolOrCompany: string = '',
+    schoolOrCompany: number | null = null,
     bankAcount: string = '',
     contacts: Contact[] = [],
     doc: Document[] = [],
@@ -56,7 +56,7 @@ export class Customer {
     this.province = province;
     this.city = city;
     this.country = country;
-    this.adress = adress;
+    this.address = address;
     this.postalCode = postalCode;
     this.document = document;
     this.email = email;

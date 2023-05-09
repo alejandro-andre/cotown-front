@@ -1,5 +1,5 @@
 // Core
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 //Service
 import { CountryService } from 'src/app/services/country.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -8,8 +8,9 @@ import { LanguageService } from 'src/app/services/languages.service';
 import { IdentificationDocTypesService } from 'src/app/services/identificationDocTypes.service';
 import { schoolOrCompaniesService } from 'src/app/services/schoolOrCompanies.service';
 import { BasicResponse } from 'src/app/constants/Interface';
-
-
+import { Customer } from 'src/app/models/Customer.model';
+import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
+import { UPDATE_CUSTOMER } from 'src/app/schemas/query-definitions/customer.query';
 
 @Component({
   selector: 'app-my-data',
@@ -17,41 +18,128 @@ import { BasicResponse } from 'src/app/constants/Interface';
   styleUrls: ['./myData.component.scss']
 })
 
-export class MyDataComponent implements OnInit{
-
+export class MyDataComponent{
   constructor(
     public customerService: CustomerService,
     private genderService: GenderService,
     private countryService: CountryService,
     private languageService: LanguageService,
     private identificationTypesService: IdentificationDocTypesService,
-    private schoolOrCompaniesService: schoolOrCompaniesService
+    private schoolOrCompaniesService: schoolOrCompaniesService,
+    private apollo: ApoloQueryApi
   ) {}
-  ngOnInit(): void {
+
+  /**
+   * Getters
+   */
+
+  // Return the current customer
+  get customer (): Customer {
+    return this.customerService.customer;
   }
 
-  changed() {
-    console.log(this.customerService.customer)
-  }
-
+  // Return types of documents
   get identificationTypes(): BasicResponse [] {
     return this.identificationTypesService.types;
   }
 
+  // Return country list
   get countries(): BasicResponse [] {
     return this.countryService.countries;
   }
 
+  // Return school list
   get schoolOrCompanies() :BasicResponse [] {
     return this.schoolOrCompaniesService.schoolOrCompanies;
   }
 
+  // Return gender list
   get genders(): BasicResponse [] {
     return this.genderService.genders;
   }
 
+  // Return language list
   get languages(): BasicResponse [] {
     return this.languageService.languages;
+  }
+
+  // Return gender name of current customer
+  get gender(): string {
+    return this.genders.find((elem) => elem.id === this.customer.genderId)?.name || '';
+  }
+
+  // Return array of sections with true or false value to set as readOnly or not
+  get visibility():{ [key: string]: boolean } {
+    return this.customerService.visibility;
+  }
+
+  // Return school name of current customer
+  get schoolName(): string {
+    return this.schoolOrCompanies.find((elem) => elem.id === this.customer.schoolOrCompany)?.name || '';
+  }
+
+  // Return the country of the current customer
+  get country(): string {
+    return this.countries.find(elem => elem.id === this.customer.country)?.name || '';
+  }
+
+  // Return the documentation type name of current customer
+  get docType() :string {
+    return this.identificationTypes.find((elem ) => elem.id === this.customer.typeDoc)?.name || '';
+  }
+
+  // Return nationality of current customer
+  get nationality(): string {
+    return this.countries.find(elem => elem.id === this.customer.nationality)?.name || '';
+  }
+
+  // Return language of current customer
+  get language(): string {
+    return this.languages.find((elem) => elem.id === this.customer.languageId)?.name || '';
+  }
+
+  // Return origin country of current customer
+  get origin(): string {
+    return this.countries.find((elem) => elem.id === this.customer.originId)?.name || '';
+  }
+
+  // Return formated birthdate of current customer
+  get birthDate(): string | null {
+    const date = this.customer.birthDate;
+
+    if (date !== null) {
+      const year = date.getFullYear();
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+
+      return `${year}-${month}-${day}`;
+    }
+
+    return null;
+  }
+
+  // Return if the button is or not disabled
+  get isButtonDisabled(): boolean {
+    if(Object.values(this.visibility).filter((elem) => elem === false).length > 0){
+      return false;
+    };
+
+    return true
+  }
+
+  /**
+   * Methods
+   */
+
+  save() {
+    const variables = {
+      ...this.customerService.customer,
+      birthDate: this.birthDate
+    };
+
+    this.apollo.setData(UPDATE_CUSTOMER, variables).subscribe(resp => {
+      console.log('The response is : ', resp)
+    })
   }
 
 }

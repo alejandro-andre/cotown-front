@@ -199,7 +199,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
       const value = res.data;
       if (value && value.data && value.data.length) {
         const {
-          name , province, city, country, adress, postal_code, document, email, phones,
+          name , province, city, country, address, postal_code, document, email, phones,
           gender_id, language, origin,tutor, birth_date, nationality, type_doc, school_id,
           bank, contacts, documents, bookings, invoices, payments
         } = value.data[0];
@@ -213,7 +213,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         const paymentsToSend = payments !== null ? payments : [];
 
         const customer = new Customer(
-          name, province, city, country, adress, postal_code, document, email, phones, gender_id,
+          name, province, city, country, address, postal_code, document, email, phones, gender_id,
           language, origin, nationality, tutor?.name || '', birthDate, type_doc, school_id, bank,
           contactsToSend, docToSend, bookingsToSend, invoidesToSend, paymentsToSend
         );

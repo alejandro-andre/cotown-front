@@ -10,7 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, DateAdapter } from '@angular/material/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
-import { registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -21,6 +21,7 @@ import { GraphQLModule } from './graphql.module';
 import { SpinnerModule } from './spinner/spinner.module';
 import { CustomDateAdapter } from './plugins/custom-date-adapter';
 import { PlanningComponent } from './pages/planning/planning.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 import localeEN from '@angular/common/locales/en';
 import localeES from '@angular/common/locales/es';
@@ -36,6 +37,7 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     AppComponent,
     PlanningComponent,
+    DashboardComponent
   ],
   imports: [
     MatIconModule,

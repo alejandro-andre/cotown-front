@@ -5,7 +5,7 @@ export const customerQuery = `query customerQuery($id: Int) {
     city: City
     postal_code: Zip
     province: Province
-    adress: Address
+    address: Address
     bank: Bank_account
     birth_date: Birth_date
     comments: Comments
@@ -123,4 +123,48 @@ export const customerQuery = `query customerQuery($id: Int) {
       }
     }
   }
+}`;
+
+
+export const UPDATE_CUSTOMER = `
+  mutation(
+    $id: Int!,
+    $name: String!,
+    $province: String,
+    $city: String,
+    $country: Int,
+    $address: String,
+    $postalCode: String,
+    $document: String,
+    $phone: String,
+    $email:String!,
+    $genderId: Int,
+    $languageId: Int,
+    $originId: Int,
+    $nationality: Int,
+    $birthDate: String,
+    $typeDoc: Int,
+    $schoolOrCompany: Int,
+    $bankAcount: String){
+  Customer_CustomerUpdate(
+    where:{ id: {EQ: $id} }
+    entity:{
+      Name:$name
+      Email:$email
+      Phones: $phone
+      City: $city
+      Zip: $postalCode
+      Province: $province
+      Address: $address
+      Bank_account: $bankAcount
+      Birth_date: $birthDate
+      Document: $document
+      Country_origin_id: $originId
+      Id_type_id: $typeDoc
+      School_id: $schoolOrCompany
+      Gender_id: $genderId
+      Language_id: $languageId
+      Nationality_id:$nationality
+      Country_id: $country
+    }){id}
 }`;

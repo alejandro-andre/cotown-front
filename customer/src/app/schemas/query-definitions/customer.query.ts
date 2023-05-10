@@ -1,5 +1,6 @@
 export const customerQuery = `query customerQuery($id: Int) {
   data: Customer_CustomerList(where: { id: { EQ: $id} }) {
+    appLang: Lang
     name: Name
     email: Email
     city: City
@@ -145,7 +146,8 @@ export const UPDATE_CUSTOMER = `
     $birthDate: String,
     $typeDoc: Int,
     $schoolOrCompany: Int,
-    $bankAcount: String){
+    $bankAcount: String
+    $appLang: Auxiliar_LangEnumType){
   Customer_CustomerUpdate(
     where:{ id: {EQ: $id} }
     entity:{
@@ -166,5 +168,6 @@ export const UPDATE_CUSTOMER = `
       Language_id: $languageId
       Nationality_id:$nationality
       Country_id: $country
+      Lang: $appLang
     }){id}
 }`;

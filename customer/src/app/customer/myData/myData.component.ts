@@ -11,6 +11,7 @@ import { BasicResponse } from 'src/app/constants/Interface';
 import { Customer } from 'src/app/models/Customer.model';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { UPDATE_CUSTOMER } from 'src/app/schemas/query-definitions/customer.query';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-my-data',
@@ -26,8 +27,23 @@ export class MyDataComponent{
     private languageService: LanguageService,
     private identificationTypesService: IdentificationDocTypesService,
     private schoolOrCompaniesService: schoolOrCompaniesService,
-    private apollo: ApoloQueryApi
+    private apollo: ApoloQueryApi,
+    private translate: TranslateService,
+
   ) {}
+
+  public appLangs = [
+    {
+      id: 'es',
+      name: 'Español',
+    },
+    {
+      id: 'en',
+      name: 'English'
+    }
+  ];
+
+  public saveActiveButton: boolean = false;
 
   /**
    * Getters
@@ -120,7 +136,7 @@ export class MyDataComponent{
 
   // Return if the button is or not disabled
   get isButtonDisabled(): boolean {
-    if(Object.values(this.visibility).filter((elem) => elem === false).length > 0){
+    if(Object.values(this.visibility).filter((elem) => elem === false).length > 0 || this.saveActiveButton){
       return false;
     };
 
@@ -130,6 +146,11 @@ export class MyDataComponent{
   /**
    * Methods
    */
+
+  activeButton() {
+    this.saveActiveButton = true;
+    this.translate.use(this.customer.appLang);
+  }
 
   save() {
     const variables = {
@@ -141,5 +162,4 @@ export class MyDataComponent{
       console.log('The response is : ', resp)
     })
   }
-
 }

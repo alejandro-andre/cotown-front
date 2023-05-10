@@ -14,6 +14,10 @@ export default {
 
   getBookings(status: string): Promise<AxiosResponse> {
     return axiosInstance.get('dashboard/' + status);
+  },
+
+  getLabels(id: number, locale: string): Promise<AxiosResponse> {
+    return axiosInstance.get('labels/' + id + '/' + locale);
   }
 
 }

@@ -80,6 +80,34 @@ export interface Document extends BasicResponse {
 }
 
 export interface Contact extends BasicResponse {
-  phone: string
+  phone: string,
   email: string
+}
+
+export interface CustomerInterface {
+  id: number,
+  name: string,
+  province: string,
+  city: string,
+  country: number | null,
+  address: string,
+  postalCode: string,
+  document: string,
+  email: string,
+  phone: string,
+  genderId: number | null,
+  languageId: number | null,
+  originId: number | null,
+  nationality: number | null,
+  tutorId: number | null,
+  birthDate: Date | null,
+  typeDoc: number | null,
+  schoolOrCompany: number | null,
+  bankAcount?: string,
+  contacts?: Contact[],
+  documents?: Document[],
+  bookings?: Booking[],
+  invoices?: Invoice[],
+  payments?: Payment[],
+  appLang?: string,
 }

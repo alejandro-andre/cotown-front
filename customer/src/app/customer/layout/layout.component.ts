@@ -72,10 +72,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  // TODO this function is temporal set spanish as default language
-  setAppLanguage() {
+  setAppLanguage(lang: string) {
     this.translate.setDefaultLang(Constants.defaultBaseLanguageForTranslation);
-    this.translate.use('es');
+    this.translate.use(lang);
   }
 
   ngAfterViewInit() {
@@ -201,7 +200,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         const {
           name , province, city, country, address, postal_code, document, email, phones,
           gender_id, language, origin,tutor, birth_date, nationality, type_doc, school_id,
-          bank, contacts, documents, bookings, invoices, payments
+          bank, contacts, documents, bookings, invoices, payments, appLang
         } = value.data[0];
 
         const birthDate = birth_date !== null ? new Date(birth_date) : null;
@@ -215,16 +214,16 @@ export class LayoutComponent implements OnInit, OnDestroy {
         const customer = new Customer(
           name, province, city, country, address, postal_code, document, email, phones, gender_id,
           language, origin, nationality, tutor?.name || '', birthDate, type_doc, school_id, bank,
-          contactsToSend, docToSend, bookingsToSend, invoidesToSend, paymentsToSend
+          contactsToSend, docToSend, bookingsToSend, invoidesToSend, paymentsToSend, appLang
         );
 
+        this.setAppLanguage(appLang);
         this.customerService.setCustomerData(customer);
       }
     });
   }
 
   ngOnInit(): void {
-    this.setAppLanguage();
     this.authService.getAirflowsToken().then(() => {
       this.loadIdentificationDocTypes();
       this.loadLanguages();

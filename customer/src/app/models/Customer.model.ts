@@ -26,6 +26,7 @@ export class Customer {
   bookings: Booking[] = [] as Booking[];
   invoices: Invoice[] = [] as Invoice[];
   payments: Payment[] = [] as Payment[];
+  appLang: string = 'es'
 
   constructor(
     name: string = '',
@@ -51,6 +52,7 @@ export class Customer {
     bookings: Booking[] = [],
     invoices: Invoice[] = [],
     payments: Payment[] = [],
+    appLang: string = 'es',
   ) {
     this.name = name;
     this.province = province;
@@ -76,5 +78,6 @@ export class Customer {
     this.bookings = bookings;
     this.invoices = invoices;
     this.payments = payments;
+    this.appLang = appLang;
   }
 };

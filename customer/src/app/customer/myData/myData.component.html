@@ -1,4 +1,17 @@
 <div>
+
+  <div>
+    APP SECTION
+    <mat-form-field appearance="fill" style="margin-right: 10px;">
+      <mat-label>{{ 'language' | translate }}</mat-label>
+      <mat-select [(ngModel)]="customerService.customer.appLang" (selectionChange)="activeButton()">
+        <mat-option *ngFor="let lang of appLangs" [value]="lang.id">
+          {{ lang.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
   <div>
     <mat-form-field>
       <mat-label>{{ 'name' | translate }}</mat-label>

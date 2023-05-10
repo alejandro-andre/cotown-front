@@ -1,7 +1,8 @@
 // Core
-import { Component, OnInit, ChangeDetectorRef, OnDestroy, ElementRef, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, ElementRef } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
+import { Subject } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 // Sevices
 import { AuthService } from 'src/app/auth/service/auth.service';
@@ -13,23 +14,23 @@ import { IdentificationDocTypesService } from 'src/app/services/identificationDo
 import { LanguageService } from 'src/app/services/languages.service';
 import { schoolOrCompaniesService } from 'src/app/services/schoolOrCompanies.service';
 import { ContactTypeService } from 'src/app/services/contactType.service';
+import { TutorService } from 'src/app/services/tutor.service';
 
 // Models
 import { Customer } from 'src/app/models/Customer.model';
 import { CustomerInterface, Document } from 'src/app/constants/Interface';
+import { Constants } from 'src/app/constants/Constants';
+import { Tutor } from 'src/app/models/Tutor.model';
 
 // Queries
 import { identificationDocTypesQuery } from 'src/app/schemas/query-definitions/IdentificationDocTypes.query';
 import { countryQuery } from 'src/app/schemas/query-definitions/countries.query';
-import { TUTOR_QUERY, customerQuery } from 'src/app/schemas/query-definitions/customer.query';
+import { customerQuery } from 'src/app/schemas/query-definitions/customer.query';
 import { genderQuery } from 'src/app/schemas/query-definitions/gender.query';
 import { languageQuery } from 'src/app/schemas/query-definitions/languages.query';
 import { schoolOrCompaniesQuery } from 'src/app/schemas/query-definitions/schoolOrCompanies.query';
 import { contactTypeQuery } from 'src/app/schemas/query-definitions/contactType.query';
-import { TranslateService } from '@ngx-translate/core';
-import { Constants } from 'src/app/constants/Constants';
-import { TutorService } from 'src/app/services/tutor.service';
-import { Observable, Subject } from 'rxjs';
+import { TUTOR_QUERY } from 'src/app/schemas/query-definitions/tutor.query';
 
 @Component({
   selector: 'app-layout',
@@ -44,7 +45,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   constructor(
     private elRef:ElementRef,
     private authService: AuthService,
-    private router: Router,
     private apolloApi: ApoloQueryApi,
     private customerService: CustomerService,
     private genderService: GenderService,
@@ -94,10 +94,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   /**
    * Endded the configuration of nav
    */
-
-  onSelectOption(data: string): void {
-    this.router.navigate([`customer/${data}`]);
-  }
 
   loadIdentificationDocTypes() {
     this.apolloApi.getData(identificationDocTypesQuery).subscribe((res) => {
@@ -194,16 +190,44 @@ export class LayoutComponent implements OnInit, OnDestroy {
     return returnData;
   }
 
-  loadCustomer() {
+  loadTutor (tutorId: number): void {
     const variables = {
-      id: 1001
+      id: tutorId
+    };
+
+    this.apolloApi.getData(TUTOR_QUERY, variables).subscribe((res) => {
+      const value = res.data;
+      if (value && value.data && value.data.length) {
+        const {
+          id, name, province, city, country, address, postal_code, document,
+          email, phones, language, origin, birth_date, nationality, type_doc,
+        } = value.data[0];
+        const birthDate = birth_date !== null ? new Date(birth_date) : null;
+        const tutor: CustomerInterface = {
+          id, name, province, city, email, country, nationality, birthDate, address, document,
+          phone: phones,
+          postalCode: postal_code,
+          languageId: language,
+          originId: origin,
+          typeDoc: type_doc,
+        };
+
+        const customerTutor = new Tutor(tutor);
+        this.tutorService.setTutorData(customerTutor);
+      }
+    })
+  }
+
+  loadCustomer(): void {
+    const variables = {
+      id: 1002
     }
 
     this.apolloApi.getData(customerQuery, variables).subscribe((res) => {
       const value = res.data;
       if (value && value.data && value.data.length) {
         const {
-          name , province, city, country, address, postal_code, document, email, phones,
+          id, name , province, city, country, address, postal_code, document, email, phones,
           gender_id, language, origin, tutorId, birth_date, nationality, type_doc, school_id,
           bank, contacts, documents, bookings, invoices, payments, appLang
         } = value.data[0];
@@ -211,27 +235,18 @@ export class LayoutComponent implements OnInit, OnDestroy {
         const birthDate = birth_date !== null ? new Date(birth_date) : null;
         const contactsToSend = contacts !== null ? contacts : [];
         const docToSend = this.loadDocuments(documents);
-
         const bookingsToSend = bookings !== null ? bookings : [];
         const invoidesToSend = invoices !== null ? invoices : [];
         const paymentsToSend = payments !== null ? payments : [];
+
         const customer: CustomerInterface = {
-          id: 1001,
-          name,
-          province,
-          city,
-          country,
-          address,
+          id, name, province, city, country, address, document, email, nationality, birthDate, appLang,
           postalCode: postal_code,
-          document,
-          email,
           phone: phones,
           genderId: gender_id,
           languageId: language,
           originId:origin,
-          nationality,
-          tutorId: tutorId || null,
-          birthDate,
+          tutorId: tutorId,
           typeDoc: type_doc,
           schoolOrCompany: school_id,
           bankAcount: bank,
@@ -240,8 +255,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
           bookings: bookingsToSend,
           invoices: invoidesToSend,
           payments: paymentsToSend,
-          appLang
-
         }
 
         const currentCustomer = new Customer(customer);
@@ -256,41 +269,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
         if(parseInt(diffParsed) <= 18 && tutorId !== null) {
           this.showTutor.next(true);
-          const variables = {
-            id: tutorId
-          }
-          this.apolloApi.getData(TUTOR_QUERY, variables).subscribe((res) => {
-            const value = res.data;
-            if (value && value.data && value.data.length) {
-              const {
-                name,
-                province,
-                city, country, address, postal_code, document, email, phones, language, origin, tutorId, birth_date, nationality, type_doc,
-              } = value.data[0];
-              const birthDate = birth_date !== null ? new Date(birth_date) : null;
-
-              const tutor: CustomerInterface = {
-                id: tutorId,
-                name,
-                province,
-                city,
-                email,
-                country,
-                nationality,
-                phone: phones,
-                birthDate,
-                address,
-                postalCode: postal_code,
-                languageId: language,
-                document,
-                originId: origin,
-                typeDoc: type_doc,
-              };
-
-              const customerTutor = new Customer(tutor);
-              this.tutorService.setTutorData(customerTutor);
-            }
-          })
+          this.loadTutor(tutorId);
         }
       }
     });

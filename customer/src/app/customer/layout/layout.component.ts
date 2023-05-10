@@ -260,12 +260,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
             id: tutorId
           }
           this.apolloApi.getData(TUTOR_QUERY, variables).subscribe((res) => {
-            if (res && res.data && res.data.length) {
+            const value = res.data;
+            if (value && value.data && value.data.length) {
               const {
                 name,
                 province,
                 city, country, address, postal_code, document, email, phones, language, origin, tutorId, birth_date, nationality, type_doc,
-              } = res.data[0];
+              } = value.data[0];
               const birthDate = birth_date !== null ? new Date(birth_date) : null;
 
               const tutor: CustomerInterface = {
@@ -284,7 +285,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
                 document,
                 originId: origin,
                 typeDoc: type_doc,
-              }
+              };
 
               const customerTutor = new Customer(tutor);
               this.tutorService.setTutorData(customerTutor);

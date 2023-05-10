@@ -8,6 +8,11 @@ export class Constants {
     url: 'data'
   };
 
+  public static TUTOR: Nav = {
+    name: 'myTutor',
+    url: 'tutor'
+  };
+
   public static CONTACTS: Nav = {
     name: 'myContacts',
     url: 'contact'
@@ -78,6 +83,7 @@ export class Constants {
 
   public static NAV_URLS: Nav[] = [
     Constants.DATA,
+    Constants.TUTOR,
     Constants.CONTACTS,
     Constants.DOCUMENTS,
     Constants.BOOKINGS,

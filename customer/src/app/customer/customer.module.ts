@@ -35,6 +35,7 @@ import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
 import { MyBookingsComponent } from './myBookings/myBookings.component';
 import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBookingDetail.component';
 import { MyInvoiceComponent } from './myInvoice/myInvoice.component';
+import { MyTutorComponent } from './myTutor/myTutor.component';
 
 // Config of translation
 registerLocaleData(localeES, 'es-ES');
@@ -55,7 +56,8 @@ export function createTranslateLoader(http: HttpClient) {
     MyDocumentsComponent,
     MyBookingsComponent,
     MyBookingDetailComponent,
-    MyInvoiceComponent
+    MyInvoiceComponent,
+    MyTutorComponent,
   ],
   imports: [
     CommonModule,

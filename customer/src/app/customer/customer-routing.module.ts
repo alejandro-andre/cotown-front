@@ -13,8 +13,7 @@ import { MyBookingsComponent } from './myBookings/myBookings.component';
 import { MyInvoiceComponent } from './myInvoice/myInvoice.component';
 import { Constants } from '../constants/Constants';
 import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBookingDetail.component';
-
-
+import { MyTutorComponent } from './myTutor/myTutor.component';
 
 const routes: Routes = [
   {
@@ -28,6 +27,10 @@ const routes: Routes = [
       {
         path: Constants.DATA.url,
         component: MyDataComponent
+      },
+      {
+        path: Constants.TUTOR.url,
+        component: MyTutorComponent
       },
       {
         path: Constants.CONTACTS.url,

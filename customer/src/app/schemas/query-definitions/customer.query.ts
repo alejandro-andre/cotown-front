@@ -19,10 +19,7 @@ export const customerQuery = `query customerQuery($id: Int) {
     language: Language_id
     nationality: Nationality_id
     country: Country_id
-    tutor: CustomerViaTutor_id {
-      name: Name
-      id
-    }
+    tutorId: Tutor_id
     contacts: Customer_contactListViaCustomer_id {
       name: Name
       id
@@ -126,6 +123,24 @@ export const customerQuery = `query customerQuery($id: Int) {
   }
 }`;
 
+export const TUTOR_QUERY =`query tutorQuery($id: Int) {
+  data: Customer_CustomerList(where: { id: { EQ: $id} }) {
+    name: Name
+    email: Email
+    city: City
+    country: Country_id
+    postal_code: Zip
+    province: Province
+    adress: Address
+    birth_date: Birth_date
+    phones: Phones
+    language: Language_id
+    nationality: Nationality_id
+    document: Document
+    origin: Country_origin_id
+    type_doc: Id_type_id
+  }
+}`;
 
 export const UPDATE_CUSTOMER = `
   mutation(

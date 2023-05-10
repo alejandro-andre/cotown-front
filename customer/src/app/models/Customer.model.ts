@@ -1,7 +1,8 @@
 import { FormControl } from '@angular/forms';
+import { CustomerInterface } from '../constants/Interface';
 import { Booking, Contact, Invoice, Payment, Document } from '../constants/Interface';
-export class Customer {
-  id: number = 916
+export class Customer implements CustomerInterface {
+  id: number = 1001
   name: string = '';
   province: string = '';
   city: string = '';
@@ -15,7 +16,7 @@ export class Customer {
   languageId: number | null = null;
   originId: number | null = null;
   nationality: number | null = null;
-  tutor: string = '';
+  tutorId: number | null = null;
   birthDate: Date | null = null;
   typeDoc: number | null = null;
   formControl = new FormControl<Date | null>(null);
@@ -28,56 +29,32 @@ export class Customer {
   payments: Payment[] = [] as Payment[];
   appLang: string = 'es'
 
-  constructor(
-    name: string = '',
-    province: string = '',
-    city: string = '',
-    country: number | null = null,
-    address: string = '',
-    postalCode: string = '',
-    document: string = '',
-    email: string = '',
-    phone: string = '',
-    genderId: number | null = null,
-    language: number | null = null,
-    origin: number | null = null,
-    nationality: number | null = null,
-    tutor: string = '',
-    birthDate: Date | null = null,
-    typeDoc: number | null = null,
-    schoolOrCompany: number | null = null,
-    bankAcount: string = '',
-    contacts: Contact[] = [],
-    doc: Document[] = [],
-    bookings: Booking[] = [],
-    invoices: Invoice[] = [],
-    payments: Payment[] = [],
-    appLang: string = 'es',
-  ) {
-    this.name = name;
-    this.province = province;
-    this.city = city;
-    this.country = country;
-    this.address = address;
-    this.postalCode = postalCode;
-    this.document = document;
-    this.email = email;
-    this.phone = phone;
-    this.genderId = genderId;
-    this.languageId = language;
-    this.originId = origin;
-    this.nationality = nationality;
-    this.tutor = tutor;
-    this.birthDate = birthDate;
+  constructor(data: CustomerInterface = {} as CustomerInterface ) {
+    this.id = data.id || 1001;
+    this.name = data.name || '';
+    this.province = data.province || '';
+    this.city = data.city || '';
+    this.country = data.country || null;
+    this.address = data.address || '';
+    this.postalCode = data.postalCode || '';
+    this.document = data.document || '';
+    this.email = data.email;
+    this.phone = data.phone || '';
+    this.genderId = data.genderId || null;
+    this.languageId = data.languageId || null;
+    this.originId = data.originId || null;
+    this.nationality = data.nationality || null;
+    this.tutorId = data.tutorId || null;
+    this.birthDate = data.birthDate || null;
     this.formControl = new FormControl(this.birthDate);
-    this.typeDoc = typeDoc;
-    this.schoolOrCompany = schoolOrCompany;
-    this.bankAcount = bankAcount;
-    this.contacts = contacts;
-    this.documents = doc;
-    this.bookings = bookings;
-    this.invoices = invoices;
-    this.payments = payments;
-    this.appLang = appLang;
+    this.typeDoc = data.typeDoc || null;
+    this.schoolOrCompany = data.schoolOrCompany || null;
+    this.bankAcount = data.bankAcount || '';
+    this.contacts = data.contacts || [];
+    this.documents = data.documents || [];
+    this.bookings = data.bookings || [];
+    this.invoices = data.invoices || [];
+    this.payments = data.payments || [];
+    this.appLang = data.appLang || 'es';
   }
 };

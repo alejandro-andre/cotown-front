@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Constants } from 'src/app/constants/Constants';
@@ -11,7 +11,6 @@ import { Nav } from 'src/app/constants/Interface';
 })
 
 export class NavComponent implements OnInit{
-  @Output() onSelectOption: EventEmitter<string> = new EventEmitter();
   @Input() showTutor!: Observable<boolean>;
   public showTutorVariable = false;
   public urls = Constants.NAV_URLS;
@@ -52,6 +51,6 @@ export class NavComponent implements OnInit{
 
   onSelect(data: string) {
     this.selected = data;
-    this.onSelectOption.next(data);
+    this._router.navigate([`customer/${data}`]);
   }
 }

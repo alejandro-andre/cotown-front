@@ -16,18 +16,19 @@ import { ContactTypeService } from 'src/app/services/contactType.service';
 
 // Models
 import { Customer } from 'src/app/models/Customer.model';
-import { Document } from 'src/app/constants/Interface';
+import { CustomerInterface, Document } from 'src/app/constants/Interface';
 
 // Queries
 import { identificationDocTypesQuery } from 'src/app/schemas/query-definitions/IdentificationDocTypes.query';
 import { countryQuery } from 'src/app/schemas/query-definitions/countries.query';
-import { customerQuery } from 'src/app/schemas/query-definitions/customer.query';
+import { TUTOR_QUERY, customerQuery } from 'src/app/schemas/query-definitions/customer.query';
 import { genderQuery } from 'src/app/schemas/query-definitions/gender.query';
 import { languageQuery } from 'src/app/schemas/query-definitions/languages.query';
 import { schoolOrCompaniesQuery } from 'src/app/schemas/query-definitions/schoolOrCompanies.query';
 import { contactTypeQuery } from 'src/app/schemas/query-definitions/contactType.query';
 import { TranslateService } from '@ngx-translate/core';
 import { Constants } from 'src/app/constants/Constants';
+import { TutorService } from 'src/app/services/tutor.service';
 
 @Component({
   selector: 'app-layout',
@@ -50,6 +51,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private schoolOrCompaniesService: schoolOrCompaniesService,
     private contactTypeService: ContactTypeService,
     private translate: TranslateService,
+    private tutorService: TutorService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher
   ) {
@@ -199,7 +201,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
       if (value && value.data && value.data.length) {
         const {
           name , province, city, country, address, postal_code, document, email, phones,
-          gender_id, language, origin,tutor, birth_date, nationality, type_doc, school_id,
+          gender_id, language, origin, tutorId, birth_date, nationality, type_doc, school_id,
           bank, contacts, documents, bookings, invoices, payments, appLang
         } = value.data[0];
 
@@ -210,15 +212,82 @@ export class LayoutComponent implements OnInit, OnDestroy {
         const bookingsToSend = bookings !== null ? bookings : [];
         const invoidesToSend = invoices !== null ? invoices : [];
         const paymentsToSend = payments !== null ? payments : [];
+        const customer: CustomerInterface = {
+          id: 1001,
+          name,
+          province,
+          city,
+          country,
+          address,
+          postalCode: postal_code,
+          document,
+          email,
+          phone: phones,
+          genderId: gender_id,
+          languageId: language,
+          originId:origin,
+          nationality,
+          tutorId: tutorId || null,
+          birthDate,
+          typeDoc: type_doc,
+          schoolOrCompany: school_id,
+          bankAcount: bank,
+          contacts: contactsToSend,
+          documents: docToSend,
+          bookings: bookingsToSend,
+          invoices: invoidesToSend,
+          payments: paymentsToSend,
+          appLang
 
-        const customer = new Customer(
-          name, province, city, country, address, postal_code, document, email, phones, gender_id,
-          language, origin, nationality, tutor?.name || '', birthDate, type_doc, school_id, bank,
-          contactsToSend, docToSend, bookingsToSend, invoidesToSend, paymentsToSend, appLang
-        );
+        }
+
+        const currentCustomer = new Customer(customer);
+        // TODO: may be is not the better way to do it
+        const now = new Date().getTime();
+        const birthWithTime = birthDate?.getTime() || 0;
+        const diff = now - birthWithTime;
+        const diffParsed = (diff / 31536000000).toFixed(0);
 
         this.setAppLanguage(appLang);
-        this.customerService.setCustomerData(customer);
+        this.customerService.setCustomerData(currentCustomer);
+
+        if(parseInt(diffParsed) <= 18 && tutorId !== null) {
+          console.log('WE HAVE A TUTOR!!!');
+          const variables = {
+            id: tutorId
+          }
+          this.apolloApi.getData(TUTOR_QUERY, variables).subscribe((res) => {
+            if (res && res.data && res.data.length) {
+              const {
+                name,
+                province,
+                city, country, address, postal_code, document, email, phones, language, origin, tutorId, birth_date, nationality, type_doc,
+              } = res.data[0];
+              const birthDate = birth_date !== null ? new Date(birth_date) : null;
+
+              const tutor: CustomerInterface = {
+                id: tutorId,
+                name,
+                province,
+                city,
+                email,
+                country,
+                nationality,
+                phone: phones,
+                birthDate,
+                address,
+                postalCode: postal_code,
+                languageId: language,
+                document,
+                originId: origin,
+                typeDoc: type_doc,
+              }
+
+              const customerTutor = new Customer(tutor);
+              this.tutorService.setTutorData(customerTutor);
+            }
+          })
+        }
       }
     });
   }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Customer } from '../models/Customer.model';
+import { Tutor } from '../models/Tutor.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +24,10 @@ export class TutorService {
     typeDoc: true,
   };
 
-  public tutor = new Customer();
+  public tutor = new Tutor();
   constructor() {}
 
-  setTutorData(tutor: Customer): void {
+  setTutorData(tutor: Tutor): void {
     this.tutor = tutor;
     this.setVisibility();
   }

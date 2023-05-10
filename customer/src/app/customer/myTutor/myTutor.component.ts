@@ -5,10 +5,10 @@ import { Component } from '@angular/core';
 import { CountryService } from 'src/app/services/country.service';
 import { IdentificationDocTypesService } from 'src/app/services/identificationDocTypes.service';
 import { BasicResponse } from 'src/app/constants/Interface';
-import { Customer } from 'src/app/models/Customer.model';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { TutorService } from 'src/app/services/tutor.service';
-import { UPDATE_CUSTOMER } from 'src/app/schemas/query-definitions/customer.query';
+import { Tutor } from 'src/app/models/Tutor.model';
+import { UPDATE_TUTOR } from 'src/app/schemas/query-definitions/tutor.query';
 
 @Component({
   selector: 'app-my-tutor',
@@ -31,7 +31,7 @@ export class MyTutorComponent {
    */
 
   // Return the current tutor
-  get tutor(): Customer {
+  get tutor(): Tutor {
     return this.tutorService.tutor;
   }
 
@@ -90,7 +90,7 @@ export class MyTutorComponent {
       birthDate: this.birthDate
     };
 
-    this.apollo.setData(UPDATE_CUSTOMER, variables).subscribe(resp => {
+    this.apollo.setData(UPDATE_TUTOR, variables).subscribe(resp => {
       console.log('The response is : ', resp)
     })
   }

@@ -1,5 +1,5 @@
 // Core
-import { Component, OnInit, ChangeDetectorRef, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, ElementRef, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
 
@@ -29,6 +29,7 @@ import { contactTypeQuery } from 'src/app/schemas/query-definitions/contactType.
 import { TranslateService } from '@ngx-translate/core';
 import { Constants } from 'src/app/constants/Constants';
 import { TutorService } from 'src/app/services/tutor.service';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-layout',
@@ -37,6 +38,8 @@ import { TutorService } from 'src/app/services/tutor.service';
 })
 
 export class LayoutComponent implements OnInit, OnDestroy {
+  public showTutor: Subject<boolean> = new Subject<any>();
+
   private _mobileQueryListener: () => void;
   constructor(
     private elRef:ElementRef,
@@ -193,7 +196,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   loadCustomer() {
     const variables = {
-      id: 916
+      id: 1001
     }
 
     this.apolloApi.getData(customerQuery, variables).subscribe((res) => {
@@ -252,7 +255,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         this.customerService.setCustomerData(currentCustomer);
 
         if(parseInt(diffParsed) <= 18 && tutorId !== null) {
-          console.log('WE HAVE A TUTOR!!!');
+          this.showTutor.next(true);
           const variables = {
             id: tutorId
           }

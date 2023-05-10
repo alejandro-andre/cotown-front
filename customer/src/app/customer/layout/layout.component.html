@@ -10,8 +10,11 @@
         </button>
       </div>
 
-      <app-nav class="nav"  (onSelectOption)="onSelectOption($event)"
-        [style.marginTop.px]="mobileQuery.matches ? 60 : 0"></app-nav>
+      <app-nav class="nav"
+        [showTutor]="showTutor.asObservable()"
+        (onSelectOption)="onSelectOption($event)"
+        [style.marginTop.px]="mobileQuery.matches ? 60 : 0"
+      ></app-nav>
     </mat-sidenav>
 
     <mat-sidenav-content class="content">

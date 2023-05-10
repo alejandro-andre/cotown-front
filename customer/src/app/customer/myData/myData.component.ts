@@ -29,7 +29,6 @@ export class MyDataComponent{
     private schoolOrCompaniesService: schoolOrCompaniesService,
     private apollo: ApoloQueryApi,
     private translate: TranslateService,
-
   ) {}
 
   public appLangs = [
@@ -46,8 +45,8 @@ export class MyDataComponent{
   public saveActiveButton: boolean = false;
 
   /**
-   * Getters
-   */
+  * Getters
+  */
 
   // Return the current customer
   get customer (): Customer {

@@ -99,4 +99,11 @@
       <!--End Birthdate-->
     </p>
   </div>
+
+  <div>
+    <button [disabled]="isButtonDisabled" mat-raised-button color="basic" (click)="save()">
+      {{ 'save' | translate }}
+    </button>
+  </div>
+
 </div>

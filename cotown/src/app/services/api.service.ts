@@ -6,6 +6,14 @@ export default {
 
   getAvailability(data: AvailabilityPayload): Promise<AxiosResponse> {
     return axiosInstance.post('availability',  data);
+  },
+
+  getDashboard(): Promise<AxiosResponse> {
+    return axiosInstance.get('dashboard');
+  },
+
+  getBookings(status: string): Promise<AxiosResponse> {
+    return axiosInstance.get('dashboard/' + status);
   }
 
 }

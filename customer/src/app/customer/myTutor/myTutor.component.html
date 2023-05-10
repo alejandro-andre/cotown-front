@@ -2,13 +2,13 @@
   <div>
     <mat-form-field>
       <mat-label>{{ 'name' | translate }}</mat-label>
-      <input matInput [readonly]="visibility['name']" [(ngModel)]="customerService.customer.name">
+      <input matInput [readonly]="visibility['name']" [(ngModel)]="tutorService.tutor.name">
     </mat-form-field>
 
     <!--Document type section-->
     <mat-form-field appearance="fill" style="margin-right: 10px;" *ngIf="!visibility['typeDoc']">
       <mat-label>{{ 'documentType' | translate }}</mat-label>
-      <mat-select [(ngModel)]="customerService.customer.typeDoc">
+      <mat-select [(ngModel)]="tutorService.tutor.typeDoc">
         <mat-option *ngFor="let doc of identificationTypes" [value]="doc.id">
           {{ doc.name }}
         </mat-option>
@@ -24,45 +24,45 @@
 
     <mat-form-field>
       <mat-label>{{ 'document' | translate}}</mat-label>
-      <input matInput [readonly]="visibility['document']" [(ngModel)]="customerService.customer.document">
+      <input matInput [readonly]="visibility['document']" [(ngModel)]="tutorService.tutor.document">
     </mat-form-field>
 
 
     <p>
       <mat-form-field>
         <mat-label>{{ 'email' | translate }}</mat-label>
-        <input readonly matInput placeholder="{{'email' | translate}}" [(ngModel)]="customerService.customer.email">
+        <input readonly matInput placeholder="{{'email' | translate}}" [(ngModel)]="tutorService.tutor.email">
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>{{ 'phone' | translate }}</mat-label>
         <input [readonly]="visibility['phone']" matInput placeholder="{{'phone' | translate}}"
-          [(ngModel)]="customerService.customer.phone">
+          [(ngModel)]="tutorService.tutor.phone">
       </mat-form-field>
     </p>
     <p>
       <mat-form-field>
         <mat-label>{{ 'address' | translate }}</mat-label>
         <textarea matInput [readonly]="visibility['address']" placeholder="{{'address' | translate}}"
-          [(ngModel)]="customerService.customer.address"></textarea>
+          [(ngModel)]="tutorService.tutor.address"></textarea>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>{{ 'postalCode' | translate }}</mat-label>
         <input matInput maxlength="5" [readonly]="visibility['postalCode']" placeholder="{{'postalCode' | translate}}"
-          [(ngModel)]="customerService.customer.postalCode">
+          [(ngModel)]="tutorService.tutor.postalCode">
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>{{ 'city' | translate }}</mat-label>
         <input matInput [readonly]="visibility['city']" placeholder="{{'city' | translate}}"
-          [(ngModel)]="customerService.customer.city">
+          [(ngModel)]="tutorService.tutor.city">
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>{{ 'province' | translate }}</mat-label>
         <input matInput [readonly]="visibility['province']" placeholder="{{'province' | translate}}"
-          [(ngModel)]="customerService.customer.province">
+          [(ngModel)]="tutorService.tutor.province">
       </mat-form-field>
 
 
@@ -75,7 +75,7 @@
 
       <mat-form-field *ngIf="!visibility['country']" appearance="fill" style="margin-right: 10px;">
         <mat-label>{{ 'country' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customerService.customer.country">
+        <mat-select [(ngModel)]="tutorService.tutor.country">
           <mat-option *ngFor="let country of countries" [value]="country.id">
             {{ country.name }}
           </mat-option>
@@ -92,7 +92,7 @@
       </mat-form-field>
       <mat-form-field appearance="fill" *ngIf="!visibility['genderId']">
         <mat-label>{{ 'birthdate' | translate }}</mat-label>
-        <input matInput [matDatepicker]="picker" [formControl]="customerService.customer.formControl">
+        <input matInput [matDatepicker]="picker" [formControl]="tutorService.tutor.formControl">
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>

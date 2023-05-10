@@ -1,7 +1,7 @@
 import { Nav } from "./Interface";
 
 export class Constants {
-  public static defaultBaseLanguageForTranslation = 'es';
+  public static defaultBaseLanguageForTranslation = 'en';
 
   public static DATA: Nav = {
     name: 'myData',

@@ -1,5 +1,6 @@
 export const customerQuery = `query customerQuery($id: Int) {
   data: Customer_CustomerList(where: { id: { EQ: $id} }) {
+    id,
     appLang: Lang
     name: Name
     email: Email
@@ -120,25 +121,6 @@ export const customerQuery = `query customerQuery($id: Int) {
         service_discount: Services_discount
       }
     }
-  }
-}`;
-
-export const TUTOR_QUERY =`query tutorQuery($id: Int) {
-  data: Customer_CustomerList(where: { id: { EQ: $id} }) {
-    name: Name
-    email: Email
-    city: City
-    country: Country_id
-    postal_code: Zip
-    province: Province
-    adress: Address
-    birth_date: Birth_date
-    phones: Phones
-    language: Language_id
-    nationality: Nationality_id
-    document: Document
-    origin: Country_origin_id
-    type_doc: Id_type_id
   }
 }`;
 

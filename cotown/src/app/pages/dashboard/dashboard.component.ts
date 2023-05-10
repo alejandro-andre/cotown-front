@@ -16,6 +16,8 @@ export class DashboardComponent implements OnInit {
   public dashboard: any = null;
   public rows: any = null;
 
+  public labels: any = null;
+
   public status: string = '';
   public select = [
     {'key':'solicitud', 'value': 'No pagadas'},
@@ -32,6 +34,7 @@ export class DashboardComponent implements OnInit {
     {'key':'devolvergarantia', 'value': 'Devolver garantía'},
   ]
 
+
   // Constructor
   constructor() { }
 
@@ -39,20 +42,23 @@ export class DashboardComponent implements OnInit {
     this.spinnerActive  = true;
     axiosApi.getDashboard().then((resp) => {
       this.dashboard = resp.data;
-      this.spinnerActive  = false;
       console.log(resp.data);
+      axiosApi.getLabels(7, "es_ES").then((resp) => {
+        console.log(resp.data);
+        this.labels = resp.data;
+        this.spinnerActive  = false;
+      }); 
     })       
   }
 
   getBookings(status: string): void {
     this.status = status;
     this.rows = null;
-    this.spinnerActive  = true;
     axiosApi.getBookings(this.status).then((resp) => {
+      console.log(resp.data);
       this.rows = resp.data;
       this.spinnerActive  = false;
-      console.log(resp.data);
-    })       
+    });      
   }
 
   goBooking(id: string) {
@@ -63,6 +69,14 @@ export class DashboardComponent implements OnInit {
     parent.history.pushState("", "", link);
     parent.history.go(-1);
     parent.history.go(1);
+  }
+
+  getLabel(code: string) {
+      const index = this.labels[0].indexOf(code);
+      if (index === -1) {
+          return "";
+      }
+      return this.labels[1][index];
   }
   
 }

@@ -38,7 +38,7 @@
 
   <tbody>
     <tr *ngFor="let r of rows" (click)="goBooking(r.id)" class="link">
-      <td>{{ r.Status }}</td>
+      <td>{{ getLabel(r.Status) }}</td>
       <td>{{ r.Name }}</td>
       <td>{{ r.Date_from }}</td>
       <td>{{ r.Date_to }}</td>

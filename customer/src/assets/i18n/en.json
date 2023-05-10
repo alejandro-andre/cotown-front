@@ -38,6 +38,7 @@
   "pay": "Pay",
   "paymentNumber": "Payment number",
   "myData": "My data",
+  "myTutor": "My tutor",
   "myContacts": "My contacts",
   "myDocuments": "My documents",
   "myBookings": "My bookings",
@@ -68,7 +69,4 @@
   "month": "Month",
   "rentSupplement": "Supplements(+)/Discounts(-) to rent",
   "serviceSupplement": "Suplementos(+)/Descuentos(-) a los servicios"
-
-
-
 }

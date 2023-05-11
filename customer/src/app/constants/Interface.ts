@@ -110,4 +110,12 @@ export interface CustomerInterface {
   invoices?: Invoice[],
   payments?: Payment[],
   appLang?: string,
+};
+
+export interface ContactVariables {
+  id: number,
+  cid: number,
+  name: string,
+  email?: string,
+  phone?: string
 }

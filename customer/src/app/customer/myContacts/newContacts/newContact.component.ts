@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 
 // Services
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
@@ -7,12 +8,10 @@ import { ContactTypeService } from 'src/app/services/contactType.service';
 import { CustomerService } from 'src/app/services/customer.service';
 
 // Interface
-import { BasicResponse } from 'src/app/constants/Interface';
+import { BasicResponse, ContactVariables } from 'src/app/constants/Interface';
 
 // Queries
 import { GET_CONTACTS_BY_CUSTOMERID, SET_NEW_CONTACT } from 'src/app/schemas/query-definitions/contact.query';
-import { FormControl, Validators } from '@angular/forms';
-
 
 @Component({
   selector: 'app-contact-new',
@@ -21,23 +20,22 @@ import { FormControl, Validators } from '@angular/forms';
 })
 
 export class NewContactComponent {
+  public contactType!: number;
+  public name: string = '';
+  public surName: string = '';
+  public email: string = '';
+  public phone: string = '';
+  public emailFormControl = new FormControl('', [
+    Validators.required,
+    Validators.pattern('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$')
+  ]);
+
   constructor(
     public customerService: CustomerService,
     private contactTypeService: ContactTypeService,
     private apollo: ApoloQueryApi,
     private location: Location
   ) {}
-
-  public contactType: number | null = null;
-  public name: string = '';
-  public surName: string = '';
-  public email: string = '';
-  public phone: string = '';
-
-  public emailFormControl = new FormControl('', [
-    Validators.required,
-    Validators.pattern('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$')
-  ]);
 
   get contactTypes(): BasicResponse[] {
     return this.contactTypeService.contacts;
@@ -48,32 +46,17 @@ export class NewContactComponent {
   }
 
   save() {
-    const id =916;
-    const variables:{
-      id: number,
-      cid: number | null,
-      name: string,
-      email: string | undefined,
-      phone: string | undefined
-    } = {
-      id,
+    const variables: ContactVariables = {
+      id: this.customerService.customer.id,
       cid: this.contactType,
       name: this.name,
       email: this.email,
       phone: this.phone
     };
 
-    if(this.email === '') {
-      delete variables.email
-    }
-
-    if(this.phone === '') {
-      delete variables.phone
-    }
-
     this.apollo.setData(SET_NEW_CONTACT, variables).subscribe((ev) => {
       const varToSend = {
-        customerId: id
+        customerId: this.customerService.customer.id
       };
 
       this.apollo.getData(GET_CONTACTS_BY_CUSTOMERID, varToSend).subscribe((res) => {

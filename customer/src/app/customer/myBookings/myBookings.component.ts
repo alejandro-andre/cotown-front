@@ -19,37 +19,37 @@ export class MyBookingsComponent {
   public tableFormat: TableObject[] = [
     {
       header: Constants.BOOKING_RESOURCE,
-      property: 'resource',
+      property: Constants.PROPERTY_RESOURCE,
       name: 'resource'
     },
     {
       header: Constants.BOOKING_FROM,
-      property: 'start',
+      property: Constants.PROPERTY_START,
       name: 'dateFrom'
     },
     {
       header: Constants.BOOKING_TO,
-      property: 'end',
+      property: Constants.PROPERTY_END,
       name: 'dateTo'
     },
     {
       header: Constants.BOOKING_STATUS,
-      property: 'status',
+      property: Constants.PROPERTY_STATUS,
       name: 'status'
     },
     {
       header: Constants.BOOKING_FLAT,
-      property: 'flat',
+      property: Constants.PROPERTY_FLAT,
       name: 'flatType'
     },
     {
       header: Constants.BOOKING_PLACE,
-      property: 'place',
+      property: Constants.PROPERTY_PLACE,
       name: 'placeType'
     },
     {
       header: Constants.BOOKING_RESOURCE_TYPE,
-      property: 'resource_type',
+      property: Constants.PROPERTY_RESOURCE_TYPE,
       name: 'resourceType'
     },
   ];

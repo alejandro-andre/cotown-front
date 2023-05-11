@@ -15,20 +15,10 @@ export class NavComponent implements OnInit{
   public showTutorVariable = false;
   public urls = Constants.NAV_URLS;
   public TUTOR = Constants.TUTOR;
-
-  get navUrls (): Nav[] {
-    if (this.showTutorVariable) {
-      return this.urls;
-    }else {
-      return this.urls.filter((elem) => elem.name !== Constants.TUTOR.name);
-    }
-  }
-
   public selected: string = '';
 
-  constructor(
-    private _router: Router
-  ) {}
+  constructor(private _router: Router) {}
+
   ngOnInit(): void {
     if (this.showTutor) {
       this.showTutor.subscribe((ev:boolean ) => this.showTutorVariable = ev);
@@ -52,5 +42,13 @@ export class NavComponent implements OnInit{
   onSelect(data: string) {
     this.selected = data;
     this._router.navigate([`customer/${data}`]);
+  }
+
+  get navUrls (): Nav[] {
+    if (this.showTutorVariable) {
+      return this.urls;
+    }else {
+      return this.urls.filter((elem) => elem.name !== Constants.TUTOR.name);
+    }
   }
 }

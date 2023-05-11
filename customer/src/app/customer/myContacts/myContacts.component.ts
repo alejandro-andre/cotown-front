@@ -11,7 +11,6 @@ import { CustomerService } from 'src/app/services/customer.service';
 })
 
 export class MyContactsComponent {
-
   constructor(
     public customerService: CustomerService,
     private router: Router,
@@ -21,17 +20,17 @@ export class MyContactsComponent {
   public tableFormat: TableObject[] = [
     {
       header: Constants.CONTACT_NAME,
-      property: 'name',
+      property: Constants.PROPERTY_NAME,
       name: 'name'
     },
     {
       header: Constants.CONTACT_EMAIL,
-      property: 'email',
+      property: Constants.PROPERTY_EMAIL,
       name: 'email'
     },
     {
       header: Constants.CONTACT_PHONE,
-      property: 'phone',
+      property: Constants.PROPERTY_PHONE,
       name: 'phone'
     }
   ];
@@ -43,7 +42,6 @@ export class MyContactsComponent {
   get displayedColumns (): string[] {
     return this.tableFormat.map((elem) => elem.header);
   }
-
 
   goToAdd() {
     this.router.navigate(['customer/cantacts/new']);

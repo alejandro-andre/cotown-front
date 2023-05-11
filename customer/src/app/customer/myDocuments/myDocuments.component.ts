@@ -11,12 +11,12 @@ import { CustomerService } from 'src/app/services/customer.service';
 })
 
 export class MyDocumentsComponent {
+  public image: File | null = null;
+
   constructor(
     public customerService: CustomerService,
     private router: Router,
   ) {}
-
-  public image: File | null = null;
 
   upload($event: any) {
     console.log('The event is: ', $event, ' and este es el image: ', this.image);

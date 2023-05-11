@@ -12,6 +12,7 @@ import { Customer } from 'src/app/models/Customer.model';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { UPDATE_CUSTOMER } from 'src/app/schemas/query-definitions/customer.query';
 import { TranslateService } from '@ngx-translate/core';
+import { Constants } from 'src/app/constants/Constants';
 
 @Component({
   selector: 'app-my-data',
@@ -31,17 +32,7 @@ export class MyDataComponent{
     private translate: TranslateService,
   ) {}
 
-  public appLangs = [
-    {
-      id: 'es',
-      name: 'Español',
-    },
-    {
-      id: 'en',
-      name: 'English'
-    }
-  ];
-
+  public appLangs = Constants.ARRAY_OF_LANGUAGES;
   public saveActiveButton: boolean = false;
 
   /**

@@ -1,8 +1,20 @@
 import { Nav } from "./Interface";
 
 export class Constants {
+  //APP SETTINGS
   public static defaultBaseLanguageForTranslation = 'en';
+  public static ARRAY_OF_LANGUAGES = [
+    {
+      id: 'es',
+      name: 'Español',
+    },
+    {
+      id: 'en',
+      name: 'English'
+    }
+  ]
 
+  // REST OF VARIABLES
   public static DATA: Nav = {
     name: 'myData',
     url: 'data'
@@ -38,6 +50,12 @@ export class Constants {
   public static RESOURCE = 'resource';
   public static CODE = 'code';
   public static CONCEPT = 'concept'
+  public static PHONE = 'phone';
+  public static EMAIL ='email';
+  public static NAME ='name';
+  public static TOTAL ='total';
+  public static AMOUNT ='amount';
+  public static PAY ='pay';
 
   // Table header constants of myBookingDetail components
   public static BOOKING_DETAIL_DATE_HEADER = this.DATE;
@@ -57,25 +75,48 @@ export class Constants {
 
   // Table header constants of Invoices
   public static INVOICE_CONCEPT = this.CONCEPT;
-  public static INVOICE_RESOURCE= this.RESOURCE;
-  public static INVOICE_TOTAL = 'total';
+  public static INVOICE_RESOURCE = this.RESOURCE;
+  public static INVOICE_TOTAL = this.TOTAL;
   public static INVOICE_DATE = this.DATE;
   public static INVOICE_CODE = this.CODE;
-
 
   // Table header constants of Payment
   public static PAYMENT_CONCEPT = this.CONCEPT;
   public static PAYMENT_RESOURCE = this.RESOURCE;
   public static PAYMENT_CODE = this.CODE;
-  public static PAYMENT_AMOUNT = 'amount';
-  public static PAYMENT_PAY = 'pay';
+  public static PAYMENT_AMOUNT = this.AMOUNT;
+  public static PAYMENT_PAY = this.PAY;
   public static PAYMENT_DATE = this.DATE;
 
   // Table header constats of Contacts
-  public static CONTACT_NAME = 'name';
-  public static CONTACT_EMAIL = 'email';
-  public static CONTACT_PHONE = 'phone';
+  public static CONTACT_NAME = this.NAME;
+  public static CONTACT_EMAIL = this.EMAIL;
+  public static CONTACT_PHONE = this.PHONE;
 
+  // Properties
+  public static PROPERTY_RENT_DATE = 'rent_date';
+  public static PROPERTY_RENT = 'rent';
+  public static PROPERTY_SERVICES = 'services';
+  public static PROPERTY_RENT_DISCOUNT = 'rent_discount';
+  public static PROPERTY_SERVICES_DISCOUNT = 'service_discount';
+  public static PROPERTY_RESOURCE = this.RESOURCE;
+  public static PROPERTY_START = 'start';
+  public static PROPERTY_END = 'end';
+  public static PROPERTY_STATUS = 'status';
+  public static PROPERTY_FLAT = 'flat';
+  public static PROPERTY_PLACE = 'place';
+  public static PROPERTY_RESOURCE_TYPE = 'resource_type';
+  public static PROPERTY_NAME = this.NAME;
+  public static PROPERTY_EMAIL = this.EMAIL;
+  public static PROPERTY_PHONE = this.PHONE;
+  public static PROPERTY_CODE = this.CODE;
+  public static PROPERTY_ISSUE_DATE = 'issue_date';
+  public static PROPERTY_CONCEPT = this.CONCEPT;
+  public static PROPERTY_BOOKING = 'booking';
+  public static PROPERTY_PAY = 'pay';
+  public static PROPERTY_ID = 'id';
+  public static PROPERTY_AMOUNT = this.AMOUNT;
+  public static PROPERTY_TOTAL = this.TOTAL;
 
   /**
    * Urls of nav

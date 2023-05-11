@@ -4,11 +4,13 @@ import { Component } from '@angular/core';
 //Service
 import { CountryService } from 'src/app/services/country.service';
 import { IdentificationDocTypesService } from 'src/app/services/identificationDocTypes.service';
-import { BasicResponse } from 'src/app/constants/Interface';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { TutorService } from 'src/app/services/tutor.service';
+
+// Model & Query
 import { Tutor } from 'src/app/models/Tutor.model';
 import { UPDATE_TUTOR } from 'src/app/schemas/query-definitions/tutor.query';
+import { BasicResponse } from 'src/app/constants/Interface';
 
 @Component({
   selector: 'app-my-tutor',
@@ -17,14 +19,14 @@ import { UPDATE_TUTOR } from 'src/app/schemas/query-definitions/tutor.query';
 })
 
 export class MyTutorComponent {
+  public saveActiveButton: boolean = false;
+
   constructor(
     public tutorService: TutorService,
     private countryService: CountryService,
     private identificationTypesService: IdentificationDocTypesService,
     private apollo: ApoloQueryApi
-  ) { }
-
-  public saveActiveButton: boolean = false;
+  ) {}
 
   /**
    * Getters

@@ -17,27 +17,27 @@ export class MyBookingDetailComponent {
   public tableFormat: TableObject[] = [
     {
       header: Constants.BOOKING_DETAIL_DATE_HEADER,
-      property: 'rent_date',
+      property: Constants.PROPERTY_RENT_DATE,
       name: 'month'
     },
     {
       header: Constants.BOOKING_DETAIL_RENT_HEADER,
-      property: 'rent',
+      property: Constants.PROPERTY_RENT,
       name: 'rent'
     },
     {
       header: Constants.BOOKING_DETAIL_SERVICE_HEADER,
-      property: 'services',
+      property: Constants.PROPERTY_SERVICES,
       name: 'services'
     },
     {
       header: Constants.BOOKING_DETAIL_RENT_DISCOUN_HEADER,
-      property: 'rent_discount',
+      property: Constants.PROPERTY_RENT_DISCOUNT,
       name: 'rentSupplement'
     },
     {
       header: Constants.BOOKING_DETAIL_SERVICE_DISCOUNT_HEADER,
-      property: 'service_discount',
+      property: Constants.PROPERTY_SERVICES_DISCOUNT,
       name: 'serviceSupplement'
     },
   ];

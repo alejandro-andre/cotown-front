@@ -40,8 +40,8 @@ import { TUTOR_QUERY } from 'src/app/schemas/query-definitions/tutor.query';
 
 export class LayoutComponent implements OnInit, OnDestroy {
   public showTutor: Subject<boolean> = new Subject<any>();
-
   private _mobileQueryListener: () => void;
+
   constructor(
     private elRef:ElementRef,
     private authService: AuthService,
@@ -93,8 +93,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   /**
    * Endded the configuration of nav
-   */
-
+  */
   loadIdentificationDocTypes() {
     this.apolloApi.getData(identificationDocTypesQuery).subscribe((res) => {
       const value = res.data;

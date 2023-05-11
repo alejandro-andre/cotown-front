@@ -11,39 +11,35 @@ import { CustomerService } from 'src/app/services/customer.service';
 })
 
 export class MyInvoiceComponent {
+  constructor(public customerService: CustomerService) {}
 
-  constructor(
-    public customerService: CustomerService,
-  ) {
-    console.log('This , ', this.customerService.customer.payments)
-   }
   public INVOICE_PROPERTY = Constants.INVOICE_RESOURCE;
   public PAY_PROPERTY = Constants.PAYMENT_PAY;
 
   public invoceTableFormat: TableObject[] = [
     {
       header: Constants.INVOICE_CODE,
-      property: 'code',
+      property: Constants.PROPERTY_CODE,
       name: 'invoiceNumber'
     },
     {
       header: Constants.INVOICE_DATE,
-      property: 'issue_date',
+      property: Constants.PROPERTY_ISSUE_DATE,
       name: 'issueDate'
     },
     {
       header: Constants.INVOICE_CONCEPT,
-      property: 'concept',
+      property: Constants.PROPERTY_CONCEPT,
       name: 'concept'
     },
     {
       header: Constants.INVOICE_TOTAL,
-      property: 'total',
+      property: Constants.PROPERTY_TOTAL,
       name: 'total'
     },
     {
       header: Constants.INVOICE_RESOURCE,
-      property: 'booking',
+      property:  Constants.PROPERTY_BOOKING,
       name: 'booking'
     },
   ];
@@ -51,32 +47,32 @@ export class MyInvoiceComponent {
   public payTableFormat: TableObject[] = [
     {
       header: Constants.PAYMENT_PAY,
-      property: 'pay',
+      property: Constants.PROPERTY_PAY,
       name: 'pay'
     },
     {
       header: Constants.PAYMENT_CODE,
-      property: 'id',
+      property: Constants.PROPERTY_ID,
       name: 'paymentNumber'
     },
     {
       header: Constants.PAYMENT_DATE,
-      property: 'issue_date',
+      property: Constants.PROPERTY_ISSUE_DATE,
       name: 'issueDate'
     },
     {
       header: Constants.PAYMENT_CONCEPT,
-      property: 'concept',
+      property: Constants.PROPERTY_CONCEPT,
       name: 'concept'
     },
     {
       header: Constants.PAYMENT_AMOUNT,
-      property: 'amount',
+      property: Constants.PROPERTY_AMOUNT,
       name: 'total'
     },
     {
       header: Constants.PAYMENT_RESOURCE,
-      property: 'booking',
+      property: Constants.PROPERTY_BOOKING,
       name: 'booking'
     },
   ];

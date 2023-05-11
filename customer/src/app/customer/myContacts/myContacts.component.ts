@@ -17,25 +17,24 @@ export class MyContactsComponent {
   constructor(
     public customerService: CustomerService,
     private router: Router,
-    private apollo: ApoloQueryApi,
-
+    private apollo: ApoloQueryApi
   ) {}
 
   public tableFormat: TableObject[] = [
     {
       header: Constants.CONTACT_NAME,
       property: Constants.PROPERTY_NAME,
-      name: 'name'
+      name: Constants.name
     },
     {
       header: Constants.CONTACT_EMAIL,
       property: Constants.PROPERTY_EMAIL,
-      name: 'email'
+      name: Constants.EMAIL
     },
     {
       header: Constants.CONTACT_PHONE,
       property: Constants.PROPERTY_PHONE,
-      name: 'phone'
+      name: Constants.PHONE
     },
     {
       header: Constants.DELETE,
@@ -64,9 +63,7 @@ export class MyContactsComponent {
 
     this.apollo.setData(DELETE_CONTACT, variables).subscribe((response) => {
       const value = response.data;
-      console.log('esto es value', value)
       if (value && value.data &&  value.data.length && value.data[0].id === event.id) {
-        console.log('Se ha borrado bien !!');
         this.customerService.removeContactById(event.id);
       }
     });

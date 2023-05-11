@@ -57,10 +57,25 @@ export class Constants {
   public static AMOUNT ='amount';
   public static PAY ='pay';
   public static DELETE = 'delete';
+  public static MONTH = 'month';
+  public static RENT = 'rent'
+  public static SERVICES = 'services';
+  public static RENT_SUPPLEMENT = 'rentSupplement';
+  public static SERVICE_SUPPLEMENT = 'serviceSupplement';
+  public static DATE_FROM = 'dateFrom';
+  public static DATE_TO = 'dateTo';
+  public static STATUS = 'status';
+  public static FLAT_TYPE = 'flatType';
+  public static PLACE_TYPE = 'placeType';
+  public static RESOURCE_TYPE = 'resourceType';
+  public static INVOICE_NUMBER = 'invoiceNumber';
+  public static ISSUE_DATE = 'issueDate';
+  public static BOOKING = 'booking';
+  public static PAYMENT_NUMBER = 'paymentNumber';
 
   // Table header constants of myBookingDetail components
   public static BOOKING_DETAIL_DATE_HEADER = this.DATE;
-  public static BOOKING_DETAIL_RENT_HEADER = 'rent';
+  public static BOOKING_DETAIL_RENT_HEADER = this.RENT;
   public static BOOKING_DETAIL_SERVICE_HEADER = 'service';
   public static BOOKING_DETAIL_RENT_DISCOUN_HEADER = 'rent_discount';
   public static BOOKING_DETAIL_SERVICE_DISCOUNT_HEADER = 'service_discount';
@@ -69,10 +84,10 @@ export class Constants {
   public static BOOKING_RESOURCE = this.RESOURCE;
   public static BOOKING_FROM = 'from';
   public static BOOKING_TO = 'to';
-  public static BOOKING_STATUS = 'status';
+  public static BOOKING_STATUS = this.STATUS;
   public static BOOKING_FLAT = 'flat';
   public static BOOKING_PLACE = 'place';
-  public static BOOKING_RESOURCE_TYPE = 'resourceType';
+  public static BOOKING_RESOURCE_TYPE = this.RESOURCE_TYPE;
 
   // Table header constants of Invoices
   public static INVOICE_CONCEPT = this.CONCEPT;
@@ -96,14 +111,14 @@ export class Constants {
 
   // Properties
   public static PROPERTY_RENT_DATE = 'rent_date';
-  public static PROPERTY_RENT = 'rent';
-  public static PROPERTY_SERVICES = 'services';
+  public static PROPERTY_RENT = this.RENT;
+  public static PROPERTY_SERVICES = this.SERVICES;
   public static PROPERTY_RENT_DISCOUNT = 'rent_discount';
   public static PROPERTY_SERVICES_DISCOUNT = 'service_discount';
   public static PROPERTY_RESOURCE = this.RESOURCE;
   public static PROPERTY_START = 'start';
   public static PROPERTY_END = 'end';
-  public static PROPERTY_STATUS = 'status';
+  public static PROPERTY_STATUS = this.STATUS;
   public static PROPERTY_FLAT = 'flat';
   public static PROPERTY_PLACE = 'place';
   public static PROPERTY_RESOURCE_TYPE = 'resource_type';

@@ -11,6 +11,10 @@ import { CustomerService } from 'src/app/services/customer.service';
 })
 
 export class MyBookingsComponent {
+  public RESOURCE_PROPERTY = Constants.BOOKING_RESOURCE;
+  public FLAT_TYPE_PROPERTY = Constants.BOOKING_FLAT;
+  public PLACE_TYPE_PROPERTY = Constants.BOOKING_PLACE;
+
   constructor(
     public customerService: CustomerService,
     private router: Router,
@@ -20,43 +24,40 @@ export class MyBookingsComponent {
     {
       header: Constants.BOOKING_RESOURCE,
       property: Constants.PROPERTY_RESOURCE,
-      name: 'resource'
+      name: Constants.RESOURCE
     },
     {
       header: Constants.BOOKING_FROM,
       property: Constants.PROPERTY_START,
-      name: 'dateFrom'
+      name: Constants.DATE_FROM
     },
     {
       header: Constants.BOOKING_TO,
       property: Constants.PROPERTY_END,
-      name: 'dateTo'
+      name:  Constants.DATE_TO
     },
     {
       header: Constants.BOOKING_STATUS,
       property: Constants.PROPERTY_STATUS,
-      name: 'status'
+      name: Constants.STATUS
     },
     {
       header: Constants.BOOKING_FLAT,
       property: Constants.PROPERTY_FLAT,
-      name: 'flatType'
+      name: Constants.FLAT_TYPE
     },
     {
       header: Constants.BOOKING_PLACE,
       property: Constants.PROPERTY_PLACE,
-      name: 'placeType'
+      name: Constants.PLACE_TYPE
     },
     {
       header: Constants.BOOKING_RESOURCE_TYPE,
       property: Constants.PROPERTY_RESOURCE_TYPE,
-      name: 'resourceType'
+      name: Constants.RESOURCE_TYPE
     },
   ];
 
-  public RESOURCE_PROPERTY = Constants.BOOKING_RESOURCE;
-  public FLAT_TYPE_PROPERTY = Constants.BOOKING_FLAT;
-  public PLACE_TYPE_PROPERTY = Constants.BOOKING_PLACE;
   get displayedColumns() :string[] {
     return this.tableFormat.map((elem) => elem.header);
   }

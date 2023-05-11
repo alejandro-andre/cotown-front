@@ -11,36 +11,36 @@ import { CustomerService } from 'src/app/services/customer.service';
 })
 
 export class MyInvoiceComponent {
-  constructor(public customerService: CustomerService) {}
-
   public INVOICE_PROPERTY = Constants.INVOICE_RESOURCE;
   public PAY_PROPERTY = Constants.PAYMENT_PAY;
+
+  constructor(public customerService: CustomerService) {}
 
   public invoceTableFormat: TableObject[] = [
     {
       header: Constants.INVOICE_CODE,
       property: Constants.PROPERTY_CODE,
-      name: 'invoiceNumber'
+      name: Constants.INVOICE_NUMBER
     },
     {
       header: Constants.INVOICE_DATE,
       property: Constants.PROPERTY_ISSUE_DATE,
-      name: 'issueDate'
+      name: Constants.ISSUE_DATE
     },
     {
       header: Constants.INVOICE_CONCEPT,
       property: Constants.PROPERTY_CONCEPT,
-      name: 'concept'
+      name: Constants.CONCEPT
     },
     {
       header: Constants.INVOICE_TOTAL,
       property: Constants.PROPERTY_TOTAL,
-      name: 'total'
+      name: Constants.TOTAL
     },
     {
       header: Constants.INVOICE_RESOURCE,
       property:  Constants.PROPERTY_BOOKING,
-      name: 'booking'
+      name: Constants.BOOKING
     },
   ];
 
@@ -48,32 +48,32 @@ export class MyInvoiceComponent {
     {
       header: Constants.PAYMENT_PAY,
       property: Constants.PROPERTY_PAY,
-      name: 'pay'
+      name: Constants.PAY
     },
     {
       header: Constants.PAYMENT_CODE,
       property: Constants.PROPERTY_ID,
-      name: 'paymentNumber'
+      name: Constants.PAYMENT_NUMBER
     },
     {
       header: Constants.PAYMENT_DATE,
       property: Constants.PROPERTY_ISSUE_DATE,
-      name: 'issueDate'
+      name: Constants.ISSUE_DATE
     },
     {
       header: Constants.PAYMENT_CONCEPT,
       property: Constants.PROPERTY_CONCEPT,
-      name: 'concept'
+      name: Constants.CONCEPT
     },
     {
       header: Constants.PAYMENT_AMOUNT,
       property: Constants.PROPERTY_AMOUNT,
-      name: 'total'
+      name: Constants.STATUS
     },
     {
       header: Constants.PAYMENT_RESOURCE,
       property: Constants.PROPERTY_BOOKING,
-      name: 'booking'
+      name: Constants.BOOKING
     },
   ];
 

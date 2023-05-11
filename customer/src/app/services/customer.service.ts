@@ -43,6 +43,11 @@ export class CustomerService {
     this.customer.contacts = contacts;
   }
 
+  removeContactById(id: number): void {
+    const copy = [...this.customer.contacts];
+    this.customer.contacts = copy.filter((ev: Contact) => ev.id !== id);
+  }
+
    private setVisibility(): void {
     if (this.customer.name === '' || this.customer.name === null) {
       this.readOnly.name = false;

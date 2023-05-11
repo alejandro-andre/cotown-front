@@ -46,10 +46,11 @@ export class NewContactComponent {
   }
 
   save() {
+    const name = this.surName.length > 0 ? `${this.name} ${this.surName}` : this.name;
     const variables: ContactVariables = {
+      name,
       id: this.customerService.customer.id,
       cid: this.contactType,
-      name: this.name,
       email: this.email,
       phone: this.phone
     };

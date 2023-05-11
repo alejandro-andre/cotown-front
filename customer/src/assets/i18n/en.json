@@ -68,5 +68,6 @@
   "theoricalGuarantee": "Theorical Guarantee",
   "month": "Month",
   "rentSupplement": "Supplements(+)/Discounts(-) to rent",
-  "serviceSupplement": "Suplementos(+)/Descuentos(-) a los servicios"
+  "serviceSupplement": "Suplementos(+)/Descuentos(-) a los servicios",
+  "delete": "Delete"
 }

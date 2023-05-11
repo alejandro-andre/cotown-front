@@ -56,6 +56,7 @@ export class Constants {
   public static TOTAL ='total';
   public static AMOUNT ='amount';
   public static PAY ='pay';
+  public static DELETE = 'delete';
 
   // Table header constants of myBookingDetail components
   public static BOOKING_DETAIL_DATE_HEADER = this.DATE;

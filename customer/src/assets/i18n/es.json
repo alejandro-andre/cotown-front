@@ -69,6 +69,8 @@
   "month": "Mes",
   "rentSupplement": "Suplementos(+)/Descuentos(-) a la renta",
   "serviceSupplement": "Suplementos(+)/Descuentos(-) a los servicios",
-  "delete": "Borrar"
+  "delete": "Borrar",
+  "completeName": "Nombre completo"
+
 
 }

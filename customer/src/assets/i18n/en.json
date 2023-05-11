@@ -69,5 +69,6 @@
   "month": "Month",
   "rentSupplement": "Supplements(+)/Discounts(-) to rent",
   "serviceSupplement": "Suplementos(+)/Descuentos(-) a los servicios",
-  "delete": "Delete"
+  "delete": "Delete",
+  "completeName": "Complete name"
 }

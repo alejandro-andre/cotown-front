@@ -77,7 +77,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  setAppLanguage(lang: string) {
+  setAppLanguage(lang: string = Constants.defaultBaseLanguageForTranslation) {
     this.translate.setDefaultLang(Constants.defaultBaseLanguageForTranslation);
     this.translate.use(lang);
   }
@@ -219,7 +219,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   loadCustomer(): void {
     const variables = {
-      id: 1002
+      id: 1001
     }
 
     this.apolloApi.getData(customerQuery, variables).subscribe((res) => {

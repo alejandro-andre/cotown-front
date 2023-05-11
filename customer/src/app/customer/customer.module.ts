@@ -28,15 +28,14 @@ import { NavComponent } from './nav/nav.component';
 import { MyDataComponent } from './myData/myData.component';
 import { MyContactsComponent } from './myContacts/myContacts.component';
 import { NewContactComponent } from './myContacts/newContacts/newContact.component';
-
-// Routing
-import { CustomerRoutingModule } from './customer-routing.module';
 import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
 import { MyBookingsComponent } from './myBookings/myBookings.component';
 import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBookingDetail.component';
 import { MyInvoiceComponent } from './myInvoice/myInvoice.component';
 import { MyTutorComponent } from './myTutor/myTutor.component';
-import { ServicesModule } from '../services/services.module';
+
+// Routing
+import { CustomerRoutingModule } from './customer-routing.module';
 
 // Config of translation
 registerLocaleData(localeES, 'es-ES');
@@ -61,7 +60,6 @@ export function createTranslateLoader(http: HttpClient) {
     MyTutorComponent,
   ],
   imports: [
-    ServicesModule,
     CommonModule,
     CustomerRoutingModule,
     RouterModule,

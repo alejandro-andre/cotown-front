@@ -1,3 +1,5 @@
+import { FormControl } from "@angular/forms"
+
 export interface Nav {
   name: string,
   url: string
@@ -74,6 +76,7 @@ export interface DocType extends BasicResponse {
 }
 
 export interface Document extends BasicResponse {
+  formDateControl: FormControl,
   expirity_date: string | null ,
   created_at: string,
   doctype: DocType
@@ -118,4 +121,10 @@ export interface ContactVariables {
   name: string,
   email?: string,
   phone?: string
+};
+
+export interface PayloadFile  {
+  file: File,
+  id: number,
+  document: string,
 }

@@ -7,16 +7,22 @@
       <div class="box">
         <div>
           <p>{{ 'documentType' | translate }}: {{ document.doctype.name }}</p>
-          <p>{{ 'expirityDate' | translate }}: {{ document.expirity_date }}</p>
+
+          <mat-form-field appearance="fill">
+            <mat-label>{{ 'expirityDate' | translate }}</mat-label>
+            <input matInput [matDatepicker]="picker" [formControl]="document.formDateControl">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
         </div>
 
-        <div *ngFor="let doc of document.doctype.arrayOfImages">
+        <div *ngFor="let doc of document.doctype.arrayOfImages; let i = index">
           <label>{{ 'document' | translate }}</label>
           <input
             placeholder="Document"
             [(ngModel)]="doc.file"
             type="file"
-            (change)="upload($event)"
+            (change)="upload($event, doc, i)"
           >
         </div>
       </div>

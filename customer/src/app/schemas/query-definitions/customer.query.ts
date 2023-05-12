@@ -168,3 +168,20 @@ export const UPDATE_CUSTOMER = `
       Lang: $appLang
     }){id}
 }`;
+
+
+export const UPLOAD_CUSTOMER_DOCUMENT = `mutation ($id: Int! $bill: Models_DocumentTypeInputType) {
+  data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
+    entity: {
+      Document: $bill
+    }
+  ){ id }
+}`;
+
+export const UPLOAD_CUSTOMER_DOCUMENT_BACK = `mutation ($id: Int! $bill: Models_DocumentTypeInputType) {
+  data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
+    entity: {
+      Document_back: $bill
+    }
+  ){ id }
+}`;

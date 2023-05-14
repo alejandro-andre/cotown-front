@@ -31,6 +31,7 @@ import { languageQuery } from 'src/app/schemas/query-definitions/languages.query
 import { schoolOrCompaniesQuery } from 'src/app/schemas/query-definitions/schoolOrCompanies.query';
 import { contactTypeQuery } from 'src/app/schemas/query-definitions/contactType.query';
 import { TUTOR_QUERY } from 'src/app/schemas/query-definitions/tutor.query';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-layout',
@@ -174,6 +175,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
       const docObject = {
         expirity_date: doc.expirity_date,
         id: doc.id,
+        formDateControl: new FormControl(doc.expirity_date),
         created_at: doc.created_at,
         doctype: {
           name: doc.doctype.name,

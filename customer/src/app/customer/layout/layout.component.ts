@@ -168,8 +168,20 @@ export class LayoutComponent implements OnInit, OnDestroy {
         images.push({
           file: '',
           id: doc.id,
-          index: i
+          index: i,
+          name: '',
+          oid: -1
         })
+      }
+
+      if (doc.front && doc.front !== null && doc.front.oid !== null) {
+        images[0].name = doc.front.name;
+        images[0].oid = doc.front.oid
+      }
+
+      if (doc.back && doc.back !== null && doc.back.oid !== null) {
+        images[1].name = doc.back.name;
+        images[1].oid = doc.back.oid
       }
 
       const docObject = {
@@ -233,6 +245,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
           bank, contacts, documents, bookings, invoices, payments, appLang
         } = value.data[0];
 
+        console.log('This is the better response: ', value)
         const birthDate = birth_date !== null ? new Date(birth_date) : null;
         const contactsToSend = contacts !== null ? contacts : [];
         const docToSend = this.loadDocuments(documents);

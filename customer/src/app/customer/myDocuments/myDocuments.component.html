@@ -33,8 +33,9 @@
         </div>
 
         <div *ngFor="let doc of document.doctype.arrayOfImages; let i = index" style="margin: 10px">
-          <label>{{ 'document' | translate }}</label>
+          <label>{{  doc.name || 'document' | translate }}</label>
           <input
+            *ngIf="doc.name === '' && doc.oid === -1 || doc.oid === null"
             placeholder="Document"
             [(ngModel)]="doc.file"
             type="file"

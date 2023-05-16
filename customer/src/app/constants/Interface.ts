@@ -84,8 +84,8 @@ export interface Document extends BasicResponse {
   expirity_date: string | null ,
   created_at: string,
   doctype: DocType,
-  frontDoc?: DocFile,
-  backDoc?: DocFile
+  front?: DocFile,
+  back?: DocFile
 }
 
 export interface Contact extends BasicResponse {

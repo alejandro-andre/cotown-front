@@ -111,7 +111,7 @@ export class MyDataComponent{
 
   // Return formated birthdate of current customer
   get birthDate(): string | null {
-    const date = this.customer.birthDate;
+    const date = this.customer.formControl.value;
 
     if (date !== null) {
       const year = date.getFullYear();
@@ -143,10 +143,12 @@ export class MyDataComponent{
   }
 
   save() {
-    const variables = {
+    const variables: any = {
       ...this.customerService.customer,
       birthDate: this.birthDate
     };
+
+    delete variables.formControl
 
     this.apollo.setData(UPDATE_CUSTOMER, variables).subscribe(resp => {
       console.log('The response is : ', resp)

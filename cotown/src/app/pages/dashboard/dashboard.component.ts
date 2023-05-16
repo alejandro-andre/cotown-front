@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 
-import axiosApi from 'src/app/services/api.service';
+import axiosApi from "src/app/services/api.service";
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
+  selector: "app-home",
+  templateUrl: "./dashboard.component.html",
+  styleUrls: ["./dashboard.component.scss"],
   encapsulation: ViewEncapsulation.None
 })
 
@@ -18,22 +18,31 @@ export class DashboardComponent implements OnInit {
 
   public labels: any = null;
 
-  public status: string = '';
-  public select = [
-    {'key':'solicitud', 'value': 'No pagadas'},
-    {'key':'solicitudpagada', 'value': 'Pagadas'},
-    {'key':'alternativas', 'value': 'No pagadas'},
-    {'key':'alternativaspagada', 'value': 'Pagadas'},
-    {'key':'caducada', 'value': 'Caducadas'},
-    {'key':'pendientepago', 'value': 'Aceptadas'},
-    {'key':'confirmada', 'value': 'Preconfirmadas'},
-    {'key':'ok', 'value': 'Confirmadas'},
-    {'key':'next', 'value': 'Próximas'},
-    {'key':'checkin', 'value': 'Llegada'},
-    {'key':'checkout', 'value': 'Salida'},
-    {'key':'devolvergarantia', 'value': 'Devolver garantía'},
-  ]
+  public status: string = "";
+  public select: {key: string, value: string}[] = [
+    {key:"solicitud",          value: "No pagadas"},
+    {key:"solicitudpagada",    value: "Pagadas"},
+    {key:"alternativas",       value: "No pagadas"},
+    {key:"alternativaspagada", value: "Pagadas"},
+    {key:"caducada",           value: "Caducadas"},
+    {key:"pendientepago",      value: "Aceptadas"},
+    {key:"confirmada",         value: "Preconfirmadas"},
+    {key:"ok",                 value: "Confirmadas"},
+    {key:"checkin",            value: "Llegada"},
+    {key:"checkout",           value: "Salida"},
+    {key:"next",               value: "Próximas"},
+    {key:"devolvergarantia",   value: "Devolver garantía"},
+  ];
 
+  public header: {key: string, value: string, sort: string}[] = [
+    {key:"Status",   value:"Estado",          sort:""},
+    {key:"Name",     value:"Residente",       sort:""},
+    {key:"Date_from",value:"Fecha desde",     sort:""}, 
+    {key:"Date_to",  value:"Fecha hasta",     sort:""},
+    {key:"Check_in", value:"Checkin",         sort:""},
+    {key:"Building", value:"Tipo de recurso", sort:""},
+    {key:"Resource", value:"Recurso",         sort:""}
+  ];
 
   // Constructor
   constructor() { }
@@ -62,7 +71,7 @@ export class DashboardComponent implements OnInit {
   }
 
   goBooking(id: string) {
-    const link = '/admin/Booking.Booking/' + id + '/view';
+    const link = "/admin/Booking.Booking/" + id + "/view";
     parent.history.pushState("", "", link);
     parent.history.go(-1);
     parent.history.go(1);
@@ -78,5 +87,28 @@ export class DashboardComponent implements OnInit {
       }
       return this.labels[1][index];
   }
-  
+
+  sort(key: string) {
+    for (const h of this.header) {
+      if (h.key === key) {
+        if (h.sort != "up") {
+          h.sort = "up";
+          this.rows = this.rows.sort((a:any, b:any) => {
+            const va = String(a[key]);
+            const vb = String(b[key]);
+            return va.localeCompare(vb);
+          });
+        } else {
+          h.sort = "down";
+          this.rows = this.rows.sort((a:any, b:any) => {
+            const va = String(a[key]);
+            const vb = String(b[key]);
+            return vb.localeCompare(va);
+          });
+        }
+      } else {
+        h.sort = "";
+      }
+    }
+  }
 }

@@ -28,9 +28,9 @@ export class DashboardComponent implements OnInit {
     {key:"pendientepago",      value: "Aceptadas"},
     {key:"confirmada",         value: "Preconfirmadas"},
     {key:"ok",                 value: "Confirmadas"},
+    {key:"next",               value: "Próximas"},
     {key:"checkin",            value: "Llegada"},
     {key:"checkout",           value: "Salida"},
-    {key:"next",               value: "Próximas"},
     {key:"devolvergarantia",   value: "Devolver garantía"},
   ];
 

@@ -20,4 +20,10 @@ export class AxiosApi {
     const url = `/document/Customer.Customer_doc/Document/${payload.id}/Documents/contents?access_token=${token}`;
     return axiosInstance.post(url, { file: payload.file })
   }
+
+  getFile(id: number, type: string) {
+    const token = this.apollo.token;
+    const url = `wopi/files/Customer/Customer_doc/${id}/${type}/contents?access_token=${token}`;
+    return axiosInstance.get(url);
+  }
 };

@@ -9,6 +9,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import localeEN from '@angular/common/locales/en';
 import localeES from '@angular/common/locales/es';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 // Material
 import { MatSelectModule } from '@angular/material/select'
@@ -74,6 +75,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
+    PdfViewerModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

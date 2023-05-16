@@ -41,8 +41,25 @@
             type="file"
             (change)="upload($event, doc, i)"
           >
+
+          <button *ngIf="doc.name !== '' && doc.oid !== -1 || doc.oid !== null" (click)="viewDoc(doc)">View</button>
         </div>
+
+        <input (change)="onFileSelected()" type="file" id="file">
+
       </div>
+    </div>
+
+    <div>
+      <pdf-viewer
+        [src]="pdfSrc"
+        [render-text]="true"
+        [original-size]="false"
+        [show-all]="true"
+        (after-load-complete)="completed()"
+
+        style="width: 900px; height: 500px"
+      ></pdf-viewer>
     </div>
   </ng-template>
 

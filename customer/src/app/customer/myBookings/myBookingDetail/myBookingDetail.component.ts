@@ -56,7 +56,6 @@ export class MyBookingDetailComponent {
       const finded = this.customerService.customer.bookings.find((booking: Booking) => booking.id === parseInt(id));
       if (finded) {
         this.booking = finded;
-        console.log('The price list is: ', this.booking.price_list)
       } else {
         this.showNotFound = true;
       }

@@ -75,8 +75,11 @@ export interface DocType extends BasicResponse {
 }
 
 export interface DocFile {
+  id: number,
   name: string,
-  oid: number
+  oid: number,
+  file?: File,
+  type: string
 }
 
 export interface Document extends BasicResponse {

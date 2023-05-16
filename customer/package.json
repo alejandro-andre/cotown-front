@@ -23,6 +23,7 @@
     "@apollo/client": "^3.0.0",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
+    "@types/node": "^20.1.5",
     "apollo-angular": "^4.2.1",
     "axios": "^1.4.0",
     "keycloak-angular": "^13.0.0",

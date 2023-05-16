@@ -6,7 +6,6 @@ export interface Nav {
 };
 
 export interface BasicResponse {
-  __typename?: string,
   name?: string,
   id: number,
   code?: string
@@ -75,11 +74,18 @@ export interface DocType extends BasicResponse {
   arrayOfImages?: Array<any>
 }
 
+export interface DocFile {
+  name: string,
+  oid: number
+}
+
 export interface Document extends BasicResponse {
   formDateControl: FormControl,
   expirity_date: string | null ,
   created_at: string,
-  doctype: DocType
+  doctype: DocType,
+  frontDoc?: DocFile,
+  backDoc?: DocFile
 }
 
 export interface Contact extends BasicResponse {

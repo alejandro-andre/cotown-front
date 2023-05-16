@@ -1,7 +1,6 @@
 export interface GraphQlResponse {
   name: string,
   id: number,
-  __typename?: string,
 }
 export interface ApolloVariables {
   [key: string]: string | number

@@ -17,7 +17,9 @@ export function createApollo(httpLink: HttpLink) {
   }));
 
   const link = ApolloLink.from([basic, httpLink.create({ uri })]);
-  const cache = new InMemoryCache();
+  const cache = new InMemoryCache({
+    addTypename: false,
+  });
 
   const defaultOptions = {
     watchQuery: {
@@ -27,7 +29,7 @@ export function createApollo(httpLink: HttpLink) {
     query: {
       fetchPolicy: 'network-only',
       errorPolicy: 'all',
-    }
+    },
   };
 
   return {
@@ -35,7 +37,6 @@ export function createApollo(httpLink: HttpLink) {
     cache,
     defaultOptions: defaultOptions,
   };
-  
 }
 
 @NgModule({

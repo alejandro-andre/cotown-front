@@ -31,6 +31,14 @@ export const customerQuery = `query customerQuery($id: Int) {
       id
       expirity_date: Expiry_date
       created_at: Created_at
+      front: Document{
+        name
+        oid
+      }
+      back: Document_back{
+        name
+        oid
+      }
       doctype: Customer_doc_typeViaCustomer_doc_type_id {
         name: Name
         images:Images
@@ -195,6 +203,5 @@ mutation ($id: Int, $value: String){
       }
   ){
       id,
-      Expiry_date,
   }
 }`;

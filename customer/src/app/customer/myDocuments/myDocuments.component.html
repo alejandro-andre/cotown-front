@@ -3,20 +3,36 @@
 
   <div *ngIf="documents.length; then thenBlock else elseBlock"></div>
   <ng-template #thenBlock>
-    <div *ngFor="let document of documents" style="margin-top: 10px;">
+    <div *ngFor="let document of documents" style="margin-top: 10px; display: flex;">
       <div class="box">
         <div>
           <p>{{ 'documentType' | translate }}: {{ document.doctype.name }}</p>
 
           <mat-form-field appearance="fill">
             <mat-label>{{ 'expirityDate' | translate }}</mat-label>
-            <input matInput [matDatepicker]="picker" [formControl]="document.formDateControl">
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [formControl]="document.formDateControl"
+              (dateChange)="inputDate(document)"
+            >
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </div>
 
-        <div *ngFor="let doc of document.doctype.arrayOfImages; let i = index">
+        <div style="margin-left: 10px;">
+          <button
+            mat-raised-button
+            color="basic"
+            (click)="save(document)"
+            [disabled]="isButtonOfDocDisabled(document)"
+          >
+            {{ 'save' | translate }}
+          </button>
+        </div>
+
+        <div *ngFor="let doc of document.doctype.arrayOfImages; let i = index" style="margin: 10px">
           <label>{{ 'document' | translate }}</label>
           <input
             placeholder="Document"

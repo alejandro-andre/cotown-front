@@ -185,3 +185,16 @@ export const UPLOAD_CUSTOMER_DOCUMENT_BACK = `mutation ($id: Int! $bill: Models_
     }
   ){ id }
 }`;
+
+export const UPDATE_EXPERITY_DATE = `
+mutation ($id: Int, $value: String){
+  Customer_Customer_docUpdate(
+      where: { id: { EQ: $id } }
+      entity: {
+          Expiry_date: $value
+      }
+  ){
+      id,
+      Expiry_date,
+  }
+}`;

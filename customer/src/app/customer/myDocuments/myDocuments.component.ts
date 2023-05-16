@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Document, PayloadFile } from 'src/app/constants/Interface';
-import { UPLOAD_CUSTOMER_DOCUMENT, UPLOAD_CUSTOMER_DOCUMENT_BACK } from 'src/app/schemas/query-definitions/customer.query';
+import { UPDATE_EXPERITY_DATE, UPLOAD_CUSTOMER_DOCUMENT, UPLOAD_CUSTOMER_DOCUMENT_BACK } from 'src/app/schemas/query-definitions/customer.query';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -20,6 +20,8 @@ export class MyDocumentsComponent  {
     private axiosApi: AxiosApi,
     private apolo: ApoloQueryApi
   ) {}
+
+  public disabledButtons: number[] = [] as number[];
 
   upload(event: any, doc: any, index: number) {
     console.log(index);
@@ -53,6 +55,46 @@ export class MyDocumentsComponent  {
       });
 
     })
+  }
+
+  isButtonOfDocDisabled(document: Document) {
+    const finded = this.disabledButtons.find((el) => el === document.id);
+
+    return finded === undefined;
+  }
+
+  save(document: Document) {
+    document.expirity_date = this.formatDate(document.formDateControl.value);
+    const newArray = this.disabledButtons.filter((elem) => elem !== document.id);
+    this.disabledButtons = [ ...newArray];
+    const variables = {
+      id: document.id,
+      value: document.expirity_date
+    }
+
+    this.apolo.setData(UPDATE_EXPERITY_DATE, variables).subscribe((response) => {
+      console.log('The response is: ', response);
+    })
+
+    // SAVE SECTION
+    console.log(document)
+  }
+
+
+  formatDate(date: Date) {
+    if (date !== null) {
+      const year = date.getFullYear();
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+
+      return `${year}-${month}-${day}`;
+    }
+
+    return null;
+  }
+
+  inputDate(document: Document) {
+    this.disabledButtons.push(document.id);
   }
 
   get documents(): Document[] {

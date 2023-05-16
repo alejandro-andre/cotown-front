@@ -163,13 +163,13 @@
 
     <p>
       <!--BirthDate-->
-      <mat-form-field *ngIf="visibility['genderId']">
+      <mat-form-field *ngIf="visibility['birthDate']">
         <mat-label>{{ 'birthdate' | translate }}</mat-label>
         <input matInput readonly placeholder="{{ 'birthdate' | translate }}" [ngModel]="birthDate">
       </mat-form-field>
-      <mat-form-field appearance="fill" *ngIf="!visibility['genderId']">
+      <mat-form-field appearance="fill" *ngIf="!visibility['birthDate']">
         <mat-label>{{ 'birthdate' | translate }}</mat-label>
-        <input matInput [matDatepicker]="picker" [formControl]="customerService.customer.formControl">
+        <input matInput [matDatepicker]="picker"  [formControl]="customerService.customer.formControl">
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>

@@ -24,6 +24,6 @@ export class AxiosApi {
   getFile(id: number, type: string) {
     const token = this.apollo.token;
     const url = `wopi/files/Customer/Customer_doc/${id}/${type}/contents?access_token=${token}`;
-    return axiosInstance.get(url);
+    return axiosInstance.get(url, { responseType: 'blob' });
   }
 };

@@ -28,7 +28,7 @@ export class MyDocumentsComponent  {
 
   viewDoc(doc: DocFile) {
     this.axiosApi.getFile(doc.id, doc.type).then((response: any) => {
-      this.pdfSrc = response.data;
+      this.pdfSrc = URL.createObjectURL(response.data);
 
       //debugger;
       //this.readFile(response.data);

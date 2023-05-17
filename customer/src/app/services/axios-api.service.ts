@@ -21,7 +21,7 @@ export class AxiosApi {
     return axiosInstance.post(url, { file: payload.file })
   }
 
-  
+
   uploadImage(payload: PayloadFile) {
     const token = this.apollo.token;
     const url = `/document/Customer/Photo/${payload.id}/Photo/contents?access_token=${token}`;
@@ -31,6 +31,12 @@ export class AxiosApi {
   getFile(id: number, type: string) {
     const token = this.apollo.token;
     const url = `wopi/files/Customer/Customer_doc/${id}/${type}/contents?access_token=${token}`;
+    return axiosInstance.get(url, { responseType: 'blob' });
+  }
+
+  getInvoice(id: number) {
+    const token = this.apollo.token;
+    const url = `wopi/files/Billing/Invoice/${id}/Document/contents?access_token=${token}`;
     return axiosInstance.get(url, { responseType: 'blob' });
   }
 };

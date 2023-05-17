@@ -58,6 +58,10 @@ export const customerQuery = `query customerQuery($id: Int) {
       concept: Concept
       total: Total
       issue_date: Issued_date
+      document: Document{
+        name
+        oid
+      }
       booking: BookingViaBooking_id {
         resource: ResourceViaResource_id {
           code: Code

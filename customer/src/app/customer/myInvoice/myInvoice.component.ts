@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
-import { BasicResponse, BookingResource, Invoice, Payment, TableObject } from 'src/app/constants/Interface';
+import { BasicResponse, BookingResource, Invoice, PayloadFile, Payment, TableObject } from 'src/app/constants/Interface';
+import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
@@ -14,7 +15,10 @@ export class MyInvoiceComponent {
   public INVOICE_PROPERTY = Constants.INVOICE_RESOURCE;
   public PAY_PROPERTY = Constants.PAYMENT_PAY;
 
-  constructor(public customerService: CustomerService) {}
+  constructor(
+    public customerService: CustomerService,
+    private axiosApi: AxiosApi
+  ) {}
 
   public invoceTableFormat: TableObject[] = [
     {
@@ -103,5 +107,14 @@ export class MyInvoiceComponent {
 
   getPaymentResource(resource: BasicResponse):string {
     return resource?.code || '';
+  }
+
+  clickedRow(row: any) {
+    if (row.document && row.document.oid) {
+      this.axiosApi.getInvoice(row.id).then((resp) => {
+        const fileURL = URL.createObjectURL(resp.data);
+        window.open(fileURL, '_blank');
+      });
+    }
   }
 }

@@ -9,7 +9,7 @@
       style="margin-bottom: 10px;"
       mat-table *ngIf="invoices && invoices.length"
       [dataSource]="invoices"
-      class="mat-elevation-z8"
+      class="mat-elevation-z8 invoice"
     >
       <ng-container [matColumnDef]="col.header" *ngFor="let col of invoceTableFormat">
         <th mat-header-cell *matHeaderCellDef>{{ col.name | translate }}</th>
@@ -24,7 +24,7 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedInvoiceColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedInvoiceColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedInvoiceColumns;" (click)="clickedRow(row)"></tr>
     </table>
 
     <p>{{ 'payments' | translate }}</p>

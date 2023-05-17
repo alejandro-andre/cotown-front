@@ -122,7 +122,15 @@ export interface CustomerInterface {
   invoices?: Invoice[],
   payments?: Payment[],
   appLang?: string,
+  photo?: Photo | null,
 };
+
+export interface Photo  {
+  name: string,
+  oid: number,
+  thumbnail: string | null,
+  type: string
+}
 
 export interface ContactVariables {
   id: number,
@@ -135,5 +143,5 @@ export interface ContactVariables {
 export interface PayloadFile  {
   file: File,
   id: number,
-  document: string,
+  document?: string,
 }

@@ -23,8 +23,12 @@
         </button>
       </div>
 
-      <div style="padding: 10px;">
+      <div style="padding: 10px; height: 100%;" *ngIf="!isLoading">
         <router-outlet></router-outlet>
+      </div>
+
+      <div *ngIf="isLoading">
+        Loading ...
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>

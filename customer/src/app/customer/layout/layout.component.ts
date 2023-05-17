@@ -42,6 +42,7 @@ import { FormControl } from '@angular/forms';
 export class LayoutComponent implements OnInit, OnDestroy {
   public showTutor: Subject<boolean> = new Subject<any>();
   private _mobileQueryListener: () => void;
+  public isLoading = false;
 
   constructor(
     private elRef:ElementRef,
@@ -282,6 +283,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
         this.setAppLanguage(appLang);
         this.customerService.setCustomerData(currentCustomer);
+        this.isLoading = false;
 
         if(parseInt(diffParsed) <= 18 && tutorId !== null) {
           this.showTutor.next(true);
@@ -292,6 +294,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.authService.getAirflowsToken().then(() => {
       this.loadIdentificationDocTypes();
       this.loadLanguages();

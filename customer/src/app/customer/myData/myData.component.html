@@ -1,4 +1,4 @@
-<div>
+<div style="height: 100%;">
 
   <div>
     APP SECTION
@@ -15,7 +15,9 @@
   <div>
 
     <div class="image-container">
+      <h3>Image</h3>
       <img
+        style="max-width: 400px; max-height: 400px;"
         *ngIf="customer.photo !== null"
         [src]="customer.photo.thumbnail"
         [alt]="customer.photo.name"
@@ -220,7 +222,8 @@
     </p>
   </div>
 
-  <div>
+  <!--Margin to see the button (Image)-->
+  <div style="margin-bottom: 100px;">
     <button [disabled]="isButtonDisabled" mat-raised-button color="basic" (click)="save()">
       {{ 'save' | translate }}
     </button>

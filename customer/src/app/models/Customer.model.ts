@@ -2,7 +2,7 @@ import { FormControl } from '@angular/forms';
 import { CustomerInterface, Photo } from '../constants/Interface';
 import { Booking, Contact, Invoice, Payment, Document } from '../constants/Interface';
 export class Customer implements CustomerInterface {
-  id: number = 1001
+  id: number;
   name: string = '';
   province: string = '';
   city: string = '';
@@ -31,7 +31,7 @@ export class Customer implements CustomerInterface {
   photo: Photo | null = null;
 
   constructor(data: CustomerInterface = {} as CustomerInterface ) {
-    this.id = data.id || 1001;
+    this.id = data.id;
     this.name = data.name || '';
     this.province = data.province || '';
     this.city = data.city || '';

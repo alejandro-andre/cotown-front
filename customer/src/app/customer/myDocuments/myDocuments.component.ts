@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import {Buffer} from 'buffer';
 
 import { DocFile, Document, PayloadFile } from 'src/app/constants/Interface';
 import { UPDATE_EXPERITY_DATE, UPLOAD_CUSTOMER_DOCUMENT, UPLOAD_CUSTOMER_DOCUMENT_BACK } from 'src/app/schemas/query-definitions/customer.query';
@@ -29,51 +28,7 @@ export class MyDocumentsComponent  {
   viewDoc(doc: DocFile) {
     this.axiosApi.getFile(doc.id, doc.type).then((response: any) => {
       this.pdfSrc = URL.createObjectURL(response.data);
-
-      //debugger;
-      //this.readFile(response.data);
     })
-  }
-
-  onFileSelected() {
-    let $img: any = document.querySelector('#file');
-  
-    if (typeof (FileReader) !== 'undefined') {
-      let reader = new FileReader();
-  
-      reader.onload = (e: any) => {
-        this.pdfSrc = e.target.result;
-      };
-  
-      reader.readAsArrayBuffer($img.files[0]);
-    }
-  }
-  readFile(file: any) {
-
-    const base64Str = Buffer.from(file).toString('base64');
-    const binaryString = window.atob(base64Str);
-    const binaryLen = binaryString.length;
-    const bytes = new Uint8Array(binaryLen);
-    for (let i = 0; i < binaryLen; i++) {
-      const ascii = base64Str.charCodeAt(i);
-      bytes[i] = ascii;
-    }
-
-    const arrBuffer = bytes;
-    const newBlob = new Blob([arrBuffer], { type: "application/pdf" });
-
-    if (typeof (FileReader) !== 'undefined') {
-      let reader = new FileReader();
-      reader.onload = (e: any) => {
-        console.log('Hello: ',e)
-        this.pdfSrc = e.target.result;
-        console.log(this.pdfSrc)
-      };
-
-      reader.readAsArrayBuffer(newBlob)
-    }
-
-    console.log(newBlob)
   }
 
   completed(){

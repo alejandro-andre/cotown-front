@@ -13,6 +13,23 @@
   </div>
 
   <div>
+
+    <div class="image-container">
+      <img
+        *ngIf="customer.photo !== null"
+        [src]="customer.photo.thumbnail"
+        [alt]="customer.photo.name"
+      >
+
+      <input
+        *ngIf="!customer.photo || customer.photo === null"
+        placeholder="Image"
+        [(ngModel)]="image"
+        type="file"
+        (change)="upload($event)"
+      >
+    </div>
+
     <mat-form-field>
       <mat-label>{{ 'name' | translate }}</mat-label>
       <input matInput [readonly]="visibility['name']" [(ngModel)]="customerService.customer.name">

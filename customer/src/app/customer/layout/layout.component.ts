@@ -220,7 +220,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         } = value.data[0];
         const birthDate = birth_date !== null ? new Date(birth_date) : null;
         const tutor: CustomerInterface = {
-          id, name, province, city, email, country, nationality, birthDate, address, document,
+          id, name, province, city, email, country, nationality, birthDate, address, document, 
           phone: phones,
           postalCode: postal_code,
           languageId: language,
@@ -245,7 +245,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         const {
           id, name , province, city, country, address, postal_code, document, email, phones,
           gender_id, language, origin, tutorId, birth_date, nationality, type_doc, school_id,
-          bank, contacts, documents, bookings, invoices, payments, appLang
+          bank, contacts, documents, bookings, invoices, payments, appLang, photo
         } = value.data[0];
 
         const birthDate = birth_date !== null ? new Date(birth_date) : null;
@@ -256,7 +256,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         const paymentsToSend = payments !== null ? payments : [];
 
         const customer: CustomerInterface = {
-          id, name, province, city, country, address, document, email, nationality, birthDate, appLang,
+          id, name, province, city, country, address, document, email, nationality, birthDate, appLang, photo,
           postalCode: postal_code,
           phone: phones,
           genderId: gender_id,

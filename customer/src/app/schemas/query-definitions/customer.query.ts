@@ -21,6 +21,12 @@ export const customerQuery = `query customerQuery($id: Int) {
     nationality: Nationality_id
     country: Country_id
     tutorId: Tutor_id
+    photo: Photo {
+      name
+      oid
+      thumbnail
+      type
+    }
     contacts: Customer_contactListViaCustomer_id {
       name: Name
       id
@@ -193,6 +199,17 @@ export const UPLOAD_CUSTOMER_DOCUMENT_BACK = `mutation ($id: Int! $bill: Models_
     }
   ){ id }
 }`;
+
+
+
+export const UPLOAD_CUSTOMER_PHOTO = `mutation ($id: Int! $bill: Models_DocumentTypeInputType) {
+  data: Customer_CustomerUpdate ( where: { id: {EQ: $id} }
+    entity: {
+      Photo: $bill
+    }
+  ){ id }
+}`;
+
 
 export const UPDATE_EXPERITY_DATE = `
 mutation ($id: Int, $value: String){

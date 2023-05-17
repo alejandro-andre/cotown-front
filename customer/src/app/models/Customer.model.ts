@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { CustomerInterface } from '../constants/Interface';
+import { CustomerInterface, Photo } from '../constants/Interface';
 import { Booking, Contact, Invoice, Payment, Document } from '../constants/Interface';
 export class Customer implements CustomerInterface {
   id: number = 1001
@@ -27,7 +27,8 @@ export class Customer implements CustomerInterface {
   bookings: Booking[] = [] as Booking[];
   invoices: Invoice[] = [] as Invoice[];
   payments: Payment[] = [] as Payment[];
-  appLang: string = 'es'
+  appLang: string = 'es';
+  photo: Photo | null = null;
 
   constructor(data: CustomerInterface = {} as CustomerInterface ) {
     this.id = data.id || 1001;
@@ -56,5 +57,6 @@ export class Customer implements CustomerInterface {
     this.invoices = data.invoices || [];
     this.payments = data.payments || [];
     this.appLang = data.appLang || 'es';
+    this.photo = data.photo || null;
   }
 };

@@ -7,12 +7,13 @@ import { GenderService } from 'src/app/services/gender.service';
 import { LanguageService } from 'src/app/services/languages.service';
 import { IdentificationDocTypesService } from 'src/app/services/identificationDocTypes.service';
 import { schoolOrCompaniesService } from 'src/app/services/schoolOrCompanies.service';
-import { BasicResponse } from 'src/app/constants/Interface';
+import { BasicResponse, PayloadFile } from 'src/app/constants/Interface';
 import { Customer } from 'src/app/models/Customer.model';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
-import { UPDATE_CUSTOMER } from 'src/app/schemas/query-definitions/customer.query';
+import { UPDATE_CUSTOMER, UPLOAD_CUSTOMER_PHOTO } from 'src/app/schemas/query-definitions/customer.query';
 import { TranslateService } from '@ngx-translate/core';
 import { Constants } from 'src/app/constants/Constants';
+import { AxiosApi } from 'src/app/services/axios-api.service';
 
 @Component({
   selector: 'app-my-data',
@@ -30,10 +31,12 @@ export class MyDataComponent{
     private schoolOrCompaniesService: schoolOrCompaniesService,
     private apollo: ApoloQueryApi,
     private translate: TranslateService,
+    private axiosApi: AxiosApi
   ) {}
 
   public appLangs = Constants.ARRAY_OF_LANGUAGES;
   public saveActiveButton: boolean = false;
+  public image!: File;
 
   /**
   * Getters
@@ -152,6 +155,33 @@ export class MyDataComponent{
 
     this.apollo.setData(UPDATE_CUSTOMER, variables).subscribe(resp => {
       console.log('The response is : ', resp)
+    })
+  }
+
+  upload(event: any) {
+    const fileInfo = event.target.files[0]
+    const payload:PayloadFile = {
+      file: this.image,
+      id: this.customer.id,
+    }
+
+    this.axiosApi.uploadImage(payload).then((res) => {
+      const oid = res.data;
+      const variables = {
+        id: this.customer.id,
+        bill: {
+          name: fileInfo.name,
+          oid: oid,
+          type: fileInfo.type
+
+        }
+      };
+
+      console.log(variables)
+
+      this.apollo.setData(UPLOAD_CUSTOMER_PHOTO, variables).subscribe((response) => {
+        console.log('The response is: ', response)
+      })
     })
   }
 }

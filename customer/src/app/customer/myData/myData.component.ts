@@ -166,22 +166,27 @@ export class MyDataComponent{
     }
 
     this.axiosApi.uploadImage(payload).then((res) => {
-      const oid = res.data;
-      const variables = {
-        id: this.customer.id,
-        bill: {
-          name: fileInfo.name,
-          oid: oid,
-          type: fileInfo.type
+      const reader = new FileReader();
+      const id = this.customer.id
 
-        }
-      };
+      reader.onloadend = () => {
+        const imageAsB64 = reader.result;
+        const oid = res.data;
+        const variables = {
+          id,
+          bill: {
+            name: fileInfo.name,
+            oid: oid,
+            type: fileInfo.type,
+            thumbnail: imageAsB64
+          }
+        };
 
-      console.log(variables)
-
-      this.apollo.setData(UPLOAD_CUSTOMER_PHOTO, variables).subscribe((response) => {
-        console.log('The response is: ', response)
-      })
+        this.apollo.setData(UPLOAD_CUSTOMER_PHOTO, variables).subscribe((response: any) => {
+          console.log('The response is: ', response)
+        })
+      }
+      reader.readAsDataURL(fileInfo);
     })
   }
 }

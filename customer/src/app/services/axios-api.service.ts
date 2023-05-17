@@ -17,7 +17,14 @@ export class AxiosApi {
 
   uploadFile(payload: PayloadFile) {
     const token = this.apollo.token;
-    const url = `/document/Customer.Customer_doc/Document/${payload.id}/Documents/contents?access_token=${token}`;
+    const url = `/document/Customer/Customer_doc/Document/${payload.id}/Documents/contents?access_token=${token}`;
+    return axiosInstance.post(url, { file: payload.file })
+  }
+
+  
+  uploadImage(payload: PayloadFile) {
+    const token = this.apollo.token;
+    const url = `/document/Customer/Photo/${payload.id}/Photo/contents?access_token=${token}`;
     return axiosInstance.post(url, { file: payload.file })
   }
 

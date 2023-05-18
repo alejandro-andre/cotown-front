@@ -252,7 +252,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         const birthDate = birth_date !== null ? new Date(birth_date) : null;
         const contactsToSend = contacts !== null ? contacts : [];
         const docToSend = this.loadDocuments(documents);
-        const bookingsToSend = bookings !== null ? bookings : [];
+        const bookingsToSend = bookings !== null ? JSON.parse(JSON.stringify(bookings)) : [];
         const invoidesToSend = invoices !== null ? invoices : [];
         const paymentsToSend = payments !== null ? payments : [];
 

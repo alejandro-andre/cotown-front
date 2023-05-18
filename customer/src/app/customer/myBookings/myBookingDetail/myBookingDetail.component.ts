@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
 import { Booking, TableObject } from 'src/app/constants/Interface';
+import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
@@ -10,9 +11,27 @@ import { CustomerService } from 'src/app/services/customer.service';
   styleUrls: ['./myBookingDetail.component.scss']
 })
 
-export class MyBookingDetailComponent {
+export class MyBookingDetailComponent implements OnInit {
   public booking!: Booking;
   public showNotFound: boolean = false;
+  public contract_services = '';
+  public contract_rent = '';
+  private contract_rent_info = {
+    total_pages: -1,
+    current_page: -1,
+    loaded: false,
+    signed: false
+  };
+
+  private contract_service_info = {
+    total_pages: -1,
+    current_page: -1,
+    loaded: false,
+    signed: false
+  };
+
+  public RENT_CONTRACT_TYPE = 'RENT_CONTRACT';
+  public SERVICE_CONTRACT_TYPE = 'SERVICE_CONTRACT';
 
   public tableFormat: TableObject[] = [
     {
@@ -42,14 +61,15 @@ export class MyBookingDetailComponent {
     },
   ];
 
-  get displayedColumns() :string[] {
+  get displayedColumns(): string[] {
     return this.tableFormat.map((elem) => elem.header);
   }
 
   constructor(
     public customerService: CustomerService,
     private router: Router,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private axiosApi: AxiosApi
   ) {
     this.activeRoute.params.subscribe((res) => {
       const id = res['id'];
@@ -60,6 +80,9 @@ export class MyBookingDetailComponent {
         this.showNotFound = true;
       }
     });
+  }
+  async ngOnInit(): Promise<void> {
+    await this.getPdfsContracts()
   }
 
   get buildingName(): string {
@@ -97,8 +120,107 @@ export class MyBookingDetailComponent {
     return this.booking?.reason?.name || '';
   }
 
-  get schoolName(): string{
+  get schoolName(): string {
     return this.booking?.school?.name || '';
   }
 
+  async getPdfsContracts() {
+    if (this.booking.contract_services) {
+      const type = 'Contract_services';
+      const contract_services = await this.axiosApi.getContract(this.booking.id, type);
+      if (contract_services && contract_services.data) {
+        this.contract_services = URL.createObjectURL(contract_services.data);
+      }
+    }
+
+    if (this.booking.contract_rent) {
+      const type = 'Contract_rent';
+      const contract_rent = await this.axiosApi.getContract(this.booking.id, type);
+      if (contract_rent && contract_rent.data) {
+        this.contract_rent = URL.createObjectURL(contract_rent.data);
+      }
+    }
+
+  }
+
+  pageRenderedRent(e: any) {
+    this.contract_rent_info.current_page = e.pageNumber;
+
+    if(
+      this.contract_rent_info.current_page === this.contract_rent_info.total_pages &&
+      !this.contract_rent_info.loaded
+    ) {
+      this.contract_rent_info.loaded = true
+    }
+  }
+
+  afterLoadRent(event: any) {
+    this.contract_rent_info.total_pages = event._pdfInfo.numPages;
+  }
+
+  pageRenderedService(e: any) {
+    this.contract_service_info.current_page = e.pageNumber;
+
+    if(
+      this.contract_service_info.current_page === this.contract_service_info.total_pages &&
+      !this.contract_service_info.loaded
+    ) {
+      this.contract_service_info.loaded = true
+    }
+  }
+
+  afterLoadService(event: any) {
+    this.contract_service_info.total_pages = event._pdfInfo.numPages;
+  }
+
+
+  get isRentContractLoaded(): boolean {
+    if (this.booking.contract_rent && this.booking.contract_rent.oid) {
+      return this.contract_rent_info.loaded;
+    }
+
+    return false;
+  }
+
+  get isServiceContractLoaded(): boolean {
+    if (this.booking.contract_services && this.booking.contract_services.oid) {
+      return this.contract_service_info.loaded;
+    }
+
+    return false;
+  }
+
+  get allContractsLoaded(): boolean {
+    if (
+      this.booking.contract_rent &&
+      this.booking.contract_rent.oid &&
+      this.booking.contract_services &&
+      this.booking.contract_services.oid
+    ) {
+      return this.contract_rent_info.loaded && this.contract_service_info.loaded
+    }
+
+    if (this.booking.contract_rent && this.booking.contract_rent.oid) {
+      return this.contract_rent_info.loaded;
+    }
+
+    if (this.booking.contract_services &&
+      this.booking.contract_services.oid) {
+      return this.contract_service_info.loaded;
+    }
+
+    return false
+  }
+
+  sign(type: String):void {
+    if (type === this.SERVICE_CONTRACT_TYPE) {
+      this.contract_service_info.signed = true;
+    } else{
+      this.contract_rent_info.signed = true;
+    }
+
+    if(this.contract_rent_info.signed && this.contract_service_info.signed) {
+     
+    }
+  }
 }

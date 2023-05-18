@@ -39,4 +39,10 @@ export class AxiosApi {
     const url = `wopi/files/Billing/Invoice/${id}/Document/contents?access_token=${token}`;
     return axiosInstance.get(url, { responseType: 'blob' });
   }
+
+  getContract(id: number, type: string) {
+    const token = this.apollo.token;
+    const url = `wopi/files/Booking/Booking/${id}/${type}/contents?access_token=${token}`;
+    return axiosInstance.get(url, { responseType: 'blob' });
+  }
 };

@@ -235,3 +235,11 @@ mutation ($id: Int, $value: String){
       id,
   }
 }`;
+
+export const SIGN_BOOKING_CONTRACT = `mutation($id: Int!,$time: String){
+  data: Booking_BookingUpdate( where:{ id: {EQ: $id}}
+    entity:{
+      Contract_signed:$time
+    }
+  ){id, Contract_signed}
+}`;

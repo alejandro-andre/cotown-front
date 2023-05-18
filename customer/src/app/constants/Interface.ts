@@ -42,6 +42,9 @@ export interface Booking {
   reason: BasicResponse,
   school: BasicResponse,
   deposit: number
+  contract_rent: ServerFileDocument | null,
+  contract_services: ServerFileDocument | null,
+  contract_signed: string | null
 };
 
 export interface TableObject {
@@ -125,9 +128,12 @@ export interface CustomerInterface {
   photo?: Photo | null,
 };
 
-export interface Photo  {
+export interface ServerFileDocument {
   name: string,
   oid: number,
+}
+
+export interface Photo extends ServerFileDocument  {
   thumbnail: string | null,
   type: string
 }

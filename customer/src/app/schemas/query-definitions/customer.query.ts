@@ -99,6 +99,15 @@ export const customerQuery = `query customerQuery($id: Int) {
       confirmation_date: Confirmation_date
       expiry_date: Expiry_date
       limit: Limit
+      contract_rent: Contract_rent{
+        name
+        oid
+      }
+      contract_services: Contract_services {
+        name
+        oid
+      }
+      contract_signed:Contract_signed
       reason: Customer_reasonViaReason_id{
         id
         name: Name

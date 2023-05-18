@@ -70,5 +70,6 @@
   "rentSupplement": "Supplements(+)/Discounts(-) to rent",
   "serviceSupplement": "Suplementos(+)/Descuentos(-) a los servicios",
   "delete": "Delete",
-  "completeName": "Complete name"
+  "completeName": "Complete name",
+  "sign": "Sign"
 }

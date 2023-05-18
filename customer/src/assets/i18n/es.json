@@ -70,7 +70,7 @@
   "rentSupplement": "Suplementos(+)/Descuentos(-) a la renta",
   "serviceSupplement": "Suplementos(+)/Descuentos(-) a los servicios",
   "delete": "Borrar",
-  "completeName": "Nombre completo"
-
+  "completeName": "Nombre completo",
+  "sign": "Firmar"
 
 }

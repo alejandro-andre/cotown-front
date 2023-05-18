@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Customer } from '../models/Customer.model';
-import { Contact } from '../constants/Interface';
+import { Booking, Contact } from '../constants/Interface';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +41,11 @@ export class CustomerService {
 
   setContacts(contacts: Contact[]): void{
     this.customer.contacts = contacts;
+  }
+
+  updateBooking(booking: Booking){
+    const index = this.customer.bookings.findIndex((el) => el.id === booking.id);
+    this.customer.bookings[index] = booking;
   }
 
   removeContactById(id: number): void {

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
 import { Booking, TableObject } from 'src/app/constants/Interface';
+import { SIGN_BOOKING_CONTRACT } from 'src/app/schemas/query-definitions/customer.query';
+import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 
@@ -12,22 +14,46 @@ import { CustomerService } from 'src/app/services/customer.service';
 })
 
 export class MyBookingDetailComponent implements OnInit {
+  constructor(
+    public customerService: CustomerService,
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+    private axiosApi: AxiosApi,
+    private apolo: ApoloQueryApi
+  ) {
+    this.activeRoute.params.subscribe((res) => {
+      const id = res['id'];
+      this.bookingId = parseInt(id);
+      const finded = this.customerService.customer.bookings.find((booking: Booking) => booking.id === this.bookingId );
+      if (finded) {
+        this.booking = finded;
+      } else {
+        this.showNotFound = true;
+      }
+    });
+  }
+
   public booking!: Booking;
   public showNotFound: boolean = false;
   public contract_services = '';
   public contract_rent = '';
+  public bookingId!: number;
+  public contractMessage: string = '';
+  public formatedDate: string = '';
   private contract_rent_info = {
     total_pages: -1,
     current_page: -1,
     loaded: false,
-    signed: false
+    signed: false,
+    rendered: false,
   };
 
   private contract_service_info = {
     total_pages: -1,
     current_page: -1,
     loaded: false,
-    signed: false
+    signed: false,
+    rendered: false
   };
 
   public RENT_CONTRACT_TYPE = 'RENT_CONTRACT';
@@ -65,24 +91,18 @@ export class MyBookingDetailComponent implements OnInit {
     return this.tableFormat.map((elem) => elem.header);
   }
 
-  constructor(
-    public customerService: CustomerService,
-    private router: Router,
-    private activeRoute: ActivatedRoute,
-    private axiosApi: AxiosApi
-  ) {
-    this.activeRoute.params.subscribe((res) => {
-      const id = res['id'];
-      const finded = this.customerService.customer.bookings.find((booking: Booking) => booking.id === parseInt(id));
-      if (finded) {
-        this.booking = finded;
-      } else {
-        this.showNotFound = true;
-      }
-    });
-  }
+
   async ngOnInit(): Promise<void> {
-    await this.getPdfsContracts()
+    if(this.booking) {
+      if (this.booking.contract_signed !== null) {
+        this.contractMessage = 'signedMessage';
+        const date = this.booking.contract_signed.split('T');
+        this.formatedDate = `${date[0]} ${date[1]}`
+      } else {
+        this.contractMessage = 'signMessage';
+      }
+      await this.getPdfsContracts();
+    }
   }
 
   get buildingName(): string {
@@ -130,6 +150,7 @@ export class MyBookingDetailComponent implements OnInit {
       const contract_services = await this.axiosApi.getContract(this.booking.id, type);
       if (contract_services && contract_services.data) {
         this.contract_services = URL.createObjectURL(contract_services.data);
+        this.contract_service_info.rendered = true;
       }
     }
 
@@ -138,6 +159,7 @@ export class MyBookingDetailComponent implements OnInit {
       const contract_rent = await this.axiosApi.getContract(this.booking.id, type);
       if (contract_rent && contract_rent.data) {
         this.contract_rent = URL.createObjectURL(contract_rent.data);
+        this.contract_rent_info.rendered = true;
       }
     }
 
@@ -190,26 +212,44 @@ export class MyBookingDetailComponent implements OnInit {
     return false;
   }
 
-  get allContractsLoaded(): boolean {
+  get allContractsRendered(): boolean {
     if (
       this.booking.contract_rent &&
       this.booking.contract_rent.oid &&
       this.booking.contract_services &&
       this.booking.contract_services.oid
     ) {
-      return this.contract_rent_info.loaded && this.contract_service_info.loaded
+      return this.contract_rent_info.rendered && this.contract_service_info.rendered
     }
 
     if (this.booking.contract_rent && this.booking.contract_rent.oid) {
-      return this.contract_rent_info.loaded;
+      return this.contract_rent_info.rendered;
     }
 
-    if (this.booking.contract_services &&
-      this.booking.contract_services.oid) {
-      return this.contract_service_info.loaded;
+    if (this.booking.contract_services && this.booking.contract_services.oid) {
+      return this.contract_service_info.rendered;
     }
 
     return false
+  }
+
+  formatDate(date: Date): string {
+    if(date) {
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      const min = date.getMinutes();
+      const hours = date.getHours();
+      const sec = date.getSeconds();
+
+      return `${year}-${month}-${day}T${hours}:${min}:${sec}`;
+    }
+
+    return '';
+  }
+
+  get contractSigned (): String | null {
+    return this.booking.contract_signed;
   }
 
   sign(type: String):void {
@@ -220,7 +260,26 @@ export class MyBookingDetailComponent implements OnInit {
     }
 
     if(this.contract_rent_info.signed && this.contract_service_info.signed) {
-     
+      const date = this.formatDate(new Date());
+
+      const variables = {
+        id: this.booking.id,
+        time: date
+      }
+
+      this.apolo.setData(SIGN_BOOKING_CONTRACT,variables).subscribe((res) => {
+        const value = res.data.data[0].Contract_signed;
+        const finded = this.customerService.customer.bookings.find((booking: Booking) => booking.id === this.bookingId );
+        if(finded) {
+          const copy = JSON.parse(JSON.stringify(finded));
+          copy.contract_signed = value;
+          this.customerService.updateBooking(copy);
+          this.booking = copy;
+          this.contractMessage ='signedMessage';
+          const date = value.split('T');
+          this.formatedDate = `${date[0]} ${date[1]}`
+        }
+      });
     }
   }
 }

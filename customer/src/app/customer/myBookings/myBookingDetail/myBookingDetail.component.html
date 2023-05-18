@@ -151,16 +151,28 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
 
-      <div>
-        Contracts:
+      <div *ngIf="allContractsRendered">
+        <h4>Contracts</h4>
+
+        <div  *ngIf="contractSigned !== null" class="contract-box">
+          {{ contractMessage | translate: { value: formatedDate } }}
+        </div>
+
+        <div  *ngIf="contractSigned === null" class="contract-box">
+          {{ contractMessage | translate }}
+        </div>
+
         <div class="box-pdf" style="margin-bottom: 25px;" *ngIf="contract_rent.length > 0">
           <h4>Rent contract</h4>
           <pdf-viewer class="pdf-viewer" [src]="contract_rent" [render-text]="true" [original-size]="true"
             [show-all]="true" [show-borders]="true" (page-rendered)="pageRenderedRent($event)"
             (after-load-complete)="afterLoadRent($event)"></pdf-viewer>
-          <div class="sign">
-            <button mat-raised-button color="primary" (click)="sign(RENT_CONTRACT_TYPE)"
-              [disabled]="!isRentContractLoaded">
+          <div class="sign"*ngIf="booking.contract_signed === null">
+            <button
+              mat-raised-button color="primary"
+              (click)="sign(RENT_CONTRACT_TYPE)"
+              [disabled]="!isRentContractLoaded"
+            >
               {{ 'sign' | translate }}
             </button>
           </div>
@@ -170,14 +182,14 @@
           <h4>Service contract</h4>
           <pdf-viewer class="pdf-viewer" [src]="contract_services" [render-text]="true" [original-size]="true"
             [show-borders]="true" [show-all]="true" (page-rendered)="pageRenderedService($event)"
-            (after-load-complete)="afterLoadService($event)"></pdf-viewer>
-        </div>
-
-        <div class="sign">
-          <button mat-raised-button color="primary" (click)="sign(SERVICE_CONTRACT_TYPE)"
-            [disabled]="!isServiceContractLoaded">
-            {{ 'sign' | translate }}
-          </button>
+            (after-load-complete)="afterLoadService($event)">
+          </pdf-viewer>
+          <div class="sign" *ngIf="booking.contract_signed === null">
+            <button mat-raised-button color="primary" (click)="sign(SERVICE_CONTRACT_TYPE)"
+              [disabled]="!isServiceContractLoaded">
+              {{ 'sign' | translate }}
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -71,5 +71,7 @@
   "serviceSupplement": "Suplementos(+)/Descuentos(-) a los servicios",
   "delete": "Delete",
   "completeName": "Complete name",
-  "sign": "Sign"
+  "sign": "Sign",
+  "signedMessage": "The contract was signed on: {{ value }}",
+  "signMessage": "Please, read all the pages of the contracts in order to sign"
 }

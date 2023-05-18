@@ -71,6 +71,7 @@
   "serviceSupplement": "Suplementos(+)/Descuentos(-) a los servicios",
   "delete": "Borrar",
   "completeName": "Nombre completo",
-  "sign": "Firmar"
-
+  "sign": "Firmar",
+  "signedMessage": "El contrato fue frimado el: {{ value }}",
+  "signMessage": "Por favor, lea todas las pagínas de los contratos para poder firmar "
 }

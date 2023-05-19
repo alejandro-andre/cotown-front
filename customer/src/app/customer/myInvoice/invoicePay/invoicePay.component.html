@@ -1,0 +1,80 @@
+<div class="container">
+  <h1>Datos de pago</h1>
+  <p>Información de detalle del pago a realizar</p><br/>
+  <form
+    name="form"
+    *ngIf="loaded"
+    action="https://sis-t.redsys.es:25443/sis/realizarPago"
+    method="POST"
+    ngNoForm
+    target="_top"
+    class="form"
+  >
+    <mat-form-field class="data c10">
+      <mat-label>Identificador</mat-label>
+      <input
+        matInput
+        id="id"
+        [value]="identifier"
+      >
+      </mat-form-field>
+
+    <mat-form-field class="data c20">
+      <mat-label>Nº de orden</mat-label>
+      <input
+        matInput
+        id="order"
+        [value]="order"
+      >
+    </mat-form-field>
+
+    <mat-form-field class="data c20">
+      <mat-label>Concepto</mat-label>
+      <input
+        matInput
+        id="concept"
+        [value]="concept"
+      >
+    </mat-form-field>
+
+    <mat-form-field class="data c20">
+      <mat-label>Importe</mat-label>
+      <input
+        matInput
+        id="amount"
+        [value]="amount"
+    >
+    </mat-form-field>
+
+
+    <button
+      id="submit"
+      [disabled]="buttonDisabled"
+      class="primary c20"
+      type="submit"
+    >
+      PAGAR
+    </button>
+
+    <input
+      type="hidden"
+      id="Ds_SignatureVersion"
+      name="Ds_SignatureVersion"
+      [value]="Ds_SignatureVersion"
+    />
+    <input
+      type="hidden"
+      id="Ds_MerchantParameters"
+      name="Ds_MerchantParameters"
+      [value]="Ds_MerchantParameters"
+
+    />
+    <input
+      type="hidden"
+      id="Ds_Signature"
+      name="Ds_Signature"
+      [value]="Ds_Signature"
+
+    />
+  </form>
+</div>

@@ -37,6 +37,7 @@ import { MyTutorComponent } from './myTutor/myTutor.component';
 
 // Routing
 import { CustomerRoutingModule } from './customer-routing.module';
+import { InvoicePayComponent } from './myInvoice/invoicePay/invoicePay.component';
 
 // Config of translation
 registerLocaleData(localeES, 'es-ES');
@@ -59,6 +60,7 @@ export function createTranslateLoader(http: HttpClient) {
     MyBookingDetailComponent,
     MyInvoiceComponent,
     MyTutorComponent,
+    InvoicePayComponent,
   ],
   imports: [
     CommonModule,

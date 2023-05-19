@@ -14,6 +14,7 @@ import { MyInvoiceComponent } from './myInvoice/myInvoice.component';
 import { Constants } from '../constants/Constants';
 import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBookingDetail.component';
 import { MyTutorComponent } from './myTutor/myTutor.component';
+import { InvoicePayComponent } from './myInvoice/invoicePay/invoicePay.component';
 
 const routes: Routes = [
   {
@@ -55,6 +56,10 @@ const routes: Routes = [
       {
         path: Constants.INVOICES.url,
         component: MyInvoiceComponent
+      },
+      {
+        path: 'myInvoices/payment/:id',
+        component: InvoicePayComponent
       }
     ]
   },

@@ -17,7 +17,8 @@ export class MyInvoiceComponent {
 
   constructor(
     public customerService: CustomerService,
-    private axiosApi: AxiosApi
+    private axiosApi: AxiosApi,
+    private router: Router,
   ) {}
 
   public invoceTableFormat: TableObject[] = [
@@ -81,8 +82,8 @@ export class MyInvoiceComponent {
     },
   ];
 
-  pay(url: string) {
-    console.log('The url: ', url);
+  pay(id: number) {
+    this.router.navigate(['customer/myInvoices/payment/', id])
   }
 
   getResource(resource: BookingResource): string {

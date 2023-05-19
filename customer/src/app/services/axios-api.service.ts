@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 import { ApoloQueryApi } from './apolo-api.service';
 import { PayloadFile } from '../constants/Interface';
@@ -19,6 +19,14 @@ export class AxiosApi {
     const token = this.apollo.token;
     const url = `/document/Customer/Customer_doc/Document/${payload.id}/Documents/contents?access_token=${token}`;
     return axiosInstance.post(url, { file: payload.file })
+  }
+
+  get(url: string) {
+    const params: any = {
+      token: this.apollo.token
+    }
+
+    return axios.get(url, params);
   }
 
 

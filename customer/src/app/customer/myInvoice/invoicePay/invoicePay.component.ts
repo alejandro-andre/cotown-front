@@ -26,7 +26,7 @@ export class InvoicePayComponent {
   ) {
     this.activeRoute.params.subscribe((res) => {
       const id = res['id'];
-      const url = `https://dev.cotown.ciber.es/pay/${id}`;
+      const url = `https://dev.cotown.ciber.es/api/v1/pay/${id}`;
 
       this.axiosApi.get(url).then((resp) => {
         const { data } =resp;

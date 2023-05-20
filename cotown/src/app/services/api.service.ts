@@ -4,19 +4,19 @@ import { AvailabilityPayload } from '../constants/Interfaces';
 
 export default {
 
-  getAvailability(data: AvailabilityPayload): Promise<AxiosResponse> {
-    return axiosInstance.post('availability',  data);
+  getAvailability(data: AvailabilityPayload, token: string): Promise<AxiosResponse> {
+    return axiosInstance.post('availability', data);
   },
 
-  getDashboard(): Promise<AxiosResponse> {
+  getDashboard(token: string): Promise<AxiosResponse> {
     return axiosInstance.get('dashboard');
   },
 
-  getBookings(status: string): Promise<AxiosResponse> {
+  getDashboardBookings(status: string, token: string): Promise<AxiosResponse> {
     return axiosInstance.get('dashboard/' + status);
   },
 
-  getLabels(id: number, locale: string): Promise<AxiosResponse> {
+  getLabels(id: number, locale: string, token: string): Promise<AxiosResponse> {
     return axiosInstance.get('labels/' + id + '/' + locale);
   }
 

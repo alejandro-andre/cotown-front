@@ -130,7 +130,7 @@ export class PlanningComponent {
         data.place_type = this.selectedResourceType.code;
       }
 
-      axiosApi.getAvailability(data).then((resp) => {
+      axiosApi.getAvailability(data, this.apolloApi.token).then((resp) => {
         this.availableResources = resp.data;
         this.rows = [];
         for(const available of this.availableResources) {

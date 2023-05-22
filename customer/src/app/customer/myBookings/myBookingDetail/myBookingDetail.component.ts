@@ -146,7 +146,7 @@ export class MyBookingDetailComponent implements OnInit {
 
   async getPdfsContracts() {
     if (this.booking.contract_services) {
-      const type = 'Contract_services';
+      const type = Constants.CONTRACT_SERVICES_PDF;
       const contract_services = await this.axiosApi.getContract(this.booking.id, type);
       if (contract_services && contract_services.data) {
         this.contract_services = URL.createObjectURL(contract_services.data);
@@ -155,7 +155,7 @@ export class MyBookingDetailComponent implements OnInit {
     }
 
     if (this.booking.contract_rent) {
-      const type = 'Contract_rent';
+      const type = Constants.CONTRACT_RENT_PDF;
       const contract_rent = await this.axiosApi.getContract(this.booking.id, type);
       if (contract_rent && contract_rent.data) {
         this.contract_rent = URL.createObjectURL(contract_rent.data);

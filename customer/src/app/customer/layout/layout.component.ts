@@ -180,13 +180,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
       if (doc.front && doc.front !== null && doc.front.oid !== null) {
         images[0].name = doc.front.name;
         images[0].oid = doc.front.oid
-        images[0].type = 'Document';
+        images[0].type = Constants.DOCUMENT_TYPE_FRONT;
       }
 
       if (doc.back && doc.back !== null && doc.back.oid !== null) {
         images[1].name = doc.back.name;
         images[1].oid = doc.back.oid;
-        images[1].type = 'Document_back';
+        images[1].type = Constants.DOCUMENT_TYPE_BACK;
       }
 
       const docObject = {
@@ -222,7 +222,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         } = value.data[0];
         const birthDate = birth_date !== null ? new Date(birth_date) : null;
         const tutor: CustomerInterface = {
-          id, name, province, city, email, country, nationality, birthDate, address, document, 
+          id, name, province, city, email, country, nationality, birthDate, address, document,
           phone: phones,
           postalCode: postal_code,
           languageId: language,
@@ -254,7 +254,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   loadUserId(): Promise<void> {
     return new Promise((resolve) => {
       this.apolloApi.getData(USER_ID).subscribe((resp) => {
-        console.log('The user id is: ', resp)
         if (resp.data && resp.data.data && resp.data.data.length > 0) {
           this.userId = resp.data.data[0].id;
         }

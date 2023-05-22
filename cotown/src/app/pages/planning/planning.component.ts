@@ -130,7 +130,7 @@ export class PlanningComponent {
         data.place_type = this.selectedResourceType.code;
       }
 
-      axiosApi.getAvailability(data).then((resp) => {
+      axiosApi.getAvailability(data, this.apolloApi.token).then((resp) => {
         this.availableResources = resp.data;
         this.rows = [];
         for(const available of this.availableResources) {
@@ -577,6 +577,7 @@ export class PlanningComponent {
         bar.type = Constants.availableStatus;
       } else if (b.Booking_lock && !b.Booking_code) { // Resource lock
         bar.lock = true;
+        bar.code = b.Booking_status;
         bar.color = Constants.resourceNotAvailable.color
         bar.type = Constants.resourceNotAvailable.type;
       } else if (b.Booking_lock) { // Locking booking

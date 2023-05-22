@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 
 import axiosApi from "src/app/services/api.service";
+import { ApoloQueryApi } from "src/app/services/apolo-api.service";
 
 @Component({
   selector: "app-home",
@@ -45,14 +46,16 @@ export class DashboardComponent implements OnInit {
   ];
 
   // Constructor
-  constructor() { }
+  constructor(    
+    private apolloApi: ApoloQueryApi,
+  ) { }
 
   ngOnInit(): void {
     this.spinnerActive  = true;
-    axiosApi.getDashboard().then((resp) => {
+    axiosApi.getDashboard(this.apolloApi.token).then((resp) => {
       this.dashboard = resp.data;
       console.log(resp.data);
-      axiosApi.getLabels(7, "es_ES").then((resp) => {
+      axiosApi.getLabels(7, "es_ES", this.apolloApi.token).then((resp) => {
         console.log(resp.data);
         this.labels = resp.data;
         this.spinnerActive  = false;
@@ -63,7 +66,7 @@ export class DashboardComponent implements OnInit {
   getBookings(status: string): void {
     this.status = status;
     this.rows = null;
-    axiosApi.getBookings(this.status).then((resp) => {
+    axiosApi.getDashboardBookings(this.status, this.apolloApi.token).then((resp) => {
       console.log(resp.data);
       this.rows = resp.data;
       this.spinnerActive  = false;

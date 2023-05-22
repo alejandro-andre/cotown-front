@@ -41,7 +41,7 @@ export class NavComponent implements OnInit{
 
   onSelect(data: string) {
     this.selected = data;
-    this._router.navigate([`customer/${data}`]);
+    this._router.navigate([`${data}`]);
   }
 
   get navUrls (): Nav[] {

@@ -34,10 +34,13 @@ import { MyBookingsComponent } from './myBookings/myBookings.component';
 import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBookingDetail.component';
 import { MyInvoiceComponent } from './myInvoice/myInvoice.component';
 import { MyTutorComponent } from './myTutor/myTutor.component';
+import { InvoicePayComponent } from './myInvoice/invoicePay/invoicePay.component';
+import { PaymentOkComponent } from './paymentOk/paymentOk.component';
+import { PaymentkOComponent } from './paymentKO/paymentkO.component'
 
 // Routing
 import { CustomerRoutingModule } from './customer-routing.module';
-import { InvoicePayComponent } from './myInvoice/invoicePay/invoicePay.component';
+;
 
 // Config of translation
 registerLocaleData(localeES, 'es-ES');
@@ -61,6 +64,8 @@ export function createTranslateLoader(http: HttpClient) {
     MyInvoiceComponent,
     MyTutorComponent,
     InvoicePayComponent,
+    PaymentOkComponent,
+    PaymentkOComponent
   ],
   imports: [
     CommonModule,

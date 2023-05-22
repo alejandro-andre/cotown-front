@@ -15,6 +15,9 @@ import { Constants } from '../constants/Constants';
 import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBookingDetail.component';
 import { MyTutorComponent } from './myTutor/myTutor.component';
 import { InvoicePayComponent } from './myInvoice/invoicePay/invoicePay.component';
+import { PaymentOkComponent } from './paymentOk/paymentOk.component';
+import { AuthGuard } from '../auth/auth.guard';
+import { PaymentkOComponent } from './paymentKO/paymentkO.component';
 
 const routes: Routes = [
   {
@@ -23,44 +26,62 @@ const routes: Routes = [
     children:  [
       {
         path: '',
-        component: HomeComponent
+        redirectTo:  Constants.DATA.url,
+        pathMatch: 'full'
       },
       {
         path: Constants.DATA.url,
-        component: MyDataComponent
+        component: MyDataComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: Constants.TUTOR.url,
-        component: MyTutorComponent
+        component: MyTutorComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: Constants.CONTACTS.url,
-        component: MyContactsComponent
+        component: MyContactsComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'cantacts/new',
-        component: NewContactComponent
+        component: NewContactComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: Constants.DOCUMENTS.url,
-        component: MyDocumentsComponent
+        component: MyDocumentsComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: Constants.BOOKINGS.url,
-        component: MyBookingsComponent
+        component: MyBookingsComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'booking-detail/:id',
-        component: MyBookingDetailComponent
+        component: MyBookingDetailComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: Constants.INVOICES.url,
-        component: MyInvoiceComponent
+        component: MyInvoiceComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'myInvoices/payment/:id',
-        component: InvoicePayComponent
-      }
+        component: InvoicePayComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'customer/pago_ok',
+        component: PaymentOkComponent
+      },
+      {
+        path: 'customer/pago_ko',
+        component: PaymentkOComponent
+      },
     ]
   },
 ];

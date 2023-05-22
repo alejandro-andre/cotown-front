@@ -31,10 +31,6 @@ export class MyDocumentsComponent  {
     })
   }
 
-  completed(){
-    console.log('Carga completada \n')
-  }
-
   upload(event: any, doc: any, index: number) {
     const payload: PayloadFile  = {
       id: doc.id,

@@ -25,7 +25,7 @@ import { Tutor } from 'src/app/models/Tutor.model';
 // Queries
 import { identificationDocTypesQuery } from 'src/app/schemas/query-definitions/IdentificationDocTypes.query';
 import { countryQuery } from 'src/app/schemas/query-definitions/countries.query';
-import { customerQuery } from 'src/app/schemas/query-definitions/customer.query';
+import { USER_ID, customerQuery } from 'src/app/schemas/query-definitions/customer.query';
 import { genderQuery } from 'src/app/schemas/query-definitions/gender.query';
 import { languageQuery } from 'src/app/schemas/query-definitions/languages.query';
 import { schoolOrCompaniesQuery } from 'src/app/schemas/query-definitions/schoolOrCompanies.query';
@@ -43,6 +43,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   public showTutor: Subject<boolean> = new Subject<any>();
   private _mobileQueryListener: () => void;
   public isLoading = false;
+  public userId: number | undefined;
 
   constructor(
     private elRef:ElementRef,
@@ -235,9 +236,37 @@ export class LayoutComponent implements OnInit, OnDestroy {
     })
   }
 
+  loadData() {
+    this.authService.getAirflowsToken().then( async() => {
+      await this.loadUserId();
+      if (this.userId !== undefined && this.userId !== null) {
+        this.loadIdentificationDocTypes();
+        this.loadLanguages();
+        this.loadGenders();
+        this.loadCountries();
+        this.loadSchoolOrCompanies();
+        this.loadContactTypes();
+        this.loadCustomer();
+      }
+    })
+  }
+
+  loadUserId(): Promise<void> {
+    return new Promise((resolve) => {
+      this.apolloApi.getData(USER_ID).subscribe((resp) => {
+        console.log('The user id is: ', resp)
+        if (resp.data && resp.data.data && resp.data.data.length > 0) {
+          this.userId = resp.data.data[0].id;
+        }
+
+        resolve();
+      })
+    });
+  }
+
   loadCustomer(): void {
     const variables = {
-      id: 1001
+      id: this.userId
     }
 
     this.apolloApi.getData(customerQuery, variables).subscribe((res) => {
@@ -295,14 +324,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.authService.getAirflowsToken().then(() => {
-      this.loadIdentificationDocTypes();
-      this.loadLanguages();
-      this.loadGenders();
-      this.loadCountries();
-      this.loadSchoolOrCompanies();
-      this.loadContactTypes();
-      this.loadCustomer();
-    })
+    this.loadData();
   }
 }

@@ -56,10 +56,13 @@ export class AuthService {
 
   public getAirflowsToken(): Promise<void> {
     return new Promise ((resolve, reject) => {
-      this.keycloakService.getToken().then(token => {
+      this.keycloakService.getToken().then( async(token) => {
+        if(!token) {
+          await this.login();
+        }
+
         this.keycloakToken = token;
         this.loggedIn = true;
-        console.log("Logged in");
         this.apolloApi.getData(`{ refreshToken(token:"${token}") }`).subscribe(res => {
           this.airflowsToken = res.data.refreshToken;
           this.apolloApi.token = res.data.refreshToken;

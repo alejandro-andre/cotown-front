@@ -32,47 +32,38 @@ const routes: Routes = [
       {
         path: Constants.DATA.url,
         component: MyDataComponent,
-        canActivate: [AuthGuard],
       },
       {
         path: Constants.TUTOR.url,
         component: MyTutorComponent,
-        canActivate: [AuthGuard],
       },
       {
         path: Constants.CONTACTS.url,
         component: MyContactsComponent,
-        canActivate: [AuthGuard],
       },
       {
         path: 'cantacts/new',
         component: NewContactComponent,
-        canActivate: [AuthGuard],
       },
       {
         path: Constants.DOCUMENTS.url,
         component: MyDocumentsComponent,
-        canActivate: [AuthGuard],
       },
       {
         path: Constants.BOOKINGS.url,
         component: MyBookingsComponent,
-        canActivate: [AuthGuard],
       },
       {
         path: 'booking-detail/:id',
         component: MyBookingDetailComponent,
-        canActivate: [AuthGuard],
       },
       {
         path: Constants.INVOICES.url,
         component: MyInvoiceComponent,
-        canActivate: [AuthGuard],
       },
       {
         path: 'myInvoices/payment/:id',
         component: InvoicePayComponent,
-        canActivate: [AuthGuard],
       },
       {
         path: 'pago_ok',

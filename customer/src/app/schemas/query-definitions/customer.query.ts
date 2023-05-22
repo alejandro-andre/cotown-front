@@ -243,3 +243,9 @@ export const SIGN_BOOKING_CONTRACT = `mutation($id: Int!,$time: String){
     }
   ){id, Contract_signed}
 }`;
+
+export const USER_ID = `query user_id {
+  data: Customer_CustomerList{
+    id
+  }
+}`;

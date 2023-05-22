@@ -45,6 +45,11 @@ export class Constants {
     url: 'invoices'
   };
 
+  public static DOCUMENT_TYPE_FRONT = 'Document';
+  public static DOCUMENT_TYPE_BACK = 'Document_back';
+  public static CONTRACT_SERVICES_PDF = 'Contract_services';
+  public static CONTRACT_RENT_PDF = 'Contract_rent';
+
   // GENERALS
   public static DATE = 'date';
   public static RESOURCE = 'resource';

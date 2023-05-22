@@ -83,7 +83,7 @@ export class MyInvoiceComponent {
   ];
 
   pay(id: number) {
-    this.router.navigate(['customer/myInvoices/payment/', id])
+    this.router.navigate(['customer/invoices/payment/', id])
   }
 
   getResource(resource: BookingResource): string {

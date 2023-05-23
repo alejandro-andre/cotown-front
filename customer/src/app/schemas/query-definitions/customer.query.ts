@@ -147,6 +147,27 @@ export const customerQuery = `query customerQuery($id: Int) {
         rent_discount: Rent_discount
         service_discount: Services_discount
       }
+      options: Booking_optionListViaBooking_id {
+        accepted: Accepted
+        id
+        resource: Resource_type
+        resource_place: Resource_place_typeViaPlace_type_id {
+          code: Code
+          name: Name
+          id
+        }
+        resource_flat: Resource_flat_typeViaFlat_type_id {
+          code: Code
+          name: Name
+          id
+        }
+        booking_id: Booking_id
+        building: BuildingViaBuilding_id {
+          code: Code
+          name: Name,
+          id
+        }
+      }
     }
   }
 }`;
@@ -249,3 +270,13 @@ export const USER_ID = `query user_id {
     id
   }
 }`;
+
+export const ACCEPT_BOOKING_OPTION = `mutation ($id: Int!, $accepted: Boolean) {
+  updated: Booking_Booking_optionUpdate(
+    where: { id: { EQ: $id } }
+    entity:{
+        Accepted: $accepted
+    }
+  ){id}
+}`;
+

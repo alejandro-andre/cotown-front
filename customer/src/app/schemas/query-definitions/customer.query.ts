@@ -227,12 +227,12 @@ export const UPLOAD_CUSTOMER_PHOTO = `mutation ($id: Int! $bill: Models_Document
 export const UPDATE_EXPERITY_DATE = `
 mutation ($id: Int, $value: String){
   Customer_Customer_docUpdate(
-      where: { id: { EQ: $id } }
-      entity: {
-          Expiry_date: $value
-      }
+    where: { id: { EQ: $id } }
+    entity: {
+      Expiry_date: $value
+    }
   ){
-      id,
+    id,
   }
 }`;
 

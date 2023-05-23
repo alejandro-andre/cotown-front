@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
 import { Booking, TableObject } from 'src/app/constants/Interface';
-import { SIGN_BOOKING_CONTRACT } from 'src/app/schemas/query-definitions/customer.query';
+import { ACCEPT_BOOKING_OPTION, GET_BOOKING_BY_ID, SIGN_BOOKING_CONTRACT } from 'src/app/schemas/query-definitions/booking.query';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -32,6 +32,7 @@ export class MyBookingDetailComponent implements OnInit {
     });
   }
 
+  public isViewLoading = false;
   public booking!: Booking;
   public showNotFound: boolean = false;
   public contract_services = '';
@@ -57,6 +58,7 @@ export class MyBookingDetailComponent implements OnInit {
 
   public RENT_CONTRACT_TYPE = 'RENT_CONTRACT';
   public SERVICE_CONTRACT_TYPE = 'SERVICE_CONTRACT';
+  public ACCEPT_PROPERTY = 'Accept'
 
   public tableFormat: TableObject[] = [
     {
@@ -86,6 +88,34 @@ export class MyBookingDetailComponent implements OnInit {
     },
   ];
 
+  public tableForOptions: TableObject[] = [
+    {
+      header: Constants.BOOKING_FLAT,
+      property: Constants.PROPERTY_FLAT,
+      name: Constants.FLAT_TYPE
+    },
+    {
+      header: Constants.BOOKING_PLACE,
+      property: Constants.PROPERTY_PLACE,
+      name: Constants.PLACE_TYPE
+    },
+    {
+      header: Constants.BOOKING_RESOURCE_TYPE,
+      property: Constants.PROPERTY_RESOURCE_TYPE,
+      name: Constants.RESOURCE_TYPE
+    },
+    {
+      header: 'Accept',
+      property: 'accepted',
+      name: 'Accept'
+    },
+  ];
+
+  get displayedColumnsOptions(): string[] {
+    return this.tableForOptions.map((elem) => elem.header);
+  }
+
+
   get displayedColumns(): string[] {
     return this.tableFormat.map((elem) => elem.header);
   }
@@ -101,6 +131,57 @@ export class MyBookingDetailComponent implements OnInit {
       }
       await this.getPdfsContracts();
     }
+  }
+
+  get options(): any {
+    const options =  [];
+    for(const option of  this.booking.options || []) {
+      if(!option.accepted) {
+        const newop = {
+          'id': option.id,
+          'accepted': option.accepted,
+          [Constants.PROPERTY_FLAT]: `${option.resource_flat.code || ''}, ${option.resource_flat.name || ''} `,
+          [Constants.PROPERTY_PLACE]: `${option.resource_place.code || ''}, ${option.resource_place.name || ''}`,
+          [Constants.PROPERTY_RESOURCE_TYPE]: option.resource
+        }
+
+        options.push(newop)
+      }
+    }
+
+    return options;
+  }
+
+  accept(id: number): void {
+    this.isViewLoading = true;
+    const variables = {
+      id,
+      accepted: true
+    }
+    this.apolo.setData(ACCEPT_BOOKING_OPTION, variables).subscribe((resp) => {
+      const value = resp.data;
+
+      if (value && value.updated && value.updated.length) {
+        const variablesForId = {
+          id: this.booking.id,
+        };
+
+        this.apolo.getData(GET_BOOKING_BY_ID, variablesForId).subscribe((response) => {
+          this.booking = JSON.parse(JSON.stringify(response.data.booking[0]));
+          this.isViewLoading = false;
+        })
+      }
+    })
+  }
+
+  get isOptionToBeShowed() : boolean {
+    for(const option of this.options) {
+      if (!option.accepted) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   get buildingName(): string {

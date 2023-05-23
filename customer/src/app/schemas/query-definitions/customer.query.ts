@@ -1,4 +1,4 @@
-export const customerQuery = `query customerQuery($id: Int) {
+export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
   data: Customer_CustomerList(where: { id: { EQ: $id} }) {
     id,
     appLang: Lang
@@ -51,7 +51,6 @@ export const customerQuery = `query customerQuery($id: Int) {
         id
       }
     }
-
     invoices: InvoiceListViaCustomer_id {
       id,
       code: Code
@@ -69,7 +68,6 @@ export const customerQuery = `query customerQuery($id: Int) {
         }
       }
     }
-
     payments: PaymentListViaCustomer_id {
       id
       amount: Amount
@@ -83,7 +81,6 @@ export const customerQuery = `query customerQuery($id: Int) {
         }
       }
     }
-
     bookings: BookingListViaCustomer_id {
       id
       start: Date_from
@@ -146,6 +143,27 @@ export const customerQuery = `query customerQuery($id: Int) {
         rent_date:Rent_date
         rent_discount: Rent_discount
         service_discount: Services_discount
+      }
+      options: Booking_optionListViaBooking_id {
+        accepted: Accepted
+        id
+        resource: Resource_type
+        resource_place: Resource_place_typeViaPlace_type_id {
+          code: Code
+          name: Name
+          id
+        }
+        resource_flat: Resource_flat_typeViaFlat_type_id {
+          code: Code
+          name: Name
+          id
+        }
+        booking_id: Booking_id
+        building: BuildingViaBuilding_id {
+          code: Code
+          name: Name,
+          id
+        }
       }
     }
   }
@@ -234,14 +252,6 @@ mutation ($id: Int, $value: String){
   ){
     id,
   }
-}`;
-
-export const SIGN_BOOKING_CONTRACT = `mutation($id: Int!,$time: String){
-  data: Booking_BookingUpdate( where:{ id: {EQ: $id}}
-    entity:{
-      Contract_signed:$time
-    }
-  ){id, Contract_signed}
 }`;
 
 export const USER_ID = `query user_id {

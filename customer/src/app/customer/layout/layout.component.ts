@@ -1,5 +1,6 @@
 // Core
 import { Component, OnInit, ChangeDetectorRef, OnDestroy, ElementRef } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -23,15 +24,14 @@ import { Constants } from 'src/app/constants/Constants';
 import { Tutor } from 'src/app/models/Tutor.model';
 
 // Queries
-import { identificationDocTypesQuery } from 'src/app/schemas/query-definitions/IdentificationDocTypes.query';
-import { countryQuery } from 'src/app/schemas/query-definitions/countries.query';
-import { USER_ID, customerQuery } from 'src/app/schemas/query-definitions/customer.query';
-import { genderQuery } from 'src/app/schemas/query-definitions/gender.query';
-import { languageQuery } from 'src/app/schemas/query-definitions/languages.query';
-import { schoolOrCompaniesQuery } from 'src/app/schemas/query-definitions/schoolOrCompanies.query';
-import { contactTypeQuery } from 'src/app/schemas/query-definitions/contactType.query';
+import { IDENTIFICATION_DOC_TYPE_QUERY } from 'src/app/schemas/query-definitions/IdentificationDocTypes.query';
+import { COUNTRY_QUERY } from 'src/app/schemas/query-definitions/countries.query';
+import { USER_ID, CUSTOMER_QUERY } from 'src/app/schemas/query-definitions/customer.query';
+import { GENDER_QUERY } from 'src/app/schemas/query-definitions/gender.query';
+import { LANGUAGE_QUERY } from 'src/app/schemas/query-definitions/languages.query';
+import { SCHOOL_COMPANY_QUERY } from 'src/app/schemas/query-definitions/schoolOrCompanies.query';
+import { CONTACT_TYPE_QUERY } from 'src/app/schemas/query-definitions/contactType.query';
 import { TUTOR_QUERY } from 'src/app/schemas/query-definitions/tutor.query';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-layout',
@@ -98,7 +98,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
    * Endded the configuration of nav
   */
   loadIdentificationDocTypes() {
-    this.apolloApi.getData(identificationDocTypesQuery).subscribe((res) => {
+    this.apolloApi.getData(IDENTIFICATION_DOC_TYPE_QUERY).subscribe((res) => {
       const value = res.data;
       if (value && value.types) {
         this.identificationTypes.setTypesData(value.types);
@@ -107,7 +107,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   loadLanguages() {
-    this.apolloApi.getData(languageQuery).subscribe((res) => {
+    this.apolloApi.getData(LANGUAGE_QUERY).subscribe((res) => {
       const value = res.data;
       if (value && value.languages) {
         this.languageSerice.setLanguageData(value.languages);
@@ -116,7 +116,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   loadGenders() {
-    this.apolloApi.getData(genderQuery).subscribe((res) => {
+    this.apolloApi.getData(GENDER_QUERY).subscribe((res) => {
       const value = res.data;
       if (value && value.genders) {
         this.genderService.setGenderData(value.genders);
@@ -125,7 +125,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   loadCountries() {
-    this.apolloApi.getData(countryQuery).subscribe((res) => {
+    this.apolloApi.getData(COUNTRY_QUERY).subscribe((res) => {
       const value = res.data;
       if (value && value.countries && value.countries.length) {
         this.countryService.setCountryData(value.countries);
@@ -134,7 +134,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   loadSchoolOrCompanies() {
-    this.apolloApi.getData(schoolOrCompaniesQuery).subscribe((res) => {
+    this.apolloApi.getData(SCHOOL_COMPANY_QUERY).subscribe((res) => {
       const value = res.data;
       if(value && value.data && value.data.length) {
         this.schoolOrCompaniesService.setSchoolOrCompaniesData(value.data);
@@ -143,7 +143,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   loadContactTypes() {
-    this.apolloApi.getData(contactTypeQuery).subscribe((res) => {
+    this.apolloApi.getData(CONTACT_TYPE_QUERY).subscribe((res) => {
       const value = res.data;
       if(value && value.contacts && value.contacts.length) {
         this.contactTypeService.setContactTypesData(value.contacts);
@@ -259,12 +259,22 @@ export class LayoutComponent implements OnInit, OnDestroy {
     });
   }
 
+  // TODO: may be is not the better way to do it
+  getAge(birthDate: Date | null): number {
+    const now = new Date().getTime();
+    const birthWithTime = birthDate?.getTime() || 0;
+    const diff = now - birthWithTime;
+    const diffParsed = (diff / 31536000000).toFixed(0);
+
+    return parseInt(diffParsed);
+  }
+
   loadCustomer(): void {
     const variables = {
       id: this.userId
     }
 
-    this.apolloApi.getData(customerQuery, variables).subscribe((res) => {
+    this.apolloApi.getData(CUSTOMER_QUERY, variables).subscribe((res) => {
       const value = res.data;
       if (value && value.data && value.data.length) {
         const {
@@ -299,17 +309,12 @@ export class LayoutComponent implements OnInit, OnDestroy {
         }
 
         const currentCustomer = new Customer(customer);
-        // TODO: may be is not the better way to do it
-        const now = new Date().getTime();
-        const birthWithTime = birthDate?.getTime() || 0;
-        const diff = now - birthWithTime;
-        const diffParsed = (diff / 31536000000).toFixed(0);
-
+        const age = this.getAge(birthDate);
         this.setAppLanguage(appLang);
         this.customerService.setCustomerData(currentCustomer);
         this.isLoading = false;
 
-        if(parseInt(diffParsed) <= 18 && tutorId !== null) {
+        if(age <= 18 && tutorId !== null) {
           this.showTutor.next(true);
           this.loadTutor(tutorId);
         }

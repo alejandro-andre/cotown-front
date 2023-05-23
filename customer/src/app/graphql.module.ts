@@ -9,7 +9,6 @@ import { environment } from '../environments/environment';
 const uri = environment.graphqlURL;
 
 export function createApollo(httpLink: HttpLink) {
-
   const basic = setContext((operation, context) => ({
     headers: {
       Accept: 'charset=utf-8',

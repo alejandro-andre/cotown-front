@@ -8,7 +8,6 @@ import { BasicResponse } from '../constants/Interface';
 
 export class LanguageService {
   public languageModel = new Languages();
-
   constructor() {}
 
   setLanguageData(data: BasicResponse []) {

@@ -65,7 +65,6 @@ export class MyTutorComponent {
   // Return formated birthdate of current tutor
   get birthDate(): string | null {
     const date = this.tutor.birthDate;
-
     if (date !== null) {
       const year = date.getFullYear();
       const day = date.getDate();

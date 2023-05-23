@@ -152,7 +152,6 @@ export class MyDataComponent{
     };
 
     delete variables.formControl
-
     this.apollo.setData(UPDATE_CUSTOMER, variables).subscribe(resp => {
       console.log('The response is : ', resp)
     })
@@ -167,7 +166,7 @@ export class MyDataComponent{
 
     this.axiosApi.uploadImage(payload).then((res) => {
       const reader = new FileReader();
-      const id = this.customer.id
+      const id = this.customer.id;
 
       reader.onloadend = () => {
         const imageAsB64 = reader.result;
@@ -186,6 +185,7 @@ export class MyDataComponent{
           console.log('The response is: ', response)
         })
       }
+
       reader.readAsDataURL(fileInfo);
     })
   }

@@ -9,7 +9,6 @@ import { BasicResponse } from '../constants/Interface';
 
 export class ContactTypeService {
   public contactTypeModel = new ContactType();
-
   constructor() {}
 
   setContactTypesData(data: BasicResponse []) {

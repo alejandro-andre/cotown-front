@@ -20,10 +20,8 @@ export class MyDocumentsComponent  {
     private axiosApi: AxiosApi,
     private apolo: ApoloQueryApi
   ) {}
-
   public disabledButtons: number[] = [] as number[];
   public pdfSrc = '';
-
 
   viewDoc(doc: DocFile) {
     this.axiosApi.getFile(doc.id, doc.type).then((response: any) => {
@@ -47,7 +45,6 @@ export class MyDocumentsComponent  {
           name,
           oid: fileId,
           type: 'application/pdf'
-
         }
       };
 
@@ -60,13 +57,11 @@ export class MyDocumentsComponent  {
           console.log('Algo ha ido mal!!', response);
         }
       });
-
     })
   }
 
   isButtonOfDocDisabled(document: Document) {
     const finded = this.disabledButtons.find((el) => el === document.id);
-
     return finded === undefined;
   }
 
@@ -82,9 +77,6 @@ export class MyDocumentsComponent  {
     this.apolo.setData(UPDATE_EXPERITY_DATE, variables).subscribe((response) => {
       console.log('The response is: ', response);
     })
-
-    // SAVE SECTION
-    console.log(document)
   }
 
 

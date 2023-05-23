@@ -8,7 +8,6 @@ import { BasicResponse } from '../constants/Interface';
 
 export class IdentificationDocTypesService {
   public identificationTypesModel = new IdentificationDocTypes();
-
   constructor() {}
 
   setTypesData(data: BasicResponse []) {

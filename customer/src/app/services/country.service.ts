@@ -8,7 +8,6 @@ import { BasicResponse } from '../constants/Interface';
 
 export class CountryService {
   public countryModel= new Country();
-
   constructor() {}
 
   setCountryData(data: BasicResponse []) {

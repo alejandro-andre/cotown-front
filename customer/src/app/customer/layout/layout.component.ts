@@ -100,7 +100,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   loadIdentificationDocTypes() {
     this.apolloApi.getData(identificationDocTypesQuery).subscribe((res) => {
       const value = res.data;
-
       if (value && value.types) {
         this.identificationTypes.setTypesData(value.types);
       }
@@ -110,7 +109,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   loadLanguages() {
     this.apolloApi.getData(languageQuery).subscribe((res) => {
       const value = res.data;
-
       if (value && value.languages) {
         this.languageSerice.setLanguageData(value.languages);
       }
@@ -120,7 +118,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   loadGenders() {
     this.apolloApi.getData(genderQuery).subscribe((res) => {
       const value = res.data;
-
       if (value && value.genders) {
         this.genderService.setGenderData(value.genders);
       }
@@ -130,7 +127,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   loadCountries() {
     this.apolloApi.getData(countryQuery).subscribe((res) => {
       const value = res.data;
-
       if (value && value.countries && value.countries.length) {
         this.countryService.setCountryData(value.countries);
       }
@@ -161,7 +157,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     }
 
     const returnData: Document[] = [] ;
-
     documents.forEach((doc: Document) => {
       const numOfImages = doc.doctype.images;
       const images = [];
@@ -220,6 +215,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
           id, name, province, city, country, address, postal_code, document,
           email, phones, language, origin, birth_date, nationality, type_doc,
         } = value.data[0];
+
         const birthDate = birth_date !== null ? new Date(birth_date) : null;
         const tutor: CustomerInterface = {
           id, name, province, city, email, country, nationality, birthDate, address, document,

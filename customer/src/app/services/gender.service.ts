@@ -8,7 +8,6 @@ import { BasicResponse } from '../constants/Interface';
 
 export class GenderService {
   public gendersModel= new Gender();
-
   constructor() {}
 
   setGenderData(data: BasicResponse []) {

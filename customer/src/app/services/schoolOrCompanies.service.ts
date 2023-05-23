@@ -8,7 +8,6 @@ import { BasicResponse } from '../constants/Interface';
 
 export class schoolOrCompaniesService {
   public schoolOrCompaniesModel = new schoolOrCompany();
-
   constructor() {}
 
   setSchoolOrCompaniesData(data: BasicResponse []) {

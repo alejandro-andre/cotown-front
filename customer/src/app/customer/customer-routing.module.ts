@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Components
 import { LayoutComponent } from './layout/layout.component';
-import { HomeComponent } from './home/home.component';
 import { MyDataComponent } from './myData/myData.component';
 import { MyContactsComponent } from './myContacts/myContacts.component';
 import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
@@ -16,7 +15,6 @@ import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBooking
 import { MyTutorComponent } from './myTutor/myTutor.component';
 import { InvoicePayComponent } from './myInvoice/invoicePay/invoicePay.component';
 import { PaymentOkComponent } from './paymentOk/paymentOk.component';
-import { AuthGuard } from '../auth/auth.guard';
 import { PaymentkOComponent } from './paymentKO/paymentkO.component';
 
 const routes: Routes = [

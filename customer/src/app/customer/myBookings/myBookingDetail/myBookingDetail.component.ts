@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
 import { Booking, TableObject } from 'src/app/constants/Interface';
 import { SIGN_BOOKING_CONTRACT } from 'src/app/schemas/query-definitions/customer.query';
@@ -16,7 +16,6 @@ import { CustomerService } from 'src/app/services/customer.service';
 export class MyBookingDetailComponent implements OnInit {
   constructor(
     public customerService: CustomerService,
-    private router: Router,
     private activeRoute: ActivatedRoute,
     private axiosApi: AxiosApi,
     private apolo: ApoloQueryApi
@@ -24,7 +23,7 @@ export class MyBookingDetailComponent implements OnInit {
     this.activeRoute.params.subscribe((res) => {
       const id = res['id'];
       this.bookingId = parseInt(id);
-      const finded = this.customerService.customer.bookings.find((booking: Booking) => booking.id === this.bookingId );
+      const finded = this.customerService.customer.bookings.find((booking: Booking) => booking.id === this.bookingId);
       if (finded) {
         this.booking = finded;
       } else {
@@ -90,7 +89,6 @@ export class MyBookingDetailComponent implements OnInit {
   get displayedColumns(): string[] {
     return this.tableFormat.map((elem) => elem.header);
   }
-
 
   async ngOnInit(): Promise<void> {
     if(this.booking) {
@@ -162,12 +160,10 @@ export class MyBookingDetailComponent implements OnInit {
         this.contract_rent_info.rendered = true;
       }
     }
-
   }
 
   pageRenderedRent(e: any) {
     this.contract_rent_info.current_page = e.pageNumber;
-
     if(
       this.contract_rent_info.current_page === this.contract_rent_info.total_pages &&
       !this.contract_rent_info.loaded
@@ -182,7 +178,6 @@ export class MyBookingDetailComponent implements OnInit {
 
   pageRenderedService(e: any) {
     this.contract_service_info.current_page = e.pageNumber;
-
     if(
       this.contract_service_info.current_page === this.contract_service_info.total_pages &&
       !this.contract_service_info.loaded
@@ -261,7 +256,6 @@ export class MyBookingDetailComponent implements OnInit {
 
     if(this.contract_rent_info.signed && this.contract_service_info.signed) {
       const date = this.formatDate(new Date());
-
       const variables = {
         id: this.booking.id,
         time: date

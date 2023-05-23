@@ -5,7 +5,6 @@ import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 
 @Injectable()
 export class AuthService {
-
   loggedIn: boolean = false;
   keycloakToken: string = '';
   airflowsToken: string = '';
@@ -74,7 +73,5 @@ export class AuthService {
         reject(error);
       });
     })
-
   }
-
 }

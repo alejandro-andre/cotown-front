@@ -1,11 +1,16 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
-
   <mat-sidenav-container class="container">
-    <mat-sidenav id="snav" #snav [opened]="mobileQuery.matches ? false: true" [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches">
+    <mat-sidenav
+      id="snav"
+      #snav
+      [opened]="mobileQuery.matches ? false: true"
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery.matches"
+    >
       <div class="header-nav toolbar"
         [ngStyle]="getStyles"
       >
-        <button *ngIf="!mobileQuery.matches" (click)="snav.toggle()" mat-icon-button >
+        <button *ngIf="!mobileQuery.matches" (click)="snav.toggle()" mat-icon-button>
           <mat-icon>menu</mat-icon>
         </button>
       </div>
@@ -18,7 +23,11 @@
 
     <mat-sidenav-content class="content">
       <div class="header-content">
-        <button *ngIf="mobileQuery.matches || !snav.opened" (click)="snav.toggle()" mat-icon-button >
+        <button
+          *ngIf="mobileQuery.matches || !snav.opened"
+          (click)="snav.toggle()"
+          mat-icon-button
+        >
           <mat-icon>menu</mat-icon>
         </button>
       </div>

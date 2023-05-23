@@ -32,7 +32,10 @@
           </button>
         </div>
 
-        <div *ngFor="let doc of document.doctype.arrayOfImages; let i = index" style="margin: 10px">
+        <div
+          *ngFor="let doc of document.doctype.arrayOfImages; let i = index"
+          style="margin: 10px"
+        >
           <label>{{  doc.name || 'document' | translate }}</label>
           <input
             *ngIf="doc.name === '' && doc.oid === -1 || doc.oid === null"
@@ -42,7 +45,12 @@
             (change)="upload($event, doc, i)"
           >
 
-          <button *ngIf="doc.name !== '' && doc.oid !== -1 || doc.oid !== null" (click)="viewDoc(doc)">View</button>
+          <button
+            *ngIf="doc.name !== '' && doc.oid !== -1 || doc.oid !== null"
+            (click)="viewDoc(doc)"
+          >
+            View
+          </button>
         </div>
       </div>
     </div>

@@ -19,6 +19,6 @@ export const GET_CONTACTS_BY_CUSTOMERID =` query customerContacts($customerId: I
 
 export const DELETE_CONTACT = `mutation($id: Int!,$customer_id: Int!){
   data: Customer_Customer_contactDelete(
-      where: { Customer_id: { EQ: $customer_id }, id: { EQ: $id } }
+    where: { Customer_id: { EQ: $customer_id }, id: { EQ: $id } }
   ){id}
 }`;

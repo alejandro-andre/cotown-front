@@ -21,16 +21,13 @@ export class InvoicePayComponent {
 
   constructor(
     private axiosApi: AxiosApi,
-    private activeRoute: ActivatedRoute,
-
+    private activeRoute: ActivatedRoute
   ) {
     this.activeRoute.params.subscribe((res) => {
       const id = res['id'];
       const url = `https://dev.cotown.ciber.es/api/v1/pay/${id}`;
-
       this.axiosApi.get(url).then((resp) => {
         const { data } =resp;
-
         if (data) {
           this.amount = data.Amount;
           this.identifier = data.id;
@@ -44,6 +41,5 @@ export class InvoicePayComponent {
         }
       })
     });
-
   }
 }

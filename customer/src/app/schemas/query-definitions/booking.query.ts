@@ -85,3 +85,21 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
     }
   }
 }`;
+
+export const ACCEPT_BOOKING_OPTION = `mutation ($id: Int!, $accepted: Boolean) {
+  updated: Booking_Booking_optionUpdate(
+    where: { id: { EQ: $id } }
+    entity:{
+        Accepted: $accepted
+    }
+  ){id}
+}`;
+
+export const SIGN_BOOKING_CONTRACT = `mutation($id: Int!,$time: String){
+  data: Booking_BookingUpdate( where:{ id: {EQ: $id}}
+    entity:{
+      Contract_signed:$time
+    }
+  ){id, Contract_signed}
+}`;
+

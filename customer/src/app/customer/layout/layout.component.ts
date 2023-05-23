@@ -25,7 +25,7 @@ import { Tutor } from 'src/app/models/Tutor.model';
 // Queries
 import { identificationDocTypesQuery } from 'src/app/schemas/query-definitions/IdentificationDocTypes.query';
 import { countryQuery } from 'src/app/schemas/query-definitions/countries.query';
-import { USER_ID, customerQuery } from 'src/app/schemas/query-definitions/customer.query';
+import { USER_ID, CUSTOMER_QUERY } from 'src/app/schemas/query-definitions/customer.query';
 import { genderQuery } from 'src/app/schemas/query-definitions/gender.query';
 import { languageQuery } from 'src/app/schemas/query-definitions/languages.query';
 import { schoolOrCompaniesQuery } from 'src/app/schemas/query-definitions/schoolOrCompanies.query';
@@ -264,7 +264,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
       id: this.userId
     }
 
-    this.apolloApi.getData(customerQuery, variables).subscribe((res) => {
+    this.apolloApi.getData(CUSTOMER_QUERY, variables).subscribe((res) => {
       const value = res.data;
       if (value && value.data && value.data.length) {
         const {

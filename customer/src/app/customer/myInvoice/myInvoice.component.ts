@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
-import { BasicResponse, BookingResource, Invoice, PayloadFile, Payment, TableObject } from 'src/app/constants/Interface';
+import { BasicResponse, BookingResource, Invoice, Payment, TableObject } from 'src/app/constants/Interface';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 

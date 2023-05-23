@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { KeycloakProfile } from 'keycloak-js';
-
 import { AuthService } from './auth/service/auth.service';
 
 @Component({

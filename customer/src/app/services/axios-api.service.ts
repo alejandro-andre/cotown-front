@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 
 import { ApoloQueryApi } from './apolo-api.service';
 import { PayloadFile } from '../constants/Interface';

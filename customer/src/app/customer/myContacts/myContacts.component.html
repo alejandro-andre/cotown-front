@@ -16,7 +16,13 @@
             {{ element[col.property] }}
           </span>
           <span *ngIf="col.property === DELETE">
-            <button mat-raised-button color="basic" (click)="deleteContact(element)">{{ 'delete' | translate }}</button>
+            <button
+              mat-raised-button
+              color="basic"
+              (click)="deleteContact(element)"
+            >
+              {{ 'delete' | translate }}
+            </button>
           </span>
         </td>
       </ng-container>
@@ -30,9 +36,11 @@
   </ng-template>
   <ng-template #elseBlock>
     <div>
-    {{ 'notFoundResults' | translate }}
-  </div>
-</ng-template>
+      {{ 'notFoundResults' | translate }}
+    </div>
+  </ng-template>
 
-<button mat-raised-button color="basic" (click)="goToAdd()">{{ 'addContact' | translate }}</button>
+  <button mat-raised-button color="basic" (click)="goToAdd()">
+    {{ 'addContact' | translate }}
+  </button>
 </div>

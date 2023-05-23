@@ -5,7 +5,7 @@
   </ng-container>
 
   <ng-template #showData>
-    <div class="box-content">
+    <div class="box-content" *ngIf="!isViewLoading">
       <p>
         <mat-form-field>
           <mat-label>{{ 'status' | translate }}</mat-label>
@@ -134,13 +134,33 @@
         </mat-form-field>
       </p>
 
-      <p>
-        Alternativas
-      </p>
+      <div *ngIf="isOptionToBeShowed">
 
-      <p>
-        Sección aún por definir
-      </p>
+        Alternativas
+
+        <table
+          style="margin-bottom: 10px;"
+          mat-table
+          *ngIf="options && options.length"
+          [dataSource]="options"
+          class="mat-elevation-z8"
+        >
+          <ng-container [matColumnDef]="col.header" *ngFor="let col of tableForOptions">
+            <th mat-header-cell *matHeaderCellDef>{{ col.name | translate }}</th>
+            <td mat-cell *matCellDef="let element">
+              <span *ngIf="col.header === ACCEPT_PROPERTY">
+                <button mat-raised-button (click)="accept(element.id)">Accept</button>
+              </span>
+              <span *ngIf="col.header !== ACCEPT_PROPERTY">
+                {{ element[col.property] }}
+              </span>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsOptions"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsOptions;"></tr>
+        </table>
+      </div>
+
 
       <p>
         {{ 'booking' | translate }}
@@ -297,6 +317,10 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div *ngIf="isViewLoading">
+      Loaing ...
     </div>
   </ng-template>
 

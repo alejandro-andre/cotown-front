@@ -25,6 +25,7 @@ export class DashboardComponent implements OnInit {
     {key:"solicitudpagada",    value: "Pagadas"},
     {key:"alternativas",       value: "No pagadas"},
     {key:"alternativaspagada", value: "Pagadas"},
+    {key:"descartadapagada",   value: "Pagadas"},
     {key:"caducada",           value: "Caducadas"},
     {key:"pendientepago",      value: "Aceptadas"},
     {key:"confirmada",         value: "Preconfirmadas"},

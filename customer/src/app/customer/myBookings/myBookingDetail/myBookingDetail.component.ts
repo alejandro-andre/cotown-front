@@ -160,7 +160,6 @@ export class MyBookingDetailComponent implements OnInit {
     }
     this.apolo.setData(ACCEPT_BOOKING_OPTION, variables).subscribe((resp) => {
       const value = resp.data;
-      console.log('value: ', resp)
 
       if (value && value.updated && value.updated.length) {
         const variablesForId = {

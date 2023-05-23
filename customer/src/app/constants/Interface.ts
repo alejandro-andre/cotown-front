@@ -19,6 +19,16 @@ export interface Rent extends BasicResponse {
   service_discount: number
 }
 
+export interface Option {
+  resource: string,
+  accepted: boolean,
+  id: number,
+  resource_place: BasicResponse,
+  resource_flat: BasicResponse,
+  booking_id: number,
+  building: BasicResponse
+}
+
 export interface Booking {
   id: number,
   start: string,
@@ -44,7 +54,8 @@ export interface Booking {
   deposit: number
   contract_rent: ServerFileDocument | null,
   contract_services: ServerFileDocument | null,
-  contract_signed: string | null
+  contract_signed: string | null,
+  options: Option[] | null
 };
 
 export interface TableObject {

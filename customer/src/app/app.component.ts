@@ -8,10 +8,5 @@ import { AuthService } from './auth/service/auth.service';
 })
 
 export class AppComponent {
-
   constructor(private authService: AuthService) {}
-
-  ngOnInit(): void {
-  }
-
 }

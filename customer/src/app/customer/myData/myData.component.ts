@@ -47,6 +47,9 @@ export class MyDataComponent{
     return this.customerService.customer;
   }
 
+  get isSpanish(): boolean {
+    return this.customer.appLang === Constants.SPANISH.id
+  }
   // Return types of documents
   get identificationTypes(): BasicResponse [] {
     return this.identificationTypesService.types;

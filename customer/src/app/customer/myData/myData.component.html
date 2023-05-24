@@ -53,7 +53,7 @@
       <mat-label>{{ 'documentType' | translate }}</mat-label>
       <mat-select [(ngModel)]="customerService.customer.typeDoc">
         <mat-option *ngFor="let doc of identificationTypes" [value]="doc.id">
-          {{ doc.name }}
+          {{ isSpanish ? doc.name : doc.name_en  }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -157,7 +157,7 @@
         <mat-label>{{ 'country' | translate }}</mat-label>
         <mat-select [(ngModel)]="customerService.customer.country">
           <mat-option *ngFor="let country of countries" [value]="country.id">
-            {{ country.name }}
+            {{ isSpanish ? country.name : country.name_en }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -184,7 +184,7 @@
         <mat-label>{{ 'gender' | translate }}</mat-label>
         <mat-select [(ngModel)]="customerService.customer.genderId">
           <mat-option *ngFor="let gender of genders" [value]="gender.id">
-            {{ gender.name }}
+            {{ isSpanish ? gender.name : gender.name_en  }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -208,7 +208,7 @@
         <mat-label>{{ 'countryOfOrigin' | translate }}</mat-label>
         <mat-select [(ngModel)]="customerService.customer.originId">
           <mat-option *ngFor="let country of countries" [value]="country.id">
-            {{ country.name }}
+            {{ isSpanish ? country.name : country.name_en }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -232,7 +232,7 @@
         <mat-label>{{ 'language' | translate }}</mat-label>
         <mat-select [(ngModel)]="customerService.customer.languageId">
           <mat-option *ngFor="let lang of languages" [value]="lang.id">
-            {{ lang.name }}
+            {{ isSpanish ? lang.name : lang.name_en }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -257,7 +257,7 @@
         <mat-label>{{ 'nationality' | translate}}</mat-label>
         <mat-select [(ngModel)]="customerService.customer.nationality">
           <mat-option *ngFor="let country of countries" [value]="country.id">
-            {{ country.name }}
+            {{ isSpanish ? country.name : country.name_en }}
           </mat-option>
         </mat-select>
       </mat-form-field>

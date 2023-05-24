@@ -67,7 +67,7 @@ export class CustomerService {
     }
 
     if (this.customer.country === null) {
-      this.readOnly.city = false;
+      this.readOnly.country = false;
     }
 
     if (this.customer.address === '' || this.customer.address === null) {

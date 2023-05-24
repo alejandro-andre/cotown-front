@@ -1,336 +1,335 @@
 <div style="height: 100%;">
 
-  <div>
-    APP SECTION
-    <mat-form-field appearance="fill" style="margin-right: 10px;">
-      <mat-label>{{ 'language' | translate }}</mat-label>
-      <mat-select
-        [(ngModel)]="customerService.customer.appLang"
-        (selectionChange)="activeButton()"
-      >
-        <mat-option *ngFor="let lang of appLangs" [value]="lang.id">
-          {{ lang.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+  <div *ngIf="isLoading" class="loader">
+    <app-spinner-control></app-spinner-control>
   </div>
 
   <div>
-
-    <div class="image-container">
-      <h3>Image</h3>
-      <img
-        style="max-width: 400px; max-height: 400px;"
-        *ngIf="customer.photo !== null"
-        [src]="customer.photo.thumbnail"
-        [alt]="customer.photo.name"
-      >
-
-      <input
-        *ngIf="!customer.photo || customer.photo === null"
-        placeholder="Image"
-        [(ngModel)]="image"
-        type="file"
-        (change)="upload($event)"
-      >
+    <div>
+      APP SECTION
+      <mat-form-field appearance="fill" style="margin-right: 10px;">
+        <mat-label>{{ 'language' | translate }}</mat-label>
+        <mat-select
+          [(ngModel)]="customerService.customer.appLang"
+          (selectionChange)="activeButton()"
+        >
+          <mat-option *ngFor="let lang of appLangs" [value]="lang.id">
+            {{ lang.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
-    <mat-form-field>
-      <mat-label>{{ 'name' | translate }}</mat-label>
-      <input
-        matInput
-        [readonly]="visibility['name']"
-        [(ngModel)]="customerService.customer.name"
-      >
-    </mat-form-field>
-
-    <!--Document type section-->
-    <mat-form-field
-      appearance="fill"
-      style="margin-right: 10px;"
-      *ngIf="!visibility['typeDoc']"
-    >
-      <mat-label>{{ 'documentType' | translate }}</mat-label>
-      <mat-select [(ngModel)]="customerService.customer.typeDoc">
-        <mat-option *ngFor="let doc of identificationTypes" [value]="doc.id">
-          {{ isSpanish ? doc.name : doc.name_en  }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-
-    <mat-form-field *ngIf="visibility['typeDoc']">
-      <mat-label>{{ 'documentType' | translate }}</mat-label>
-      <input matInput readonly [ngModel]="docType">
-    </mat-form-field>
-    <!--End Document type-->
-
-    <mat-form-field>
-      <mat-label>{{ 'document' | translate}}</mat-label>
-      <input
-        matInput
-        [readonly]="visibility['document']"
-        [(ngModel)]="customerService.customer.document"
-      >
-    </mat-form-field>
-
-
-    <p>
-      <mat-form-field>
-        <mat-label>{{ 'email' | translate }}</mat-label>
-        <input
-          readonly
-          matInput
-          placeholder="{{'email' | translate}}"
-          [(ngModel)]="customerService.customer.email"
+    <div>
+      <div class="image-container">
+        <h3>Image</h3>
+        <img
+          style="max-width: 200px; max-height: 200px;"
+          *ngIf="customer.photo !== null"
+          [src]="customer.photo.thumbnail"
+          [alt]="customer.photo.name"
         >
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>{{ 'phone' | translate }}</mat-label>
         <input
-          [readonly]="visibility['phone']"
-          matInput placeholder="{{'phone' | translate}}"
-          [(ngModel)]="customerService.customer.phone"
+          *ngIf="!customer.photo || customer.photo === null"
+          placeholder="Image"
+          [(ngModel)]="image"
+          type="file"
+          (change)="upload($event)"
         >
-      </mat-form-field>
-    </p>
-    <p>
-      <mat-form-field>
-        <mat-label>{{ 'address' | translate }}</mat-label>
-        <textarea
-          matInput
-          [readonly]="visibility['address']"
-          placeholder="{{'address' | translate}}"
-          [(ngModel)]="customerService.customer.address"
-        ></textarea>
-      </mat-form-field>
+      </div>
 
-      <mat-form-field>
-        <mat-label>{{ 'postalCode' | translate }}</mat-label>
-        <input
-          matInput maxlength="5"
-          [readonly]="visibility['postalCode']"
-          placeholder="{{'postalCode' | translate}}"
-          [(ngModel)]="customerService.customer.postalCode"
-        >
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>{{ 'city' | translate }}</mat-label>
+      <mat-form-field style="margin-right: 10px;">
+        <mat-label>{{ 'name' | translate }}</mat-label>
         <input
           matInput
-          [readonly]="visibility['city']"
-          placeholder="{{'city' | translate}}"
-          [(ngModel)]="customerService.customer.city"
+          [readonly]="visibility['name']"
+          [(ngModel)]="customerService.customer.name"
         >
       </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>{{ 'province' | translate }}</mat-label>
-        <input
-          matInput
-          [readonly]="visibility['province']"
-          placeholder="{{'province' | translate}}"
-          [(ngModel)]="customerService.customer.province"
-        >
-      </mat-form-field>
-
-
-      <!--Country section-->
-      <mat-form-field *ngIf="visibility['country']">
-        <mat-label>{{ 'country' | translate }}</mat-label>
-        <input
-          matInput
-          readonly
-          placeholder="{{ 'country' | translate }}"
-          [ngModel]="country"
-        >
-      </mat-form-field>
-
-
+      <!--Document type section-->
       <mat-form-field
-        *ngIf="!visibility['country']"
         appearance="fill"
         style="margin-right: 10px;"
+        *ngIf="!visibility['typeDoc']"
       >
-        <mat-label>{{ 'country' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customerService.customer.country">
-          <mat-option *ngFor="let country of countries" [value]="country.id">
-            {{ isSpanish ? country.name : country.name_en }}
+        <mat-label>{{ 'documentType' | translate }}</mat-label>
+        <mat-select [(ngModel)]="customerService.customer.typeDoc">
+          <mat-option *ngFor="let doc of identificationTypes" [value]="doc.id">
+            {{ isSpanish ? doc.name : doc.name_en  }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <!--End country-->
-    </p>
 
-    <p>
-      <!--Gender section-->
-      <mat-form-field *ngIf="visibility['genderId']">
-        <mat-label>{{ 'gender' | translate }}</mat-label>
-        <input
-          matInput
-          readonly
-          placeholder="{{ 'gender' | translate }}"
-          [ngModel]="gender"
-        >
+      <mat-form-field *ngIf="visibility['typeDoc']">
+        <mat-label>{{ 'documentType' | translate }}</mat-label>
+        <input matInput readonly [ngModel]="docType">
       </mat-form-field>
-
-      <mat-form-field
-        *ngIf="!visibility['genderId']"
-        appearance="fill"
-        style="margin-right: 10px;"
-      >
-        <mat-label>{{ 'gender' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customerService.customer.genderId">
-          <mat-option *ngFor="let gender of genders" [value]="gender.id">
-            {{ isSpanish ? gender.name : gender.name_en  }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <!--End gender-->
-
-      <!--Origin country-->
-      <mat-form-field *ngIf="visibility['originId']">
-        <mat-label>{{ 'countryOfOrigin' | translate }}</mat-label>
-        <input
-          matInput
-          readonly
-          placeholder="{{ 'countryOfOrigin' | translate }}"
-          [ngModel]="origin"
-        >
-      </mat-form-field>
-      <mat-form-field
-        *ngIf="!visibility['originId']"
-        appearance="fill"
-        style="margin-right: 10px;"
-      >
-        <mat-label>{{ 'countryOfOrigin' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customerService.customer.originId">
-          <mat-option *ngFor="let country of countries" [value]="country.id">
-            {{ isSpanish ? country.name : country.name_en }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <!--End origin country-->
-
-      <!--Language-->
-      <mat-form-field *ngIf="visibility['languageId']">
-        <mat-label>{{ 'language' | translate }}</mat-label>
-        <input
-          matInput
-          readonly
-          placeholder="{{ 'language' | translate }}"
-          [ngModel]="language"
-        >
-      </mat-form-field>
-      <mat-form-field
-        *ngIf="!visibility['languageId']"
-        appearance="fill"
-        style="margin-right: 10px;"
-      >
-        <mat-label>{{ 'language' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customerService.customer.languageId">
-          <mat-option *ngFor="let lang of languages" [value]="lang.id">
-            {{ isSpanish ? lang.name : lang.name_en }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <!--End language-->
-
-      <!--Nationality-->
-      <mat-form-field *ngIf="visibility['nationality']">
-        <mat-label>{{ 'nationality' | translate }}</mat-label>
-        <input
-          matInput
-          readonly
-          placeholder="{{ 'nationality' | translate }}"
-          [ngModel]="nationality"
-        >
-      </mat-form-field>
-
-      <mat-form-field
-        *ngIf="!visibility['nationality']"
-        appearance="fill"
-        style="margin-right: 10px;"
-      >
-        <mat-label>{{ 'nationality' | translate}}</mat-label>
-        <mat-select [(ngModel)]="customerService.customer.nationality">
-          <mat-option *ngFor="let country of countries" [value]="country.id">
-            {{ isSpanish ? country.name : country.name_en }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <!--End nationality-->
-    </p>
-
-    <p>
-      <!--BirthDate-->
-      <mat-form-field *ngIf="visibility['birthDate']">
-        <mat-label>{{ 'birthdate' | translate }}</mat-label>
-        <input
-          matInput
-          readonly
-          placeholder="{{ 'birthdate' | translate }}"
-          [ngModel]="birthDate"
-        >
-      </mat-form-field>
-      <mat-form-field appearance="fill" *ngIf="!visibility['birthDate']">
-        <mat-label>{{ 'birthdate' | translate }}</mat-label>
-        <input
-          matInput
-          [matDatepicker]="picker"
-          [formControl]="customerService.customer.formControl"
-        >
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-      <!--End Birthdate-->
-
-      <!--School-->
-      <mat-form-field *ngIf="visibility['schoolOrCompany']">
-        <mat-label>{{ 'school/company' | translate }}</mat-label>
-        <input
-          matInput
-          readonly
-          placeholder="{{ 'school/company' | translate }}"
-          [ngModel]="schoolName"
-        >
-      </mat-form-field>
-
-      <mat-form-field
-        *ngIf="!visibility['schoolOrCompany']"
-        appearance="fill"
-        style="margin-right: 10px;"
-      >
-        <mat-label>{{ 'school/company' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customerService.customer.schoolOrCompany">
-          <mat-option *ngFor="let school of schoolOrCompanies" [value]="school.id">
-            {{ school.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <!--End school-->
-    </p>
-
-    <p>
-      <!--Bank account-->
+      <!--End Document type-->
       <mat-form-field>
-        <mat-label>{{ 'bankAccount' | translate }}</mat-label>
+        <mat-label>{{ 'document' | translate}}</mat-label>
         <input
-          [readonly]="visibility['bankAcount']"
-          matInput placeholder="{{'bankAccount' | translate}}"
-          [(ngModel)]="customerService.customer.bankAcount"
+          matInput
+          [readonly]="visibility['document']"
+          [(ngModel)]="customerService.customer.document"
         >
       </mat-form-field>
-      <!--End Bank account-->
-    </p>
-  </div>
 
-  <!--Margin to see the button (Image)-->
-  <div style="margin-bottom: 100px;">
-    <button [disabled]="isButtonDisabled" mat-raised-button color="basic" (click)="save()">
-      {{ 'save' | translate }}
-    </button>
+      <p>
+        <mat-form-field>
+          <mat-label>{{ 'email' | translate }}</mat-label>
+          <input
+            readonly
+            matInput
+            placeholder="{{'email' | translate}}"
+            [(ngModel)]="customerService.customer.email"
+          >
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>{{ 'phone' | translate }}</mat-label>
+          <input
+            [readonly]="visibility['phone']"
+            matInput placeholder="{{'phone' | translate}}"
+            [(ngModel)]="customerService.customer.phone"
+          >
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field style="width: 30%; margin-right: 10px">
+          <mat-label>{{ 'address' | translate }}</mat-label>
+          <input
+            matInput
+            [readonly]="visibility['address']"
+            placeholder="{{'address' | translate}}"
+            [(ngModel)]="customerService.customer.address"
+          >
+        </mat-form-field>
+
+        <mat-form-field style="margin-right: 10px">
+          <mat-label>{{ 'postalCode' | translate }}</mat-label>
+          <input
+            matInput maxlength="5"
+            [readonly]="visibility['postalCode']"
+            placeholder="{{'postalCode' | translate}}"
+            [(ngModel)]="customerService.customer.postalCode"
+          >
+        </mat-form-field>
+
+        <mat-form-field style="margin-right: 10px">
+          <mat-label>{{ 'city' | translate }}</mat-label>
+          <input
+            matInput
+            [readonly]="visibility['city']"
+            placeholder="{{'city' | translate}}"
+            [(ngModel)]="customerService.customer.city"
+          >
+        </mat-form-field>
+
+        <mat-form-field style="margin-right: 10px">
+          <mat-label>{{ 'province' | translate }}</mat-label>
+          <input
+            matInput
+            [readonly]="visibility['province']"
+            placeholder="{{'province' | translate}}"
+            [(ngModel)]="customerService.customer.province"
+          >
+        </mat-form-field>
+
+        <!--Country section-->
+        <mat-form-field *ngIf="visibility['country']">
+          <mat-label>{{ 'country' | translate }}</mat-label>
+          <input
+            matInput
+            readonly
+            placeholder="{{ 'country' | translate }}"
+            [ngModel]="country"
+          >
+        </mat-form-field>
+
+        <mat-form-field
+          *ngIf="!visibility['country']"
+          appearance="fill"
+          style="margin-right: 10px;"
+        >
+          <mat-label>{{ 'country' | translate }}</mat-label>
+          <mat-select [(ngModel)]="customerService.customer.country">
+            <mat-option *ngFor="let country of countries" [value]="country.id">
+              {{ isSpanish ? country.name : country.name_en }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!--End country-->
+      </p>
+
+      <p>
+        <!--Gender section-->
+        <mat-form-field *ngIf="visibility['genderId']">
+          <mat-label>{{ 'gender' | translate }}</mat-label>
+          <input
+            matInput
+            readonly
+            placeholder="{{ 'gender' | translate }}"
+            [ngModel]="gender"
+          >
+        </mat-form-field>
+
+        <mat-form-field
+          *ngIf="!visibility['genderId']"
+          appearance="fill"
+          style="margin-right: 10px;"
+        >
+          <mat-label>{{ 'gender' | translate }}</mat-label>
+          <mat-select [(ngModel)]="customerService.customer.genderId">
+            <mat-option *ngFor="let gender of genders" [value]="gender.id">
+              {{ isSpanish ? gender.name : gender.name_en  }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!--End gender-->
+
+        <!--Origin country-->
+        <mat-form-field *ngIf="visibility['originId']">
+          <mat-label>{{ 'countryOfOrigin' | translate }}</mat-label>
+          <input
+            matInput
+            readonly
+            placeholder="{{ 'countryOfOrigin' | translate }}"
+            [ngModel]="origin"
+          >
+        </mat-form-field>
+        <mat-form-field
+          *ngIf="!visibility['originId']"
+          appearance="fill"
+          style="margin-right: 10px;"
+        >
+          <mat-label>{{ 'countryOfOrigin' | translate }}</mat-label>
+          <mat-select [(ngModel)]="customerService.customer.originId">
+            <mat-option *ngFor="let country of countries" [value]="country.id">
+              {{ isSpanish ? country.name : country.name_en }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!--End origin country-->
+
+        <!--Language-->
+        <mat-form-field *ngIf="visibility['languageId']">
+          <mat-label>{{ 'language' | translate }}</mat-label>
+          <input
+            matInput
+            readonly
+            placeholder="{{ 'language' | translate }}"
+            [ngModel]="language"
+          >
+        </mat-form-field>
+        <mat-form-field
+          *ngIf="!visibility['languageId']"
+          appearance="fill"
+          style="margin-right: 10px;"
+        >
+          <mat-label>{{ 'language' | translate }}</mat-label>
+          <mat-select [(ngModel)]="customerService.customer.languageId">
+            <mat-option *ngFor="let lang of languages" [value]="lang.id">
+              {{ isSpanish ? lang.name : lang.name_en }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!--End language-->
+
+        <!--Nationality-->
+        <mat-form-field *ngIf="visibility['nationality']">
+          <mat-label>{{ 'nationality' | translate }}</mat-label>
+          <input
+            matInput
+            readonly
+            placeholder="{{ 'nationality' | translate }}"
+            [ngModel]="nationality"
+          >
+        </mat-form-field>
+
+        <mat-form-field
+          *ngIf="!visibility['nationality']"
+          appearance="fill"
+          style="margin-right: 10px;"
+        >
+          <mat-label>{{ 'nationality' | translate}}</mat-label>
+          <mat-select [(ngModel)]="customerService.customer.nationality">
+            <mat-option *ngFor="let country of countries" [value]="country.id">
+              {{ isSpanish ? country.name : country.name_en }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!--End nationality-->
+      </p>
+
+      <p>
+        <!--BirthDate-->
+        <mat-form-field *ngIf="visibility['birthDate']">
+          <mat-label>{{ 'birthdate' | translate }}</mat-label>
+          <input
+            matInput
+            readonly
+            placeholder="{{ 'birthdate' | translate }}"
+            [ngModel]="birthDate"
+          >
+        </mat-form-field>
+        <mat-form-field appearance="fill" *ngIf="!visibility['birthDate']">
+          <mat-label>{{ 'birthdate' | translate }}</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [formControl]="customerService.customer.formControl"
+          >
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <!--End Birthdate-->
+
+        <!--School-->
+        <mat-form-field *ngIf="visibility['schoolOrCompany']">
+          <mat-label>{{ 'school/company' | translate }}</mat-label>
+          <input
+            matInput
+            readonly
+            placeholder="{{ 'school/company' | translate }}"
+            [ngModel]="schoolName"
+          >
+        </mat-form-field>
+
+        <mat-form-field
+          *ngIf="!visibility['schoolOrCompany']"
+          appearance="fill"
+          style="margin-right: 10px;"
+        >
+          <mat-label>{{ 'school/company' | translate }}</mat-label>
+          <mat-select [(ngModel)]="customerService.customer.schoolOrCompany">
+            <mat-option *ngFor="let school of schoolOrCompanies" [value]="school.id">
+              {{ school.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!--End school-->
+      </p>
+
+      <p>
+        <!--Bank account-->
+        <mat-form-field>
+          <mat-label>{{ 'bankAccount' | translate }}</mat-label>
+          <input
+            [readonly]="visibility['bankAcount']"
+            matInput placeholder="{{'bankAccount' | translate}}"
+            [(ngModel)]="customerService.customer.bankAcount"
+          >
+        </mat-form-field>
+        <!--End Bank account-->
+      </p>
+    </div>
+
+    <!--Margin to see the button (Image)-->
+    <div style="margin-bottom: 110px;">
+      <button [disabled]="isButtonDisabled" mat-raised-button color="basic" (click)="save()">
+        {{ 'save' | translate }}
+      </button>
+    </div>
   </div>
 </div>

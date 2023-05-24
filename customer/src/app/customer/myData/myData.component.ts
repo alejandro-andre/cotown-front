@@ -37,6 +37,7 @@ export class MyDataComponent{
   public appLangs = Constants.ARRAY_OF_LANGUAGES;
   public saveActiveButton: boolean = false;
   public image!: File;
+  public isLoading = false;
 
   /**
   * Getters
@@ -149,6 +150,7 @@ export class MyDataComponent{
   }
 
   save() {
+    this.isLoading = true;
     const variables: any = {
       ...this.customerService.customer,
       birthDate: this.birthDate
@@ -156,7 +158,16 @@ export class MyDataComponent{
 
     delete variables.formControl
     this.apollo.setData(UPDATE_CUSTOMER, variables).subscribe(resp => {
-      console.log('The response is : ', resp)
+      const val = resp.data;
+      if (val && val.update && val.update.length) {
+        this.customerService.setVisibility();
+        this.isLoading = false;
+      } else {
+        // something wrong
+      }
+    }, (err) =>{
+      // Apollo error !!
+      console.log(err, err.getMessage())
     })
   }
 

@@ -4,5 +4,6 @@ export const CONTACT_TYPE_QUERY = `query contactTypeQuery {
   ){
     name: Name
     id
+    name_en: Name_en
   }
 }`;

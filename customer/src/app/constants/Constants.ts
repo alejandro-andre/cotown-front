@@ -45,6 +45,11 @@ export class Constants {
     url: 'invoices'
   };
 
+  public static LOG_OUT: Nav = {
+    name: 'logout',
+    url: 'logout'
+  }
+
   public static DOCUMENT_TYPE_FRONT = 'Document';
   public static DOCUMENT_TYPE_BACK = 'Document_back';
   public static CONTRACT_SERVICES_PDF = 'Contract_services';
@@ -150,5 +155,6 @@ export class Constants {
     Constants.DOCUMENTS,
     Constants.BOOKINGS,
     Constants.INVOICES,
+    Constants.LOG_OUT
   ];
 };

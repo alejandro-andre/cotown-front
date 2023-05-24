@@ -3,16 +3,22 @@ import { Nav } from "./Interface";
 export class Constants {
   //APP SETTINGS
   public static defaultBaseLanguageForTranslation = 'en';
+
+  public static SPANISH =     {
+    id: 'es',
+    name: 'Español',
+  };
+
+  public static ENGISH = {
+    id: 'en',
+    name: 'English'
+  }
+
   public static ARRAY_OF_LANGUAGES = [
-    {
-      id: 'es',
-      name: 'Español',
-    },
-    {
-      id: 'en',
-      name: 'English'
-    }
-  ]
+    this.SPANISH,
+    this.ENGISH
+  ];
+
 
   // REST OF VARIABLES
   public static DATA: Nav = {

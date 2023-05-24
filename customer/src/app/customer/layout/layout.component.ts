@@ -44,6 +44,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   private _mobileQueryListener: () => void;
   public isLoading = false;
   public userId: number | undefined;
+  public openMenu!: boolean;
 
   constructor(
     private elRef:ElementRef,
@@ -61,9 +62,15 @@ export class LayoutComponent implements OnInit, OnDestroy {
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher
   ) {
+    this.openMenu = false;
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+
+  get isMenuOpened (): boolean {
+    const isMobile = this.mobileQuery.matches ? false: true;
+    return isMobile && this.openMenu;
   }
 
   /**
@@ -312,12 +319,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
         const age = this.getAge(birthDate);
         this.setAppLanguage(appLang);
         this.customerService.setCustomerData(currentCustomer);
-        this.isLoading = false;
-
         if(age <= 18 && tutorId !== null) {
           this.showTutor.next(true);
           this.loadTutor(tutorId);
         }
+
+        this.openMenu = true;
+        this.isLoading = false;
       }
     });
   }

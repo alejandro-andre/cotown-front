@@ -52,7 +52,7 @@ export class MyContactsComponent {
   }
 
   goToAdd(): void {
-    this.router.navigate(['customer/cantacts/new']);
+    this.router.navigate(['/cantacts/new']);
   }
 
   deleteContact(event: Contact): void {

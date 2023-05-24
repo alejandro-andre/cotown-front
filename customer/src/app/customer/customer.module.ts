@@ -21,6 +21,7 @@ import { MatTableModule } from '@angular/material/table'
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // Components
 import { HomeComponent } from './home/home.component';
@@ -40,7 +41,7 @@ import { PaymentkOComponent } from './paymentKO/paymentkO.component'
 
 // Routing
 import { CustomerRoutingModule } from './customer-routing.module';
-;
+import { SpinnerControlComponent } from './spinner/spinner-control.component';
 
 // Config of translation
 registerLocaleData(localeES, 'es-ES');
@@ -65,7 +66,8 @@ export function createTranslateLoader(http: HttpClient) {
     MyTutorComponent,
     InvoicePayComponent,
     PaymentOkComponent,
-    PaymentkOComponent
+    PaymentkOComponent,
+    SpinnerControlComponent
   ],
   imports: [
     CommonModule,
@@ -83,6 +85,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatIconModule,
     MatButtonModule,
     PdfViewerModule,
+    MatProgressSpinnerModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

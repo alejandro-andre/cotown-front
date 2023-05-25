@@ -1,4 +1,4 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 
@@ -8,10 +8,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./modal.component.scss'],
 })
 
-export class ViewErrorComponent {
+export class ModalComponent {
   public message: string = '';
   public title: string = '';
-  constructor(public dialogRef: MatDialogRef<ViewErrorComponent>,  @Inject(MAT_DIALOG_DATA) data: {
+  constructor(public dialogRef: MatDialogRef<ModalComponent>,  @Inject(MAT_DIALOG_DATA) data: {
     title: string,
     message: string
   }) {

@@ -11,10 +11,12 @@ import { GraphQLModule } from './graphql.module';
 
 // Components
 import { AppComponent } from './app.component';
+import { ViewErrorComponent } from './customer/viewError/viewError.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ViewErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -26,6 +28,7 @@ import { AppComponent } from './app.component';
   ],
   providers: [],
   bootstrap: [AppComponent],
+  entryComponents: [ViewErrorComponent]
 })
 
 export class AppModule { }

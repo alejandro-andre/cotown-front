@@ -22,6 +22,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
 
 // Components
 import { HomeComponent } from './home/home.component';
@@ -67,7 +68,7 @@ export function createTranslateLoader(http: HttpClient) {
     InvoicePayComponent,
     PaymentOkComponent,
     PaymentkOComponent,
-    SpinnerControlComponent
+    SpinnerControlComponent,
   ],
   imports: [
     CommonModule,
@@ -86,6 +87,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatButtonModule,
     PdfViewerModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -107,7 +109,8 @@ export function createTranslateLoader(http: HttpClient) {
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
-    TranslateModule
+    TranslateModule,
+    MatDialogModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

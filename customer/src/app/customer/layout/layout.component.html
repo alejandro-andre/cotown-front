@@ -1,4 +1,4 @@
-<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+<div class="example-container" [class.is-mobile]="mobileQuery.matches">
   <mat-sidenav-container class="container">
     <mat-sidenav
       id="snav"
@@ -32,7 +32,7 @@
         </button>
       </div>
 
-      <div style="padding: 10px; height: 100%">
+      <div class="app-container">
         <router-outlet *ngIf="!isLoading"></router-outlet>
           <app-spinner-control  *ngIf="isLoading"></app-spinner-control>
       </div>

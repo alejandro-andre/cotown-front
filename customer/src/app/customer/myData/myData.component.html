@@ -1,8 +1,6 @@
 <div style="height: 100%;">
 
-  <div *ngIf="isLoading" class="loader">
-    <app-spinner-control></app-spinner-control>
-  </div>
+  <app-spinner-control *ngIf="isLoading"></app-spinner-control>
 
   <div style="height: 100%;">
     <div>

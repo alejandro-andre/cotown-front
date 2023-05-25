@@ -179,7 +179,8 @@ export class MyDataComponent{
     };
 
     delete variables.formControl
-    this.apollo.setData(UPDATE_CUSTOMER, variables).subscribe(resp => {
+
+    this.apollo.setData(UPDATE_CUSTOMER, variables).subscribe(async(resp) => {
       const val = resp.data;
       if (val && val.update && val.update.length) {
         this.customerService.setVisibility();
@@ -218,6 +219,7 @@ export class MyDataComponent{
   }
 
   upload(event: any) {
+    this.isLoading = true;
     const fileInfo = event.target.files[0]
     const payload:PayloadFile = {
       file: this.image,
@@ -242,7 +244,15 @@ export class MyDataComponent{
         };
 
         this.apollo.setData(UPLOAD_CUSTOMER_PHOTO, variables).subscribe((response: any) => {
-          console.log('The response is: ', response)
+          const val = response.data;
+          if (val.data && val.data.length && val.data[0]) {
+            const photo = val.data[0].photo;
+            this.customer.photo = photo;
+          }
+
+          this.isLoading = false;
+        }, error => {
+          console.log('The error is: ', error);
         })
       }
 

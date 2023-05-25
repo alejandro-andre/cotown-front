@@ -19,6 +19,7 @@ import { Constants } from 'src/app/constants/Constants';
 import { BasicResponse, PayloadFile } from 'src/app/constants/Interface';
 import { Customer } from 'src/app/models/Customer.model';
 import { UPDATE_CUSTOMER, UPLOAD_CUSTOMER_PHOTO } from 'src/app/schemas/query-definitions/customer.query';
+import { formatErrorBody } from 'src/app/utils/error.util';
 
 @Component({
   selector: 'app-my-data',
@@ -172,7 +173,7 @@ export class MyDataComponent{
 
     delete variables.formControl
 
-    this.apollo.setData(UPDATE_CUSTOMER, variables).subscribe(async(resp) => {
+    this.apollo.setData(UPDATE_CUSTOMER, variables).subscribe((resp) => {
       const val = resp.data;
       if (val && val.update && val.update.length) {
         this.customerService.setVisibility();
@@ -189,22 +190,7 @@ export class MyDataComponent{
       }
     }, (err) =>{
       // Apollo error !!
-      const message = err.message.split('!!!');
-      const bodyToSend = {
-        title: 'Error',
-        message: 'uknownError'
-      };
-
-      if (message && message.length && message.length >= 3) {
-        const english = message[1];
-        const spanish = message[2];
-        if (this.customer.appLang === Constants.SPANISH.id) {
-          bodyToSend.message = spanish;
-        } else {
-          bodyToSend.message = english;
-        }
-      }
-
+      const bodyToSend = formatErrorBody(err, this.customer.appLang)
       this.isLoading = false;
       this.modalService.openModal(bodyToSend);
     })
@@ -240,11 +226,21 @@ export class MyDataComponent{
           if (val.data && val.data.length && val.data[0]) {
             const photo = val.data[0].photo;
             this.customer.photo = photo;
+          } else {
+            this.isLoading = false;
+            const body = {
+              title: 'Error',
+              message: 'uknownError'
+            };
+
+            this.modalService.openModal(body);
           }
 
           this.isLoading = false;
-        }, error => {
-          console.log('The error is: ', error);
+        }, err => {
+         const bodyToSend = formatErrorBody(err, this.customer.appLang)
+          this.isLoading = false;
+          this.modalService.openModal(bodyToSend);
         })
       }
 

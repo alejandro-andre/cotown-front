@@ -48,12 +48,12 @@
 }
 
 
-.example-is-mobile .toolbar {
+.is-mobile .toolbar {
   position: fixed;
   z-index: 2;
 }
 
-
-.example-sidenav-container {
-  flex: 1;
+.app-container {
+  padding: 10px;
+  height: calc(100% - 60px);
 }

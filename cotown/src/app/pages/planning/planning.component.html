@@ -26,7 +26,7 @@
 				<mat-select
           			[(ngModel)]="selectedBuildingId"
           			name="buildings"
-          			(selectionChange)="onSelectBulding()"
+          			(selectionChange)="onChangeFilter()"
 					[placeholder]="'nothing' | translate"
 					[disabled]="selectedCity === -1">
 					<mat-option  [value]=-1>{{ 'allM' | translate }}</mat-option>
@@ -43,7 +43,7 @@
 				<mat-select
           			[(ngModel)]="selectedResourceFlatTypeId"
           			name="resourcesFlatTypes"
-          			(selectionChange)="onSelectResourceTypeFlat()"
+          			(selectionChange)="onChangeFilter()"
 					[disabled]="!selectedBuildingId || selectedBuildingId === -99">
 				<mat-option  [value]="-1">{{ 'allM' | translate }}</mat-option>
 					<mat-option
@@ -59,7 +59,7 @@
 				<mat-select
           			[(ngModel)]="selectedResourcePlaceTypeId"
           			name="resourcesPlaceTypes"
-          			(selectionChange)="onSelectResourcePlaceType()"
+          			(selectionChange)="onChangeFilter()"
 					[disabled]="!selectedBuildingId || selectedBuildingId === -99">
 				<mat-option  [value]="-1">{{ 'allM' | translate }}</mat-option>
 					<mat-option

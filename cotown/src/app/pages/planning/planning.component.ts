@@ -5,28 +5,21 @@ import { DateAdapter } from '@angular/material/core';
 
 import axiosApi from 'src/app/services/api.service';
 
+import { LanguageService } from 'src/app/services/language.service';
+import { WindowRef } from 'src/app/services/window-ref.service';
 import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
+
+import { Constants } from 'src/app/constants/Constants';
+import { formatDate, getAge, nextMonth, prevMonth } from 'src/app/utils/utils';
+
 import { TimeChartRow } from 'src/app/time-chart/models/time-chart-row.model';
 import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
 
-import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/query-definitions/building.query';
 import { CityListQuery } from 'src/app/schemas/query-definitions/city.query';
+import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/query-definitions/building.query';
+import { ResourceFlatTypeQuery, ResourceListQuery, ResourcePlaceTypeQuery } from 'src/app/schemas/query-definitions/resource.query';
 import { BookingListQuery, BuildingDataViaBooking } from 'src/app/schemas/query-definitions/booking.query';
 
-import {
-  ResourceFlatTypeQuery,
-  ResourceListByBuildingIdAndResourceFlatTypeQuery,
-  ResourceListByBuildingIdAndResourceTypeAndFlatQuery,
-  ResourceListByBuildingIdAndResourceTypeQuery,
-  ResourceListByBuldingIdQuery,
-  ResourceListByResourceFlatTypeQuery,
-  ResourceListByResourceTypeAndFlatQuery,
-  ResourceListByResourceTypeQuery,
-  ResourceListQuery,
-  ResourceTypeQuery
-} from 'src/app/schemas/query-definitions/resource.query';
-
-import { Constants } from 'src/app/constants/Constants';
 import {
   ApolloVariables,
   AvailabilityPayload,
@@ -37,14 +30,6 @@ import {
   Resource,
   ResourceType
 } from 'src/app/constants/Interfaces';
-import {
-  formatDate,
-  getAge,
-  nextMonth,
-  prevMonth
-} from 'src/app/utils/utils';
-import { LanguageService } from 'src/app/services/language.service';
-import { WindowRef } from 'src/app/services/window-ref.service';
 
 @Component({
   selector: 'app-home',
@@ -257,7 +242,7 @@ export class PlanningComponent {
   // Get all place types
   getResourcePlaceTypes() :void {
 
-    this.apolloApi.getData(ResourceTypeQuery).subscribe(res => {
+    this.apolloApi.getData(ResourcePlaceTypeQuery).subscribe(res => {
       this.resourcePlaceTypes = res.data.data;
     })
 
@@ -266,86 +251,95 @@ export class PlanningComponent {
   // Load all resources and bookings
   async getResourcesAndBookings(): Promise<void> {
 
+    // Clean
     this.resources = [];
     this.bookings = [];
     this.rows = [];
 
-    // All buildings
-    if (this.selectedBuildingId === Constants.allStaticNumericValue) {
-      await this.getResourcesAndBookingsOfAllBuildings();
-
-    // Selected building
-    } else {
-      await this.getResourcesAndBookingsByBuildingId(this.selectedBuildingId);
-    }
+    // Query
+    await this.queryResources();
+    this.queryBookings();
   }
 
-  queryBookings(): void {
+  // Get filtered resources
+  queryResources(): void {
 
     let params = '';
     let where = ''
 
-    if (this.selectedBuildingId) {
+    if (this.selectedBuildingId > 0) {
       if (params != '') params += ','
       if (where != '') where += ','
       params += '$buildingId: Int'
       where += 'Building_id: { EQ: $buildingId }'
     }
 
-    if (this.selectedResourceFlatTypeId) {
+    if (this.selectedResourceFlatTypeId != Constants.allStaticNumericValue) {
       if (params != '') params += ','
       if (where != '') where += ','
       params += '$resourceFlatTypeId: Int'
       where += 'Flat_type_id: { EQ: $resourceFlatTypeId }'
     }
 
-    if (this.selectedResourcePlaceTypeId) {
+    if (this.selectedResourcePlaceTypeId != Constants.allStaticNumericValue) {
       if (params != '') params += ','
       if (where != '') where += ','
       params += '$resourcePlaceTypeId: Int'
       where += 'Place_type_id: { EQ: $resourcePlaceTypeId }'
     }
 
-    this.getBookings(
-      'query BookingList(' + params + ') {data:Booking_Booking_detailList(where:{' + where + '})' + BookingListQuery + '}', { 
-      buildingId: this.selectedBuildingId,
-      resourceFlatTypeId: this.selectedResourceFlatTypeId,
-      resourcePlaceTypeId: this.selectedResourcePlaceTypeId
-    });
-
+    if (params != '')  {
+      this.spinnerActive = true;
+      const q = 'query ResourceList(' + params + ') {data:Resource_ResourceList(orderBy: [{attribute: Code, direction:ASC, nullsGo: FIRST}],where:{' + where + '})' + ResourceListQuery + '}';
+      this.getResources(q, {
+        buildingId: this.selectedBuildingId,
+        resourceFlatTypeId: this.selectedResourceFlatTypeId,
+        resourcePlaceTypeId: this.selectedResourcePlaceTypeId
+      });
+    }
   }
 
-  // Get resources and bookings of all buildings
-  async getResourcesAndBookingsByBuildingId(id: number) {
-    
-    // Clean
-    this.spinnerActive = true;
-    this.resources = [];
-    this.bookings = [];
-    this.rows = [];
+  // Get filtered bookings
+  queryBookings(): void {
 
-    await this.getResourceList(ResourceListByBuldingIdQuery, { buildingId: id });
-    this.queryBookings();
+    let params = '';
+    let where = ''
+
+    if (this.selectedBuildingId > 0) {
+      if (params != '') params += ','
+      if (where != '') where += ','
+      params += '$buildingId: Int'
+      where += 'Building_id: { EQ: $buildingId }'
+    }
+
+    if (this.selectedResourceFlatTypeId != Constants.allStaticNumericValue) {
+      if (params != '') params += ','
+      if (where != '') where += ','
+      params += '$resourceFlatTypeId: Int'
+      where += 'Flat_type_id: { EQ: $resourceFlatTypeId }'
+    }
+
+    if (this.selectedResourcePlaceTypeId != Constants.allStaticNumericValue) {
+      if (params != '') params += ','
+      if (where != '') where += ','
+      params += '$resourcePlaceTypeId: Int'
+      where += 'Place_type_id: { EQ: $resourcePlaceTypeId }'
+    }
+
+    if (params != '')  {
+      const q = 'query BookingList(' + params + ') {data:Booking_Booking_detailList(where:{' + where + '})' + BookingListQuery + '}';
+      this.getBookings(q, {
+        buildingId: this.selectedBuildingId,
+        resourceFlatTypeId: this.selectedResourceFlatTypeId,
+        resourcePlaceTypeId: this.selectedResourcePlaceTypeId
+      });
+    }
   }
 
-  // Get resources and bookings of all buildings
-  async getResourcesAndBookingsOfAllBuildings() {
-
-    // Clean
-    this.spinnerActive = true;
-    this.resources = [];
-    this.bookings = [];
-    this.rows = [];
-
-    await this.getResourceList(ResourceListQuery);
-    this.queryBookings();
-  }
-
-  // Get resources
-  async getResourceList(query: string, variables: ApolloVariables | undefined = undefined): Promise<void> {
+  // Get filtered resources
+  async getResources(query: string, variables: ApolloVariables | undefined = undefined): Promise<void> {
     return new Promise<void>((resolve) => {
       this.apolloApi.getData(query, variables).subscribe((res: any) => {
-
         for (const elem of res.data.data) {
           const type = elem.resource_type === 'piso' ? elem.flat.code : elem.resource_place_type?.code;
           this.resources.push({
@@ -355,9 +349,7 @@ export class PlanningComponent {
             Resource_info: type || ''
           });
         }
-
         resolve();
-
       });
     });
   }
@@ -412,79 +404,6 @@ export class PlanningComponent {
       this.generateRows();
 
     });
-  }
-
-  async applyResourcePlaceTypeFilter():Promise<void> {
-    // Remove all data
-    this.bookings = [];
-    this.resources = [];
-    const variables = {
-      resourceTypeId: this.selectedResourcePlaceTypeId
-    };
-
-    if (this.selectedBuildingId === Constants.allStaticNumericValue) {
-      await this.getResourceList(ResourceListByResourceTypeQuery, variables);
-      //this.getBookings(BookingListByResourceTypeQuery, variables);
-      this.queryBookings();
-    } else {
-      const varToSend = {
-        ...variables,
-        buildingId: this.selectedBuildingId,
-      }
-      await this.getResourceList(ResourceListByBuildingIdAndResourceTypeQuery, varToSend);
-      //this.getBookings(BookingListByBuildingIdAndResourceTypeQuery, varToSend);
-      this.queryBookings();
-    }
-  }
-
-  async applyResourceTypeFlatFilter():Promise<void> {
-    // Remove all data
-    this.bookings = [];
-    this.resources = [];
-    const variables = {
-      resourceTypeFlatId: this.selectedResourceFlatTypeId
-    };
-
-    // Apply to all buildings
-    if (this.selectedBuildingId === Constants.allStaticNumericValue) {
-      // There are one type of room selected
-      if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
-
-        const toSend = {
-          ...variables,
-          resourceTypeId: this.selectedResourcePlaceTypeId
-        }
-
-        await this.getResourceList(ResourceListByResourceTypeAndFlatQuery, toSend);
-        //this.getBookings(BookingListByResourceTypeAndFlatQuery, variables);
-        this.queryBookings();
-
-      } else { // No type of room selected
-        await this.getResourceList(ResourceListByResourceFlatTypeQuery, variables);
-        //this.getBookings(BookingListByResourceTypeFlatQuery, variables);
-        this.queryBookings();
-      }
-    } else { // building selected
-      const varToSend = {
-        ...variables,
-        buildingId: this.selectedBuildingId,
-      };
-
-      if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
-        const toSend = {
-          ...varToSend,
-          resourceTypeId: this.selectedResourcePlaceTypeId
-        }
-
-        await this.getResourceList(ResourceListByBuildingIdAndResourceTypeAndFlatQuery, toSend);
-        //this.getBookings(BookingListByBuildingIdAndResourceAndFlatTypeQuery, toSend);
-        this.queryBookings();
-      } else {
-        await this.getResourceList(ResourceListByBuildingIdAndResourceFlatTypeQuery, varToSend);
-        //this.getBookings(BookingListByBuildingIdAndResourceFlatTypeQuery, varToSend);
-        this.queryBookings();
-      }
-    }
   }
 
   // ************************************
@@ -700,10 +619,10 @@ export class PlanningComponent {
   onSelectCity():void {
 
     // Clean
-    this.rows = [];
+    this.selectedBuildingId = -99;
     this.resources = [];
     this.bookings = [];
-    this.selectedBuildingId = -99;
+    this.rows = [];
 
     // Filter
     if (this.selectedCity === Constants.allStaticNumericValue) {
@@ -714,85 +633,10 @@ export class PlanningComponent {
   }
 
   // Building change
-  async onSelectBulding() {
-
-    // Clean
-    this.spinnerActive = true;
-    this.rows = [];
-    this.resources = [];
-    this.bookings = [];
+  async onChangeFilter() {
 
     // Filter
-    if (this.selectedResourceFlatTypeId === Constants.allStaticNumericValue){
-      if (
-        this.selectedBuildingId === Constants.allStaticNumericValue &&
-        this.selectedResourcePlaceTypeId === Constants.allStaticNumericValue
-      ) {
-        await this.getResourcesAndBookingsOfAllBuildings();
-      } else {
-        const building = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
-        if (building) {
-          this.selectedBuilding = { ...building };
-        }
-        if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
-          await this.applyResourcePlaceTypeFilter();
-        } else {
-          await this.getResourcesAndBookings();
-        }
-      }
-    } else {
-      this.applyResourceTypeFlatFilter();
-    }
-
-    // Move to date
-    if (this.initDate && this.endDate) {
-      this.onDateChange();
-    }
-  }
-
-  // Flat type change
-  onSelectResourceTypeFlat(): void {
-
-    // Clean
-    this.spinnerActive = true;
-    this.rows = [];
-    this.resources = [];
-    this.bookings = [];
-
-    // Filter
-    if (this.selectedResourceFlatTypeId === Constants.allStaticNumericValue) { // Dont use filter
-      if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
-        this.applyResourcePlaceTypeFilter();
-      } else {
-        this.getResourcesAndBookings();
-      }
-    } else {
-      this.applyResourceTypeFlatFilter();
-    }
-
-    // Move to date
-    if (this.initDate && this.endDate) {
-      this.onDateChange();
-    }
-  }
-
-  // Place type change
-  onSelectResourcePlaceType(): void {
-
-    // Clean
-    this.spinnerActive = true;
-    this.rows = [];
-    this.resources = [];
-    this.bookings = [];
-
-    // Filter
-    if (this.selectedResourcePlaceTypeId === Constants.allStaticNumericValue) { // Dont use filter
-      this.getResourcesAndBookings();
-    } else {
-      const findedResourceType = this.resourcePlaceTypes.find((elem:ResourceType) =>elem.id === this.selectedResourcePlaceTypeId);
-      this.selectedResourceType = findedResourceType!;
-      this.applyResourcePlaceTypeFilter();
-    }
+    this.getResourcesAndBookings();
 
     // Move to date
     if (this.initDate && this.endDate) {

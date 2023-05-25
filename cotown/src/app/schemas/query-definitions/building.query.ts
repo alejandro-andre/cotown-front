@@ -2,7 +2,7 @@ export const BuildingListQuery = `
 query BuildingList{
   data: Building_BuildingList(
     orderBy: [{attribute: Name, direction:ASC, nullsGo: FIRST}]
-  ){
+  ) {
     name: Name
     code: Code,
     id,

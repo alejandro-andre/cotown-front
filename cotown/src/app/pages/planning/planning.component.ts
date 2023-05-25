@@ -30,6 +30,8 @@ import {
   Resource,
   ResourceType
 } from 'src/app/constants/Interfaces';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationComponent } from '../confirmation/confirmation.component';
 
 @Component({
   selector: 'app-home',
@@ -81,7 +83,8 @@ export class PlanningComponent {
     private apolloApi: ApoloQueryApi,
     private adapter: DateAdapter<any>,
     private language: LanguageService,
-    private windowRef: WindowRef
+    private windowRef: WindowRef,
+    public dialog: MatDialog
   ) {
     // Current date
     this.now = new Date();
@@ -129,13 +132,44 @@ export class PlanningComponent {
     this.bookings = JSON.parse(JSON.stringify(newBookings));
   }
 
+  // ************************************
   // Send selection to opener
+  // ************************************
+
   closeWindow() {
-    const opener = this.windowRef.nativeWindow.opener;
-    if (opener != null) {
-      opener.postMessage(this.params, "*");
+
+    // Check if change
+    if (
+      this.selectedResourceFlatTypeId != this.initialResourceFlatTypeId || 
+      this.selectedResourcePlaceTypeId != this.initialResourcePlaceTypeId
+    ) {
+
+      // Type changed
+      const dialogRef = this.dialog.open(ConfirmationComponent, {
+        width: '450px',
+      });   
+
+      // Confimed
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          const opener = this.windowRef.nativeWindow.opener;
+          if (opener != null) {
+            opener.postMessage(this.params, "*");
+          }
+          this.windowRef.nativeWindow.close();
+          return;
+        }
+      });
+
+    // Type not changed
+    } else {
+      const opener = this.windowRef.nativeWindow.opener;
+      if (opener != null) {
+        opener.postMessage(this.params, "*");
+      }
+      this.windowRef.nativeWindow.close();
     }
-    this.windowRef.nativeWindow.close();
+
   }
   
 
@@ -262,7 +296,7 @@ export class PlanningComponent {
   }
 
   // Get filtered resources
-  queryResources(): void {
+  async queryResources() {
 
     let params = '';
     let where = ''
@@ -291,7 +325,7 @@ export class PlanningComponent {
     if (params != '')  {
       this.spinnerActive = true;
       const q = 'query ResourceList(' + params + ') {data:Resource_ResourceList(orderBy: [{attribute: Code, direction:ASC, nullsGo: FIRST}],where:{' + where + '})' + ResourceListQuery + '}';
-      this.getResources(q, {
+      await this.getResources(q, {
         buildingId: this.selectedBuildingId,
         resourceFlatTypeId: this.selectedResourceFlatTypeId,
         resourcePlaceTypeId: this.selectedResourcePlaceTypeId
@@ -647,6 +681,22 @@ export class PlanningComponent {
   // Check availability
   onSelectAvailable(available: { Code: string, id: number }){
     this.params.value = available;
+  }
+
+  openDialog(): void {
+
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      width: '250px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('El usuario seleccionó Sí');
+      } else {
+        console.log('El usuario seleccionó No o cerró el diálogo');
+      }
+    });
+
   }
 
 }

@@ -15,9 +15,13 @@ a {
 }
 
 .nav_container {
+	z-index:9999;
 	display: flex;
     flex-direction: row;
     width: 100%;
+	top: 0;
+	position: sticky;
+	background-color: white;
 }
 
 .selectors_container {

@@ -14,3 +14,14 @@
   width: 100%;
   min-height: 600px;
 }
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999999;
+  position: absolute;
+  width: calc(100% - 10px);
+  height: calc(100% - 40px);
+  top: 0
+}

@@ -1,6 +1,10 @@
 <div>
   <h2>{{ 'documents' | translate }}</h2>
 
+  <div *ngIf="isLoading" class="loader">
+    <app-spinner-control></app-spinner-control>
+  </div>
+
   <div *ngIf="documents.length; then thenBlock else elseBlock"></div>
   <ng-template #thenBlock>
     <div *ngFor="let document of documents" style="margin-top: 10px; display: flex;">
@@ -46,7 +50,7 @@
           >
 
           <button
-            *ngIf="doc.name !== '' && doc.oid !== -1 || doc.oid !== null"
+            *ngIf="doc.name !== '' && (doc.oid !== -1 || doc.oid !== null)"
             (click)="viewDoc(doc)"
           >
             {{ 'view' | translate }}

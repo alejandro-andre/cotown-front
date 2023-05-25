@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { TimeChartRow } from '../models/time-chart-row.model';
+import { MatRadioChange } from '@angular/material/radio';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-time-chart-control',
@@ -13,7 +15,8 @@ export class TimeChartControlComponent implements OnChanges {
   @Input() now!: Date;
   @Input() from!: Date;
   @Input() to!: Date;
-  @Output() onSelectAvailable: EventEmitter<{ Code: string, id: number }> = new EventEmitter();
+  @Input() sel!: number;
+  @Output() onSelectAvailable: EventEmitter<{id: number, Code: string, check: boolean}> = new EventEmitter();
 
   // Timechart header info
   public header: {date: string, month: number, start: number, end: number}[] = [];
@@ -131,8 +134,12 @@ export class TimeChartControlComponent implements OnChanges {
     return false;
   }
 
-  emitSelectAvailableResource(row: TimeChartRow): void {
-    this.onSelectAvailable.emit({ Code: row.code, id: row.id });
+  emitRadio(event: MatRadioChange, row: TimeChartRow): void {
+    this.onSelectAvailable.emit({id: row.id, Code: row.code, check: event.value});
+  }
+
+  emitCheck(event: MatCheckboxChange, row: TimeChartRow): void {
+    this.onSelectAvailable.emit({id: row.id, Code: row.code, check: event.checked});
   }
 
   private getDay(date: Date): number {

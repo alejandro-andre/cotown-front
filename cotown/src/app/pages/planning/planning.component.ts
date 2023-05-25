@@ -51,9 +51,12 @@ export class PlanningComponent {
   private resources: Resource[] = [] as Resource[] ; // Resources
   private bookings: any [] = []; // Bookings
 
-  // Spinner
+  // Selection params
   private params: Params = {} as Params;
+  private values: any = new Set();
+  public sel: number = 0;
 
+  // Spinner
   public spinnerActive: boolean = false;
 
   // Planning
@@ -104,7 +107,10 @@ export class PlanningComponent {
 
     // Get params
     this.route.queryParams.subscribe(async (params) => {
-      const {  entityId, entity, attribute } = params;
+      const { sel, entityId, entity, attribute } = params;
+      if (sel) {
+        this.sel = parseInt(sel);
+      }
       if (entity) {
         this.params.entity = entity;
       }
@@ -120,6 +126,7 @@ export class PlanningComponent {
 
   }
 
+  // ??
   cleanBookings() {
     const newBookings = [];
     for (let i = 0; i < this.bookings.length; i++) {
@@ -138,11 +145,20 @@ export class PlanningComponent {
 
   closeWindow() {
 
+    // Radio
+    if (this.sel == 1) {
+      this.params.value = Array.from(this.values)[0];
+    } else if (this.sel > 1) {
+      this.params.value = [];
+      for (const elemento of this.values) {
+        this.params.value.push(elemento.Code);
+      }
+    }
+
+    console.log(this.params.value);
+
     // Check if change
-    if (
-      this.selectedResourceFlatTypeId != this.initialResourceFlatTypeId || 
-      this.selectedResourcePlaceTypeId != this.initialResourcePlaceTypeId
-    ) {
+    if (this.selectedResourceFlatTypeId != this.initialResourceFlatTypeId || this.selectedResourcePlaceTypeId != this.initialResourcePlaceTypeId) {
 
       // Type changed
       const dialogRef = this.dialog.open(ConfirmationComponent, {
@@ -577,7 +593,7 @@ export class PlanningComponent {
   }
 
   get isSelectButtonActive(): boolean {
-    if (this.params && this.params.entityId !== undefined && this.params.value !== undefined) {
+    if (this.params && this.params.entityId !== undefined && this.values.size > 0) {
       return true;
     }
     return false;
@@ -679,24 +695,29 @@ export class PlanningComponent {
   }
 
   // Check availability
-  onSelectAvailable(available: { Code: string, id: number }){
-    this.params.value = available;
-  }
+  onSelectAvailable(available: {id: number, Code: string, check: any }){
 
-  openDialog(): void {
+    // Radio button
+    if (available.check == available.Code) {
+      console.log("radio");
+      this.values = new Set([available]);
 
-    const dialogRef = this.dialog.open(ConfirmationComponent, {
-      width: '250px',
-    });
+    // Check box
+    } else if (available.check) {
+      console.log("check");
+      this.values.add(available);
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log('El usuario seleccionó Sí');
-      } else {
-        console.log('El usuario seleccionó No o cerró el diálogo');
+    // Uncheck box
+    } else {
+      console.log("uncheck");
+      for (const elemento of this.values) {
+        if (elemento.id == available.id) {
+          this.values.delete(elemento);
+          break;
+        }
       }
-    });
-
+    }
+    
   }
 
 }

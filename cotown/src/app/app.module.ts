@@ -12,6 +12,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, DateAdapter } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -27,7 +29,6 @@ import { ConfirmationComponent } from './pages/confirmation/confirmation.compone
 
 import localeEN from '@angular/common/locales/en';
 import localeES from '@angular/common/locales/es';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 registerLocaleData(localeES, 'es-ES');
 registerLocaleData(localeEN, 'en-US');

@@ -73,5 +73,6 @@
   "completeName": "Nombre completo",
   "sign": "Firmar",
   "signedMessage": "El contrato fue frimado el: {{ value }}",
-  "signMessage": "Por favor, lea todas las pagínas de los contratos para poder firmar "
+  "signMessage": "Por favor, lea todas las pagínas de los contratos para poder firmar ",
+  "uknownError": "Error desconocido, por favor refresque la página"
 }

@@ -73,5 +73,6 @@
   "completeName": "Complete name",
   "sign": "Sign",
   "signedMessage": "The contract was signed on: {{ value }}",
-  "signMessage": "Please, read all the pages of the contracts in order to sign"
+  "signMessage": "Please, read all the pages of the contracts in order to sign",
+  "uknownError": "Uknown error, please refresh the page"
 }

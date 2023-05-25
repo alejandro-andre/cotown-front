@@ -4,8 +4,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-error-view',
-  templateUrl: './viewError.component.html',
-  styleUrls: ['./viewError.component.scss'],
+  templateUrl: './modal.component.html',
+  styleUrls: ['./modal.component.scss'],
 })
 
 export class ViewErrorComponent {

@@ -11,7 +11,7 @@ import { GraphQLModule } from './graphql.module';
 
 // Components
 import { AppComponent } from './app.component';
-import { ViewErrorComponent } from './customer/viewError/viewError.component';
+import { ViewErrorComponent } from './customer/modal/modal.component';
 
 @NgModule({
   declarations: [

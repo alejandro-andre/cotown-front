@@ -10,8 +10,9 @@ export interface ApolloVariables {
 export interface AvailabilityPayload {
   date_from: String,
   date_to: String,
-  building?: String,
-  place_type?: String
+  building?: number,
+  flat_type?: number
+  place_type?: number
 };
 
 export interface Building extends GraphQlResponse{
@@ -33,11 +34,13 @@ export interface Resource {
 }
 
 export interface Booking {
+  Booking_id: number,
   Booking_code: number,
   Booking_lock: string,
   Booking_status: string,
   Booking_date_from: string,
   Booking_date_to: string,
+  Resource_id: number,
   Resource_code: string
   Customer_name?: string,
   Customer_gender?: string,

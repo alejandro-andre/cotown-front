@@ -11,17 +11,7 @@ import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
 
 import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/query-definitions/building.query';
 import { CityListQuery } from 'src/app/schemas/query-definitions/city.query';
-import {
-  BookingList,
-  BookingListByBuildingIdAndResourceAndFlatTypeQuery,
-  BookingListByBuildingIdAndResourceFlatTypeQuery,
-  BookingListByBuildingIdAndResourceTypeQuery,
-  BookingListByBuildingIdQuery,
-  BookingListByResourceTypeAndFlatQuery,
-  BookingListByResourceTypeFlatQuery,
-  BookingListByResourceTypeQuery,
-  getBuildingDataWithBooking
-} from 'src/app/schemas/query-definitions/booking.query';
+import { BookingListQuery, BuildingDataViaBooking } from 'src/app/schemas/query-definitions/booking.query';
 
 import {
   ResourceFlatTypeQuery,
@@ -65,30 +55,40 @@ import { WindowRef } from 'src/app/services/window-ref.service';
 
 export class PlanningComponent {
 
-  public spinnerActive: boolean = false;
-  public rows: TimeChartRow[] = []; // Rows
+  // Lists
   public cities: City [] = [] as City[]; // Cities
-  public selectedCity: number = Constants.allStaticNumericValue; // Current city
   public buildings: Building[] = [] as Building[]; // Buildings
-  public selectedBuildingId: number = -99; // Selected building
-  public selectedBuilding: Building = {} as Building;
-  public now: Date = new Date(); // Current date
   public resourcePlaceTypes: ResourceType [] = [] as ResourceType []; // Type of resources
   public resourceFlatTypes: ResourceType [] = [] as ResourceType [];
-  public selectedResourcePlaceTypeId = Constants.allStaticNumericValue;
-  public selectedResourceFlatTypeId=  Constants.allStaticNumericValue;
-  public selectedResourceType: ResourceType = {} as ResourceType;
-  public availableResources: string[] = [];
+  public availableResources: number[] = [];
+  private resources: Resource[] = [] as Resource[] ; // Resources
+  private bookings: any [] = []; // Bookings
+
+  // Spinner
+  private params: Params = {} as Params;
+
+  public spinnerActive: boolean = false;
+
+  // Planning
+  public now: Date = new Date(); // Current date
+  public rows: TimeChartRow[] = []; // Rows
+
+  // Filters
   public initDate!: Date;
   public endDate !: Date;
   public range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
   });
+  public selectedCity: number = Constants.allStaticNumericValue; // Current city
+  public selectedBuildingId: number = -99; // Selected building
+  public selectedResourcePlaceTypeId = Constants.allStaticNumericValue;
+  public selectedResourceFlatTypeId=  Constants.allStaticNumericValue;
+  public initialResourcePlaceTypeId = Constants.allStaticNumericValue;
+  public initialResourceFlatTypeId=  Constants.allStaticNumericValue;
 
-  private resources: Resource[] = [] as Resource[] ; // Resources
-  private bookings: any [] = []; // Bookings
-  private params: Params = {} as Params;
+  public selectedBuilding: Building = {} as Building;
+  public selectedResourceType: ResourceType = {} as ResourceType;
 
   // Constructor
   constructor(
@@ -117,13 +117,13 @@ export class PlanningComponent {
     // Get params
     this.route.queryParams.subscribe(async (params) => {
       const {  entityId, entity, attribute } = params;
-      if(entity) {
+      if (entity) {
         this.params.entity = entity;
       }
-      if(attribute) {
+      if (attribute) {
         this.params.attribute = attribute;
       }
-      if(entityId) {
+      if (entityId) {
         const entityIdParsed = parseInt(entityId);
         this.params.entityId = entityIdParsed;
         this.initData(entityIdParsed);
@@ -159,17 +159,17 @@ export class PlanningComponent {
   // ************************************
 
   goBackward(type: string) {
-    if(type === 'week'){
+    if (type === 'week'){
       const date = new Date(this.now.getTime() - (1000*60*60*24*7));
       this.now = date;
-    } else if(type === 'month'){
+    } else if (type === 'month'){
       const date= prevMonth(this.now);
       this.now = date;
     }
   }
 
   goForward(type: string) {
-    if(type === 'week') {
+    if (type === 'week') {
       const date = new Date(this.now.getTime() + (1000*60*60*24*7));
       this.now = date;
     } else if (type === 'month') {
@@ -185,17 +185,19 @@ export class PlanningComponent {
   // Initialize data
   async initData(bookingId: number) {
 
-    this.apolloApi.getData(getBuildingDataWithBooking, { id: bookingId, }).subscribe( async(res) =>{
-      if(res.data.data && res.data.data.length) {
+    this.apolloApi.getData(BuildingDataViaBooking, { id: bookingId, }).subscribe( async(res) =>{
+      if (res.data.data && res.data.data.length) {
         const data = res.data?.data[0];
 
         // Set filters
         this.selectedBuildingId = parseInt(data.building_id);
         this.selectedResourceFlatTypeId = parseInt(data.flat_type_id);
         this.selectedResourcePlaceTypeId = parseInt(data.place_type_id);
+        this.initialResourceFlatTypeId = parseInt(data.flat_type_id);
+        this.initialResourcePlaceTypeId = parseInt(data.place_type_id);
         this.range.setValue({ start: new Date(data.date_from), end: new Date(data.date_to) });
         const finded = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
-        if(finded) {
+        if (finded) {
           this.selectedCity = finded.location.city.id;
         }
         this.now = new Date(data.date_from)
@@ -278,6 +280,41 @@ export class PlanningComponent {
     }
   }
 
+  queryBookings(): void {
+
+    let params = '';
+    let where = ''
+
+    if (this.selectedBuildingId) {
+      if (params != '') params += ','
+      if (where != '') where += ','
+      params += '$buildingId: Int'
+      where += 'Building_id: { EQ: $buildingId }'
+    }
+
+    if (this.selectedResourceFlatTypeId) {
+      if (params != '') params += ','
+      if (where != '') where += ','
+      params += '$resourceFlatTypeId: Int'
+      where += 'Flat_type_id: { EQ: $resourceFlatTypeId }'
+    }
+
+    if (this.selectedResourcePlaceTypeId) {
+      if (params != '') params += ','
+      if (where != '') where += ','
+      params += '$resourcePlaceTypeId: Int'
+      where += 'Place_type_id: { EQ: $resourcePlaceTypeId }'
+    }
+
+    this.getBookings(
+      'query BookingList(' + params + ') {data:Booking_Booking_detailList(where:{' + where + '})' + BookingListQuery + '}', { 
+      buildingId: this.selectedBuildingId,
+      resourceFlatTypeId: this.selectedResourceFlatTypeId,
+      resourcePlaceTypeId: this.selectedResourcePlaceTypeId
+    });
+
+  }
+
   // Get resources and bookings of all buildings
   async getResourcesAndBookingsByBuildingId(id: number) {
     
@@ -288,7 +325,7 @@ export class PlanningComponent {
     this.rows = [];
 
     await this.getResourceList(ResourceListByBuldingIdQuery, { buildingId: id });
-    this.getBookings(BookingListByBuildingIdQuery, { buildingId: id });
+    this.queryBookings();
   }
 
   // Get resources and bookings of all buildings
@@ -301,7 +338,7 @@ export class PlanningComponent {
     this.rows = [];
 
     await this.getResourceList(ResourceListQuery);
-    this.getBookings(BookingList);
+    this.queryBookings();
   }
 
   // Get resources
@@ -309,7 +346,7 @@ export class PlanningComponent {
     return new Promise<void>((resolve) => {
       this.apolloApi.getData(query, variables).subscribe((res: any) => {
 
-        for(const elem of res.data.data) {
+        for (const elem of res.data.data) {
           const type = elem.resource_type === 'piso' ? elem.flat.code : elem.resource_place_type?.code;
           this.resources.push({
             Resource_id: elem.id,
@@ -347,7 +384,7 @@ export class PlanningComponent {
           phone = booking.group.customer.phones;
           name = booking.group.customer.name
           code = `G${booking.group_id}`
-          if(booking.room_user && booking.room_user.name !== null) {
+          if (booking.room_user && booking.room_user.name !== null) {
             const aux = `${name} (${booking.room_user.name})`;
             name = aux;
           }
@@ -360,6 +397,7 @@ export class PlanningComponent {
           Booking_status: booking.status,
           Booking_date_from: booking.date_from,
           Booking_date_to: booking.date_to,
+          Resource_id: booking.resource?.id || 0,
           Resource_code: booking.resource?.code || '',
           Customer_name: name || '',
           Customer_gender: booking.booking?.customer.gender?.code || '',
@@ -386,14 +424,16 @@ export class PlanningComponent {
 
     if (this.selectedBuildingId === Constants.allStaticNumericValue) {
       await this.getResourceList(ResourceListByResourceTypeQuery, variables);
-      this.getBookings(BookingListByResourceTypeQuery, variables);
+      //this.getBookings(BookingListByResourceTypeQuery, variables);
+      this.queryBookings();
     } else {
       const varToSend = {
         ...variables,
         buildingId: this.selectedBuildingId,
       }
       await this.getResourceList(ResourceListByBuildingIdAndResourceTypeQuery, varToSend);
-      this.getBookings(BookingListByBuildingIdAndResourceTypeQuery, varToSend);
+      //this.getBookings(BookingListByBuildingIdAndResourceTypeQuery, varToSend);
+      this.queryBookings();
     }
   }
 
@@ -416,11 +456,13 @@ export class PlanningComponent {
         }
 
         await this.getResourceList(ResourceListByResourceTypeAndFlatQuery, toSend);
-        this.getBookings(BookingListByResourceTypeAndFlatQuery, variables);
+        //this.getBookings(BookingListByResourceTypeAndFlatQuery, variables);
+        this.queryBookings();
 
       } else { // No type of room selected
         await this.getResourceList(ResourceListByResourceFlatTypeQuery, variables);
-        this.getBookings(BookingListByResourceTypeFlatQuery, variables);
+        //this.getBookings(BookingListByResourceTypeFlatQuery, variables);
+        this.queryBookings();
       }
     } else { // building selected
       const varToSend = {
@@ -435,11 +477,12 @@ export class PlanningComponent {
         }
 
         await this.getResourceList(ResourceListByBuildingIdAndResourceTypeAndFlatQuery, toSend);
-        this.getBookings(BookingListByBuildingIdAndResourceAndFlatTypeQuery, toSend);
+        //this.getBookings(BookingListByBuildingIdAndResourceAndFlatTypeQuery, toSend);
+        this.queryBookings();
       } else {
-
         await this.getResourceList(ResourceListByBuildingIdAndResourceFlatTypeQuery, varToSend);
-        this.getBookings(BookingListByBuildingIdAndResourceFlatTypeQuery, varToSend);
+        //this.getBookings(BookingListByBuildingIdAndResourceFlatTypeQuery, varToSend);
+        this.queryBookings();
       }
     }
   }
@@ -581,14 +624,14 @@ export class PlanningComponent {
   }
 
   get isSelectButtonActive(): boolean {
-    if(this.params && this.params.entityId !== undefined && this.params.value !== undefined) {
+    if (this.params && this.params.entityId !== undefined && this.params.value !== undefined) {
       return true;
     }
     return false;
   }
 
   get isSelectButtonVisible(): boolean {
-    if(this.params && this.params.entityId === undefined) {
+    if (this.params && this.params.entityId === undefined) {
       return false;
     }
     return true;
@@ -612,19 +655,24 @@ export class PlanningComponent {
       const data: AvailabilityPayload = {
         date_from: formatDate(this.initDate),
         date_to: formatDate(this.endDate),
-        building: this.selectedBuilding.code,
+        building: this.selectedBuildingId,
+        flat_type: 0,
+        place_type: 0
       };
+      if (this.selectedResourceFlatTypeId !== Constants.allStaticNumericValue) {
+        data.flat_type = this.selectedResourceFlatTypeId
+      }
       if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
-        data.place_type = this.selectedResourceType.code;
+        data.place_type = this.selectedResourcePlaceTypeId
       }
 
       // Get availability
       axiosApi.getAvailability(data, this.apolloApi.token).then((resp) => {
         this.availableResources = resp.data;
         this.rows = [];
-        for(const available of this.availableResources) {
-          const finded: number = this.bookings.findIndex((elem: Booking) => elem.Resource_code === available);
-          if(finded >= 0){
+        for (const available of this.availableResources) {
+          const finded: number = this.bookings.findIndex((elem: Booking) => elem.Resource_id === available);
+          if (finded >= 0){
             this.bookings.push({
               ...this.bookings[finded],
               Booking_status: Constants.availableStatus,
@@ -713,7 +761,7 @@ export class PlanningComponent {
 
     // Filter
     if (this.selectedResourceFlatTypeId === Constants.allStaticNumericValue) { // Dont use filter
-      if(this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
+      if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
         this.applyResourcePlaceTypeFilter();
       } else {
         this.getResourcesAndBookings();

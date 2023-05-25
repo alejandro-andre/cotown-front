@@ -1,3 +1,59 @@
+export const BookingListQuery = `{
+  building_id: Building_id
+  rooming: Booking_rooming_id
+  group_id: Booking_group_id
+  building: BuildingViaBuilding_id {
+    code: Code,
+  }
+  room_user: Booking_roomingViaBooking_rooming_id {
+    email: Email
+    name: Name,
+    phones: Phones
+  }
+  group: Booking_groupViaBooking_group_id {
+    customer: CustomerViaPayer_id {
+      name: Name
+      email: Email
+      phones: Phones
+    }
+  }
+  booking_id: Booking_id
+  booking: BookingViaBooking_id {
+    customer: CustomerViaCustomer_id {
+      name: Name
+      birth_date: Birth_date
+      gender: GenderViaGender_id {
+        code: Code
+        name: Name
+      }
+      email: Email
+      phones: Phones
+      country: CountryViaCountry_id {
+        name: Name
+      }
+    }
+  }
+  status: Status
+  resource: ResourceViaResource_id{
+    id
+    code: Code
+  }
+  date_from: Date_from
+  date_to: Date_to
+  lock: Lock
+  flat_type: Resource_flat_typeViaFlat_type_id {
+    code: Code
+    name: Name,
+    id
+  }
+  place_type: Resource_place_typeViaPlace_type_id {
+    code: Code
+    name: Name
+  }
+}
+`;
+
+/*
 export const BookingListByBuildingIdAndResourceTypeQuery = `query BookingListByBuildingIdAndResourceType($buildingId: Int, $resourceTypeId: Int)
   {
     data: Booking_Booking_detailList (
@@ -39,6 +95,7 @@ export const BookingListByBuildingIdAndResourceTypeQuery = `query BookingListByB
       }
       status: Status
       resource: ResourceViaResource_id{
+        id
         code: Code
       }
       date_from: Date_from
@@ -97,6 +154,7 @@ export const BookingListByBuildingIdAndResourceFlatTypeQuery = `query BookingLis
       }
       status: Status
       resource: ResourceViaResource_id{
+        id
         code: Code
       }
       date_from: Date_from
@@ -155,6 +213,7 @@ export const BookingListByBuildingIdAndResourceAndFlatTypeQuery = `query Booking
       }
       status: Status
       resource: ResourceViaResource_id{
+        id
         code: Code
       }
       date_from: Date_from
@@ -213,6 +272,7 @@ export const BookingListByResourceTypeQuery = `query BookingListByResourceType($
       }
       status: Status
       resource: ResourceViaResource_id{
+        id
         code: Code
       }
       date_from: Date_from
@@ -270,6 +330,7 @@ export const BookingListByResourceTypeAndFlatQuery = `query BookingListByResourc
       }
       status: Status
       resource: ResourceViaResource_id{
+        id
         code: Code
       }
       date_from: Date_from
@@ -327,6 +388,7 @@ export const BookingListByResourceTypeFlatQuery = `query BookingListByResourceTy
       }
       status: Status
       resource: ResourceViaResource_id{
+        id
         code: Code
       }
       date_from: Date_from
@@ -384,6 +446,7 @@ export const BookingListByBuildingIdQuery = `query BookingListByBuildingId($buil
         }
         status: Status
         resource: ResourceViaResource_id{
+          id
           code: Code
         }
         date_from: Date_from
@@ -401,63 +464,9 @@ export const BookingListByBuildingIdQuery = `query BookingListByBuildingId($buil
       }
     }`;
 
-export const BookingList = `query BookingList
-  {
-    data: Booking_Booking_detailList {
-      rooming: Booking_rooming_id
-      group_id: Booking_group_id
-      building_id: Building_id
-      building: BuildingViaBuilding_id {
-        code: Code,
-      }
-      group: Booking_groupViaBooking_group_id {
-        customer: CustomerViaPayer_id {
-          name: Name
-          email: Email
-          phones: Phones
-        }
-      }
-      room_user: Booking_roomingViaBooking_rooming_id {
-        email: Email
-        name: Name,
-        phones: Phones
-      }
-      booking_id: Booking_id
-      booking: BookingViaBooking_id {
-        customer: CustomerViaCustomer_id {
-          name: Name
-          birth_date: Birth_date
-          gender: GenderViaGender_id {
-            code: Code
-            name: Name
-          }
-          email: Email
-          phones: Phones
-          country: CountryViaCountry_id {
-            name: Name
-          }
-        }
-      }
-      status: Status
-      resource: ResourceViaResource_id{
-        code: Code
-      }
-      date_from: Date_from
-      date_to: Date_to
-      lock: Lock
-      flat_type: Resource_flat_typeViaFlat_type_id {
-        code: Code
-        name: Name,
-        id
-      }
-      place_type: Resource_place_typeViaPlace_type_id {
-        code: Code
-        name: Name
-      }
-    }
-  }`;
+*/
 
-export const getBuildingDataWithBooking = `query bookingQuery($id: Int)
+export const BuildingDataViaBooking = `query bookingQuery($id: Int)
 {
   data: Booking_BookingList(where:{ id: { EQ: $id } }) {
     building_id: Building_id

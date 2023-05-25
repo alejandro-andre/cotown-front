@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 
 @Component({
-  selector: 'app-error-view',
+  selector: 'app-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss'],
 })

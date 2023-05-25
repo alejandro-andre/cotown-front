@@ -1,9 +1,7 @@
 <div>
   <h2>{{ 'documents' | translate }}</h2>
 
-  <div *ngIf="isLoading" class="loader">
-    <app-spinner-control></app-spinner-control>
-  </div>
+  <app-spinner-control *ngIf="isLoading"></app-spinner-control>
 
   <div *ngIf="documents.length; then thenBlock else elseBlock"></div>
   <ng-template #thenBlock>

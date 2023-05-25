@@ -6,10 +6,7 @@
 
 		<form class="selectors_container airflows_container_selectors ">
 
-			<mat-form-field
-				class="cotown_selector"
-				appearance="fill"
-				style="margin-right: 10px;">
+			<mat-form-field appearance="fill" style="margin-right: 10px;width: 15%;">
 				<mat-label class="cotown_label">{{ 'city' | translate }}</mat-label>
 				<mat-select
           			[(ngModel)]="selectedCity"
@@ -24,12 +21,12 @@
 				</mat-select>
 			</mat-form-field>
 
-			<mat-form-field appearance="fill" style="margin-right: 10px;">
+			<mat-form-field appearance="fill" style="margin-right: 10px; width: 25%;">
 				<mat-label>{{ 'building' | translate}}</mat-label>
 				<mat-select
           			[(ngModel)]="selectedBuildingId"
           			name="buildings"
-          			(selectionChange)="onSelectBulding()"
+          			(selectionChange)="onChangeFilter()"
 					[placeholder]="'nothing' | translate"
 					[disabled]="selectedCity === -1">
 					<mat-option  [value]=-1>{{ 'allM' | translate }}</mat-option>
@@ -41,39 +38,39 @@
 				</mat-select>
 			</mat-form-field>
 
-			<mat-form-field appearance="fill" style="margin-right: 10px;">
+			<mat-form-field appearance="fill" style="margin-right: 10px; width: 15%;">
 				<mat-label>{{ 'flatType' | translate }}</mat-label>
 				<mat-select
-          			[(ngModel)]="selectedResouceTypeFlatId"
-          			name="resourcesTypes"
-          			(selectionChange)="onSelectResourceTypeFlat()"
+          			[(ngModel)]="selectedResourceFlatTypeId"
+          			name="resourcesFlatTypes"
+          			(selectionChange)="onChangeFilter()"
 					[disabled]="!selectedBuildingId || selectedBuildingId === -99">
 				<mat-option  [value]="-1">{{ 'allM' | translate }}</mat-option>
 					<mat-option
-						*ngFor="let resourceType of resourceTypesFlat"
+						*ngFor="let resourceType of resourceFlatTypes"
 						[value]="resourceType.id">
 						{{ resourceType.code }}
 					</mat-option>
 				</mat-select>
 			</mat-form-field>
 
-      		<mat-form-field appearance="fill" style="margin-right: 10px;">
+      		<mat-form-field appearance="fill" style="margin-right: 10px; width: 15%;">
 				<mat-label>{{ 'types' | translate }}</mat-label>
 				<mat-select
-          			[(ngModel)]="selectedResouceTypeId"
-          			name="resourcesTypes"
-          			(selectionChange)="onSelectResourceType()"
+          			[(ngModel)]="selectedResourcePlaceTypeId"
+          			name="resourcesPlaceTypes"
+          			(selectionChange)="onChangeFilter()"
 					[disabled]="!selectedBuildingId || selectedBuildingId === -99">
 				<mat-option  [value]="-1">{{ 'allM' | translate }}</mat-option>
 					<mat-option
-						*ngFor="let resourceType of resourceTypes"
+						*ngFor="let resourceType of resourcePlaceTypes"
 						[value]="resourceType.id">
 						{{ resourceType.code }}
 					</mat-option>
 				</mat-select>
 			</mat-form-field>
 
-			<mat-form-field appearance="fill" style="margin-right: 10px;">
+			<mat-form-field appearance="fill" style="margin-right: 10px; width: 20%;">
 				<mat-label>{{ 'date range' | translate }}</mat-label>
 				<mat-date-range-input
 					[rangePicker]="picker"

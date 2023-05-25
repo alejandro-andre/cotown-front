@@ -15,20 +15,24 @@ a {
 }
 
 .nav_container {
+	z-index:9999;
 	display: flex;
     flex-direction: row;
     width: 100%;
+	top: 0;
+	position: sticky;
+	background-color: white;
 }
 
 .selectors_container {
 	display: flex;
-	width: 60%;
+	width: 70%;
 	align-items: flex-start;
 }
 
 .time_line_buttons {
 	display: flex;
-	width: 40%;
+	width: 30%;
 	justify-content: flex-end;
 	padding: 12px 12px 12px 0px
 }

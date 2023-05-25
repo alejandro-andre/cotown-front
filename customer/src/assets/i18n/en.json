@@ -74,5 +74,19 @@
   "sign": "Sign",
   "signedMessage": "The contract was signed on: {{ value }}",
   "signMessage": "Please, read all the pages of the contracts in order to sign",
-  "uknownError": "Uknown error, please refresh the page"
+  "uknownError": "Uknown error, please refresh the page",
+  "ok": "OK",
+  "alternatives": "Alternatives",
+  "contracts": "Contracts",
+  "rentContract": "Rent Contract",
+  "serviceContract": "Service contract",
+  "noBookingFound": "No booking found with that id",
+  "image": "Image",
+  "view": "View",
+  "amount":  "Amount",
+  "orderNumber": "Nº of order",
+  "identifier": "Identifier",
+  "payInfo": "Details of the payment to be made",
+  "paymentData": "Payment data"
+
 }

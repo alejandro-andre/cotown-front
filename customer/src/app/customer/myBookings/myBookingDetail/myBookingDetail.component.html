@@ -136,7 +136,7 @@
 
       <div *ngIf="isOptionToBeShowed">
 
-        Alternativas
+        {{ 'alternatives' | translate }}
 
         <table
           style="margin-bottom: 10px;"
@@ -260,7 +260,7 @@
       </table>
 
       <div *ngIf="allContractsRendered">
-        <h4>Contracts</h4>
+        <h4>{{ 'contracts' | translate }}</h4>
 
         <div  *ngIf="contractSigned !== null" class="contract-box">
           {{ contractMessage | translate: { value: formatedDate } }}
@@ -271,7 +271,7 @@
         </div>
 
         <div class="box-pdf" style="margin-bottom: 25px;" *ngIf="contract_rent.length > 0">
-          <h4>Rent contract</h4>
+          <h4>{{ 'rentContract' | translate }}</h4>
           <pdf-viewer
             class="pdf-viewer"
             [src]="contract_rent"
@@ -294,7 +294,7 @@
         </div>
 
         <div class="box-pdf" *ngIf="contract_services.length > 0">
-          <h4>Service contract</h4>
+          <h4>{{ 'serviceContract' | translate }}</h4>
           <pdf-viewer
             class="pdf-viewer"
             [src]="contract_services"
@@ -325,6 +325,6 @@
   </ng-template>
 
   <ng-template #showNotData>
-    No se ha encontrado ningún booking con ese id
+    {{ 'noBookingFound' | translate }}
   </ng-template>
 </div>

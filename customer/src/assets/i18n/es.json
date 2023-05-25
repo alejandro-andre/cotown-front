@@ -74,5 +74,19 @@
   "sign": "Firmar",
   "signedMessage": "El contrato fue frimado el: {{ value }}",
   "signMessage": "Por favor, lea todas las pagínas de los contratos para poder firmar ",
-  "uknownError": "Error desconocido, por favor refresque la página"
+  "uknownError": "Error desconocido, por favor refresque la página",
+  "ok": "OK",
+  "alternatives": "Alternativas",
+  "contracts": "Contratos",
+  "rentContract": "Contrato de rentas",
+  "serviceContract": "Contrato de servicios",
+  "noBookingFound": "No se ha encontrado ningún booking con ese id",
+  "image": "Imágen",
+  "view": "Ver",
+  "amount":  "Importe",
+  "orderNumber": "Nº de orden",
+  "identifier": "Identificador",
+  "payInfo": "Información de detalle del pago a realizar",
+  "paymentData": "Datos de pago"
+
 }

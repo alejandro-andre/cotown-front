@@ -49,7 +49,7 @@
             *ngIf="doc.name !== '' && doc.oid !== -1 || doc.oid !== null"
             (click)="viewDoc(doc)"
           >
-            View
+            {{ 'view' | translate }}
           </button>
         </div>
       </div>

@@ -1,6 +1,6 @@
 <div class="container">
-  <h1>Datos de pago</h1>
-  <p>Información de detalle del pago a realizar</p><br/>
+  <h1>{{ 'paymentData' | translate }}</h1>
+  <p>{{ 'payInfo' | translate }}</p><br/>
   <form
     name="form"
     *ngIf="loaded"
@@ -11,7 +11,7 @@
     class="form"
   >
     <mat-form-field class="data c10">
-      <mat-label>Identificador</mat-label>
+      <mat-label>{{ 'identifier' | translate }}</mat-label>
       <input
         matInput
         id="id"
@@ -20,7 +20,7 @@
       </mat-form-field>
 
     <mat-form-field class="data c20">
-      <mat-label>Nº de orden</mat-label>
+      <mat-label>{{ 'orderNumber' | translate }}</mat-label>
       <input
         matInput
         id="order"
@@ -29,7 +29,7 @@
     </mat-form-field>
 
     <mat-form-field class="data c20">
-      <mat-label>Concepto</mat-label>
+      <mat-label>{{ 'concept' | translate }}</mat-label>
       <input
         matInput
         id="concept"
@@ -38,7 +38,7 @@
     </mat-form-field>
 
     <mat-form-field class="data c20">
-      <mat-label>Importe</mat-label>
+      <mat-label>{{ 'amount' | translate }}</mat-label>
       <input
         matInput
         id="amount"
@@ -53,7 +53,7 @@
       class="primary c20"
       type="submit"
     >
-      PAGAR
+      {{ 'pay' | translate }}
     </button>
 
     <input
@@ -67,14 +67,12 @@
       id="Ds_MerchantParameters"
       name="Ds_MerchantParameters"
       [value]="Ds_MerchantParameters"
-
     />
     <input
       type="hidden"
       id="Ds_Signature"
       name="Ds_Signature"
       [value]="Ds_Signature"
-
     />
   </form>
 </div>

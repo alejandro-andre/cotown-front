@@ -173,21 +173,22 @@ export class MyDataComponent{
 
     delete variables.formControl
 
-    this.apollo.setData(UPDATE_CUSTOMER, variables).subscribe((resp) => {
-      const val = resp.data;
-      if (val && val.update && val.update.length) {
-        this.customerService.setVisibility();
-        this.isLoading = false;
-      } else {
-        // something wrong
-        this.isLoading = false;
-        const body = {
-          title: 'Error',
-          message: 'uknownError'
-        };
+    this.apollo.setData(UPDATE_CUSTOMER, variables).subscribe(
+      res => {
+        const val = res.data;
+        if (val && val.update && val.update.length) {
+          this.customerService.setVisibility();
+          this.isLoading = false;
+        } else {
+          // something wrong
+          this.isLoading = false;
+          const body = {
+            title: 'Error',
+            message: 'uknownError'
+          };
 
-        this.modalService.openModal(body);
-      }
+          this.modalService.openModal(body);
+        }
     }, (err) =>{
       // Apollo error !!
       const bodyToSend = formatErrorBody(err, this.customer.appLang)
@@ -238,7 +239,7 @@ export class MyDataComponent{
 
           this.isLoading = false;
         }, err => {
-         const bodyToSend = formatErrorBody(err, this.customer.appLang)
+          const bodyToSend = formatErrorBody(err, this.customer.appLang);
           this.isLoading = false;
           this.modalService.openModal(bodyToSend);
         })

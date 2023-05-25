@@ -16,6 +16,7 @@ export class TimeChartControlComponent implements OnChanges {
   @Input() from!: Date;
   @Input() to!: Date;
   @Input() sel!: number;
+  @Input() rooms!: string[];
   @Output() onSelectAvailable: EventEmitter<{id: number, Code: string, check: boolean}> = new EventEmitter();
 
   // Timechart header info

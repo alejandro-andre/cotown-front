@@ -18,7 +18,7 @@ import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
 import { CityListQuery } from 'src/app/schemas/query-definitions/city.query';
 import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/query-definitions/building.query';
 import { ResourceFlatTypeQuery, ResourceListQuery, ResourcePlaceTypeQuery } from 'src/app/schemas/query-definitions/resource.query';
-import { BookingListQuery, BuildingDataViaBooking } from 'src/app/schemas/query-definitions/booking.query';
+import { BookingListQuery, BuildingDataViaBooking, BuildingDataViaBookingGroup } from 'src/app/schemas/query-definitions/booking.query';
 
 import {
   ApolloVariables,
@@ -48,6 +48,7 @@ export class PlanningComponent {
   public resourcePlaceTypes: ResourceType [] = [] as ResourceType []; // Type of resources
   public resourceFlatTypes: ResourceType [] = [] as ResourceType [];
   public availableResources: number[] = [];
+  public rooms: string [] = []; // Rooms
   private resources: Resource[] = [] as Resource[] ; // Resources
   private bookings: any [] = []; // Bookings
 
@@ -120,7 +121,7 @@ export class PlanningComponent {
       if (entityId) {
         const entityIdParsed = parseInt(entityId);
         this.params.entityId = entityIdParsed;
-        this.initData(entityIdParsed);
+        this.initData(entity, entityIdParsed);
       }
     });
 
@@ -154,8 +155,6 @@ export class PlanningComponent {
         this.params.value.push(elemento.Code);
       }
     }
-
-    console.log(this.params.value);
 
     // Check if change
     if (this.selectedResourceFlatTypeId != this.initialResourceFlatTypeId || this.selectedResourcePlaceTypeId != this.initialResourcePlaceTypeId) {
@@ -218,24 +217,37 @@ export class PlanningComponent {
   // ************************************
 
   // Initialize data
-  async initData(bookingId: number) {
+  async initData(entity: string, bookingId: number) {
 
-    this.apolloApi.getData(BuildingDataViaBooking, { id: bookingId, }).subscribe( async(res) =>{
+    // Query (single o group booking)
+    let q =  BuildingDataViaBooking;
+    if (entity == 'Booking.Booking_group') {
+      q =  BuildingDataViaBookingGroup;
+    }
+
+    // Get data
+    this.selectedResourceFlatTypeId = Constants.allStaticNumericValue;
+    this.selectedResourcePlaceTypeId = Constants.allStaticNumericValue;
+    this.apolloApi.getData(q, { id: bookingId, }).subscribe( async(res) =>{
       if (res.data.data && res.data.data.length) {
         const data = res.data?.data[0];
 
         // Set filters
         this.selectedBuildingId = parseInt(data.building_id);
-        this.selectedResourceFlatTypeId = parseInt(data.flat_type_id);
-        this.selectedResourcePlaceTypeId = parseInt(data.place_type_id);
-        this.initialResourceFlatTypeId = parseInt(data.flat_type_id);
-        this.initialResourcePlaceTypeId = parseInt(data.place_type_id);
+        if (data.flat_type_id != undefined)
+          this.selectedResourceFlatTypeId = parseInt(data.flat_type_id);
+        if (data.place_type_id != undefined)
+          this.selectedResourcePlaceTypeId = parseInt(data.place_type_id);
+        this.initialResourceFlatTypeId = this.selectedResourceFlatTypeId;
+        this.initialResourcePlaceTypeId = this.selectedResourcePlaceTypeId;
         this.range.setValue({ start: new Date(data.date_from), end: new Date(data.date_to) });
         const finded = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
         if (finded) {
           this.selectedCity = finded.location.city.id;
         }
         this.now = new Date(data.date_from)
+        this.rooms = data.rooms;
+        console.log(this.rooms);
 
         // Load resources and bookings
         await this.getResourcesAndBookings();
@@ -468,13 +480,17 @@ export class PlanningComponent {
     let auxRow!: TimeChartRow;
 
     // Generate rows
+    console.log(this.resources);
+    console.log(this.rooms);
     for (const r of this.resources) {
       auxRow = new TimeChartRow();
       auxRow.id = r.Resource_id;
       auxRow.code = r.Resource_code;
       auxRow.info = r.Resource_info
       auxRow.style = Constants.types[r.Resource_type];
-        auxRows.push(auxRow);
+      if (this.rooms.includes(r.Resource_code))
+        auxRow.checked = true;
+      auxRows.push(auxRow);
     }
 
     this.rows = JSON.parse(JSON.stringify(auxRows));
@@ -699,17 +715,14 @@ export class PlanningComponent {
 
     // Radio button
     if (available.check == available.Code) {
-      console.log("radio");
       this.values = new Set([available]);
 
     // Check box
     } else if (available.check) {
-      console.log("check");
       this.values.add(available);
 
     // Uncheck box
     } else {
-      console.log("uncheck");
       for (const elemento of this.values) {
         if (elemento.id == available.id) {
           this.values.delete(elemento);

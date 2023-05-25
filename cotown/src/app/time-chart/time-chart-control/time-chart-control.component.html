@@ -49,8 +49,9 @@
 					(change)="emitRadio($event, row)">
 				</mat-radio-button>
 				<mat-checkbox *ngIf="sel>1"
+					[checked]="row.checked"
 					[value]="row.code"
-					[disabled]="!isAvailable(row)"
+					[disabled]="!isAvailable(row) && !row.checked"
 					(change)="emitCheck($event, row)">
 				</mat-checkbox>
 			</div>

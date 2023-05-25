@@ -238,7 +238,15 @@ export const UPLOAD_CUSTOMER_PHOTO = `mutation ($id: Int! $bill: Models_Document
     entity: {
       Photo: $bill
     }
-  ){ id }
+  ){
+    id
+    photo: Photo {
+      name
+      oid
+      thumbnail
+      type
+    }
+  }
 }`;
 
 

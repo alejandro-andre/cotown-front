@@ -268,7 +268,8 @@ export class PlanningComponent {
           this.selectedCity = finded.location.city.id;
         }
         this.now = new Date(data.date_from)
-        this.rooms = data.rooms;
+        if (data.rooms)
+          this.rooms = data.rooms;
         this.max = data.max;
 
         // Load resources and bookings

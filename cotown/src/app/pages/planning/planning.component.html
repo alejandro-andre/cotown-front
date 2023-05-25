@@ -6,10 +6,7 @@
 
 		<form class="selectors_container airflows_container_selectors ">
 
-			<mat-form-field
-				class="cotown_selector"
-				appearance="fill"
-				style="margin-right: 10px;">
+			<mat-form-field appearance="fill" style="margin-right: 10px;width: 15%;">
 				<mat-label class="cotown_label">{{ 'city' | translate }}</mat-label>
 				<mat-select
           			[(ngModel)]="selectedCity"
@@ -24,7 +21,7 @@
 				</mat-select>
 			</mat-form-field>
 
-			<mat-form-field appearance="fill" style="margin-right: 10px;">
+			<mat-form-field appearance="fill" style="margin-right: 10px; width: 25%;">
 				<mat-label>{{ 'building' | translate}}</mat-label>
 				<mat-select
           			[(ngModel)]="selectedBuildingId"
@@ -41,7 +38,7 @@
 				</mat-select>
 			</mat-form-field>
 
-			<mat-form-field appearance="fill" style="margin-right: 10px;">
+			<mat-form-field appearance="fill" style="margin-right: 10px; width: 15%;">
 				<mat-label>{{ 'flatType' | translate }}</mat-label>
 				<mat-select
           			[(ngModel)]="selectedResourceFlatTypeId"
@@ -57,7 +54,7 @@
 				</mat-select>
 			</mat-form-field>
 
-      		<mat-form-field appearance="fill" style="margin-right: 10px;">
+      		<mat-form-field appearance="fill" style="margin-right: 10px; width: 15%;">
 				<mat-label>{{ 'types' | translate }}</mat-label>
 				<mat-select
           			[(ngModel)]="selectedResourcePlaceTypeId"
@@ -73,7 +70,7 @@
 				</mat-select>
 			</mat-form-field>
 
-			<mat-form-field appearance="fill" style="margin-right: 10px;">
+			<mat-form-field appearance="fill" style="margin-right: 10px; width: 20%;">
 				<mat-label>{{ 'date range' | translate }}</mat-label>
 				<mat-date-range-input
 					[rangePicker]="picker"

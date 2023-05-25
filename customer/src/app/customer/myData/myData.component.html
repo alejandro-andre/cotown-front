@@ -4,7 +4,7 @@
     <app-spinner-control></app-spinner-control>
   </div>
 
-  <div>
+  <div style="height: 100%;">
     <div>
       APP SECTION
       <mat-form-field appearance="fill" style="margin-right: 10px;">
@@ -71,7 +71,9 @@
         <input
           matInput
           [readonly]="visibility['document']"
+          (blur)="validateDoc()"
           [(ngModel)]="customerService.customer.document"
+          [disabled]="customerService.customer.typeDoc === null"
         >
       </mat-form-field>
 
@@ -322,11 +324,13 @@
           >
         </mat-form-field>
         <!--End Bank account-->
+
+        <app-error-view errorMessage="Error en el modal"></app-error-view>
       </p>
     </div>
 
     <!--Margin to see the button (Image)-->
-    <div style="margin-bottom: 110px;">
+    <div>
       <button [disabled]="isButtonDisabled" mat-raised-button color="basic" (click)="save()">
         {{ 'save' | translate }}
       </button>

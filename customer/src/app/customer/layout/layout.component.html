@@ -32,8 +32,8 @@
         </button>
       </div>
 
-      <div style="padding: 10px; height: 100%;">
-        <router-outlet   *ngIf="!isLoading"></router-outlet>
+      <div style="padding: 10px; height: 100%">
+        <router-outlet *ngIf="!isLoading"></router-outlet>
           <app-spinner-control  *ngIf="isLoading"></app-spinner-control>
       </div>
 

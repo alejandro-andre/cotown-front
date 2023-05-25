@@ -1,0 +1,22 @@
+import { Constants } from "../constants/Constants";
+
+export const formatErrorBody = (error: Error, lang: string) => {
+  const message = error.message.split('!!!');
+  const bodyToSend = {
+    title: 'Error',
+    message: 'uknownError'
+  };
+
+  if (message && message.length && message.length >= 3) {
+    const english = message[1];
+    const spanish = message[2];
+    if (lang === Constants.SPANISH.id) {
+      bodyToSend.message = spanish;
+    } else {
+      bodyToSend.message = english;
+    }
+  }
+
+  return bodyToSend;
+
+};

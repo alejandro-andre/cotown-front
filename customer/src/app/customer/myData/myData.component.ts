@@ -15,8 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Constants } from 'src/app/constants/Constants';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { FormControl, Validators } from '@angular/forms';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ModalComponent } from '../modal/modal.component';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'app-my-data',
@@ -35,7 +34,7 @@ export class MyDataComponent{
     private apollo: ApoloQueryApi,
     private translate: TranslateService,
     private axiosApi: AxiosApi,
-    public matDialog: MatDialog
+    private modalService: ModalService
   ) {
   }
 
@@ -47,16 +46,6 @@ export class MyDataComponent{
   public dniFormControl = new FormControl('', [
     Validators.pattern('\d{8}[a-z A-Z]/')
   ]);
-
-  openModal(body: { title: string, message: string }) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.id = "modal-component";
-    dialogConfig.height = "300px";
-    dialogConfig.width = "500px";
-    dialogConfig.data = body;
-    const modalDialog = this.matDialog.open(ModalComponent, dialogConfig);
-  }
 
   /**
   * Getters
@@ -193,7 +182,7 @@ export class MyDataComponent{
           message: 'uknownError'
         };
 
-        this.openModal(body);
+        this.modalService.openModal(body);
       }
     }, (err) =>{
       // Apollo error !!
@@ -214,7 +203,7 @@ export class MyDataComponent{
       }
 
       this.isLoading = false;
-      this.openModal(bodyToSend);
+      this.modalService.openModal(bodyToSend);
     })
   }
 

@@ -73,6 +73,7 @@ export const BuildingDataViaBookingGroup = `query bookingQuery($id: Int)
     booking_id: id
     date_from: Date_from
     date_to: Date_to
+    max: Rooms
     rooms: Room_ids
   }
 }`;

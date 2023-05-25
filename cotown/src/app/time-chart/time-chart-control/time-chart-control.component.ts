@@ -15,8 +15,8 @@ export class TimeChartControlComponent implements OnChanges {
   @Input() now!: Date;
   @Input() from!: Date;
   @Input() to!: Date;
-  @Input() sel!: number;
-  @Input() rooms!: string[];
+  @Input() sel!: string;
+  @Input() max!: number;
   @Output() onSelectAvailable: EventEmitter<{id: number, Code: string, check: boolean}> = new EventEmitter();
 
   // Timechart header info
@@ -125,22 +125,36 @@ export class TimeChartControlComponent implements OnChanges {
     if (!row.bars || !row.bars.length) {
       return false;
     }
-
     for (const elem of row.bars) {
       if (elem.type === 'available') {
         return true;
       }
     }
-
     return false;
   }
 
   emitRadio(event: MatRadioChange, row: TimeChartRow): void {
-    this.onSelectAvailable.emit({id: row.id, Code: row.code, check: event.value});
+    for (const elemento of this.rows) {
+      elemento.checked = false;
+      if (elemento.id == row.id)
+        elemento.checked = true;
+    }
   }
 
   emitCheck(event: MatCheckboxChange, row: TimeChartRow): void {
-    this.onSelectAvailable.emit({id: row.id, Code: row.code, check: event.checked});
+    row.checked = !row.checked;
+  }
+
+  isCheckable(row: TimeChartRow) {
+    let n = 0;
+    for (const elemento of this.rows) {
+      if (elemento.checked)
+        n = n + 1;
+    }
+    if (n >= this.max) {
+      return row.checked;
+    }
+    return this.isAvailable(row) || row.selected;
   }
 
   private getDay(date: Date): number {

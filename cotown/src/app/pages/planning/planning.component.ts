@@ -54,8 +54,8 @@ export class PlanningComponent {
 
   // Selection params
   private params: Params = {} as Params;
-  private values: any = new Set();
-  public sel: number = 0;
+  public sel: string = '';
+  public max: number = 1;
 
   // Spinner
   public spinnerActive: boolean = false;
@@ -110,7 +110,7 @@ export class PlanningComponent {
     this.route.queryParams.subscribe(async (params) => {
       const { sel, entityId, entity, attribute } = params;
       if (sel) {
-        this.sel = parseInt(sel);
+        this.sel = sel;
       }
       if (entity) {
         this.params.entity = entity;
@@ -147,15 +147,26 @@ export class PlanningComponent {
   closeWindow() {
 
     // Radio
-    if (this.sel == 1) {
-      this.params.value = Array.from(this.values)[0];
-    } else if (this.sel > 1) {
+    if (this.sel == '1') {
+      for (const elemento of this.rows) {
+        if (elemento.checked) {
+          this.params.value = {id: elemento.id, Code: elemento.code};
+          break;
+        }
+      }
+
+    // Check
+    } else  {
       this.params.value = [];
-      for (const elemento of this.values) {
-        this.params.value.push(elemento.Code);
+      for (const elemento of this.rows) {
+        if (elemento.checked) {
+          this.params.value.push(elemento.code);
+        }
       }
     }
 
+    console.log(this.params.value);
+    
     // Check if change
     if (this.selectedResourceFlatTypeId != this.initialResourceFlatTypeId || this.selectedResourcePlaceTypeId != this.initialResourcePlaceTypeId) {
 
@@ -187,7 +198,18 @@ export class PlanningComponent {
 
   }
   
+  // Count selected items
+  countSelected(): number {
 
+    let n = 0;
+    for (const elemento of this.rows) {
+      if (elemento.checked)
+        n = n + 1;
+    }
+    return n;
+
+  }
+  
   // ************************************
   // Move planning
   // ************************************
@@ -247,7 +269,7 @@ export class PlanningComponent {
         }
         this.now = new Date(data.date_from)
         this.rooms = data.rooms;
-        console.log(this.rooms);
+        this.max = data.max;
 
         // Load resources and bookings
         await this.getResourcesAndBookings();
@@ -480,16 +502,16 @@ export class PlanningComponent {
     let auxRow!: TimeChartRow;
 
     // Generate rows
-    console.log(this.resources);
-    console.log(this.rooms);
     for (const r of this.resources) {
       auxRow = new TimeChartRow();
       auxRow.id = r.Resource_id;
       auxRow.code = r.Resource_code;
       auxRow.info = r.Resource_info
       auxRow.style = Constants.types[r.Resource_type];
-      if (this.rooms.includes(r.Resource_code))
+      if (this.rooms.includes(r.Resource_code)) {
+        auxRow.selected = true;
         auxRow.checked = true;
+      }
       auxRows.push(auxRow);
     }
 
@@ -609,7 +631,7 @@ export class PlanningComponent {
   }
 
   get isSelectButtonActive(): boolean {
-    if (this.params && this.params.entityId !== undefined && this.values.size > 0) {
+    if (this.params && this.params.entityId !== undefined && (this.sel == 'n' || this.countSelected() > 0)) {
       return true;
     }
     return false;
@@ -708,29 +730,6 @@ export class PlanningComponent {
     if (this.initDate && this.endDate) {
       this.onDateChange();
     }
-  }
-
-  // Check availability
-  onSelectAvailable(available: {id: number, Code: string, check: any }){
-
-    // Radio button
-    if (available.check == available.Code) {
-      this.values = new Set([available]);
-
-    // Check box
-    } else if (available.check) {
-      this.values.add(available);
-
-    // Uncheck box
-    } else {
-      for (const elemento of this.values) {
-        if (elemento.id == available.id) {
-          this.values.delete(elemento);
-          break;
-        }
-      }
-    }
-    
   }
 
 }

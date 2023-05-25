@@ -2,6 +2,7 @@ export interface GraphQlResponse {
   name: string,
   id: number,
 }
+
 export interface ApolloVariables {
   [key: string]: string | number
 };

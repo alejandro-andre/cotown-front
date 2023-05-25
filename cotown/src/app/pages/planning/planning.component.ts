@@ -73,10 +73,10 @@ export class PlanningComponent {
   public selectedBuildingId: number = -99; // Selected building
   public selectedBuilding: Building = {} as Building;
   public now: Date = new Date(); // Current date
-  public resourceTypes: ResourceType [] = [] as ResourceType []; // Type of resources
-  public resourceTypesFlat: ResourceType [] = [] as ResourceType [];
-  public selectedResouceTypeId = Constants.allStaticNumericValue;
-  public selectedResouceTypeFlatId=  Constants.allStaticNumericValue;
+  public resourcePlaceTypes: ResourceType [] = [] as ResourceType []; // Type of resources
+  public resourceFlatTypes: ResourceType [] = [] as ResourceType [];
+  public selectedResourcePlaceTypeId = Constants.allStaticNumericValue;
+  public selectedResourceFlatTypeId=  Constants.allStaticNumericValue;
   public selectedResourceType: ResourceType = {} as ResourceType;
   public availableResources: string[] = [];
   public initDate!: Date;
@@ -98,8 +98,37 @@ export class PlanningComponent {
     private language: LanguageService,
     private windowRef: WindowRef
   ) {
+    // Current date
     this.now = new Date();
+
+    // Set locale
     this.adapter.setLocale(this.language.lang.substring(0,2));
+  }
+
+  async ngOnInit() {
+
+    // Get cities, buildings and types
+    await this.getCities();
+    await this.getBuildings();
+    await this.getResourceFlatTypes();
+    await this.getResourcePlaceTypes();
+
+    // Get params
+    this.route.queryParams.subscribe(async (params) => {
+      const {  entityId, entity, attribute } = params;
+      if(entity) {
+        this.params.entity = entity;
+      }
+      if(attribute) {
+        this.params.attribute = attribute;
+      }
+      if(entityId) {
+        const entityIdParsed = parseInt(entityId);
+        this.params.entityId = entityIdParsed;
+        this.initData(entityIdParsed);
+      }
+    });
+
   }
 
   cleanBookings() {
@@ -126,7 +155,7 @@ export class PlanningComponent {
         building: this.selectedBuilding.code,
       };
 
-      if (this.selectedResouceTypeId !== Constants.allStaticNumericValue) {
+      if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
         data.place_type = this.selectedResourceType.code;
       }
 
@@ -158,71 +187,6 @@ export class PlanningComponent {
     }
   }
 
-  async initData(bookingId: number) {
-    const variables = {
-      id: bookingId,
-    };
-
-    this.apolloApi.getData(getBuildingDataWithBooking, variables).subscribe( async(res) =>{
-      if(res.data.bookings && res.data.bookings.length) {
-        const data = res.data?.bookings[0];
-        this.selectedBuildingId = parseInt(data.building_id);
-        const finded = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
-
-        if(finded) {
-          this.selectedCity = finded.location.city.id;
-        }
-
-        this.range.setValue({ start: new Date(data.date_from), end: new Date(data.date_to) });
-        this.now = new Date(data.date_from)
-        await this.getResourcesAndBookings();
-        this.onDateChange()
-      }
-    });
-  }
-
-  async getAllBuildings(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.apolloApi.getData(BuildingListQuery).subscribe(res => {
-        this.buildings = res.data.data;
-        resolve();
-      });
-    })
-
-  }
-
-  async getCities(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.apolloApi.getData(CityListQuery).subscribe((result) => {
-        this.cities = result.data.data;
-        resolve();
-      });
-    })
-
-  }
-
-  async ngOnInit() {
-    this.route.queryParams.subscribe(async (params) => {
-      const {  entityId, entity, attribute } = params;
-      await this.getCities();
-      await this.getAllBuildings();
-
-      if(entityId) {
-        const entityIdParsed = parseInt(entityId);
-        this.initData(entityIdParsed);
-        this.params.entityId = entityIdParsed;
-      }
-
-      if(entity) {
-        this.params.entity = entity;
-      }
-
-      if(attribute) {
-        this.params.attribute = attribute;
-      }
-    });
-  }
-
   /**Getters */
   get cityName(): string {
     if (this.selectedCity) {
@@ -249,24 +213,12 @@ export class PlanningComponent {
     return true;
   }
 
-  getResourceType() :void {
-    this.apolloApi.getData(ResourceTypeQuery).subscribe(res => {
-      this.resourceTypes = res.data.data;
-    })
-  }
-
-  getResourceTypeFlat(): void {
-    this.apolloApi.getData(ResourceFlatTypeQuery).subscribe(res => {
-      this.resourceTypesFlat = res.data.data;
-    });
-  }
-
   async applyResourceTypeFilter():Promise<void> {
     // Remove all data
     this.bookings = [];
     this.resources = [];
     const variables = {
-      resourceTypeId: this.selectedResouceTypeId
+      resourceTypeId: this.selectedResourcePlaceTypeId
     };
 
     if (this.selectedBuildingId === Constants.allStaticNumericValue) {
@@ -287,10 +239,10 @@ export class PlanningComponent {
     this.rows = [];
     this.resources = [];
     this.bookings = [];
-    if (this.selectedResouceTypeId === Constants.allStaticNumericValue) { // Dont use filter
+    if (this.selectedResourcePlaceTypeId === Constants.allStaticNumericValue) { // Dont use filter
       this.getResourcesAndBookings();
     } else {
-      const findedResourceType = this.resourceTypes.find((elem:ResourceType) =>elem.id === this.selectedResouceTypeId);
+      const findedResourceType = this.resourcePlaceTypes.find((elem:ResourceType) =>elem.id === this.selectedResourcePlaceTypeId);
       this.selectedResourceType = findedResourceType!;
       this.applyResourceTypeFilter();
     }
@@ -305,17 +257,17 @@ export class PlanningComponent {
     this.bookings = [];
     this.resources = [];
     const variables = {
-      resourceTypeFlatId: this.selectedResouceTypeFlatId
+      resourceTypeFlatId: this.selectedResourceFlatTypeId
     };
 
     // Apply to all buildings
     if (this.selectedBuildingId === Constants.allStaticNumericValue) {
       // There are one type of room selected
-      if (this.selectedResouceTypeId !== Constants.allStaticNumericValue) {
+      if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
 
         const toSend = {
           ...variables,
-          resourceTypeId: this.selectedResouceTypeId
+          resourceTypeId: this.selectedResourcePlaceTypeId
         }
 
         await this.getResourceList(ResourceListByResourceTypeAndFlatQuery, toSend);
@@ -331,10 +283,10 @@ export class PlanningComponent {
         buildingId: this.selectedBuildingId,
       };
 
-      if (this.selectedResouceTypeId !== Constants.allStaticNumericValue) {
+      if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
         const toSend = {
           ...varToSend,
-          resourceTypeId: this.selectedResouceTypeId
+          resourceTypeId: this.selectedResourcePlaceTypeId
         }
 
         await this.getResourceList(ResourceListByBuildingIdAndResourceTypeAndFlatQuery, toSend);
@@ -352,8 +304,8 @@ export class PlanningComponent {
     this.rows = [];
     this.resources = [];
     this.bookings = [];
-    if (this.selectedResouceTypeFlatId === Constants.allStaticNumericValue) { // Dont use filter
-      if(this.selectedResouceTypeId !== Constants.allStaticNumericValue) {
+    if (this.selectedResourceFlatTypeId === Constants.allStaticNumericValue) { // Dont use filter
+      if(this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
         this.applyResourceTypeFilter();
       } else {
         this.getResourcesAndBookings();
@@ -385,33 +337,10 @@ export class PlanningComponent {
     this.selectedBuildingId = -99;
 
     if (this.selectedCity === Constants.allStaticNumericValue) {
-      this.getAllBuildings();
+      this.getBuildings();
     } else {
       this.getBuildingsByCityName();
     }
-  }
-
-  async getResourceList(query: string, variables: ApolloVariables | undefined = undefined): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.apolloApi.getData(query, variables).subscribe((res: any) => {
-        this.getResourceType();
-        this.getResourceTypeFlat();
-        const result = res.data.data;
-        for(const elem of result) {
-
-          const type = elem.resource_type === 'piso' ? elem.flat.code : elem.resource_place_type?.code;
-
-          this.resources.push({
-            Resource_id: elem.id,
-            Resource_code: elem.code,
-            Resource_type: elem.resource_type,
-            Resource_info: type || ''
-          });
-        }
-
-        resolve();
-      });
-    });
   }
 
   async onSelectBulding() {
@@ -420,10 +349,10 @@ export class PlanningComponent {
     this.resources = [];
     this.bookings = [];
 
-    if (this.selectedResouceTypeFlatId === Constants.allStaticNumericValue){
+    if (this.selectedResourceFlatTypeId === Constants.allStaticNumericValue){
       if (
         this.selectedBuildingId === Constants.allStaticNumericValue &&
-        this.selectedResouceTypeId === Constants.allStaticNumericValue
+        this.selectedResourcePlaceTypeId === Constants.allStaticNumericValue
       ) {
         await this.getResourcesAndBookingsOfAllBuildings();
       } else {
@@ -432,7 +361,7 @@ export class PlanningComponent {
           this.selectedBuilding = { ...building };
         }
 
-        if (this.selectedResouceTypeId !== Constants.allStaticNumericValue) {
+        if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
           await this.applyResourceTypeFilter();
         } else {
           await this.getResourcesAndBookings();
@@ -447,81 +376,8 @@ export class PlanningComponent {
     }
   }
 
-  async getResourcesAndBookingsOfAllBuildings() {
-    this.spinnerActive = true;
-    this.resources = [];
-    this.bookings = [];
-    this.rows = [];
-
-    await this.getResourceList(ResourceListQuery);
-    this.getBookings(BookingList);
-  }
-
-  async getResourcesAndBookings(): Promise<void> {
-    this.resources = [];
-    this.bookings = [];
-    this.rows = [];
-
-    if (this.selectedBuildingId === Constants.allStaticNumericValue) {
-      await this.getResourcesAndBookingsOfAllBuildings();
-    } else {
-      const variables = {
-          buildingId: this.selectedBuildingId
-      };
-
-      await this.getResourceList(ResourceListByBuldingIdQuery, variables );
-      this.getBookings(BookingListByBuildingIdQuery, variables);
-    }
-  }
-
   onSelectAvailable(available: { Code: string, id: number }){
     this.params.value = available;
-  }
-
-  getBookings(query: string, variables: ApolloVariables | undefined = undefined): void {
-    this.bookings = [];
-    this.apolloApi.getData(query, variables).subscribe((response: any) => {
-      const bookingList = response.data.data;
-      for (const booking of bookingList) {
-        let age, email, phone, name, code;
-        if (booking.booking && booking.booking.customer) {
-          age = getAge(booking.booking.customer.birth_date);
-          name = booking.booking?.customer.name;
-          phone = booking.booking?.customer.phones;
-          email = booking.booking?.customer.email;
-          code = booking.booking_id
-        }
-
-        if (!booking.booking_id && booking.rooming && booking.group) {
-          email = booking.group.customer.email;
-          phone = booking.group.customer.phones;
-          name = booking.group.customer.name
-          code = `G${booking.group_id}`
-
-          if(booking.room_user && booking.room_user.name !== null) {
-            const aux = `${name} (${booking.room_user.name})`;
-            name = aux;
-          }
-        }
-
-        this.bookings.push({
-          Booking_code: code,
-          Booking_lock: booking.lock,
-          Booking_status: booking.status,
-          Booking_date_from: booking.date_from,
-          Booking_date_to: booking.date_to,
-          Resource_code: booking.resource?.code || '',
-          Customer_name: name || '',
-          Customer_gender: booking.booking?.customer.gender?.code || '',
-          Customer_country: booking.booking?.customer.country?.name || '',
-          Customer_email: email || '',
-          Customer_phone: phone || '',
-          Customer_age: age || '',
-        });
-      }
-
-      this.generateRows();
-    });
   }
 
   goBackward(type: string) {
@@ -544,6 +400,206 @@ export class PlanningComponent {
       this.now = date;
     }
   }
+
+  closeWindow() {
+    const opener = this.windowRef.nativeWindow.opener;
+    if (opener != null) {
+      opener.postMessage(this.params, "*");
+    }
+    this.windowRef.nativeWindow.close();
+  }
+  
+  // ************************************
+  // Get data functions
+  // ************************************
+
+  // Initialize data
+  async initData(bookingId: number) {
+
+    this.apolloApi.getData(getBuildingDataWithBooking, { id: bookingId, }).subscribe( async(res) =>{
+      if(res.data.data && res.data.data.length) {
+        const data = res.data?.data[0];
+
+        // Set filters
+        this.selectedBuildingId = parseInt(data.building_id);
+        this.selectedResourceFlatTypeId = parseInt(data.flat_type_id);
+        this.selectedResourcePlaceTypeId = parseInt(data.place_type_id);
+        this.range.setValue({ start: new Date(data.date_from), end: new Date(data.date_to) });
+        const finded = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
+        if(finded) {
+          this.selectedCity = finded.location.city.id;
+        }
+        this.now = new Date(data.date_from)
+
+        // Load resources and bookings
+        await this.getResourcesAndBookings();
+
+        // Move to current date
+        this.onDateChange()
+      }
+    });
+  }
+
+  // Load all cities
+  async getCities(): Promise<void> {
+
+    return new Promise<void>((resolve) => {
+      this.apolloApi.getData(CityListQuery).subscribe((result) => {
+        this.cities = result.data.data;
+        resolve();
+      });
+    })
+
+  }
+
+  // Get all buildings
+  async getBuildings(): Promise<void> {
+
+    return new Promise<void>((resolve) => {
+      this.apolloApi.getData(BuildingListQuery).subscribe(res => {
+        this.buildings = res.data.data;
+        resolve();
+      });
+    })
+
+  }
+
+  // Get all flat types
+  getResourceFlatTypes(): void {
+
+    this.apolloApi.getData(ResourceFlatTypeQuery).subscribe(res => {
+      this.resourceFlatTypes = res.data.data;
+    });
+
+  }
+
+  // Get all place types
+  getResourcePlaceTypes() :void {
+
+    this.apolloApi.getData(ResourceTypeQuery).subscribe(res => {
+      this.resourcePlaceTypes = res.data.data;
+    })
+
+  }
+
+  // Load all resources and bookings
+  async getResourcesAndBookings(): Promise<void> {
+
+    this.resources = [];
+    this.bookings = [];
+    this.rows = [];
+
+    // All buildings
+    if (this.selectedBuildingId === Constants.allStaticNumericValue) {
+      await this.getResourcesAndBookingsOfAllBuildings();
+
+    // Selected building
+    } else {
+      await this.getResourcesAndBookingsByBuildingId(this.selectedBuildingId);
+    }
+  }
+
+  // Get resources and bookings of all buildings
+  async getResourcesAndBookingsByBuildingId(id: number) {
+    
+    // Clean
+    this.spinnerActive = true;
+    this.resources = [];
+    this.bookings = [];
+    this.rows = [];
+
+    await this.getResourceList(ResourceListByBuldingIdQuery, { buildingId: id });
+    this.getBookings(BookingListByBuildingIdQuery, { buildingId: id });
+  }
+
+  // Get resources and bookings of all buildings
+  async getResourcesAndBookingsOfAllBuildings() {
+
+    // Clean
+    this.spinnerActive = true;
+    this.resources = [];
+    this.bookings = [];
+    this.rows = [];
+
+    await this.getResourceList(ResourceListQuery);
+    this.getBookings(BookingList);
+  }
+
+  // Get resources
+  async getResourceList(query: string, variables: ApolloVariables | undefined = undefined): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.apolloApi.getData(query, variables).subscribe((res: any) => {
+
+        for(const elem of res.data.data) {
+          const type = elem.resource_type === 'piso' ? elem.flat.code : elem.resource_place_type?.code;
+          this.resources.push({
+            Resource_id: elem.id,
+            Resource_code: elem.code,
+            Resource_type: elem.resource_type,
+            Resource_info: type || ''
+          });
+        }
+
+        resolve();
+
+      });
+    });
+  }
+
+  // Get filtered bookings
+  getBookings(query: string, variables: ApolloVariables | undefined = undefined): void {
+    this.bookings = [];
+    this.apolloApi.getData(query, variables).subscribe((response: any) => {
+      for (const booking of response.data.data) {
+        let age, email, phone, name, code;
+
+        // Bookings
+        if (booking.booking && booking.booking.customer) {
+          age = getAge(booking.booking.customer.birth_date);
+          name = booking.booking?.customer.name;
+          phone = booking.booking?.customer.phones;
+          email = booking.booking?.customer.email;
+          code = booking.booking_id
+        }
+
+        // Group bookings
+        if (!booking.booking_id && booking.rooming && booking.group) {
+          email = booking.group.customer.email;
+          phone = booking.group.customer.phones;
+          name = booking.group.customer.name
+          code = `G${booking.group_id}`
+          if(booking.room_user && booking.room_user.name !== null) {
+            const aux = `${name} (${booking.room_user.name})`;
+            name = aux;
+          }
+        }
+
+        // Store each booking
+        this.bookings.push({
+          Booking_code: code,
+          Booking_lock: booking.lock,
+          Booking_status: booking.status,
+          Booking_date_from: booking.date_from,
+          Booking_date_to: booking.date_to,
+          Resource_code: booking.resource?.code || '',
+          Customer_name: name || '',
+          Customer_gender: booking.booking?.customer.gender?.code || '',
+          Customer_country: booking.booking?.customer.country?.name || '',
+          Customer_email: email || '',
+          Customer_phone: phone || '',
+          Customer_age: age || '',
+        });
+      }
+
+      // Generate planning rows
+      this.generateRows();
+
+    });
+  }
+
+  // ************************************
+  // Planning functions
+  // ************************************
 
   // Generate rows for the time chart
   generateRows() {
@@ -665,12 +721,4 @@ export class PlanningComponent {
     return consolidatedIntervals;
   }
 
-  closeWindow() {
-    const opener = this.windowRef.nativeWindow.opener;
-    if (opener != null) {
-      opener.postMessage(this.params, "*");
-    }
-    this.windowRef.nativeWindow.close();
-  }
-  
 }

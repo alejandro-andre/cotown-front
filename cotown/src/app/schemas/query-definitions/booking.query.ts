@@ -459,11 +459,13 @@ export const BookingList = `query BookingList
 
 export const getBuildingDataWithBooking = `query bookingQuery($id: Int)
 {
-  bookings: Booking_BookingList(where:{ id: { EQ: $id } }) {
+  data: Booking_BookingList(where:{ id: { EQ: $id } }) {
     building_id: Building_id
     booking_id: id
     date_from: Date_from
     date_to: Date_to
+    flat_type_id: Flat_type_id
+    place_type_id: Place_type_id
     lock: Lock
  }
 }`;

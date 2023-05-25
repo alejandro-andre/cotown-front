@@ -3,7 +3,7 @@
     <mat-sidenav
       id="snav"
       #snav
-      [opened]="mobileQuery.matches ? false: true"
+      [opened]="isMenuOpened"
       [mode]="mobileQuery.matches ? 'over' : 'side'"
       [fixedInViewport]="mobileQuery.matches"
     >
@@ -32,13 +32,11 @@
         </button>
       </div>
 
-      <div style="padding: 10px; height: 100%;" *ngIf="!isLoading">
-        <router-outlet></router-outlet>
+      <div style="padding: 10px; height: 100%;">
+        <router-outlet   *ngIf="!isLoading"></router-outlet>
+          <app-spinner-control  *ngIf="isLoading"></app-spinner-control>
       </div>
 
-      <div *ngIf="isLoading">
-        Loading ...
-      </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

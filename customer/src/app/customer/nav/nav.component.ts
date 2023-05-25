@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/auth/service/auth.service';
 import { Constants } from 'src/app/constants/Constants';
 import { Nav } from 'src/app/constants/Interface';
 
@@ -17,7 +18,10 @@ export class NavComponent implements OnInit{
   public TUTOR = Constants.TUTOR;
   public selected: string = '';
 
-  constructor(private _router: Router) {}
+  constructor(
+    private _router: Router,
+    private _authService: AuthService,
+  ) {}
 
   ngOnInit(): void {
     if (this.showTutor) {
@@ -40,8 +44,12 @@ export class NavComponent implements OnInit{
   }
 
   onSelect(data: string) {
-    this.selected = data;
-    this._router.navigate([`${data}`]);
+    if (data !== Constants.LOG_OUT.url) {
+      this.selected = data;
+      this._router.navigate([`${data}`]);
+    } else {
+      this.logout();
+    }
   }
 
   get navUrls (): Nav[] {
@@ -50,5 +58,9 @@ export class NavComponent implements OnInit{
     }else {
       return this.urls.filter((elem) => elem.name !== Constants.TUTOR.name);
     }
+  }
+
+  public logout(): void {
+    this._authService.logout();
   }
 }

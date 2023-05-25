@@ -37,12 +37,12 @@ export class AuthService {
 
   public logout() : void {
     this.loggedIn = false;
-    this.keycloakService.logout(window.location.origin).then(() => {
+    this.keycloakService.logout(window.location.origin + '/customer').then(() => {
       console.log("Logged out");
     })
     .catch(error => {
       console.error(error);
-    });;
+    });
   }
 
   public getRoles(): string[] {

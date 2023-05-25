@@ -3,16 +3,22 @@ import { Nav } from "./Interface";
 export class Constants {
   //APP SETTINGS
   public static defaultBaseLanguageForTranslation = 'en';
+
+  public static SPANISH =     {
+    id: 'es',
+    name: 'Español',
+  };
+
+  public static ENGISH = {
+    id: 'en',
+    name: 'English'
+  }
+
   public static ARRAY_OF_LANGUAGES = [
-    {
-      id: 'es',
-      name: 'Español',
-    },
-    {
-      id: 'en',
-      name: 'English'
-    }
-  ]
+    this.SPANISH,
+    this.ENGISH
+  ];
+
 
   // REST OF VARIABLES
   public static DATA: Nav = {
@@ -44,6 +50,11 @@ export class Constants {
     name: 'myInvoices',
     url: 'invoices'
   };
+
+  public static LOG_OUT: Nav = {
+    name: 'logout',
+    url: 'logout'
+  }
 
   public static DOCUMENT_TYPE_FRONT = 'Document';
   public static DOCUMENT_TYPE_BACK = 'Document_back';
@@ -150,5 +161,6 @@ export class Constants {
     Constants.DOCUMENTS,
     Constants.BOOKINGS,
     Constants.INVOICES,
+    Constants.LOG_OUT
   ];
 };

@@ -190,7 +190,7 @@ export const UPDATE_CUSTOMER = `
     $schoolOrCompany: Int,
     $bankAcount: String
     $appLang: Auxiliar_LangEnumType){
-  Customer_CustomerUpdate(
+  update: Customer_CustomerUpdate(
     where:{ id: {EQ: $id} }
     entity:{
       Name:$name

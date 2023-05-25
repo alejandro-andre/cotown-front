@@ -7,6 +7,7 @@ export interface Nav {
 
 export interface BasicResponse {
   name?: string,
+  name_en?: string,
   id: number,
   code?: string
 };

@@ -90,6 +90,6 @@ export class MyBookingsComponent {
 
   clickedRow(row: any) {
     const id = row.id;
-    this.router.navigate(['customer/booking-detail', id])
+    this.router.navigate(['/booking-detail', id])
   }
 }

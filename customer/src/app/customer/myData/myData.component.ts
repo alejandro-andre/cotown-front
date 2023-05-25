@@ -1,5 +1,8 @@
 // Core
 import { Component } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+
 //Service
 import { CountryService } from 'src/app/services/country.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -7,15 +10,15 @@ import { GenderService } from 'src/app/services/gender.service';
 import { LanguageService } from 'src/app/services/languages.service';
 import { IdentificationDocTypesService } from 'src/app/services/identificationDocTypes.service';
 import { schoolOrCompaniesService } from 'src/app/services/schoolOrCompanies.service';
+import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
+import { AxiosApi } from 'src/app/services/axios-api.service';
+import { ModalService } from 'src/app/services/modal.service';
+
+// Constants and interfaces
+import { Constants } from 'src/app/constants/Constants';
 import { BasicResponse, PayloadFile } from 'src/app/constants/Interface';
 import { Customer } from 'src/app/models/Customer.model';
-import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
 import { UPDATE_CUSTOMER, UPLOAD_CUSTOMER_PHOTO } from 'src/app/schemas/query-definitions/customer.query';
-import { TranslateService } from '@ngx-translate/core';
-import { Constants } from 'src/app/constants/Constants';
-import { AxiosApi } from 'src/app/services/axios-api.service';
-import { FormControl, Validators } from '@angular/forms';
-import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'app-my-data',

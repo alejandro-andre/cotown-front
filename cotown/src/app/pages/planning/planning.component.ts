@@ -105,6 +105,7 @@ export class PlanningComponent {
     this.adapter.setLocale(this.language.lang.substring(0,2));
   }
 
+  // On Init
   async ngOnInit() {
 
     // Get cities, buildings and types
@@ -143,242 +144,19 @@ export class PlanningComponent {
     this.bookings = JSON.parse(JSON.stringify(newBookings));
   }
 
-  onDateChange() {
-    if (this.range.valid && this.range.value &&this.range.value.start && this.range.value.end ) {
-      this.cleanBookings();
-      this.initDate = new Date(this.range.value.start);
-      this.endDate = new Date(this.range.value.end);
-
-      const data: AvailabilityPayload = {
-        date_from: formatDate(this.initDate),
-        date_to: formatDate(this.endDate),
-        building: this.selectedBuilding.code,
-      };
-
-      if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
-        data.place_type = this.selectedResourceType.code;
-      }
-
-      axiosApi.getAvailability(data, this.apolloApi.token).then((resp) => {
-        this.availableResources = resp.data;
-        this.rows = [];
-        for(const available of this.availableResources) {
-          const finded: number = this.bookings.findIndex((elem: Booking) => elem.Resource_code === available);
-          if(finded >= 0){
-            this.bookings.push({
-              ...this.bookings[finded],
-              Booking_status: Constants.availableStatus,
-              Booking_date_to: data.date_to,
-              Booking_date_from: data.date_from,
-            });
-          } else {
-            this.bookings.push({
-              Resource_code: available,
-              Booking_status: Constants.availableStatus,
-              Booking_date_to: data.date_to,
-              Booking_date_from: data.date_from,
-
-            });
-          }
-        }
-
-        this.generateRows();
-      })
+  // Send selection to opener
+  closeWindow() {
+    const opener = this.windowRef.nativeWindow.opener;
+    if (opener != null) {
+      opener.postMessage(this.params, "*");
     }
+    this.windowRef.nativeWindow.close();
   }
+  
 
-  /**Getters */
-  get cityName(): string {
-    if (this.selectedCity) {
-      const finded = this.cities.find((cit) => cit.id === this.selectedCity);
-      return finded ? finded.name : ''
-    }
-
-    return '';
-  }
-
-  get isSelectButtonActive(): boolean {
-    if(this.params && this.params.entityId !== undefined && this.params.value !== undefined) {
-      return true;
-    }
-
-    return false;
-  }
-
-  get isSelectButtonVisible(): boolean {
-    if(this.params && this.params.entityId === undefined) {
-      return false;
-    }
-
-    return true;
-  }
-
-  async applyResourceTypeFilter():Promise<void> {
-    // Remove all data
-    this.bookings = [];
-    this.resources = [];
-    const variables = {
-      resourceTypeId: this.selectedResourcePlaceTypeId
-    };
-
-    if (this.selectedBuildingId === Constants.allStaticNumericValue) {
-      await this.getResourceList(ResourceListByResourceTypeQuery, variables);
-      this.getBookings(BookingListByResourceTypeQuery, variables);
-    } else {
-      const varToSend = {
-        ...variables,
-        buildingId: this.selectedBuildingId,
-      }
-      await this.getResourceList(ResourceListByBuildingIdAndResourceTypeQuery, varToSend);
-      this.getBookings(BookingListByBuildingIdAndResourceTypeQuery, varToSend);
-    }
-  }
-
-  onSelectResourceType(): void {
-    this.spinnerActive = true;
-    this.rows = [];
-    this.resources = [];
-    this.bookings = [];
-    if (this.selectedResourcePlaceTypeId === Constants.allStaticNumericValue) { // Dont use filter
-      this.getResourcesAndBookings();
-    } else {
-      const findedResourceType = this.resourcePlaceTypes.find((elem:ResourceType) =>elem.id === this.selectedResourcePlaceTypeId);
-      this.selectedResourceType = findedResourceType!;
-      this.applyResourceTypeFilter();
-    }
-
-    if (this.initDate && this.endDate) {
-      this.onDateChange();
-    }
-  }
-
-  async applyResourceTypeFlatFilter():Promise<void> {
-    // Remove all data
-    this.bookings = [];
-    this.resources = [];
-    const variables = {
-      resourceTypeFlatId: this.selectedResourceFlatTypeId
-    };
-
-    // Apply to all buildings
-    if (this.selectedBuildingId === Constants.allStaticNumericValue) {
-      // There are one type of room selected
-      if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
-
-        const toSend = {
-          ...variables,
-          resourceTypeId: this.selectedResourcePlaceTypeId
-        }
-
-        await this.getResourceList(ResourceListByResourceTypeAndFlatQuery, toSend);
-        this.getBookings(BookingListByResourceTypeAndFlatQuery, variables);
-
-      } else { // No type of room selected
-        await this.getResourceList(ResourceListByResourceFlatTypeQuery, variables);
-        this.getBookings(BookingListByResourceTypeFlatQuery, variables);
-      }
-    } else { // building selected
-      const varToSend = {
-        ...variables,
-        buildingId: this.selectedBuildingId,
-      };
-
-      if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
-        const toSend = {
-          ...varToSend,
-          resourceTypeId: this.selectedResourcePlaceTypeId
-        }
-
-        await this.getResourceList(ResourceListByBuildingIdAndResourceTypeAndFlatQuery, toSend);
-        this.getBookings(BookingListByBuildingIdAndResourceAndFlatTypeQuery, toSend);
-      } else {
-
-        await this.getResourceList(ResourceListByBuildingIdAndResourceFlatTypeQuery, varToSend);
-        this.getBookings(BookingListByBuildingIdAndResourceFlatTypeQuery, varToSend);
-      }
-    }
-  }
-
-  onSelectResourceTypeFlat(): void {
-    this.spinnerActive = true;
-    this.rows = [];
-    this.resources = [];
-    this.bookings = [];
-    if (this.selectedResourceFlatTypeId === Constants.allStaticNumericValue) { // Dont use filter
-      if(this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
-        this.applyResourceTypeFilter();
-      } else {
-        this.getResourcesAndBookings();
-      }
-
-    } else {
-      this.applyResourceTypeFlatFilter();
-    }
-
-    if (this.initDate && this.endDate) {
-      this.onDateChange();
-    }
-  }
-
-  getBuildingsByCityName():void {
-    const variables = {
-      cityName: this.cityName
-    };
-
-    this.apolloApi.getData(BuildingListByCityNameQuery, variables).subscribe(res => {
-      this.buildings = res.data.data;
-    });
-  }
-
-  onSelectCity():void {
-    this.rows = [];
-    this.resources = [];
-    this.bookings = [];
-    this.selectedBuildingId = -99;
-
-    if (this.selectedCity === Constants.allStaticNumericValue) {
-      this.getBuildings();
-    } else {
-      this.getBuildingsByCityName();
-    }
-  }
-
-  async onSelectBulding() {
-    this.spinnerActive = true;
-    this.rows = [];
-    this.resources = [];
-    this.bookings = [];
-
-    if (this.selectedResourceFlatTypeId === Constants.allStaticNumericValue){
-      if (
-        this.selectedBuildingId === Constants.allStaticNumericValue &&
-        this.selectedResourcePlaceTypeId === Constants.allStaticNumericValue
-      ) {
-        await this.getResourcesAndBookingsOfAllBuildings();
-      } else {
-        const building = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
-        if (building) {
-          this.selectedBuilding = { ...building };
-        }
-
-        if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
-          await this.applyResourceTypeFilter();
-        } else {
-          await this.getResourcesAndBookings();
-        }
-      }
-    } else {
-      this.applyResourceTypeFlatFilter();
-    }
-
-    if (this.initDate && this.endDate) {
-      this.onDateChange();
-    }
-  }
-
-  onSelectAvailable(available: { Code: string, id: number }){
-    this.params.value = available;
-  }
+  // ************************************
+  // Move planning
+  // ************************************
 
   goBackward(type: string) {
     if(type === 'week'){
@@ -390,7 +168,6 @@ export class PlanningComponent {
     }
   }
 
-  // Go 1 week forward
   goForward(type: string) {
     if(type === 'week') {
       const date = new Date(this.now.getTime() + (1000*60*60*24*7));
@@ -401,14 +178,6 @@ export class PlanningComponent {
     }
   }
 
-  closeWindow() {
-    const opener = this.windowRef.nativeWindow.opener;
-    if (opener != null) {
-      opener.postMessage(this.params, "*");
-    }
-    this.windowRef.nativeWindow.close();
-  }
-  
   // ************************************
   // Get data functions
   // ************************************
@@ -461,6 +230,16 @@ export class PlanningComponent {
         resolve();
       });
     })
+
+  }
+
+  // Get city buildings
+  getBuildingsByCityName():void {
+
+    const variables = { cityName: this.cityName };
+    this.apolloApi.getData(BuildingListByCityNameQuery, variables).subscribe(res => {
+      this.buildings = res.data.data;
+    });
 
   }
 
@@ -597,6 +376,74 @@ export class PlanningComponent {
     });
   }
 
+  async applyResourcePlaceTypeFilter():Promise<void> {
+    // Remove all data
+    this.bookings = [];
+    this.resources = [];
+    const variables = {
+      resourceTypeId: this.selectedResourcePlaceTypeId
+    };
+
+    if (this.selectedBuildingId === Constants.allStaticNumericValue) {
+      await this.getResourceList(ResourceListByResourceTypeQuery, variables);
+      this.getBookings(BookingListByResourceTypeQuery, variables);
+    } else {
+      const varToSend = {
+        ...variables,
+        buildingId: this.selectedBuildingId,
+      }
+      await this.getResourceList(ResourceListByBuildingIdAndResourceTypeQuery, varToSend);
+      this.getBookings(BookingListByBuildingIdAndResourceTypeQuery, varToSend);
+    }
+  }
+
+  async applyResourceTypeFlatFilter():Promise<void> {
+    // Remove all data
+    this.bookings = [];
+    this.resources = [];
+    const variables = {
+      resourceTypeFlatId: this.selectedResourceFlatTypeId
+    };
+
+    // Apply to all buildings
+    if (this.selectedBuildingId === Constants.allStaticNumericValue) {
+      // There are one type of room selected
+      if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
+
+        const toSend = {
+          ...variables,
+          resourceTypeId: this.selectedResourcePlaceTypeId
+        }
+
+        await this.getResourceList(ResourceListByResourceTypeAndFlatQuery, toSend);
+        this.getBookings(BookingListByResourceTypeAndFlatQuery, variables);
+
+      } else { // No type of room selected
+        await this.getResourceList(ResourceListByResourceFlatTypeQuery, variables);
+        this.getBookings(BookingListByResourceTypeFlatQuery, variables);
+      }
+    } else { // building selected
+      const varToSend = {
+        ...variables,
+        buildingId: this.selectedBuildingId,
+      };
+
+      if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
+        const toSend = {
+          ...varToSend,
+          resourceTypeId: this.selectedResourcePlaceTypeId
+        }
+
+        await this.getResourceList(ResourceListByBuildingIdAndResourceTypeAndFlatQuery, toSend);
+        this.getBookings(BookingListByBuildingIdAndResourceAndFlatTypeQuery, toSend);
+      } else {
+
+        await this.getResourceList(ResourceListByBuildingIdAndResourceFlatTypeQuery, varToSend);
+        this.getBookings(BookingListByBuildingIdAndResourceFlatTypeQuery, varToSend);
+      }
+    }
+  }
+
   // ************************************
   // Planning functions
   // ************************************
@@ -719,6 +566,195 @@ export class PlanningComponent {
     // Add last interval to list and return
     consolidatedIntervals.push(currentInterval);
     return consolidatedIntervals;
+  }
+
+  // ************************************
+  // Getters
+  // ************************************
+
+  get cityName(): string {
+    if (this.selectedCity) {
+      const finded = this.cities.find((cit) => cit.id === this.selectedCity);
+      return finded ? finded.name : ''
+    }
+    return '';
+  }
+
+  get isSelectButtonActive(): boolean {
+    if(this.params && this.params.entityId !== undefined && this.params.value !== undefined) {
+      return true;
+    }
+    return false;
+  }
+
+  get isSelectButtonVisible(): boolean {
+    if(this.params && this.params.entityId === undefined) {
+      return false;
+    }
+    return true;
+  }
+
+  // ************************************
+  // Event handlers
+  // ************************************
+
+  // Date range change
+  onDateChange() {
+
+    if (this.range.valid && this.range.value &&this.range.value.start && this.range.value.end ) {
+
+      // Clean
+      this.cleanBookings();
+      this.initDate = new Date(this.range.value.start);
+      this.endDate = new Date(this.range.value.end);
+
+      // Availability payload
+      const data: AvailabilityPayload = {
+        date_from: formatDate(this.initDate),
+        date_to: formatDate(this.endDate),
+        building: this.selectedBuilding.code,
+      };
+      if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
+        data.place_type = this.selectedResourceType.code;
+      }
+
+      // Get availability
+      axiosApi.getAvailability(data, this.apolloApi.token).then((resp) => {
+        this.availableResources = resp.data;
+        this.rows = [];
+        for(const available of this.availableResources) {
+          const finded: number = this.bookings.findIndex((elem: Booking) => elem.Resource_code === available);
+          if(finded >= 0){
+            this.bookings.push({
+              ...this.bookings[finded],
+              Booking_status: Constants.availableStatus,
+              Booking_date_to: data.date_to,
+              Booking_date_from: data.date_from,
+            });
+          } else {
+            this.bookings.push({
+              Resource_code: available,
+              Booking_status: Constants.availableStatus,
+              Booking_date_to: data.date_to,
+              Booking_date_from: data.date_from,
+            });
+          }
+        }
+
+        // Generate planning
+        this.generateRows();
+      })
+    }
+
+  }
+
+  // City change
+  onSelectCity():void {
+
+    // Clean
+    this.rows = [];
+    this.resources = [];
+    this.bookings = [];
+    this.selectedBuildingId = -99;
+
+    // Filter
+    if (this.selectedCity === Constants.allStaticNumericValue) {
+      this.getBuildings();
+    } else {
+      this.getBuildingsByCityName();
+    }
+  }
+
+  // Building change
+  async onSelectBulding() {
+
+    // Clean
+    this.spinnerActive = true;
+    this.rows = [];
+    this.resources = [];
+    this.bookings = [];
+
+    // Filter
+    if (this.selectedResourceFlatTypeId === Constants.allStaticNumericValue){
+      if (
+        this.selectedBuildingId === Constants.allStaticNumericValue &&
+        this.selectedResourcePlaceTypeId === Constants.allStaticNumericValue
+      ) {
+        await this.getResourcesAndBookingsOfAllBuildings();
+      } else {
+        const building = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
+        if (building) {
+          this.selectedBuilding = { ...building };
+        }
+        if (this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
+          await this.applyResourcePlaceTypeFilter();
+        } else {
+          await this.getResourcesAndBookings();
+        }
+      }
+    } else {
+      this.applyResourceTypeFlatFilter();
+    }
+
+    // Move to date
+    if (this.initDate && this.endDate) {
+      this.onDateChange();
+    }
+  }
+
+  // Flat type change
+  onSelectResourceTypeFlat(): void {
+
+    // Clean
+    this.spinnerActive = true;
+    this.rows = [];
+    this.resources = [];
+    this.bookings = [];
+
+    // Filter
+    if (this.selectedResourceFlatTypeId === Constants.allStaticNumericValue) { // Dont use filter
+      if(this.selectedResourcePlaceTypeId !== Constants.allStaticNumericValue) {
+        this.applyResourcePlaceTypeFilter();
+      } else {
+        this.getResourcesAndBookings();
+      }
+    } else {
+      this.applyResourceTypeFlatFilter();
+    }
+
+    // Move to date
+    if (this.initDate && this.endDate) {
+      this.onDateChange();
+    }
+  }
+
+  // Place type change
+  onSelectResourcePlaceType(): void {
+
+    // Clean
+    this.spinnerActive = true;
+    this.rows = [];
+    this.resources = [];
+    this.bookings = [];
+
+    // Filter
+    if (this.selectedResourcePlaceTypeId === Constants.allStaticNumericValue) { // Dont use filter
+      this.getResourcesAndBookings();
+    } else {
+      const findedResourceType = this.resourcePlaceTypes.find((elem:ResourceType) =>elem.id === this.selectedResourcePlaceTypeId);
+      this.selectedResourceType = findedResourceType!;
+      this.applyResourcePlaceTypeFilter();
+    }
+
+    // Move to date
+    if (this.initDate && this.endDate) {
+      this.onDateChange();
+    }
+  }
+
+  // Check availability
+  onSelectAvailable(available: { Code: string, id: number }){
+    this.params.value = available;
   }
 
 }

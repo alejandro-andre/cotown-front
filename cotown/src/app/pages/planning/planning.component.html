@@ -62,7 +62,7 @@
 				<mat-select
           			[(ngModel)]="selectedResourcePlaceTypeId"
           			name="resourcesPlaceTypes"
-          			(selectionChange)="onSelectResourceType()"
+          			(selectionChange)="onSelectResourcePlaceType()"
 					[disabled]="!selectedBuildingId || selectedBuildingId === -99">
 				<mat-option  [value]="-1">{{ 'allM' | translate }}</mat-option>
 					<mat-option

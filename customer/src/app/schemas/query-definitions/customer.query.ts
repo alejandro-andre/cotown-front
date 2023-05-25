@@ -214,7 +214,6 @@ export const UPDATE_CUSTOMER = `
     }){id}
 }`;
 
-
 export const UPLOAD_CUSTOMER_DOCUMENT = `mutation ($id: Int! $bill: Models_DocumentTypeInputType) {
   data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
     entity: {
@@ -230,8 +229,6 @@ export const UPLOAD_CUSTOMER_DOCUMENT_BACK = `mutation ($id: Int! $bill: Models_
     }
   ){ id }
 }`;
-
-
 
 export const UPLOAD_CUSTOMER_PHOTO = `mutation ($id: Int! $bill: Models_DocumentTypeInputType) {
   data: Customer_CustomerUpdate ( where: { id: {EQ: $id} }
@@ -249,7 +246,6 @@ export const UPLOAD_CUSTOMER_PHOTO = `mutation ($id: Int! $bill: Models_Document
   }
 }`;
 
-
 export const UPDATE_EXPERITY_DATE = `
 mutation ($id: Int, $value: String){
   Customer_Customer_docUpdate(
@@ -257,9 +253,7 @@ mutation ($id: Int, $value: String){
     entity: {
       Expiry_date: $value
     }
-  ){
-    id,
-  }
+  ){ id }
 }`;
 
 export const USER_ID = `query user_id {

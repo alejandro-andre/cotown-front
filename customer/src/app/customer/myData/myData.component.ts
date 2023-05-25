@@ -14,6 +14,9 @@ import { UPDATE_CUSTOMER, UPLOAD_CUSTOMER_PHOTO } from 'src/app/schemas/query-de
 import { TranslateService } from '@ngx-translate/core';
 import { Constants } from 'src/app/constants/Constants';
 import { AxiosApi } from 'src/app/services/axios-api.service';
+import { FormControl, Validators } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-my-data',
@@ -31,13 +34,29 @@ export class MyDataComponent{
     private schoolOrCompaniesService: schoolOrCompaniesService,
     private apollo: ApoloQueryApi,
     private translate: TranslateService,
-    private axiosApi: AxiosApi
-  ) {}
+    private axiosApi: AxiosApi,
+    public matDialog: MatDialog
+  ) {
+  }
 
   public appLangs = Constants.ARRAY_OF_LANGUAGES;
   public saveActiveButton: boolean = false;
   public image!: File;
   public isLoading = false;
+
+  public dniFormControl = new FormControl('', [
+    Validators.pattern('\d{8}[a-z A-Z]/')
+  ]);
+
+  openModal(body: { title: string, message: string }) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.id = "modal-component";
+    dialogConfig.height = "300px";
+    dialogConfig.width = "500px";
+    dialogConfig.data = body;
+    const modalDialog = this.matDialog.open(ModalComponent, dialogConfig);
+  }
 
   /**
   * Getters
@@ -149,6 +168,9 @@ export class MyDataComponent{
     this.translate.use(this.customer.appLang);
   }
 
+  validateDoc() {
+  }
+
   save() {
     this.isLoading = true;
     const variables: any = {
@@ -164,10 +186,34 @@ export class MyDataComponent{
         this.isLoading = false;
       } else {
         // something wrong
+        this.isLoading = false;
+        const body = {
+          title: 'Error',
+          message: 'uknownError'
+        };
+
+        this.openModal(body);
       }
     }, (err) =>{
       // Apollo error !!
-      console.log(err, err.getMessage())
+      const message = err.message.split('!!!');
+      const bodyToSend = {
+        title: 'Error',
+        message: 'uknownError'
+      };
+
+      if (message && message.length && message.length >= 3) {
+        const english = message[1];
+        const spanish = message[2];
+        if (this.customer.appLang === Constants.SPANISH.id) {
+          bodyToSend.message = spanish;
+        } else {
+          bodyToSend.message = english;
+        }
+      }
+
+      this.isLoading = false;
+      this.openModal(bodyToSend);
     })
   }
 

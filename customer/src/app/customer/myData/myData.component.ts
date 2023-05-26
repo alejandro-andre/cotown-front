@@ -145,11 +145,7 @@ export class MyDataComponent{
 
   // Return if the button is or not disabled
   get isButtonDisabled(): boolean {
-    if(Object.values(this.visibility).filter((elem) => elem === false).length > 0 || this.saveActiveButton){
-      return false;
-    };
-
-    return true
+    return !this.saveActiveButton;
   }
 
   /**
@@ -158,10 +154,15 @@ export class MyDataComponent{
 
   activeButton() {
     this.saveActiveButton = true;
+  }
+
+  changeLang() {
     this.translate.use(this.customer.appLang);
+    this.activeButton();
   }
 
   validateDoc() {
+    this.activeButton();
   }
 
   save() {
@@ -179,6 +180,7 @@ export class MyDataComponent{
         if (val && val.update && val.update.length) {
           this.customerService.setVisibility();
           this.isLoading = false;
+          this.saveActiveButton = false;
         } else {
           // something wrong
           this.isLoading = false;
@@ -191,7 +193,7 @@ export class MyDataComponent{
         }
     }, (err) =>{
       // Apollo error !!
-      const bodyToSend = formatErrorBody(err, this.customer.appLang)
+      const bodyToSend = formatErrorBody(err, this.customer.appLang);
       this.isLoading = false;
       this.modalService.openModal(bodyToSend);
     })

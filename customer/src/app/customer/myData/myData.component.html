@@ -9,7 +9,7 @@
         <mat-label>{{ 'language' | translate }}</mat-label>
         <mat-select
           [(ngModel)]="customerService.customer.appLang"
-          (selectionChange)="activeButton()"
+          (selectionChange)="changeLang()"
         >
           <mat-option *ngFor="let lang of appLangs" [value]="lang.id">
             {{ lang.name }}
@@ -42,6 +42,7 @@
           matInput
           [readonly]="visibility['name']"
           [(ngModel)]="customerService.customer.name"
+          (change)="activeButton()"
         >
       </mat-form-field>
 
@@ -52,7 +53,7 @@
         *ngIf="!visibility['typeDoc']"
       >
         <mat-label>{{ 'documentType' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customerService.customer.typeDoc">
+        <mat-select [(ngModel)]="customerService.customer.typeDoc" (selectionChange)="activeButton()">
           <mat-option *ngFor="let doc of identificationTypes" [value]="doc.id">
             {{ isSpanish ? doc.name : doc.name_en  }}
           </mat-option>
@@ -69,7 +70,7 @@
         <input
           matInput
           [readonly]="visibility['document']"
-          (blur)="validateDoc()"
+          (change)="validateDoc()"
           [(ngModel)]="customerService.customer.document"
           [disabled]="customerService.customer.typeDoc === null"
         >
@@ -92,6 +93,7 @@
             [readonly]="visibility['phone']"
             matInput placeholder="{{'phone' | translate}}"
             [(ngModel)]="customerService.customer.phone"
+            (change)="activeButton()"
           >
         </mat-form-field>
       </p>
@@ -103,6 +105,7 @@
             [readonly]="visibility['address']"
             placeholder="{{'address' | translate}}"
             [(ngModel)]="customerService.customer.address"
+            (change)="activeButton()"
           >
         </mat-form-field>
 
@@ -113,6 +116,7 @@
             [readonly]="visibility['postalCode']"
             placeholder="{{'postalCode' | translate}}"
             [(ngModel)]="customerService.customer.postalCode"
+            (change)="activeButton()"
           >
         </mat-form-field>
 
@@ -123,6 +127,7 @@
             [readonly]="visibility['city']"
             placeholder="{{'city' | translate}}"
             [(ngModel)]="customerService.customer.city"
+            (change)="activeButton()"
           >
         </mat-form-field>
 
@@ -132,6 +137,7 @@
             matInput
             [readonly]="visibility['province']"
             placeholder="{{'province' | translate}}"
+            (change)="activeButton()"
             [(ngModel)]="customerService.customer.province"
           >
         </mat-form-field>
@@ -153,7 +159,7 @@
           style="margin-right: 10px;"
         >
           <mat-label>{{ 'country' | translate }}</mat-label>
-          <mat-select [(ngModel)]="customerService.customer.country">
+          <mat-select [(ngModel)]="customerService.customer.country" (selectionChange)="activeButton()">
             <mat-option *ngFor="let country of countries" [value]="country.id">
               {{ isSpanish ? country.name : country.name_en }}
             </mat-option>
@@ -180,7 +186,7 @@
           style="margin-right: 10px;"
         >
           <mat-label>{{ 'gender' | translate }}</mat-label>
-          <mat-select [(ngModel)]="customerService.customer.genderId">
+          <mat-select [(ngModel)]="customerService.customer.genderId" (selectionChange)="activeButton()">
             <mat-option *ngFor="let gender of genders" [value]="gender.id">
               {{ isSpanish ? gender.name : gender.name_en  }}
             </mat-option>
@@ -204,7 +210,7 @@
           style="margin-right: 10px;"
         >
           <mat-label>{{ 'countryOfOrigin' | translate }}</mat-label>
-          <mat-select [(ngModel)]="customerService.customer.originId">
+          <mat-select [(ngModel)]="customerService.customer.originId" (selectionChange)="activeButton()">
             <mat-option *ngFor="let country of countries" [value]="country.id">
               {{ isSpanish ? country.name : country.name_en }}
             </mat-option>
@@ -228,7 +234,7 @@
           style="margin-right: 10px;"
         >
           <mat-label>{{ 'language' | translate }}</mat-label>
-          <mat-select [(ngModel)]="customerService.customer.languageId">
+          <mat-select [(ngModel)]="customerService.customer.languageId" (selectionChange)="activeButton()">
             <mat-option *ngFor="let lang of languages" [value]="lang.id">
               {{ isSpanish ? lang.name : lang.name_en }}
             </mat-option>
@@ -253,7 +259,7 @@
           style="margin-right: 10px;"
         >
           <mat-label>{{ 'nationality' | translate}}</mat-label>
-          <mat-select [(ngModel)]="customerService.customer.nationality">
+          <mat-select [(ngModel)]="customerService.customer.nationality" (selectionChange)="activeButton()">
             <mat-option *ngFor="let country of countries" [value]="country.id">
               {{ isSpanish ? country.name : country.name_en }}
             </mat-option>
@@ -279,6 +285,7 @@
             matInput
             [matDatepicker]="picker"
             [formControl]="customerService.customer.formControl"
+            (dateInput)="activeButton()"
           >
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
@@ -302,7 +309,7 @@
           style="margin-right: 10px;"
         >
           <mat-label>{{ 'school/company' | translate }}</mat-label>
-          <mat-select [(ngModel)]="customerService.customer.schoolOrCompany">
+          <mat-select [(ngModel)]="customerService.customer.schoolOrCompany" (selectionChange)="activeButton()">
             <mat-option *ngFor="let school of schoolOrCompanies" [value]="school.id">
               {{ school.name }}
             </mat-option>
@@ -319,6 +326,7 @@
             [readonly]="visibility['bankAcount']"
             matInput placeholder="{{'bankAccount' | translate}}"
             [(ngModel)]="customerService.customer.bankAcount"
+            (change)="activeButton()"
           >
         </mat-form-field>
         <!--End Bank account-->

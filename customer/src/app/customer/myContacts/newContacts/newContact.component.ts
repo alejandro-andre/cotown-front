@@ -24,10 +24,15 @@ export class NewContactComponent {
   public name: string = '';
   public email: string = '';
   public phone: string = '';
-  public emailFormControl = new FormControl('', [
-    Validators.required,
-    Validators.pattern('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$')
-  ]);
+  public emailFormControl = new FormControl(
+   '',
+    [
+      Validators.required,
+      Validators.pattern('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$')
+    ]
+  );
+  public nameFormControl = new FormControl('', [ Validators.required ]);
+  public contactTypeFormControl = new FormControl('', [ Validators.required ]);
 
   constructor(
     public customerService: CustomerService,
@@ -42,6 +47,10 @@ export class NewContactComponent {
 
   get isDisabled (): boolean {
     return this.contactType === null || this.name === '' || (this.email === '' && this.phone === '');
+  }
+
+  get isElemntsDisabled () : boolean {
+    return this.contactType === null || !this.contactType;
   }
 
   save() {

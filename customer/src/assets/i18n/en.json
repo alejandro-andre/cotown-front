@@ -1,4 +1,10 @@
 {
+  "errors" : {
+    "emailRequired": "The email is required",
+    "nameRequired": "The name is required",
+    "contactTypeRequired": "The contact type is required",
+    "invalidEmail": "Invalid email"
+  },
   "contacts": "Contacts",
   "notFoundResults": "Not found results",
   "addContact": "Add contact",
@@ -6,7 +12,6 @@
   "contactType": "Contact type",
   "name": "Name",
   "email": "Email",
-  "invalidEmail" : "Invalid email",
   "save": "Guardar",
   "phone": "Phone",
   "surname": "Surname",
@@ -88,5 +93,4 @@
   "identifier": "Identifier",
   "payInfo": "Details of the payment to be made",
   "paymentData": "Payment data"
-
 }

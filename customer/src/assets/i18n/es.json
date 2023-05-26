@@ -1,4 +1,10 @@
 {
+  "errors" : {
+    "emailRequired": "EL email es necesario",
+    "nameRequired": "El nombre es necesario",
+    "contactTypeRequired": "El tipo de contacto es necesario",
+    "invalidEmail" : "Email invalido"
+  },
   "contacts": "Contactos",
   "notFoundResults": "No se han encontrado resultados",
   "addContact": "Añadir contacto",
@@ -6,7 +12,6 @@
   "contactType": "Tipo de contacto",
   "name": "Nombre",
   "email": "Email",
-  "invalidEmail" : "Email invalido",
   "save": "Guardar",
   "phone": "Telefono",
   "surname": "Apellido",
@@ -88,5 +93,4 @@
   "identifier": "Identificador",
   "payInfo": "Información de detalle del pago a realizar",
   "paymentData": "Datos de pago"
-
 }

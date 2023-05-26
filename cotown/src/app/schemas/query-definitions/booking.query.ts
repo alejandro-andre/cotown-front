@@ -65,3 +65,15 @@ export const BuildingDataViaBooking = `query bookingQuery($id: Int)
     lock: Lock
  }
 }`;
+
+export const BuildingDataViaBookingGroup = `query bookingQuery($id: Int)
+{
+  data: Booking_Booking_groupList(where:{ id: { EQ: $id } }) {
+    building_id: Building_id
+    booking_id: id
+    date_from: Date_from
+    date_to: Date_to
+    max: Rooms
+    rooms: Room_ids
+  }
+}`;

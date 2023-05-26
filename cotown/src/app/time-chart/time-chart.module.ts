@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 import { TimeChartControlComponent } from './time-chart-control/time-chart-control.component';
 import { SafeHtmlPipe } from '../plugins/safe-html.pipe';
-import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -11,7 +13,8 @@ import { MatRadioModule } from '@angular/material/radio';
   ],
   imports: [
     CommonModule,
-    MatRadioModule
+    MatRadioModule,
+    MatCheckboxModule,
   ],
   exports: [TimeChartControlComponent]
 })

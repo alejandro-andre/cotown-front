@@ -55,8 +55,5 @@ export interface Params {
   entityId: number,
   entity: string,
   attribute: string,
-  value: {
-    id: number,
-    Code: string
-  }
+  value: any;
 }

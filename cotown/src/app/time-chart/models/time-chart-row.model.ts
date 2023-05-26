@@ -7,4 +7,6 @@ export class TimeChartRow {
     info: string = '';
     style: string = '';
     bars: TimeChartBar[] = [];
+    selected: boolean = false;
+    checked: boolean = false;
 }

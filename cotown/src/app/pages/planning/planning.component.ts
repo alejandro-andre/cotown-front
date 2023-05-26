@@ -18,7 +18,7 @@ import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
 import { CityListQuery } from 'src/app/schemas/query-definitions/city.query';
 import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/query-definitions/building.query';
 import { ResourceFlatTypeQuery, ResourceListQuery, ResourcePlaceTypeQuery } from 'src/app/schemas/query-definitions/resource.query';
-import { BookingListQuery, BuildingDataViaBooking } from 'src/app/schemas/query-definitions/booking.query';
+import { BookingListQuery, BuildingDataViaBooking, BuildingDataViaBookingGroup } from 'src/app/schemas/query-definitions/booking.query';
 
 import {
   ApolloVariables,
@@ -48,12 +48,16 @@ export class PlanningComponent {
   public resourcePlaceTypes: ResourceType [] = [] as ResourceType []; // Type of resources
   public resourceFlatTypes: ResourceType [] = [] as ResourceType [];
   public availableResources: number[] = [];
+  public rooms: string [] = []; // Rooms
   private resources: Resource[] = [] as Resource[] ; // Resources
   private bookings: any [] = []; // Bookings
 
-  // Spinner
+  // Selection params
   private params: Params = {} as Params;
+  public sel: string = '';
+  public max: number = 1;
 
+  // Spinner
   public spinnerActive: boolean = false;
 
   // Planning
@@ -104,7 +108,10 @@ export class PlanningComponent {
 
     // Get params
     this.route.queryParams.subscribe(async (params) => {
-      const {  entityId, entity, attribute } = params;
+      const { sel, entityId, entity, attribute } = params;
+      if (sel) {
+        this.sel = sel;
+      }
       if (entity) {
         this.params.entity = entity;
       }
@@ -114,12 +121,13 @@ export class PlanningComponent {
       if (entityId) {
         const entityIdParsed = parseInt(entityId);
         this.params.entityId = entityIdParsed;
-        this.initData(entityIdParsed);
+        this.initData(entity, entityIdParsed);
       }
     });
 
   }
 
+  // ??
   cleanBookings() {
     const newBookings = [];
     for (let i = 0; i < this.bookings.length; i++) {
@@ -138,11 +146,29 @@ export class PlanningComponent {
 
   closeWindow() {
 
+    // Radio
+    if (this.sel == '1') {
+      for (const elemento of this.rows) {
+        if (elemento.checked) {
+          this.params.value = {id: elemento.id, Code: elemento.code};
+          break;
+        }
+      }
+
+    // Check
+    } else  {
+      this.params.value = [];
+      for (const elemento of this.rows) {
+        if (elemento.checked) {
+          this.params.value.push(elemento.code);
+        }
+      }
+    }
+
+    console.log(this.params.value);
+    
     // Check if change
-    if (
-      this.selectedResourceFlatTypeId != this.initialResourceFlatTypeId || 
-      this.selectedResourcePlaceTypeId != this.initialResourcePlaceTypeId
-    ) {
+    if (this.selectedResourceFlatTypeId != this.initialResourceFlatTypeId || this.selectedResourcePlaceTypeId != this.initialResourcePlaceTypeId) {
 
       // Type changed
       const dialogRef = this.dialog.open(ConfirmationComponent, {
@@ -172,7 +198,18 @@ export class PlanningComponent {
 
   }
   
+  // Count selected items
+  countSelected(): number {
 
+    let n = 0;
+    for (const elemento of this.rows) {
+      if (elemento.checked)
+        n = n + 1;
+    }
+    return n;
+
+  }
+  
   // ************************************
   // Move planning
   // ************************************
@@ -202,24 +239,38 @@ export class PlanningComponent {
   // ************************************
 
   // Initialize data
-  async initData(bookingId: number) {
+  async initData(entity: string, bookingId: number) {
 
-    this.apolloApi.getData(BuildingDataViaBooking, { id: bookingId, }).subscribe( async(res) =>{
+    // Query (single o group booking)
+    let q =  BuildingDataViaBooking;
+    if (entity == 'Booking.Booking_group') {
+      q =  BuildingDataViaBookingGroup;
+    }
+
+    // Get data
+    this.selectedResourceFlatTypeId = Constants.allStaticNumericValue;
+    this.selectedResourcePlaceTypeId = Constants.allStaticNumericValue;
+    this.apolloApi.getData(q, { id: bookingId, }).subscribe( async(res) =>{
       if (res.data.data && res.data.data.length) {
         const data = res.data?.data[0];
 
         // Set filters
         this.selectedBuildingId = parseInt(data.building_id);
-        this.selectedResourceFlatTypeId = parseInt(data.flat_type_id);
-        this.selectedResourcePlaceTypeId = parseInt(data.place_type_id);
-        this.initialResourceFlatTypeId = parseInt(data.flat_type_id);
-        this.initialResourcePlaceTypeId = parseInt(data.place_type_id);
+        if (data.flat_type_id != undefined)
+          this.selectedResourceFlatTypeId = parseInt(data.flat_type_id);
+        if (data.place_type_id != undefined)
+          this.selectedResourcePlaceTypeId = parseInt(data.place_type_id);
+        this.initialResourceFlatTypeId = this.selectedResourceFlatTypeId;
+        this.initialResourcePlaceTypeId = this.selectedResourcePlaceTypeId;
         this.range.setValue({ start: new Date(data.date_from), end: new Date(data.date_to) });
         const finded = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
         if (finded) {
           this.selectedCity = finded.location.city.id;
         }
         this.now = new Date(data.date_from)
+        if (data.rooms)
+          this.rooms = data.rooms;
+        this.max = data.max;
 
         // Load resources and bookings
         await this.getResourcesAndBookings();
@@ -458,7 +509,11 @@ export class PlanningComponent {
       auxRow.code = r.Resource_code;
       auxRow.info = r.Resource_info
       auxRow.style = Constants.types[r.Resource_type];
-        auxRows.push(auxRow);
+      if (this.rooms.includes(r.Resource_code)) {
+        auxRow.selected = true;
+        auxRow.checked = true;
+      }
+      auxRows.push(auxRow);
     }
 
     this.rows = JSON.parse(JSON.stringify(auxRows));
@@ -577,7 +632,7 @@ export class PlanningComponent {
   }
 
   get isSelectButtonActive(): boolean {
-    if (this.params && this.params.entityId !== undefined && this.params.value !== undefined) {
+    if (this.params && this.params.entityId !== undefined && (this.sel == 'n' || this.countSelected() > 0)) {
       return true;
     }
     return false;
@@ -676,27 +731,6 @@ export class PlanningComponent {
     if (this.initDate && this.endDate) {
       this.onDateChange();
     }
-  }
-
-  // Check availability
-  onSelectAvailable(available: { Code: string, id: number }){
-    this.params.value = available;
-  }
-
-  openDialog(): void {
-
-    const dialogRef = this.dialog.open(ConfirmationComponent, {
-      width: '250px',
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log('El usuario seleccionó Sí');
-      } else {
-        console.log('El usuario seleccionó No o cerró el diálogo');
-      }
-    });
-
   }
 
 }

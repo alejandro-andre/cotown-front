@@ -43,11 +43,17 @@
 	<mat-radio-group>
 		<div *ngFor="let row of rows" class="timechart-row">
 			<div class="timechart-row-sel">
-				<mat-radio-button
+				<mat-radio-button *ngIf="sel=='1'"
 					[value]="row.code"
 					[disabled]="!isAvailable(row)"
-					(change)="emitSelectAvailableResource(row)">
+					(change)="emitRadio($event, row)">
 				</mat-radio-button>
+				<mat-checkbox *ngIf="sel=='n'"
+					[checked]="row.checked"
+					[value]="row.code"
+					[disabled]="!isCheckable(row)"
+					(change)="emitCheck($event, row)">
+				</mat-checkbox>
 			</div>
 			<div class="timechart-row-first {{row.style}}">{{row.code}}</div>
 			<div class="timechart-row-first">{{row.info}}</div>

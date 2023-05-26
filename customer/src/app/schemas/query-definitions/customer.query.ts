@@ -172,7 +172,6 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
 export const UPDATE_CUSTOMER = `
   mutation(
     $id: Int!,
-    $name: String!,
     $province: String,
     $city: String,
     $country: Int,
@@ -180,7 +179,6 @@ export const UPDATE_CUSTOMER = `
     $postalCode: String,
     $document: String,
     $phone: String,
-    $email:String!,
     $genderId: Int,
     $languageId: Int,
     $originId: Int,
@@ -193,8 +191,6 @@ export const UPDATE_CUSTOMER = `
   update: Customer_CustomerUpdate(
     where:{ id: {EQ: $id} }
     entity:{
-      Name:$name
-      Email:$email
       Phones: $phone
       City: $city
       Zip: $postalCode

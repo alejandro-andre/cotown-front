@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from 'src/app/auth/service/auth.service';
-import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
+import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
 
 @Component({
   selector: 'app-home',

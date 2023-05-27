@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 // Sevices
 import { AuthService } from 'src/app/auth/service/auth.service';
-import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
+import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
 import { CountryService } from 'src/app/services/country.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { GenderService } from 'src/app/services/gender.service';

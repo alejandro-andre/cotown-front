@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
 import { Booking, TableObject } from 'src/app/constants/Interface';
 import { ACCEPT_BOOKING_OPTION, GET_BOOKING_BY_ID, SIGN_BOOKING_CONTRACT } from 'src/app/schemas/query-definitions/booking.query';
-import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
+import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 
@@ -18,7 +18,7 @@ export class MyBookingDetailComponent implements OnInit {
     public customerService: CustomerService,
     private activeRoute: ActivatedRoute,
     private axiosApi: AxiosApi,
-    private apolo: ApoloQueryApi
+    private Apollo: ApoloQueryApi
   ) {
     this.activeRoute.params.subscribe((res) => {
       const id = res['id'];
@@ -158,7 +158,7 @@ export class MyBookingDetailComponent implements OnInit {
       id,
       accepted: true
     }
-    this.apolo.setData(ACCEPT_BOOKING_OPTION, variables).subscribe((resp) => {
+    this.Apollo.setData(ACCEPT_BOOKING_OPTION, variables).subscribe((resp) => {
       const value = resp.data;
 
       if (value && value.updated && value.updated.length) {
@@ -166,7 +166,7 @@ export class MyBookingDetailComponent implements OnInit {
           id: this.booking.id,
         };
 
-        this.apolo.getData(GET_BOOKING_BY_ID, variablesForId).subscribe((response) => {
+        this.Apollo.getData(GET_BOOKING_BY_ID, variablesForId).subscribe((response) => {
           this.booking = JSON.parse(JSON.stringify(response.data.booking[0]));
           this.isViewLoading = false;
         })
@@ -342,7 +342,7 @@ export class MyBookingDetailComponent implements OnInit {
         time: date
       }
 
-      this.apolo.setData(SIGN_BOOKING_CONTRACT,variables).subscribe((res) => {
+      this.Apollo.setData(SIGN_BOOKING_CONTRACT,variables).subscribe((res) => {
         const value = res.data.data[0].Contract_signed;
         const finded = this.customerService.customer.bookings.find((booking: Booking) => booking.id === this.bookingId );
         if(finded) {

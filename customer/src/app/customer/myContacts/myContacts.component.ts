@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
 import { Contact, TableObject } from 'src/app/constants/Interface';
 import { DELETE_CONTACT } from 'src/app/schemas/query-definitions/contact.query';
-import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
+import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({

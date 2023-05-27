@@ -7,7 +7,7 @@ import axiosApi from 'src/app/services/api.service';
 
 import { LanguageService } from 'src/app/services/language.service';
 import { WindowRef } from 'src/app/services/window-ref.service';
-import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
+import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
 
 import { Constants } from 'src/app/constants/Constants';
 import { formatDate, getAge, nextMonth, prevMonth } from 'src/app/utils/utils';

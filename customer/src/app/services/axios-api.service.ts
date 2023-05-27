@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 
-import { ApoloQueryApi } from './apolo-api.service';
+import { ApoloQueryApi } from './Apollo-api.service';
 import { PayloadFile } from '../constants/Interface';
 
 const axiosInstance = axios.create({

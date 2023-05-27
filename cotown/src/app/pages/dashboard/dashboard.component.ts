@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 
 import axiosApi from "src/app/services/api.service";
-import { ApoloQueryApi } from "src/app/services/apolo-api.service";
+import { ApoloQueryApi } from "src/app/services/Apollo-api.service";
 
 @Component({
   selector: "app-home",

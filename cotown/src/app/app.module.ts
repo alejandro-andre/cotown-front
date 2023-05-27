@@ -29,6 +29,7 @@ import { ConfirmationComponent } from './pages/confirmation/confirmation.compone
 
 import localeEN from '@angular/common/locales/en';
 import localeES from '@angular/common/locales/es';
+import { DownloadComponent } from './pages/download/download.component';
 
 registerLocaleData(localeES, 'es-ES');
 registerLocaleData(localeEN, 'en-US');
@@ -42,6 +43,7 @@ export function createTranslateLoader(http: HttpClient) {
     AppComponent,
     PlanningComponent,
     DashboardComponent,
+    DownloadComponent,
     ConfirmationComponent
   ],
   imports: [

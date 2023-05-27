@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 // Services
-import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
+import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
 import { ContactTypeService } from 'src/app/services/contactType.service';
 import { CustomerService } from 'src/app/services/customer.service';
 

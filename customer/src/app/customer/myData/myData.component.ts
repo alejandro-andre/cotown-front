@@ -10,7 +10,7 @@ import { GenderService } from 'src/app/services/gender.service';
 import { LanguageService } from 'src/app/services/languages.service';
 import { IdentificationDocTypesService } from 'src/app/services/identificationDocTypes.service';
 import { schoolOrCompaniesService } from 'src/app/services/schoolOrCompanies.service';
-import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
+import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { ModalService } from 'src/app/services/modal.service';
 

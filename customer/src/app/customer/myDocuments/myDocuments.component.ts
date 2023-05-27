@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { DocFile, Document, PayloadFile } from 'src/app/constants/Interface';
 import { UPDATE_EXPERITY_DATE, UPLOAD_CUSTOMER_DOCUMENT, UPLOAD_CUSTOMER_DOCUMENT_BACK } from 'src/app/schemas/query-definitions/customer.query';
-import { ApoloQueryApi } from 'src/app/services/apolo-api.service';
+import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { ModalService } from 'src/app/services/modal.service';
@@ -20,7 +20,7 @@ export class MyDocumentsComponent  {
     public customerService: CustomerService,
     private router: Router,
     private axiosApi: AxiosApi,
-    private apolo: ApoloQueryApi,
+    private Apollo: ApoloQueryApi,
     private modalService: ModalService
   ) {}
   public disabledButtons: number[] = [] as number[];
@@ -53,7 +53,7 @@ export class MyDocumentsComponent  {
       };
 
       const query = index === 0 ? UPLOAD_CUSTOMER_DOCUMENT : UPLOAD_CUSTOMER_DOCUMENT_BACK;
-      this.apolo.setData(query, variables).subscribe((response) => {
+      this.Apollo.setData(query, variables).subscribe((response) => {
         const value = response.data;
         if (value && value.data && value.data.length && value.data[0].id) {
           console.log('Subida realizada con exito: ', value.data[0]);
@@ -91,7 +91,7 @@ export class MyDocumentsComponent  {
       value: document.expirity_date
     }
 
-    this.apolo.setData(UPDATE_EXPERITY_DATE, variables).subscribe(async(response) => {
+    this.Apollo.setData(UPDATE_EXPERITY_DATE, variables).subscribe(async(response) => {
       this.isLoading = false;
       console.log('The response is: ', response);
     }, err => {

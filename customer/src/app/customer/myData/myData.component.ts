@@ -10,7 +10,7 @@ import { GenderService } from 'src/app/services/gender.service';
 import { LanguageService } from 'src/app/services/languages.service';
 import { IdentificationDocTypesService } from 'src/app/services/identificationDocTypes.service';
 import { schoolOrCompaniesService } from 'src/app/services/schoolOrCompanies.service';
-import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
+import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { ModalService } from 'src/app/services/modal.service';
 
@@ -35,7 +35,7 @@ export class MyDataComponent{
     private languageService: LanguageService,
     private identificationTypesService: IdentificationDocTypesService,
     private schoolOrCompaniesService: schoolOrCompaniesService,
-    private apollo: ApoloQueryApi,
+    private apolloApi: ApolloQueryApi,
     private translate: TranslateService,
     private axiosApi: AxiosApi,
     private modalService: ModalService
@@ -174,7 +174,7 @@ export class MyDataComponent{
 
     delete variables.formControl
 
-    this.apollo.setData(UPDATE_CUSTOMER, variables).subscribe(
+    this.apolloApi.setData(UPDATE_CUSTOMER, variables).subscribe(
       res => {
         const val = res.data;
         if (val && val.update && val.update.length) {
@@ -224,7 +224,7 @@ export class MyDataComponent{
           }
         };
 
-        this.apollo.setData(UPLOAD_CUSTOMER_PHOTO, variables).subscribe((response: any) => {
+        this.apolloApi.setData(UPLOAD_CUSTOMER_PHOTO, variables).subscribe((response: any) => {
           const val = response.data;
           if (val.data && val.data.length && val.data[0]) {
             const photo = val.data[0].photo;

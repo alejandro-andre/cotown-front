@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 // Sevices
 import { AuthService } from 'src/app/auth/service/auth.service';
-import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
+import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { CountryService } from 'src/app/services/country.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { GenderService } from 'src/app/services/gender.service';
@@ -49,7 +49,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   constructor(
     private elRef:ElementRef,
     private authService: AuthService,
-    private apolloApi: ApoloQueryApi,
+    private apolloApi: ApolloQueryApi,
     private customerService: CustomerService,
     private genderService: GenderService,
     private countryService: CountryService,

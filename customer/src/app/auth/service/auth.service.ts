@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakTokenParsed } from 'keycloak-js';
-import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
+import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +11,7 @@ export class AuthService {
 
   constructor(
     private keycloakService: KeycloakService,
-    private apolloApi: ApoloQueryApi,
+    private apolloApi: ApolloQueryApi,
   ) {}
 
   public getLoggedUser(): KeycloakTokenParsed | undefined {

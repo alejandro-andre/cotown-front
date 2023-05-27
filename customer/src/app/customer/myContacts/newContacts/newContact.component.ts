@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 // Services
-import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
+import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { ContactTypeService } from 'src/app/services/contactType.service';
 import { CustomerService } from 'src/app/services/customer.service';
 
@@ -37,7 +37,7 @@ export class NewContactComponent {
   constructor(
     public customerService: CustomerService,
     private contactTypeService: ContactTypeService,
-    private apollo: ApoloQueryApi,
+    private apollo: ApolloQueryApi,
     private location: Location
   ) {}
 

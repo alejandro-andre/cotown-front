@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { DocFile, Document, PayloadFile } from 'src/app/constants/Interface';
 import { UPDATE_EXPERITY_DATE, UPLOAD_CUSTOMER_DOCUMENT, UPLOAD_CUSTOMER_DOCUMENT_BACK } from 'src/app/schemas/query-definitions/customer.query';
-import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
+import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { ModalService } from 'src/app/services/modal.service';
@@ -20,7 +20,7 @@ export class MyDocumentsComponent  {
     public customerService: CustomerService,
     private router: Router,
     private axiosApi: AxiosApi,
-    private Apollo: ApoloQueryApi,
+    private Apollo: ApolloQueryApi,
     private modalService: ModalService
   ) {}
   public disabledButtons: number[] = [] as number[];

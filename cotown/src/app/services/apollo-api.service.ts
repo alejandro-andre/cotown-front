@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 
-export class ApoloQueryApi {
+export class ApolloQueryApi {
 
   token: string = '';
 

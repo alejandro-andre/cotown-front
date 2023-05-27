@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { ApoloQueryApi as ApolloQueryApi } from 'src/app/services/Apollo-api.service';
+import { ApolloQueryApi as ApolloQueryApi } from 'src/app/services/apollo-api.service';
 
 @Component({
   selector: 'app-download',

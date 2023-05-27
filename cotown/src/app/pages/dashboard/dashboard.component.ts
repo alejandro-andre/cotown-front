@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 
 import axiosApi from "src/app/services/api.service";
-import { ApoloQueryApi } from "src/app/services/Apollo-api.service";
+import { ApolloQueryApi } from "src/app/services/apollo-api.service";
 
 @Component({
   selector: "app-home",
@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit {
 
   // Constructor
   constructor(    
-    private apolloApi: ApoloQueryApi,
+    private apolloApi: ApolloQueryApi,
   ) { }
 
   ngOnInit(): void {

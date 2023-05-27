@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 //Service
 import { CountryService } from 'src/app/services/country.service';
 import { IdentificationDocTypesService } from 'src/app/services/identificationDocTypes.service';
-import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
+import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { TutorService } from 'src/app/services/tutor.service';
 
 // Model & Query
@@ -25,7 +25,7 @@ export class MyTutorComponent {
     public tutorService: TutorService,
     private countryService: CountryService,
     private identificationTypesService: IdentificationDocTypesService,
-    private apollo: ApoloQueryApi
+    private apollo: ApolloQueryApi
   ) {}
 
   /**

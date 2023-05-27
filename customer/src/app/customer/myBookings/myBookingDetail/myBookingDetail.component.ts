@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
 import { Booking, TableObject } from 'src/app/constants/Interface';
 import { ACCEPT_BOOKING_OPTION, GET_BOOKING_BY_ID, SIGN_BOOKING_CONTRACT } from 'src/app/schemas/query-definitions/booking.query';
-import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
+import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 
@@ -18,7 +18,7 @@ export class MyBookingDetailComponent implements OnInit {
     public customerService: CustomerService,
     private activeRoute: ActivatedRoute,
     private axiosApi: AxiosApi,
-    private Apollo: ApoloQueryApi
+    private Apollo: ApolloQueryApi
   ) {
     this.activeRoute.params.subscribe((res) => {
       const id = res['id'];

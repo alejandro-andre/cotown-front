@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from 'src/app/auth/service/auth.service';
-import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
+import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 
 @Component({
   selector: 'app-home',
@@ -12,8 +12,7 @@ import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
 export class HomeComponent implements OnInit {
 
   constructor(
-    public authService: AuthService,
-    private apolloApi: ApoloQueryApi
+    public authService: AuthService
   ) { }
 
   ngOnInit(): void {

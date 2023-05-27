@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
 import { Contact, TableObject } from 'src/app/constants/Interface';
 import { DELETE_CONTACT } from 'src/app/schemas/query-definitions/contact.query';
-import { ApoloQueryApi } from 'src/app/services/Apollo-api.service';
+import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class MyContactsComponent {
   constructor(
     public customerService: CustomerService,
     private router: Router,
-    private apollo: ApoloQueryApi
+    private apollo: ApolloQueryApi
   ) {}
 
   public tableFormat: TableObject[] = [

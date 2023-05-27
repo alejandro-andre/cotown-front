@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Constants } from './constants/Constants';
 import { ActivatedRoute } from '@angular/router';
 import { LanguageService } from './services/language.service';
-import { ApoloQueryApi } from './services/Apollo-api.service';
+import { ApolloQueryApi } from './services/apollo-api.service';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +19,7 @@ export class AppComponent {
     private translate: TranslateService,
     private route: ActivatedRoute,
     private language: LanguageService,
-    private apolloApi: ApoloQueryApi,
+    private apolloApi: ApolloQueryApi,
   ) { }
 
   ngOnInit() {

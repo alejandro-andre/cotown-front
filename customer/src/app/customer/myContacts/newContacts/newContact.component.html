@@ -3,11 +3,18 @@
   <div>
     <mat-form-field appearance="fill" style="margin-right: 10px;">
       <mat-label>{{ 'contactType' | translate }}</mat-label>
-      <mat-select [(ngModel)]="contactType">
+      <mat-select [(ngModel)]="contactType" [formControl]="contactTypeFormControl">
         <mat-option *ngFor="let contact of contactTypes" [value]="contact.id">
           {{ contact.name }}
         </mat-option>
       </mat-select>
+
+      <mat-error
+          class="mat-error"
+          *ngIf="contactTypeFormControl.hasError('required')"
+        >
+          {{ 'errors.contactTypeRequired' | translate }}
+        </mat-error>
     </mat-form-field>
     <p>
       <mat-form-field>
@@ -16,7 +23,14 @@
           matInput
           placeholder="{{'completeName' | translate}}"
           [(ngModel)]="name"
+          [formControl]="nameFormControl"
         >
+        <mat-error
+          class="mat-error"
+          *ngIf="nameFormControl.hasError('required')"
+        >
+          {{ 'errors.nameRequired' | translate }}
+        </mat-error>
       </mat-form-field>
     </p>
     <p>
@@ -30,9 +44,14 @@
         >
         <mat-error
           class="mat-error"
-          *ngIf="emailFormControl.hasError('pattern') && !emailFormControl.hasError('required')"
+          *ngIf="emailFormControl.hasError('pattern') || emailFormControl.hasError('required')"
         >
-          {{ 'invalidEmail' | translate }}
+          <span  *ngIf="emailFormControl.hasError('pattern') && !emailFormControl.hasError('required')">
+            {{ 'errors.invalidEmail' | translate }}
+          </span>
+          <span *ngIf="emailFormControl.hasError('required')">
+            {{ 'errors.emailRequired' | translate }}
+          </span>
         </mat-error>
       </mat-form-field>
       <mat-form-field>

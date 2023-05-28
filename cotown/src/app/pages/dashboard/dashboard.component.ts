@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 
+import { environment } from 'src/environments/environment';
 import axiosApi from "src/app/services/api.service";
 import { ApolloQueryApi } from "src/app/services/apollo-api.service";
 
@@ -55,9 +56,7 @@ export class DashboardComponent implements OnInit {
     this.spinnerActive  = true;
     axiosApi.getDashboard(this.apolloApi.token).then((resp) => {
       this.dashboard = resp.data;
-      console.log(resp.data);
       axiosApi.getLabels(7, "es_ES", this.apolloApi.token).then((resp) => {
-        console.log(resp.data);
         this.labels = resp.data;
         this.spinnerActive  = false;
       }); 
@@ -68,10 +67,15 @@ export class DashboardComponent implements OnInit {
     this.status = status;
     this.rows = null;
     axiosApi.getDashboardBookings(this.status, this.apolloApi.token).then((resp) => {
-      console.log(resp.data);
       this.rows = resp.data;
       this.spinnerActive  = false;
     });      
+  }
+
+  link() {
+    if (this.status)
+      return environment.backURL + '/dashboard/' + this.status + '/export?access_token=' + this.apolloApi.token;
+    return "javascript:void(0);";
   }
 
   goBooking(id: string) {
@@ -115,4 +119,5 @@ export class DashboardComponent implements OnInit {
       }
     }
   }
+
 }

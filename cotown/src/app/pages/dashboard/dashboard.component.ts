@@ -74,7 +74,7 @@ export class DashboardComponent implements OnInit {
 
   link() {
     if (this.status)
-      return environment.backURL + '/dashboard/' + this.status + '/export?access_token=' + this.apolloApi.token;
+      return environment.backURL + '/dashboard/export/' + this.status + '?access_token=' + this.apolloApi.token;
     return "javascript:void(0);";
   }
 

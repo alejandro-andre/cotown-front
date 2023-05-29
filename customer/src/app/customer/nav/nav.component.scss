@@ -5,8 +5,9 @@ li {
 
 li:hover {
   cursor: pointer;
+  background-color: rgba(128, 255, 212, 0.2)
 }
 
 .active {
-  background-color: aquamarine;
+  background-color: rgb(128, 255, 212) !important;
 }

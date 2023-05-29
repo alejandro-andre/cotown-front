@@ -60,7 +60,7 @@ const routes: Routes = [
         component: MyInvoiceComponent,
       },
       {
-        path: 'myInvoices/payment/:id',
+        path: 'invoices/payment/:id',
         component: InvoicePayComponent,
       },
       {

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
 
 import { DocFile, Document, PayloadFile } from 'src/app/constants/Interface';
-import { UPDATE_EXPERITY_DATE, UPLOAD_CUSTOMER_DOCUMENT, UPLOAD_CUSTOMER_DOCUMENT_BACK } from 'src/app/schemas/query-definitions/customer.query';
+import { UPDATE_EXPERITY_DATE, UPLOAD_CUSTOMER_DOCUMENT, UPLOAD_CUSTOMER_FULL_DOCUMENTS } from 'src/app/schemas/query-definitions/customer.query';
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -28,6 +28,7 @@ export class MyDocumentsComponent  {
   public pdfSrc = '';
   public isLoading = false;
   public photo = '';
+  public file!: File;
 
   viewDoc(doc: DocFile) {
     this.axiosApi.getFile(doc.id, doc.type).then((response: any) => {
@@ -41,26 +42,54 @@ export class MyDocumentsComponent  {
     })
   }
 
-  upload(event: any, doc: any, index: number) {
+  upload(event: any, doc: any, index: number, document: Document) {
+    console.log(event)
     const payload: PayloadFile  = {
-      id: doc.id,
-      file: doc.file,
-      document: index === 0 ? 'front': 'back',
+      id: document.id,
+      file: this.file,
+      document: index === 0 ? 'Document': 'Document_back',
     };
 
     this.axiosApi.uploadFile(payload).then((resp) => {
       const fileId = resp.data;
       const name = event.target.files[0].name;
-      const variables = {
-        id: doc.id,
-        bill: {
-          name,
-          oid: fileId,
-          type: Constants.DOCUMENT_PDF
-        }
-      };
+      const type = event.target.files[0].type;
+      if (document.doctype.arrayOfImages) {
+        document.doctype.arrayOfImages[index].oid = fileId;
+        document.doctype.arrayOfImages[index].name = name
+        document.doctype.arrayOfImages[index].typeFile = type;
+        document.doctype.arrayOfImages[index].type = index === 0 ? Constants.DOCUMENT_TYPE_FRONT : Constants.DOCUMENT_TYPE_BACK;
 
-      const query = index === 0 ? UPLOAD_CUSTOMER_DOCUMENT : UPLOAD_CUSTOMER_DOCUMENT_BACK;
+
+        const filtered = document.doctype.arrayOfImages.filter(ev => ev.oid !== -1 && ev.file !== '');
+        if (filtered && filtered.length === document.doctype.images) {
+          this.uploadDataOnApollo(document);
+        }
+      }
+    })
+  }
+
+  uploadDataOnApollo(document: Document) {
+    const query = document.doctype.images === 1 ? UPLOAD_CUSTOMER_DOCUMENT : UPLOAD_CUSTOMER_FULL_DOCUMENTS;
+    const files = document.doctype.arrayOfImages;
+    if (files) {
+      let variables: any = {
+        id: document.id,
+        billFront: {
+          name: files[0].name,
+          oid: files[0].oid,
+          type: files[0].typeFile
+        }
+      }
+
+      if (files.length === 2) {
+        variables.billBack = {
+          name: files[1].name,
+          oid: files[1].oid,
+          type: files[1].typeFile
+        }
+      }
+
       this.Apollo.setData(query, variables).subscribe((response) => {
         const value = response.data;
         if (value && value.data && value.data.length && value.data[0].id) {
@@ -80,8 +109,8 @@ export class MyDocumentsComponent  {
         const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang)
         this.isLoading = false;
         this.modalService.openModal(bodyToSend);
-      });
-    })
+      })
+    }
   }
 
   isButtonOfDocDisabled(document: Document) {
@@ -108,7 +137,6 @@ export class MyDocumentsComponent  {
       this.modalService.openModal(bodyToSend);
     })
   }
-
 
   formatDate(date: Date) {
     if (date !== null) {

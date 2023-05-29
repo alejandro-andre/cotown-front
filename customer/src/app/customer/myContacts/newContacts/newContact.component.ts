@@ -46,7 +46,14 @@ export class NewContactComponent {
   }
 
   get isDisabled (): boolean {
-    return this.contactType === null || this.name === '' || (this.email === '' && this.phone === '');
+    return(
+      this.contactType === null ||
+      this.name === '' ||
+      (this.email === '' && this.phone === '') ||
+      !this.emailFormControl.valid ||
+      !this.nameFormControl.valid ||
+      !this.contactTypeFormControl.valid
+    );
   }
 
   get isElemntsDisabled () : boolean {

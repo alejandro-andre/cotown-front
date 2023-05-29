@@ -94,7 +94,8 @@ export interface DocFile {
   name: string,
   oid: number,
   file?: File,
-  type: string
+  type: string,
+  index?: number
 }
 
 export interface Document extends BasicResponse {

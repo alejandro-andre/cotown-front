@@ -19,7 +19,7 @@ import { TutorService } from 'src/app/services/tutor.service';
 
 // Models
 import { Customer } from 'src/app/models/Customer.model';
-import { CustomerInterface, Document } from 'src/app/constants/Interface';
+import { CustomerInterface, DocFile, Document } from 'src/app/constants/Interface';
 import { Constants } from 'src/app/constants/Constants';
 import { Tutor } from 'src/app/models/Tutor.model';
 
@@ -166,17 +166,21 @@ export class LayoutComponent implements OnInit, OnDestroy {
     const returnData: Document[] = [] ;
     documents.forEach((doc: Document) => {
       const numOfImages = doc.doctype.images;
-      const images = [];
+      const images: DocFile[]= [];
+
+
 
       for(let i = 0; i < numOfImages; i++) {
-        images.push({
-          file: '',
+        const docFile: DocFile = {
+          file:  undefined,
           id: doc.id,
           index: i,
           name: '',
           oid: -1,
           type: ''
-        })
+        }
+
+        images.push(docFile)
       }
 
       if (doc.front && doc.front !== null && doc.front.oid !== null) {

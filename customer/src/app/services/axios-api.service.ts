@@ -16,8 +16,9 @@ export class AxiosApi {
   constructor(private apollo: ApolloQueryApi){}
 
   uploadFile(payload: PayloadFile) {
+    console.log('this is the payload_ ', payload);
     const token = this.apollo.token;
-    const url = `/document/Customer_doc/Document/${payload.id}/Document/contents?access_token=${token}`;
+    const url = `/document/Customer/Customer_doc/${payload.id}/${payload.document}/contents?access_token=${token}`;
     return axiosInstance.post(url, { file: payload.file })
   }
 

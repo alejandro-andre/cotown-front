@@ -5,6 +5,15 @@
     "contactTypeRequired": "El tipo de contacto es necesario",
     "invalidEmail" : "Email invalido"
   },
+  "nav": {
+    "logOut": "Cerrar sesión",
+    "myData": "Mis datos",
+    "myTutor": "Mi tutor",
+    "myContacts": "Mis contactos",
+    "myDocuments": "Mis documentos",
+    "myBookings": "Mis reservas",
+    "myInvoices": "Mis facturas"
+  },
   "contacts": "Contactos",
   "notFoundResults": "No se han encontrado resultados",
   "addContact": "Añadir contacto",
@@ -42,12 +51,6 @@
   "bookings": "Reservas",
   "pay": "Pagar",
   "paymentNumber": "Nº de pago",
-  "myData": "Mis datos",
-  "myTutor": "Mi tutor",
-  "myContacts": "Mis contactos",
-  "myDocuments": "Mis documentos",
-  "myBookings": "Mis reservas",
-  "myInvoices": "Mis facturas",
   "resource": "Recurso",
   "dateFrom": "Fecha desde",
   "dateTo": "Fecha hasta",

@@ -4,6 +4,6 @@
     (click)="onSelect(path.url)"
     [ngClass]="{'active': selected === path.url }"
   >
-    {{ path.name | translate}}
+    {{ 'nav.' + path.name | translate}}
   </li>
 </div>

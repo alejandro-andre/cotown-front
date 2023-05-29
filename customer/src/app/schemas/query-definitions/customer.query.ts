@@ -210,10 +210,10 @@ export const UPDATE_CUSTOMER = `
     }){id}
 }`;
 
-export const UPLOAD_CUSTOMER_DOCUMENT = `mutation ($id: Int! $bill: Models_DocumentTypeInputType) {
+export const UPLOAD_CUSTOMER_DOCUMENT = `mutation ($id: Int! $billFront: Models_DocumentTypeInputType) {
   data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
     entity: {
-      Document: $bill
+      Document: $billFront
     }
   ){ id }
 }`;
@@ -225,6 +225,17 @@ export const UPLOAD_CUSTOMER_DOCUMENT_BACK = `mutation ($id: Int! $bill: Models_
     }
   ){ id }
 }`;
+
+
+export const UPLOAD_CUSTOMER_FULL_DOCUMENTS = `mutation ($id: Int!, $billFront: Models_DocumentTypeInputType, $billBack: Models_DocumentTypeInputType) {
+  data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
+    entity: {
+      Document: $billFront
+      Document_back: $billBack
+    }
+  ){ id }
+}`;
+
 
 export const UPLOAD_CUSTOMER_PHOTO = `mutation ($id: Int! $bill: Models_DocumentTypeInputType) {
   data: Customer_CustomerUpdate ( where: { id: {EQ: $id} }

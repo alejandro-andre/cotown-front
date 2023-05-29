@@ -19,6 +19,10 @@ export class Constants {
     this.ENGISH
   ];
 
+  public static IMAGE_PNG = 'image/png';
+  public static IMAGE_JPG = 'image/jpg';
+  public static DOCUMENT_PDF = 'application/pdf';
+
 
   // REST OF VARIABLES
   public static DATA: Nav = {

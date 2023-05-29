@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Constants } from 'src/app/constants/Constants';
 
 import { DocFile, Document, PayloadFile } from 'src/app/constants/Interface';
 import { UPDATE_EXPERITY_DATE, UPLOAD_CUSTOMER_DOCUMENT, UPLOAD_CUSTOMER_DOCUMENT_BACK } from 'src/app/schemas/query-definitions/customer.query';
@@ -29,9 +30,8 @@ export class MyDocumentsComponent  {
   public photo = '';
 
   viewDoc(doc: DocFile) {
-    console.log('The document is doc: ', doc);
     this.axiosApi.getFile(doc.id, doc.type).then((response: any) => {
-      if (response.data && response.data.type === 'image/png') {
+      if (response.data && response.data.type ===  Constants.IMAGE_JPG || response.data.type ===  Constants.IMAGE_PNG) {
         this.pdfSrc = '';
         this.photo = URL.createObjectURL(response.data);
       } else {
@@ -56,7 +56,7 @@ export class MyDocumentsComponent  {
         bill: {
           name,
           oid: fileId,
-          type: 'application/pdf'
+          type: Constants.DOCUMENT_PDF
         }
       };
 

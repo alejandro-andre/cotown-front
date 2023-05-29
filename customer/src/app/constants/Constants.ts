@@ -56,7 +56,7 @@ export class Constants {
   };
 
   public static LOG_OUT: Nav = {
-    name: 'logout',
+    name: 'logOut',
     url: 'logout'
   }
 

@@ -26,10 +26,18 @@ export class MyDocumentsComponent  {
   public disabledButtons: number[] = [] as number[];
   public pdfSrc = '';
   public isLoading = false;
+  public photo = '';
 
   viewDoc(doc: DocFile) {
+    console.log('The document is doc: ', doc);
     this.axiosApi.getFile(doc.id, doc.type).then((response: any) => {
-      this.pdfSrc = URL.createObjectURL(response.data);
+      if (response.data && response.data.type === 'image/png') {
+        this.pdfSrc = '';
+        this.photo = URL.createObjectURL(response.data);
+      } else {
+        this.photo = '';
+        this.pdfSrc = URL.createObjectURL(response.data);
+      }
     })
   }
 

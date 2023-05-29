@@ -58,12 +58,20 @@
     </div>
 
     <div>
+      <img
+        style="max-width: 200px; max-height: 200px;"
+        *ngIf="photo !== ''"
+        [src]="photo"
+      >
+
       <pdf-viewer
+        *ngIf="pdfSrc !== ''"
         class="pdf-viwer"
         [src]="pdfSrc"
         [render-text]="true"
         [original-size]="false"
         [show-all]="true"
+        style="min-width: 400px; min-width: 600px;"
       ></pdf-viewer>
     </div>
   </ng-template>

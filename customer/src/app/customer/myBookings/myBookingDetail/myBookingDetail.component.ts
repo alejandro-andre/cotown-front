@@ -2,10 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
 import { Booking, TableObject } from 'src/app/constants/Interface';
-import { ACCEPT_BOOKING_OPTION, GET_BOOKING_BY_ID, SIGN_BOOKING_CONTRACT } from 'src/app/schemas/query-definitions/booking.query';
+import {
+  ACCEPT_BOOKING_OPTION,
+  GET_BOOKING_BY_ID,
+  SIGN_BOOKING_CONTRACT
+} from 'src/app/schemas/query-definitions/booking.query';
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
+import { ModalService } from 'src/app/services/modal.service';
+import { formatErrorBody } from 'src/app/utils/error.util';
 
 @Component({
   selector: 'app-booking-detail',
@@ -18,12 +24,16 @@ export class MyBookingDetailComponent implements OnInit {
     public customerService: CustomerService,
     private activeRoute: ActivatedRoute,
     private axiosApi: AxiosApi,
-    private Apollo: ApolloQueryApi
+    private apollo: ApolloQueryApi,
+    private modalService: ModalService
   ) {
     this.activeRoute.params.subscribe((res) => {
       const id = res['id'];
       this.bookingId = parseInt(id);
-      const finded = this.customerService.customer.bookings.find((booking: Booking) => booking.id === this.bookingId);
+      const finded = this.customerService.customer.bookings.find(
+        (booking: Booking) => booking.id === this.bookingId
+      );
+
       if (finded) {
         this.booking = finded;
       } else {
@@ -115,7 +125,6 @@ export class MyBookingDetailComponent implements OnInit {
     return this.tableForOptions.map((elem) => elem.header);
   }
 
-
   get displayedColumns(): string[] {
     return this.tableFormat.map((elem) => elem.header);
   }
@@ -157,8 +166,9 @@ export class MyBookingDetailComponent implements OnInit {
     const variables = {
       id,
       accepted: true
-    }
-    this.Apollo.setData(ACCEPT_BOOKING_OPTION, variables).subscribe((resp) => {
+    };
+
+     this.apollo.setData(ACCEPT_BOOKING_OPTION, variables).subscribe((resp) => {
       const value = resp.data;
 
       if (value && value.updated && value.updated.length) {
@@ -166,12 +176,38 @@ export class MyBookingDetailComponent implements OnInit {
           id: this.booking.id,
         };
 
-        this.Apollo.getData(GET_BOOKING_BY_ID, variablesForId).subscribe((response) => {
-          this.booking = JSON.parse(JSON.stringify(response.data.booking[0]));
+         this.apollo.getData(GET_BOOKING_BY_ID, variablesForId).subscribe((response) => {
+          if (response && response.data && response.data.booking) {
+            this.booking = JSON.parse(JSON.stringify(response.data.booking[0]));
+            this.isViewLoading = false;
+          } else {
+            this.isViewLoading = false;
+            const body = {
+              title: 'Error',
+              message: 'uknownError'
+            };
+
+            this.modalService.openModal(body);
+          }
+        }, err => {
+          const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
           this.isViewLoading = false;
-        })
+          this.modalService.openModal(bodyToSend);
+        });
+      } else {
+        this.isViewLoading = false;
+        const body = {
+          title: 'Error',
+          message: 'uknownError'
+        };
+
+        this.modalService.openModal(body);
       }
-    })
+    }, err => {
+      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+      this.isViewLoading = false;
+      this.modalService.openModal(bodyToSend);
+    });
   }
 
   get isOptionToBeShowed() : boolean {
@@ -271,7 +307,6 @@ export class MyBookingDetailComponent implements OnInit {
     this.contract_service_info.total_pages = event._pdfInfo.numPages;
   }
 
-
   get isRentContractLoaded(): boolean {
     if (this.booking.contract_rent && this.booking.contract_rent.oid) {
       return this.contract_rent_info.loaded;
@@ -329,6 +364,7 @@ export class MyBookingDetailComponent implements OnInit {
   }
 
   sign(type: String):void {
+    this.isViewLoading = true;
     if (type === this.SERVICE_CONTRACT_TYPE) {
       this.contract_service_info.signed = true;
     } else{
@@ -342,18 +378,34 @@ export class MyBookingDetailComponent implements OnInit {
         time: date
       }
 
-      this.Apollo.setData(SIGN_BOOKING_CONTRACT,variables).subscribe((res) => {
+       this.apollo.setData(SIGN_BOOKING_CONTRACT,variables).subscribe((res) => {
         const value = res.data.data[0].Contract_signed;
-        const finded = this.customerService.customer.bookings.find((booking: Booking) => booking.id === this.bookingId );
-        if(finded) {
-          const copy = JSON.parse(JSON.stringify(finded));
-          copy.contract_signed = value;
-          this.customerService.updateBooking(copy);
-          this.booking = copy;
-          this.contractMessage ='signedMessage';
-          const date = value.split('T');
-          this.formatedDate = `${date[0]} ${date[1]}`
+        if (value) {
+          const finded = this.customerService.customer.bookings.find((booking: Booking) => booking.id === this.bookingId );
+          if(finded) {
+            const copy = JSON.parse(JSON.stringify(finded));
+            copy.contract_signed = value;
+            this.customerService.updateBooking(copy);
+            this.booking = copy;
+            this.contractMessage ='signedMessage';
+            const date = value.split('T');
+            this.formatedDate = `${date[0]} ${date[1]}`;
+          }
+
+          this.isViewLoading = false;
+        } else {
+          this.isViewLoading = false;
+          const body = {
+            title: 'Error',
+            message: 'uknownError'
+          };
+
+          this.modalService.openModal(body);
         }
+      }, err => {
+        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+        this.isViewLoading = false;
+        this.modalService.openModal(bodyToSend);
       });
     }
   }

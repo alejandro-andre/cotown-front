@@ -75,8 +75,6 @@ export class NewContactComponent {
     };
 
     this.apollo.setData(SET_NEW_CONTACT, variables).subscribe((ev) => {
-      console.log('The response is: ', ev)
-
       const value = ev.data;
       if (value && value.data && value.data.id) {
         const varToSend = {

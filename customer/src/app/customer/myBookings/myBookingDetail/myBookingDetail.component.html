@@ -5,7 +5,7 @@
   </ng-container>
 
   <ng-template #showData>
-    <div class="box-content" *ngIf="!isViewLoading">
+    <div class="box-content">
       <p>
         <mat-form-field>
           <mat-label>{{ 'status' | translate }}</mat-label>
@@ -319,12 +319,11 @@
       </div>
     </div>
 
-    <div *ngIf="isViewLoading">
-      Loaing ...
-    </div>
   </ng-template>
 
   <ng-template #showNotData>
     {{ 'noBookingFound' | translate }}
   </ng-template>
+
+  <app-spinner-control *ngIf="isViewLoading"></app-spinner-control>
 </div>

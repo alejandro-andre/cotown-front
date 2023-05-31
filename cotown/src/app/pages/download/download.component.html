@@ -14,9 +14,9 @@
     <div style="margin-bottom: -22px;">
         <mat-form-field>
             <mat-label>Mes y año</mat-label>
-            <input matInput [matDatepicker]="dpbill" [formControl]="billDate">
+            <input MonthYearPickerFormat="MM/YYYY" matInput [matDatepicker]="dpbill" [formControl]="billDate" (change)="showMonth()">
             <mat-datepicker-toggle matIconSuffix [for]="dpbill"></mat-datepicker-toggle>
-            <mat-datepicker #dpbill></mat-datepicker>
+            <mat-datepicker #dpbill (monthSelected)="setMonthAndYear($event, dpbill)" startView="multi-year"></mat-datepicker>
         </mat-form-field>
     </div>
 </div>

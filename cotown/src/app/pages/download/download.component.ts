@@ -1,17 +1,15 @@
-import { Component, Directive } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { DateAdapter } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
 
-import * as _moment from 'moment';
-import {default as _rollupMoment, Moment} from 'moment';
+import {default as _rollupMoment, Moment, unitOfTime} from 'moment';
 
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { environment } from 'src/environments/environment';
 
-const moment = _rollupMoment || _moment;
+const moment = _rollupMoment;
 
 @Component({
   selector: 'app-download',
@@ -37,8 +35,8 @@ export class DownloadComponent {
   // Link
   link(data: string) : string {
     if (data == "facturas") {
-      const from = moment(this.billDate.value).startOf('month')
-      const to = from.add(1, 'M').startOf('month')
+      const from = moment(this.billDate.value);
+      const to = moment(from).add(1, 'M');
       return environment.backURL + '/export/facturas' 
         + '?desde=' + from.format('YYYY-MM-DD') 
         + '&hasta=' + to.format('YYYY-MM-DD') 
@@ -54,13 +52,9 @@ export class DownloadComponent {
         + '?access_token=' + this.apolloApi.token;
   }
 
-  setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
-    const m = moment(normalizedMonthAndYear);
-    const ctrlValue = this.billDate.value!;
-    ctrlValue.month(m.month());
-    ctrlValue.year(m.year());
-    ctrlValue.date(1);
-    this.billDate.setValue(ctrlValue);
+  setMonthAndYear(value: Moment, datepicker: MatDatepicker<Moment>) {
+    const m = moment(value);
+    this.billDate.setValue(m);
     datepicker.close();
   }
 

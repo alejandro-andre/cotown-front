@@ -1,6 +1,13 @@
 import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+
+import * as _moment from 'moment';
+import { default as _rollupMoment } from 'moment';
+
+import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { environment } from 'src/environments/environment';
-import { ApolloQueryApi as ApolloQueryApi } from 'src/app/services/apollo-api.service';
+
+const moment = _rollupMoment || _moment;
 
 @Component({
   selector: 'app-download',
@@ -10,6 +17,10 @@ import { ApolloQueryApi as ApolloQueryApi } from 'src/app/services/apollo-api.se
 
 export class DownloadComponent {
 
+    // Dates
+    billDate = new FormControl(moment([2017, 0, 1]));
+    paymentDate = new FormControl(moment([2017, 0, 1]));
+
     // Constructor
     constructor(
       private apolloApi: ApolloQueryApi,
@@ -18,7 +29,6 @@ export class DownloadComponent {
     // Link
     link(data: string) : string {
       return environment.backURL + '/export/' + data + '?access_token=' + this.apolloApi.token;
-    }    
+    }
+    
 }
-
-

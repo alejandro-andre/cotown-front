@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
+import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -49,7 +50,9 @@ export function createTranslateLoader(http: HttpClient) {
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     MatIconModule,
     MatButtonModule,
@@ -59,11 +62,11 @@ export function createTranslateLoader(http: HttpClient) {
     MatFormFieldModule,
     MatSelectModule,
     MatDialogModule,
+    MatDatepickerModule,
+    MatInputModule,
     GraphQLModule,
-    HttpClientModule,
     TimeChartModule,
     SpinnerModule,
-    ReactiveFormsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -73,9 +76,9 @@ export function createTranslateLoader(http: HttpClient) {
     })
   ],
   bootstrap: [AppComponent],
-  providers: [
-    { provide: DateAdapter, useClass: CustomDateAdapter }
-  ]
+  //providers: [
+  //  { provide: DateAdapter, useClass: CustomDateAdapter }
+  //]
 })
 
 export class AppModule { }

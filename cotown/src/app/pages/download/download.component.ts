@@ -36,11 +36,22 @@ export class DownloadComponent {
 
   // Link
   link(data: string) : string {
-    if (data == "facturas") 
-      return environment.backURL + '/export/facturas?mes=' + this.billDate.value?.format('YYYY-MM') + '&access_token=' + this.apolloApi.token;
-    if (data == "pagos") 
-      return environment.backURL + '/export/pagos?fecha=' + this.billDate.value?.format('YYYY-MM-DD') + '&access_token=' + this.apolloApi.token;
-    return environment.backURL + '/export/' + data + '?access_token=' + this.apolloApi.token;
+    if (data == "facturas") {
+      const from = moment(this.billDate.value).startOf('month')
+      const to = from.add(1, 'M').startOf('month')
+      return environment.backURL + '/export/facturas' 
+        + '?desde=' + from.format('YYYY-MM-DD') 
+        + '&hasta=' + to.format('YYYY-MM-DD') 
+        + '&access_token=' + this.apolloApi.token;
+    }
+    if (data == "pagos") {
+      const to = moment(this.paymentDate.value);
+      return environment.backURL + '/export/pagos?' 
+        + 'fecha=' + to.format('YYYY-MM-DD') 
+        + '&access_token=' + this.apolloApi.token;
+    }
+    return environment.backURL + '/export/' + data 
+        + '?access_token=' + this.apolloApi.token;
   }
 
   setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {

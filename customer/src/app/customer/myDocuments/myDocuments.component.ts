@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
 
 import { DocFile, Document, PayloadFile } from 'src/app/constants/Interface';
-import { UPDATE_EXPERITY_DATE, UPLOAD_CUSTOMER_DOCUMENT, UPLOAD_CUSTOMER_FULL_DOCUMENTS } from 'src/app/schemas/query-definitions/customer.query';
+import { UPLOAD_CUSTOMER_DOCUMENT, UPLOAD_CUSTOMER_FULL_DOCUMENTS } from 'src/app/schemas/query-definitions/customer.query';
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -16,7 +16,7 @@ import { formatErrorBody } from 'src/app/utils/error.util';
   styleUrls: ['./myDocuments.component.scss']
 })
 
-export class MyDocumentsComponent  {
+export class MyDocumentsComponent implements OnInit {
   constructor(
     public customerService: CustomerService,
     private router: Router,
@@ -24,12 +24,24 @@ export class MyDocumentsComponent  {
     private Apollo: ApolloQueryApi,
     private modalService: ModalService
   ) {}
-  public disabledButtons: number[] = [] as number[];
+
+  public enabledButtons: number[] = [] as number[];
   public pdfSrc = '';
   public isLoading = false;
   public photo = '';
-  public file!: File;
 
+  ngOnInit(): void {
+    this.documents.forEach((el: Document) => {
+      if(el.expirity_date === null) {
+        this.enabledButtons.push(el.id);
+      } else {
+        const finded = el.doctype.arrayOfImages?.filter(ev => ev.oid === -1);
+        if (finded && finded.length > 0) {
+          this.enabledButtons.push(el.id);
+        }
+      }
+    });
+  }
   viewDoc(doc: DocFile) {
     this.axiosApi.getFile(doc.id, doc.type).then((response: any) => {
       if (response.data && response.data.type ===  Constants.IMAGE_JPG || response.data.type ===  Constants.IMAGE_PNG) {
@@ -42,8 +54,7 @@ export class MyDocumentsComponent  {
     })
   }
 
-  upload(event: any, doc: any, index: number, document: Document) {
-    console.log(event)
+  upload(event: any, index: number, document: Document) {
     const payload: PayloadFile  = {
       id: document.id,
       file: event.target.files[0],
@@ -59,14 +70,13 @@ export class MyDocumentsComponent  {
         document.doctype.arrayOfImages[index].name = name
         document.doctype.arrayOfImages[index].typeFile = type;
         document.doctype.arrayOfImages[index].type = index === 0 ? Constants.DOCUMENT_TYPE_FRONT : Constants.DOCUMENT_TYPE_BACK;
-
-
-        const filtered = document.doctype.arrayOfImages.filter(ev => ev.oid !== -1 && ev.file !== '');
-        if (filtered && filtered.length === document.doctype.images) {
-          this.uploadDataOnApollo(document);
-        }
       }
     })
+  }
+
+  isViewEnabled(document: Document) {
+    const finded = this.enabledButtons.find((el) => el === document.id);
+    return finded === undefined;
   }
 
   uploadDataOnApollo(document: Document) {
@@ -75,6 +85,7 @@ export class MyDocumentsComponent  {
     if (files) {
       let variables: any = {
         id: document.id,
+        date:document.expirity_date,
         billFront: {
           name: files[0].name,
           oid: files[0].oid,
@@ -93,7 +104,9 @@ export class MyDocumentsComponent  {
       this.Apollo.setData(query, variables).subscribe((response) => {
         const value = response.data;
         if (value && value.data && value.data.length && value.data[0].id) {
-          console.log('Subida realizada con exito: ', value.data[0]);
+          this.isLoading = false;
+          const newArray = this.enabledButtons.filter((elem) => elem !== document.id);
+          this.enabledButtons = [ ...newArray];
         } else {
           // Something wrong but not know what
           this.isLoading = false;
@@ -114,28 +127,26 @@ export class MyDocumentsComponent  {
   }
 
   isButtonOfDocDisabled(document: Document) {
-    const finded = this.disabledButtons.find((el) => el === document.id);
-    return finded === undefined;
+    const finded = this.enabledButtons.find((el) => el === document.id);
+    if(finded) {
+      if (document.doctype.arrayOfImages) {
+        const filtered = document.doctype.arrayOfImages.filter(ev => ev.oid !== -1 && ev.file !== '')
+
+        if(filtered && filtered.length === document.doctype.images) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    }
+
+    return true;
   }
 
   save(document: Document) {
     this.isLoading = true;
     document.expirity_date = this.formatDate(document.formDateControl.value);
-    const newArray = this.disabledButtons.filter((elem) => elem !== document.id);
-    this.disabledButtons = [ ...newArray];
-    const variables = {
-      id: document.id,
-      value: document.expirity_date
-    }
-
-    this.Apollo.setData(UPDATE_EXPERITY_DATE, variables).subscribe(async(response) => {
-      this.isLoading = false;
-      console.log('The response is: ', response);
-    }, err => {
-      this.isLoading = false;
-      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
-      this.modalService.openModal(bodyToSend);
-    })
+    this.uploadDataOnApollo(document);
   }
 
   formatDate(date: Date) {
@@ -148,10 +159,6 @@ export class MyDocumentsComponent  {
     }
 
     return null;
-  }
-
-  inputDate(document: Document) {
-    this.disabledButtons.push(document.id);
   }
 
   get documents(): Document[] {

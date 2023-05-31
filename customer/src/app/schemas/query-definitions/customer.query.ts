@@ -210,10 +210,11 @@ export const UPDATE_CUSTOMER = `
     }){id}
 }`;
 
-export const UPLOAD_CUSTOMER_DOCUMENT = `mutation ($id: Int! $billFront: Models_DocumentTypeInputType) {
+export const UPLOAD_CUSTOMER_DOCUMENT = `mutation ($id: Int! $billFront: Models_DocumentTypeInputType, $date: String) {
   data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
     entity: {
       Document: $billFront
+      Expiry_date: $date
     }
   ){ id }
 }`;
@@ -227,11 +228,12 @@ export const UPLOAD_CUSTOMER_DOCUMENT_BACK = `mutation ($id: Int! $bill: Models_
 }`;
 
 
-export const UPLOAD_CUSTOMER_FULL_DOCUMENTS = `mutation ($id: Int!, $billFront: Models_DocumentTypeInputType, $billBack: Models_DocumentTypeInputType) {
+export const UPLOAD_CUSTOMER_FULL_DOCUMENTS = `mutation ($id: Int!, $billFront: Models_DocumentTypeInputType, $billBack: Models_DocumentTypeInputType, $date: String) {
   data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
     entity: {
       Document: $billFront
       Document_back: $billBack
+      Expiry_date: $date
     }
   ){ id }
 }`;
@@ -251,16 +253,6 @@ export const UPLOAD_CUSTOMER_PHOTO = `mutation ($id: Int! $bill: Models_Document
       type
     }
   }
-}`;
-
-export const UPDATE_EXPERITY_DATE = `
-mutation ($id: Int, $value: String){
-  Customer_Customer_docUpdate(
-    where: { id: { EQ: $id } }
-    entity: {
-      Expiry_date: $value
-    }
-  ){ id }
 }`;
 
 export const USER_ID = `query user_id {

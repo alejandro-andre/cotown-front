@@ -16,7 +16,6 @@
               matInput
               [matDatepicker]="picker"
               [formControl]="document.formDateControl"
-              (dateChange)="inputDate(document)"
             >
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
@@ -40,15 +39,15 @@
         >
           <label>{{  doc.name || 'document' | translate }}</label>
           <input
-            *ngIf="doc.name === '' && doc.oid === -1 || doc.oid === null"
+            *ngIf="doc.name === '' && (doc.oid === -1 || doc.oid === null) && !isViewEnabled(document)"
             placeholder="Document"
-            [(ngModel)]="file"
+            [(ngModel)]="doc.file"
             type="file"
-            (change)="upload($event, doc, i, document)"
+            (change)="upload($event, i, document)"
           >
 
           <button
-            *ngIf="doc.name !== '' && (doc.oid !== -1 || doc.oid !== null)"
+            *ngIf="doc.name !== '' && (doc.oid !== -1 || doc.oid !== null) && isViewEnabled(document)"
             (click)="viewDoc(doc)"
           >
             {{ 'view' | translate }}

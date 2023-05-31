@@ -49,11 +49,11 @@ button:active {
 }
 
 .c10 {
-  width: 10%;
+  width: 15%;
 }
 
 .c20 {
-  width: 20%;
+  width: 30%;
 }
 
 .c30 {
@@ -68,7 +68,66 @@ button:active {
   width: 50%;
 }
 
-.form {
+
+form {
+  justify-content: center;
+  align-items: center;
   display: flex;
   flex-direction: column;
 }
+
+@media (max-width: 450px) {
+  button,.data{
+    width: 100% !important;
+  }
+}
+
+@media (min-width: 450px) and (max-width: 600px) {
+  button,.data{
+    width: 80% !important;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 700px) {
+  button{
+    width: 50% !important;
+  }
+
+  .c10 {
+    width: 50%;
+  }
+
+  .c20 {
+    width: 80%;
+  }
+
+  form {
+    align-items: start;
+  }
+}
+
+@media (min-width: 700px) and (max-width: 900px) {
+  button{
+    width: 50% !important;
+  }
+
+  .c10 {
+    width: 40%;
+  }
+
+  .c20 {
+    width: 60%;
+  }
+
+  form {
+    align-items: start;
+  }
+}
+
+
+@media (min-width: 900px) {
+  form {
+    align-items: start;
+  }
+}
+

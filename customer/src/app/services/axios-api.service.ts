@@ -19,7 +19,7 @@ export class AxiosApi {
     console.log('this is the payload_ ', payload);
     const token = this.apollo.token;
     const url = `/document/Customer/Customer_doc/${payload.id}/${payload.document}/contents?access_token=${token}`;
-    return axiosInstance.post(url, { file: payload.file })
+    return axiosInstance.post(url, { file: payload.file }, { headers: { 'Content-Type': 'multipart/form-data' } } )
   }
 
   get(url: string) {
@@ -34,7 +34,7 @@ export class AxiosApi {
   uploadImage(payload: PayloadFile) {
     const token = this.apollo.token;
     const url = `/document/Customer/Customer/${payload.id}/Photo/contents?access_token=${token}`;
-    return axiosInstance.post(url, { file: payload.file })
+    return axiosInstance.post(url, { file: payload.file }, { headers: { 'Content-Type': 'multipart/form-data' } } )
   }
 
   getFile(id: number, type: string) {

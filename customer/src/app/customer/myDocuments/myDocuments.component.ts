@@ -46,7 +46,7 @@ export class MyDocumentsComponent  {
     console.log(event)
     const payload: PayloadFile  = {
       id: document.id,
-      file: this.file,
+      file: event.target.files[0],
       document: index === 0 ? 'Document': 'Document_back',
     };
 

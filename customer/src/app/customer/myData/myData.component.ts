@@ -203,7 +203,7 @@ export class MyDataComponent{
     this.isLoading = true;
     const fileInfo = event.target.files[0]
     const payload:PayloadFile = {
-      file: this.image,
+      file: event.target.files[0],
       id: this.customer.id,
     }
 

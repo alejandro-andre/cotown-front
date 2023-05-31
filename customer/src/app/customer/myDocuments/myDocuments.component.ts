@@ -28,7 +28,6 @@ export class MyDocumentsComponent  {
   public pdfSrc = '';
   public isLoading = false;
   public photo = '';
-  public file!: File;
 
   viewDoc(doc: DocFile) {
     this.axiosApi.getFile(doc.id, doc.type).then((response: any) => {

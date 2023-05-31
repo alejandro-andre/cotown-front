@@ -42,7 +42,7 @@
           <input
             *ngIf="doc.name === '' && doc.oid === -1 || doc.oid === null"
             placeholder="Document"
-            [(ngModel)]="file"
+            [(ngModel)]="doc.file"
             type="file"
             (change)="upload($event, doc, i, document)"
           >

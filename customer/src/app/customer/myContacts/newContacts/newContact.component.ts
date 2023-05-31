@@ -29,7 +29,6 @@ export class NewContactComponent {
   public emailFormControl = new FormControl(
    '',
     [
-      Validators.required,
       Validators.pattern('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$')
     ]
   );
@@ -70,7 +69,7 @@ export class NewContactComponent {
       name: this.name,
       id: this.customerService.customer.id,
       cid: this.contactType,
-      email: this.email,
+      email: this.email.length > 0 ? this.email : undefined,
       phone: this.phone
     };
 

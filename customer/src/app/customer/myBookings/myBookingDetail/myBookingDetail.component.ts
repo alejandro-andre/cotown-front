@@ -211,13 +211,7 @@ export class MyBookingDetailComponent implements OnInit {
   }
 
   get isOptionToBeShowed() : boolean {
-    for(const option of this.options) {
-      if (!option.accepted) {
-        return true;
-      }
-    }
-
-    return false;
+    return this.booking.status.includes('alternativas');
   }
 
   get buildingName(): string {

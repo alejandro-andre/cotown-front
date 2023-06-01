@@ -95,5 +95,6 @@
   "orderNumber": "Nº of order",
   "identifier": "Identifier",
   "payInfo": "Details of the payment to be made",
-  "paymentData": "Payment data"
+  "paymentData": "Payment data",
+  "accept": "Accept"
 }

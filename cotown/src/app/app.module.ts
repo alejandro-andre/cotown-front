@@ -24,6 +24,7 @@ import { TimeChartModule } from './time-chart/time-chart.module';
 import { GraphQLModule } from './graphql.module';
 import { SpinnerModule } from './spinner/spinner.module';
 import { CustomDateAdapter } from './plugins/custom-date-adapter';
+import { MonthYearPickerFormatDirective } from './plugins/month-year-picker-format-directive';
 import { PlanningComponent } from './pages/planning/planning.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ConfirmationComponent } from './pages/confirmation/confirmation.component';
@@ -45,7 +46,8 @@ export function createTranslateLoader(http: HttpClient) {
     PlanningComponent,
     DashboardComponent,
     DownloadComponent,
-    ConfirmationComponent
+    ConfirmationComponent,
+    MonthYearPickerFormatDirective
   ],
   imports: [
     BrowserModule,
@@ -62,7 +64,6 @@ export function createTranslateLoader(http: HttpClient) {
     MatFormFieldModule,
     MatSelectModule,
     MatDialogModule,
-    MatDatepickerModule,
     MatInputModule,
     GraphQLModule,
     TimeChartModule,
@@ -76,9 +77,9 @@ export function createTranslateLoader(http: HttpClient) {
     })
   ],
   bootstrap: [AppComponent],
-  //providers: [
-  //  { provide: DateAdapter, useClass: CustomDateAdapter }
-  //]
+  providers: [
+    { provide: DateAdapter, useClass: CustomDateAdapter }
+  ]
 })
 
 export class AppModule { }

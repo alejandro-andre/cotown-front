@@ -8,6 +8,10 @@ const axiosInstance = axios.create({
   baseURL: 'https://experis.flows.ninja/'
 });
 
+const secondInstance = axios.create({
+  baseURL: 'https://dev.cotown.ciber.es/api/v1',
+});
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,7 +20,6 @@ export class AxiosApi {
   constructor(private apollo: ApolloQueryApi){}
 
   uploadFile(payload: PayloadFile) {
-    console.log('this is the payload_ ', payload);
     const token = this.apollo.token;
     const url = `/document/Customer/Customer_doc/${payload.id}/${payload.document}/contents?access_token=${token}`;
     return axiosInstance.post(url, { file: payload.file }, { headers: { 'Content-Type': 'multipart/form-data' } } )
@@ -53,5 +56,10 @@ export class AxiosApi {
     const token = this.apollo.token;
     const url = `wopi/files/Booking/Booking/${id}/${type}/contents?access_token=${token}`;
     return axiosInstance.get(url, { responseType: 'blob' });
+  }
+
+  discartBooking(id: number) {
+    const token = this.apollo.token;
+    return secondInstance.get(`/booking/${id}/status/descartada?access_token=${token}`);
   }
 };

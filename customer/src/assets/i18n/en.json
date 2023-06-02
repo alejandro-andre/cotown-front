@@ -96,5 +96,8 @@
   "identifier": "Identifier",
   "payInfo": "Details of the payment to be made",
   "paymentData": "Payment data",
-  "accept": "Accept"
+  "accept": "Accept",
+  "flight": "Flight/Train",
+  "check_in": "Check in",
+  "check_out": "Check out"
 }

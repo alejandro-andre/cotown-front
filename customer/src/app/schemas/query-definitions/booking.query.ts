@@ -14,6 +14,11 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
     confirmation_date: Confirmation_date
     expiry_date: Expiry_date
     limit: Limit
+    check_in: Check_in
+    check_out: Check_out
+    arrival: Arrival
+    flight: Flight
+    check_in_id: Check_in_option_id
     contract_rent: Contract_rent{
       name
       oid
@@ -27,7 +32,7 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
       id
       name: Name
     }
-    shool: SchoolViaSchool_id {
+    school: SchoolViaSchool_id {
       name: Name
       id
     }
@@ -103,3 +108,35 @@ export const SIGN_BOOKING_CONTRACT = `mutation($id: Int!,$time: String){
   ){id, Contract_signed}
 }`;
 
+export const CHECKIN_OPTIONS = `query checking_list {
+  options: Booking_Checkin_typeList{
+    id
+    name: Name
+    name_en: Name_en
+  }
+}`;
+
+export const UPDATE_BOOKING = `mutation(
+  $id: Int!,
+  $checkin: String,
+  $checkout: String,
+  $arrival: String,
+  $flight: String,
+  $option: Int,
+  $selectedSchool: Int,
+  $selectedReason: Int
+){
+  data: Booking_BookingUpdate( where:{ id: {EQ: $id}}
+    entity:{
+      Check_in: $checkin
+      Check_out: $checkout
+      Arrival: $arrival
+      Flight: $flight
+      Check_in_option_id: $option
+      School_id: $selectedSchool,
+      Reason_id: $selectedReason
+    }
+  ){
+    id
+  }
+}`;

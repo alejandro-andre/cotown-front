@@ -99,5 +99,6 @@
   "accept": "Acceptar",
   "flight": "Vuelo/Tren",
   "check_in": "Entrada",
-  "check_out": "Salida"
+  "check_out": "Salida",
+  "discart": "Descartar"
 }

@@ -117,7 +117,7 @@
       </p>
 
       <p>
-        <mat-form-field>
+        <mat-form-field *ngIf="!isEditableReason">
           <mat-label>{{ 'reasonForStay' | translate }}</mat-label>
           <input
             matInput
@@ -127,7 +127,23 @@
           >
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field
+          appearance="fill"
+          style="margin-right: 10px;"
+          *ngIf="isEditableReason"
+        >
+          <mat-label>{{ 'reasonForStay' | translate }}</mat-label>
+          <mat-select
+            [(ngModel)]="selectedReason"
+            (selectionChange)="activateSaveButton()"
+          >
+            <mat-option *ngFor="let reason of reasons" [value]="reason.id">
+              {{ isSpanish ? reason.name : reason.name_en  }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="!isEditableSchool">
           <mat-label>{{ 'school/company' | translate }}</mat-label>
           <input
             matInput
@@ -136,6 +152,23 @@
             readonly
           >
         </mat-form-field>
+
+      <mat-form-field
+        appearance="fill"
+        style="margin-right: 10px;"
+        *ngIf="isEditableSchool"
+      >
+      <mat-label>{{ 'school/company' | translate }}</mat-label>
+      <mat-select
+        [(ngModel)]="selectedSchool"
+        (selectionChange)="activateSaveButton()"
+      >
+        <mat-option *ngFor="let school of schoolService.schoolOrCompanies" [value]="school.id">
+          {{ school.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
       </p>
 
       <div *ngIf="isOptionToBeShowed">
@@ -182,29 +215,78 @@
             readonly
           >
         </mat-form-field>
+
         <mat-form-field appearance="fill">
-          <mat-label>{{ 'from' | translate }}</mat-label>
+          <mat-label>{{ 'check_in' | translate }}</mat-label>
           <input
             matInput
             [matDatepicker]="pickerFrom"
-            [formControl]="customerService.customer.formControl"
+            [formControl]="checkingFormControl"
+            (dateInput)="activateSaveButton()"
           >
           <mat-datepicker-toggle matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
           <mat-datepicker #pickerFrom></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-          <mat-label>{{ 'to' | translate }}</mat-label>
+          <mat-label>{{ 'check_out' | translate }}</mat-label>
           <input
             matInput
             [matDatepicker]="pickerTo"
-            [formControl]="customerService.customer.formControl"
+            [formControl]="checkoutFormControl"
+            (dateInput)="activateSaveButton()"
           >
           <mat-datepicker-toggle matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
           <mat-datepicker #pickerTo></mat-datepicker>
         </mat-form-field>
 
-      </p>
+        <mat-form-field>
+          <mat-label>{{ 'flight' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{ 'flight' | translate }}"
+            [(ngModel)]="flight"
+            (change)="activateSaveButton()"
+          >
+        </mat-form-field>
+
+
+        <mat-form-field>
+          <mat-label>Hora de llegada </mat-label>
+          <input
+            matInput
+            type="time"
+            [(ngModel)]="arrival"
+            (change)="activateSaveButton()"
+          >
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field
+        appearance="fill"
+        style="margin-right: 10px; width: 50%;"
+      >
+        <mat-label>{{ 'reasonForStay' | translate }}</mat-label>
+        <mat-select
+          [(ngModel)]="selectedOption"
+          (selectionChange)="activateSaveButton()"
+        >
+          <mat-option *ngFor="let op of checkinOptions" [value]="op.id">
+            {{ isSpanish ? op.name : op.name_en  }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </p>
+
+    <button
+      style="width: 10%;"
+      mat-raised-button
+      color="primary"
+      (click)="save()"
+      [disabled]="!activeSaveButton"
+    >
+      {{ 'save' | translate }}
+    </button>
 
       <p>
         {{ 'prices' | translate }}

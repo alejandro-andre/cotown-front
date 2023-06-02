@@ -31,6 +31,11 @@ export interface Option {
 }
 
 export interface Booking {
+  flight: string | null,
+  check_in_id: number | null,
+  arrival: string | null,
+  check_in: string | null,
+  check_out: string | null,
   id: number,
   start: string,
   end: string,

@@ -95,5 +95,10 @@
   "orderNumber": "Nº of order",
   "identifier": "Identifier",
   "payInfo": "Details of the payment to be made",
-  "paymentData": "Payment data"
+  "paymentData": "Payment data",
+  "accept": "Accept",
+  "flight": "Flight/Train",
+  "check_in": "Check in",
+  "check_out": "Check out",
+  "discart": "Discart"
 }

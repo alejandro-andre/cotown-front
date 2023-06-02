@@ -1,17 +1,28 @@
+// Core
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Constants } from 'src/app/constants/Constants';
-import { Booking, TableObject } from 'src/app/constants/Interface';
-import {
-  ACCEPT_BOOKING_OPTION,
-  GET_BOOKING_BY_ID,
-  SIGN_BOOKING_CONTRACT
-} from 'src/app/schemas/query-definitions/booking.query';
+
+// Services
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { ModalService } from 'src/app/services/modal.service';
+import { schoolOrCompaniesService } from 'src/app/services/schoolOrCompanies.service';
 import { formatErrorBody } from 'src/app/utils/error.util';
+
+//Queries & constants
+import { Constants } from 'src/app/constants/Constants';
+import { BasicResponse, Booking, TableObject } from 'src/app/constants/Interface';
+import {
+  ACCEPT_BOOKING_OPTION,
+  CHECKIN_OPTIONS,
+  GET_BOOKING_BY_ID,
+  SIGN_BOOKING_CONTRACT,
+  UPDATE_BOOKING
+} from 'src/app/schemas/query-definitions/booking.query';
+import { CUSTOMER_REASONS_QUERY } from 'src/app/schemas/query-definitions/customer.query';
+import { FormControl } from '@angular/forms';
+import { formatDate } from 'src/app/utils/date.util';
 
 @Component({
   selector: 'app-booking-detail',
@@ -20,28 +31,6 @@ import { formatErrorBody } from 'src/app/utils/error.util';
 })
 
 export class MyBookingDetailComponent implements OnInit {
-  constructor(
-    public customerService: CustomerService,
-    private activeRoute: ActivatedRoute,
-    private axiosApi: AxiosApi,
-    private apollo: ApolloQueryApi,
-    private modalService: ModalService
-  ) {
-    this.activeRoute.params.subscribe((res) => {
-      const id = res['id'];
-      this.bookingId = parseInt(id);
-      const finded = this.customerService.customer.bookings.find(
-        (booking: Booking) => booking.id === this.bookingId
-      );
-
-      if (finded) {
-        this.booking = finded;
-      } else {
-        this.showNotFound = true;
-      }
-    });
-  }
-
   public isViewLoading = false;
   public booking!: Booking;
   public showNotFound: boolean = false;
@@ -50,6 +39,8 @@ export class MyBookingDetailComponent implements OnInit {
   public bookingId!: number;
   public contractMessage: string = '';
   public formatedDate: string = '';
+  public isEditableSchool: boolean = false;
+  public isEditableReason: boolean = false;
   private contract_rent_info = {
     total_pages: -1,
     current_page: -1,
@@ -120,6 +111,160 @@ export class MyBookingDetailComponent implements OnInit {
       name: 'Accept'
     },
   ];
+
+  public reasons: BasicResponse[] = [];
+  public checkinOptions: BasicResponse [] = [];
+  public selectedReason!: number;
+  public selectedSchool!: number;
+  public selectedOption: number | null = null;
+  public activeSaveButton: boolean = false;
+  public checkingFormControl = new FormControl<Date | null>(null);
+  public checkoutFormControl = new FormControl<Date | null>(null);
+  public flight:string = '';
+  public arrival: string = '';
+
+  constructor(
+    public customerService: CustomerService,
+    public schoolService: schoolOrCompaniesService,
+    private activeRoute: ActivatedRoute,
+    private axiosApi: AxiosApi,
+    private apollo: ApolloQueryApi,
+    private modalService: ModalService
+  ) {
+    this.activeRoute.params.subscribe((res) => {
+      this.isViewLoading = true;
+      const id = res['id'];
+      this.bookingId = parseInt(id);
+
+
+      const finded = this.customerService.customer.bookings.find(
+        (booking: Booking) => booking.id === this.bookingId
+      );
+
+      if (finded) {
+        this.booking = finded;
+        this.loadCheckinOptions();
+        this.selectedOption = this.booking.check_in_id;
+        this.flight = this.booking.flight !== null ? this.booking.flight : '';
+        this.arrival = this.booking.arrival !== null ? this.booking.arrival : '';
+
+        this.checkingFormControl = new FormControl(
+          this.booking.check_in !== null ?
+          new Date(this.booking.check_in) : null
+        );
+
+        this.checkoutFormControl = new FormControl(
+          this.booking.check_out !== null ?
+          new Date(this.booking.check_out) : null
+        )
+
+        if (this.reasonName === '') {
+          this.isEditableReason = true;
+          this.loadCustomerReasons();
+        } else {
+          this.selectedReason = this.booking.reason.id;
+          this.isViewLoading = false;
+        }
+
+        if (this.schoolName === '') {
+          this.isEditableSchool = true;
+        } else {
+          this.selectedSchool = this.booking.school.id;
+        }
+      } else {
+        this.showNotFound = true;
+      }
+    });
+  }
+
+
+  save () {
+    this.isViewLoading = true;
+    const checkin = this.checkingFormControl.value !== null ? formatDate(this.checkingFormControl.value) : null;
+    const checkout = this.checkoutFormControl.value !== null ? formatDate(this.checkoutFormControl.value): null;
+
+    const variables: any = {
+      id: this.booking.id,
+      checkin :checkin,
+      checkout: checkout,
+      arrival:  this.arrival,
+      flight : this.flight,
+      selectedSchool : this.selectedSchool,
+      selectedReason : this.selectedReason,
+      option: this.selectedOption,
+    }
+
+    this.apollo.setData(UPDATE_BOOKING, variables).subscribe((res) => {
+      const value = res.data;
+      if(value && value.data && value.data.length) {
+        this.getBookingById();
+      } else {
+        const body = {
+          title: 'Error',
+          message: 'uknownError'
+        };
+
+        this.modalService.openModal(body);
+      }
+    }, err  => {
+      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+      this.isViewLoading = false;
+      this.modalService.openModal(bodyToSend);
+    })
+  }
+
+  activateSaveButton() {
+    this.activeSaveButton = true;
+  }
+
+  loadCheckinOptions() {
+    this.apollo.getData(CHECKIN_OPTIONS).subscribe((res) => {
+      const value = res.data;
+      if (value && value.options && value.options.length) {
+        this.checkinOptions = [ ...value.options ];
+      } else {
+        const body = {
+          title: 'Error',
+          message: 'uknownError'
+        };
+
+        this.modalService.openModal(body);
+      }
+
+      this.isViewLoading = false;
+    },err => {
+      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+      this.isViewLoading = false;
+      this.modalService.openModal(bodyToSend);
+    })
+  }
+
+  loadCustomerReasons() {
+    this.apollo.getData(CUSTOMER_REASONS_QUERY).subscribe((res) => {
+      this.isViewLoading = false;
+      const result = res.data;
+      if(result && result.reasons && result.reasons.length) {
+        this.reasons = [ ...result.reasons ];
+      } else {
+        const body = {
+          title: 'Error',
+          message: 'uknownError'
+        };
+
+        this.modalService.openModal(body);
+      }
+
+      this.isViewLoading = false;
+    }, err => {
+      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+      this.isViewLoading = false;
+      this.modalService.openModal(bodyToSend);
+    })
+  }
+
+  get isSpanish(): boolean {
+    return this.customerService.customer.appLang === Constants.SPANISH.id
+  }
 
   get displayedColumnsOptions(): string[] {
     return this.tableForOptions.map((elem) => elem.header);
@@ -210,14 +355,34 @@ export class MyBookingDetailComponent implements OnInit {
     });
   }
 
-  get isOptionToBeShowed() : boolean {
-    for(const option of this.options) {
-      if (!option.accepted) {
-        return true;
-      }
-    }
+  getBookingById () {
+    this.apollo.getData(GET_BOOKING_BY_ID, { id: this.booking.id }).subscribe(response => {
+      const data = response.data;
+      if (data && data.booking && data.booking.length) {
+        this.isEditableReason = false;
+        this.isEditableSchool = false;
+        const booking: Booking = data.booking[0];
+        this.booking = booking;
+        this.activeSaveButton = false;
+      } else {
+        const body = {
+          title: 'Error',
+          message: 'uknownError'
+        };
 
-    return false;
+        this.modalService.openModal(body);
+      }
+
+      this.isViewLoading = false;
+    }, err => {
+      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+      this.isViewLoading = false;
+      this.modalService.openModal(bodyToSend);
+    });
+  }
+
+  get isOptionToBeShowed() : boolean {
+    return this.booking.status.includes('alternativas');
   }
 
   get buildingName(): string {
@@ -256,7 +421,7 @@ export class MyBookingDetailComponent implements OnInit {
   }
 
   get schoolName(): string {
-    return this.booking?.school?.name || '';
+    return this.booking.school?.name || '';
   }
 
   async getPdfsContracts() {
@@ -344,21 +509,6 @@ export class MyBookingDetailComponent implements OnInit {
     return false
   }
 
-  formatDate(date: Date): string {
-    if(date) {
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
-      const min = date.getMinutes();
-      const hours = date.getHours();
-      const sec = date.getSeconds();
-
-      return `${year}-${month}-${day}T${hours}:${min}:${sec}`;
-    }
-
-    return '';
-  }
-
   get contractSigned (): String | null {
     return this.booking.contract_signed;
   }
@@ -372,7 +522,7 @@ export class MyBookingDetailComponent implements OnInit {
     }
 
     if(this.contract_rent_info.signed && this.contract_service_info.signed) {
-      const date = this.formatDate(new Date());
+      const date = formatDate(new Date());
       const variables = {
         id: this.booking.id,
         time: date
@@ -408,5 +558,26 @@ export class MyBookingDetailComponent implements OnInit {
         this.modalService.openModal(bodyToSend);
       });
     }
+  }
+
+  discart() {
+    this.isViewLoading = true;
+    this.axiosApi.discartBooking(this.booking.id).then((respose) =>{
+      if (respose && respose.data === 'ok') {
+        this.getBookingById();
+      } else {
+        const body = {
+          title: 'Error',
+          message: 'uknownError'
+        };
+
+        this.modalService.openModal(body);
+        this.isViewLoading = false;
+      }
+    }).catch((err) => {
+      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+      this.isViewLoading = false;
+      this.modalService.openModal(bodyToSend);
+    })
   }
 }

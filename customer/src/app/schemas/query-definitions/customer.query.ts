@@ -96,6 +96,11 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       confirmation_date: Confirmation_date
       expiry_date: Expiry_date
       limit: Limit
+      check_in: Check_in
+      check_out: Check_out
+      arrival: Arrival
+      flight: Flight
+      check_in_id: Check_in_option_id
       contract_rent: Contract_rent{
         name
         oid
@@ -109,7 +114,7 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
         id
         name: Name
       }
-      shool: SchoolViaSchool_id {
+      school: SchoolViaSchool_id {
         name: Name
         id
       }
@@ -260,3 +265,14 @@ export const USER_ID = `query user_id {
     id
   }
 }`;
+
+export const CUSTOMER_REASONS_QUERY = `query customerReasons {
+  reasons: Booking_Customer_reasonList(
+    orderBy: [{attribute: Name, direction:ASC, nullsGo: FIRST}]
+  ){
+    id
+    name: Name
+    name_en: Name_en
+  }
+}`
+;

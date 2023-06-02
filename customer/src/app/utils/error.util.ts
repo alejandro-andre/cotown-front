@@ -18,5 +18,4 @@ export const formatErrorBody = (error: Error, lang: string) => {
   }
 
   return bodyToSend;
-
 };

@@ -197,35 +197,7 @@ export class MyBookingDetailComponent implements OnInit {
     this.apollo.setData(UPDATE_BOOKING, variables).subscribe((res) => {
       const value = res.data;
       if(value && value.data && value.data.length) {
-        this.apollo.getData(GET_BOOKING_BY_ID, { id: this.booking.id }).subscribe(response => {
-          const data = response.data;
-          if (data && data.booking && data.booking.length) {
-            this.isEditableReason = false;
-            this.isEditableSchool = false;
-            const booking: Booking = data.booking[0];
-            this.booking.school = booking.school;
-            this.booking.check_in = booking.check_in;
-            this.booking.check_out = booking.check_out;
-            this.booking.arrival = booking.arrival;
-            this.booking.flight = booking.flight;
-            this.booking.check_in_id = booking.check_in_id;
-            this.booking.reason = booking.reason;
-            this.activeSaveButton = false;
-          } else {
-            const body = {
-              title: 'Error',
-              message: 'uknownError'
-            };
-
-            this.modalService.openModal(body);
-          }
-
-          this.isViewLoading = false;
-        }, err => {
-          const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
-          this.isViewLoading = false;
-          this.modalService.openModal(bodyToSend);
-        });
+        this.getBookingById();
       } else {
         const body = {
           title: 'Error',
@@ -376,6 +348,32 @@ export class MyBookingDetailComponent implements OnInit {
 
         this.modalService.openModal(body);
       }
+    }, err => {
+      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+      this.isViewLoading = false;
+      this.modalService.openModal(bodyToSend);
+    });
+  }
+
+  getBookingById () {
+    this.apollo.getData(GET_BOOKING_BY_ID, { id: this.booking.id }).subscribe(response => {
+      const data = response.data;
+      if (data && data.booking && data.booking.length) {
+        this.isEditableReason = false;
+        this.isEditableSchool = false;
+        const booking: Booking = data.booking[0];
+        this.booking = booking;
+        this.activeSaveButton = false;
+      } else {
+        const body = {
+          title: 'Error',
+          message: 'uknownError'
+        };
+
+        this.modalService.openModal(body);
+      }
+
+      this.isViewLoading = false;
     }, err => {
       const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
       this.isViewLoading = false;
@@ -560,5 +558,26 @@ export class MyBookingDetailComponent implements OnInit {
         this.modalService.openModal(bodyToSend);
       });
     }
+  }
+
+  discart() {
+    this.isViewLoading = true;
+    this.axiosApi.discartBooking(this.booking.id).then((respose) =>{
+      if (respose && respose.data === 'ok') {
+        this.getBookingById();
+      } else {
+        const body = {
+          title: 'Error',
+          message: 'uknownError'
+        };
+
+        this.modalService.openModal(body);
+        this.isViewLoading = false;
+      }
+    }).catch((err) => {
+      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+      this.isViewLoading = false;
+      this.modalService.openModal(bodyToSend);
+    })
   }
 }

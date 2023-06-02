@@ -11,6 +11,14 @@
           <mat-label>{{ 'status' | translate }}</mat-label>
           <input matInput placeholder="{{'status' | translate}}" [(ngModel)]="booking.status">
         </mat-form-field>
+
+        <button
+          *ngIf="booking.status !== 'descartada'"
+          mat-raised-button
+          (click)="discart()"
+        >
+          {{ 'discart' | translate }}
+        </button>
       </p>
       <p>
         <mat-form-field>

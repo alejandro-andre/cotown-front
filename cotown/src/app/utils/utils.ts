@@ -1,0 +1,42 @@
+export const formatDate = (date: Date) : string => {
+  const day = date.getDate();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  return `${year}-${month}-${day}`;
+}
+
+export const prevMonth = (date: Date): Date => {
+  date.setTime(date.getTime() + (1000*60*60*24*6));
+  let month = date.getMonth() - 1;
+  let year = date.getFullYear();
+  if (month < 0) {
+    month = 11;
+    year -= 1;
+  }
+  return new Date(year, month, 1);
+}
+
+export const nextMonth = (date: Date): Date => {
+  date.setTime(date.getTime() + (1000*60*60*24*6))
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+  if (month > 11) {
+    month = 0;
+    year += 1;
+  }
+  return new Date(year, month, 1);
+}
+
+export const getAge = (birthdate: string) => {
+  if(!birthdate) {
+    return '';
+  }
+  var bdt = new Date(birthdate);
+  var now = new Date();
+  var age = now.getFullYear() - bdt.getFullYear();
+  if (bdt.getMonth() > now.getMonth() || (bdt.getMonth() == now.getMonth() && bdt.getDate() > now.getDate())) {
+    age--;
+  }
+  return age;
+}
+

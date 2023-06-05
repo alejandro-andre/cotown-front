@@ -1,0 +1,6 @@
+<p>Keycloak Token</p>
+<p>{{authService.keycloakToken}}</p>
+<p>Airflows GraphQL Token</p>
+<p>{{authService.airflowsToken}}</p>
+<button *ngIf="!authService.loggedIn" (click)="login()">Login</button>
+<button *ngIf="authService.loggedIn" (click)="logout()">Logout</button>

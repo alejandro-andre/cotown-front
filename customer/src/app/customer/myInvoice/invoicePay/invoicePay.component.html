@@ -1,0 +1,79 @@
+<div class="container">
+  <h1>{{ 'paymentData' | translate }}</h1>
+  <p>{{ 'payInfo' | translate }}</p><br/>
+  <form
+    name="form"
+    *ngIf="loaded"
+    action="https://sis-t.redsys.es:25443/sis/realizarPago"
+    method="POST"
+    ngNoForm
+    target="_top"
+  >
+    <mat-form-field class="data c10">
+      <mat-label>{{ 'identifier' | translate }}</mat-label>
+      <input
+        matInput
+        id="id"
+        [value]="identifier"
+      >
+      </mat-form-field>
+
+    <mat-form-field class="data c20">
+      <mat-label>{{ 'orderNumber' | translate }}</mat-label>
+      <input
+        matInput
+        id="order"
+        [value]="order"
+      >
+    </mat-form-field>
+
+    <mat-form-field class="data c20">
+      <mat-label>{{ 'concept' | translate }}</mat-label>
+      <input
+        matInput
+        id="concept"
+        [value]="concept"
+      >
+    </mat-form-field>
+
+    <mat-form-field class="data c20">
+      <mat-label>{{ 'amount' | translate }}</mat-label>
+      <input
+        matInput
+        id="amount"
+        [value]="amount"
+    >
+    </mat-form-field>
+
+
+    <button
+      id="submit"
+      [disabled]="buttonDisabled"
+      class="primary c20"
+      type="submit"
+    >
+      {{ 'pay' | translate }}
+    </button>
+
+    <input
+      type="hidden"
+      id="Ds_SignatureVersion"
+      name="Ds_SignatureVersion"
+      [value]="Ds_SignatureVersion"
+    />
+    <input
+      type="hidden"
+      id="Ds_MerchantParameters"
+      name="Ds_MerchantParameters"
+      [value]="Ds_MerchantParameters"
+    />
+    <input
+      type="hidden"
+      id="Ds_Signature"
+      name="Ds_Signature"
+      [value]="Ds_Signature"
+    />
+  </form>
+
+  <app-spinner-control *ngIf="!loaded"></app-spinner-control>
+</div>

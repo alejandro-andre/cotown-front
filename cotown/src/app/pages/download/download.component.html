@@ -1,0 +1,35 @@
+<h1>Descargas de datos</h1>
+
+<div class="row cell" style="font-size:.75em;color: rgba(0, 0, 0, 0.54);">Datos a descargar</div>
+
+<div class="row cell"><a [href]="link('propietarios')">Propietarios</a></div>
+<div class="row cell"><a [href]="link('edificios')">Edificios</a></div>
+<div class="row cell"><a [href]="link('recursos')">Recursos, precios y tarifas</a></div>
+<div class="row cell"><a [href]="link('precios')">Precios</a></div>
+<div class="row cell"><a [href]="link('tarifas')">Tarifas</a></div>
+<div class="row">
+    <div class="cell" style="width:200px;">
+        <a [href]="link('facturas')">Facturas</a>
+    </div>
+    <div style="margin-bottom: -22px;">
+        <mat-form-field>
+            <mat-label>Mes y año</mat-label>
+            <input MonthYearPickerFormat="MM/YYYY" matInput [matDatepicker]="dpbill" [formControl]="billDate" (change)="showMonth()">
+            <mat-datepicker-toggle matIconSuffix [for]="dpbill"></mat-datepicker-toggle>
+            <mat-datepicker #dpbill (monthSelected)="setMonthAndYear($event, dpbill)" startView="multi-year"></mat-datepicker>
+        </mat-form-field>
+    </div>
+</div>
+<div class="row">
+    <div class="cell" style="width:200px;">
+        <a [href]="link('pagos')">Pagos</a>
+    </div>
+    <div style="margin-bottom: -22px;">
+        <mat-form-field>
+            <mat-label>Impagados desde</mat-label>
+            <input matInput [matDatepicker]="dppay" [formControl]="paymentDate">
+            <mat-datepicker-toggle matIconSuffix [for]="dppay"></mat-datepicker-toggle>
+            <mat-datepicker #dppay></mat-datepicker>
+        </mat-form-field>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+.box {
+  border: 1px solid black;
+  display: flex;
+  padding: 10px;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 60%;
+  flex: 1;
+  align-items: center;
+}
+
+.pdf-viwer {
+  margin-top: 20px;
+  width: 100%;
+  min-height: 600px;
+}

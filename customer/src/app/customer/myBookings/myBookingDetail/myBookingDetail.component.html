@@ -1,0 +1,425 @@
+<div>
+  <h2>{{ 'bookingDetail' | translate}}</h2>
+
+  <ng-container *ngIf="booking && booking.id && !showNotFound;  then showData; else showNotData">
+  </ng-container>
+
+  <ng-template #showData>
+    <div class="box-content">
+      <p>
+        <mat-form-field>
+          <mat-label>{{ 'status' | translate }}</mat-label>
+          <input matInput placeholder="{{'status' | translate}}" [(ngModel)]="booking.status">
+        </mat-form-field>
+
+        <button
+          *ngIf="booking.status !== 'descartada'"
+          mat-raised-button
+          (click)="discart()"
+        >
+          {{ 'discart' | translate }}
+        </button>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>{{ 'payer' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{'payer' | translate}}"
+            [(ngModel)]="booking.payer.name"
+          >
+        </mat-form-field>
+      </p>
+
+      <p>
+        {{ 'dates' | translate }}:
+
+        <mat-form-field>
+          <mat-label>{{ 'dateFrom' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{'dateFrom' | translate}}"
+            [(ngModel)]="booking.start"
+            readonly
+          >
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'dateTo' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{'dateTo' | translate}}"
+            [(ngModel)]="booking.end"
+            readonly
+          >
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'applicationDate' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{'applicationDate' | translate}}"
+            [(ngModel)]="booking.request_date"
+            readonly
+          >
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'validUntil' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{'validUntil' | translate}}"
+            [(ngModel)]="booking.expiry_date"
+            readonly
+          >
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>{{ 'confirmationDate' | translate }}</mat-label>
+          <input
+            matInput placeholder="dd/mm/yyyy"
+            [(ngModel)]="booking.confirmation_date"
+            readonly
+          >
+        </mat-form-field>
+      </p>
+      <p>{{ 'application' | translate }}</p>
+      <p>
+        <mat-form-field>
+          <mat-label>{{ 'building' | translate }}: </mat-label>
+          <input
+            matInput
+            placeholder="{{'building' | translate}}"
+            readonly
+            [value]="buildingName"
+          >
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>{{ 'resourceType' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{'resourceType' | translate}}"
+            [ngModel]="booking.resource_type"
+            readonly
+          >
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>{{ 'flatType' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{'flatType' | translate}}"
+            [ngModel]="flatTypeName"
+            readonly
+          >
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>{{ 'placeType' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{'placeType' | translate}}"
+            [ngModel]="placeTypeName"
+            readonly
+          >
+        </mat-form-field>
+      </p>
+
+      <p>
+        <mat-form-field *ngIf="!isEditableReason">
+          <mat-label>{{ 'reasonForStay' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{'reasonForStay' | translate}}"
+            [ngModel]="reasonName"
+            readonly
+          >
+        </mat-form-field>
+
+        <mat-form-field
+          appearance="fill"
+          style="margin-right: 10px;"
+          *ngIf="isEditableReason"
+        >
+          <mat-label>{{ 'reasonForStay' | translate }}</mat-label>
+          <mat-select
+            [(ngModel)]="selectedReason"
+            (selectionChange)="activateSaveButton()"
+          >
+            <mat-option *ngFor="let reason of reasons" [value]="reason.id">
+              {{ isSpanish ? reason.name : reason.name_en  }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="!isEditableSchool">
+          <mat-label>{{ 'school/company' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{ 'school/company' | translate}}"
+            [ngModel]="schoolName"
+            readonly
+          >
+        </mat-form-field>
+
+      <mat-form-field
+        appearance="fill"
+        style="margin-right: 10px;"
+        *ngIf="isEditableSchool"
+      >
+      <mat-label>{{ 'school/company' | translate }}</mat-label>
+      <mat-select
+        [(ngModel)]="selectedSchool"
+        (selectionChange)="activateSaveButton()"
+      >
+        <mat-option *ngFor="let school of schoolService.schoolOrCompanies" [value]="school.id">
+          {{ school.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+      </p>
+
+      <div *ngIf="isOptionToBeShowed">
+        {{ 'alternatives' | translate }}
+
+        <table
+          style="margin-bottom: 10px;"
+          mat-table
+          *ngIf="options && options.length"
+          [dataSource]="options"
+          class="mat-elevation-z8"
+        >
+          <ng-container [matColumnDef]="col.header" *ngFor="let col of tableForOptions">
+            <th mat-header-cell *matHeaderCellDef>{{ col.name | translate }}</th>
+            <td mat-cell *matCellDef="let element">
+              <span *ngIf="col.header === ACCEPT_PROPERTY">
+                <button
+                  mat-raised-button
+                  (click)="accept(element.id)"
+                >
+                  {{ 'accept' | translate }}
+                </button>
+              </span>
+              <span *ngIf="col.header !== ACCEPT_PROPERTY">
+                {{ element[col.property] }}
+              </span>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsOptions"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsOptions;"></tr>
+        </table>
+      </div>
+
+      <p>
+        {{ 'booking' | translate }}
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>{{ 'resource' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{ 'resource' | translate }}"
+            [ngModel]="resourceCode"
+            readonly
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>{{ 'check_in' | translate }}</mat-label>
+          <input
+            matInput
+            [matDatepicker]="pickerFrom"
+            [formControl]="checkingFormControl"
+            (dateInput)="activateSaveButton()"
+          >
+          <mat-datepicker-toggle matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+          <mat-datepicker #pickerFrom></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>{{ 'check_out' | translate }}</mat-label>
+          <input
+            matInput
+            [matDatepicker]="pickerTo"
+            [formControl]="checkoutFormControl"
+            (dateInput)="activateSaveButton()"
+          >
+          <mat-datepicker-toggle matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
+          <mat-datepicker #pickerTo></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>{{ 'flight' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{ 'flight' | translate }}"
+            [(ngModel)]="flight"
+            (change)="activateSaveButton()"
+          >
+        </mat-form-field>
+
+
+        <mat-form-field>
+          <mat-label>Hora de llegada </mat-label>
+          <input
+            matInput
+            type="time"
+            [(ngModel)]="arrival"
+            (change)="activateSaveButton()"
+          >
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field
+        appearance="fill"
+        style="margin-right: 10px; width: 50%;"
+      >
+        <mat-label>{{ 'reasonForStay' | translate }}</mat-label>
+        <mat-select
+          [(ngModel)]="selectedOption"
+          (selectionChange)="activateSaveButton()"
+        >
+          <mat-option *ngFor="let op of checkinOptions" [value]="op.id">
+            {{ isSpanish ? op.name : op.name_en  }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </p>
+
+    <button
+      style="width: 10%;"
+      mat-raised-button
+      color="primary"
+      (click)="save()"
+      [disabled]="!activeSaveButton"
+    >
+      {{ 'save' | translate }}
+    </button>
+
+      <p>
+        {{ 'prices' | translate }}
+      </p>
+
+      <p>
+        <mat-form-field>
+          <mat-label>{{ 'rent' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{ 'rent' | translate }}"
+            [ngModel]="booking.rent"
+            readonly
+          >
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'services' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{ 'services' | translate }}"
+            [ngModel]="booking.services"
+            readonly
+          >
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'consumptionLimit' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{ 'consumptionLimit' | translate }}"
+            [ngModel]="booking.limit"
+            readonly
+          >
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'theoricalGuarantee' | translate }}</mat-label>
+          <input
+            matInput
+            placeholder="{{ 'theoricalGuarantee' | translate }}"
+            [ngModel]="booking.deposit"
+            readonly
+          >
+        </mat-form-field>
+      </p>
+
+      <!--Table of prices -->
+      <table
+        style="margin-bottom: 10px;"
+        mat-table
+        *ngIf="booking.price_list && booking.price_list.length"
+        [dataSource]="booking.price_list"
+        class="mat-elevation-z8"
+      >
+        <ng-container [matColumnDef]="col.header" *ngFor="let col of tableFormat">
+          <th mat-header-cell *matHeaderCellDef>{{ col.name | translate }}</th>
+          <td mat-cell *matCellDef="let element"> {{ element[col.property]}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <div *ngIf="allContractsRendered">
+        <h4>{{ 'contracts' | translate }}</h4>
+
+        <div  *ngIf="contractSigned !== null" class="contract-box">
+          {{ contractMessage | translate: { value: formatedDate } }}
+        </div>
+
+        <div  *ngIf="contractSigned === null" class="contract-box">
+          {{ contractMessage | translate }}
+        </div>
+
+        <div class="box-pdf" style="margin-bottom: 25px;" *ngIf="contract_rent.length > 0">
+          <h4>{{ 'rentContract' | translate }}</h4>
+          <pdf-viewer
+            class="pdf-viewer"
+            [src]="contract_rent"
+            [render-text]="true"
+            [original-size]="true"
+            [show-all]="true"
+            [show-borders]="true"
+            (page-rendered)="pageRenderedRent($event)"
+            (after-load-complete)="afterLoadRent($event)"
+          ></pdf-viewer>
+          <div class="sign"*ngIf="booking.contract_signed === null">
+            <button
+              mat-raised-button color="primary"
+              (click)="sign(RENT_CONTRACT_TYPE)"
+              [disabled]="!isRentContractLoaded"
+            >
+              {{ 'sign' | translate }}
+            </button>
+          </div>
+        </div>
+
+        <div class="box-pdf" *ngIf="contract_services.length > 0">
+          <h4>{{ 'serviceContract' | translate }}</h4>
+          <pdf-viewer
+            class="pdf-viewer"
+            [src]="contract_services"
+            [render-text]="true"
+            [original-size]="true"
+            [show-borders]="true"
+            [show-all]="true"
+            (page-rendered)="pageRenderedService($event)"
+            (after-load-complete)="afterLoadService($event)"
+          >
+          </pdf-viewer>
+          <div class="sign" *ngIf="booking.contract_signed === null">
+            <button
+              mat-raised-button color="primary"
+              (click)="sign(SERVICE_CONTRACT_TYPE)"
+              [disabled]="!isServiceContractLoaded"
+            >
+              {{ 'sign' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #showNotData>
+    {{ 'noBookingFound' | translate }}
+  </ng-template>
+
+  <app-spinner-control *ngIf="isViewLoading"></app-spinner-control>
+</div>

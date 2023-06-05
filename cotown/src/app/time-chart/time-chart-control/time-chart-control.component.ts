@@ -1,5 +1,7 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { TimeChartBar } from '../models/time-chart-bar.model';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { TimeChartRow } from '../models/time-chart-row.model';
+import { MatRadioChange } from '@angular/material/radio';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-time-chart-control',
@@ -9,30 +11,32 @@ import { TimeChartBar } from '../models/time-chart-bar.model';
 export class TimeChartControlComponent implements OnChanges {
 
   // Inputs
-  @Input() bars: TimeChartBar[] = [];
+  @Input() rows: TimeChartRow[] = [];
   @Input() now!: Date;
   @Input() from!: Date;
   @Input() to!: Date;
+  @Input() sel!: string;
+  @Input() max!: number;
+  @Output() onSelectAvailable: EventEmitter<{id: number, Code: string, check: boolean}> = new EventEmitter();
 
   // Timechart header info
-  public header: string[] = [];
-  public days: string[] = [];
+  public header: {date: string, month: number, start: number, end: number}[] = [];
+  public days: {day: string, holiday: boolean, month: number}[] = [];
   public markerFrom: number = -1;
   public markerTo: number = -1;
 
   // Constructor
-  constructor() {;
-  }
+  constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
     // Start on mondays
-    this.now.setTime(this.now.getTime() - (1000*60*60*24*this.now.getDay()))
+    this.now.setTime(this.now.getTime() - (1000*60*60*24*this.getDay(this.now)))
 
     // Set headers
     this.setHeader(this.now);
 
-    // Set bars and lines
-    this.moveLines();
+    // Set rows and bars
+    this.moveBars();
   }
 
   // Generate header
@@ -47,51 +51,128 @@ export class TimeChartControlComponent implements OnChanges {
     // Dates
     this.header = [];
     this.days = [];
-    for (var i = 0; i < 10; i++ ) {
-      const fecha = new Date(date.getTime() + (1000*60*60*24*7*i));
-      this.header.push(fecha.toLocaleDateString('es-ES', {day: '2-digit', month: 'short'}));
-      this.days.push(...['L','M','X','J','V','S','D',]);
+    let month = -1;
+    for (var i = 0; i < 70; i++ ) {
+      const fecha = new Date(date.getTime() + (1000*60*60*24*i));
+      if (month != fecha.getMonth()) {
+        const dmin = fecha.getDate();
+        const dmax = new Date(fecha.getFullYear(), fecha.getMonth() + 1, 0).getDate();
+        const j = Math.min(1 + i + dmax - dmin, 70);
+        this.header.push({
+          date: (j - i) < 4 ? '' : fecha.toLocaleDateString('es-ES', {month: 'short', year: 'numeric'}), 
+          month: fecha.getMonth() % 2, 
+          start: i, 
+          end: j
+        });
+        month = fecha.getMonth();
+      }
+      this.days.push({
+        day: fecha.getDate().toString(), 
+        holiday: fecha.getDay() == 0 || fecha.getDay() == 6,
+        month: fecha.getMonth() % 2
+      });
     }
   }
 
   // Calculate bars position
-  private moveLines() {
+  private moveBars() {
 
-    // Move each line
-    for (var bar of this.bars) {
-      for (var line of bar.lines) {
-      
+    // Move each bar
+    for (let row of this.rows) {
+
+      // Sort bars
+      row.bars.sort(function(a, b) {
+        return new Date(a.datefrom).getTime() - new Date(b.datefrom).getTime();
+      });
+
+      // Move each bar
+      for (let bar of row.bars) {
         // Dates
-        const dfrom = Math.ceil((line.datefrom.getTime() - this.now.getTime()) / (1000*60*60*24));
-        const dto = 1 + Math.ceil((line.dateto.getTime() - this.now.getTime()) / (1000*60*60*24));
+        const dfrom = Math.ceil((bar.datefrom.getTime() - this.now.getTime()) / (1000*60*60*24));
+        const dto = 1 + Math.ceil((bar.dateto.getTime() - this.now.getTime()) / (1000*60*60*24));
 
         // Show bar
-        line.styles = line.type + ' show';
+        bar.styles = bar.type + ' show';
 
         // Set start
         if (dfrom  < 0) {
-          line.from = 0;
-          line.styles += ' continue-left';
+          bar.from = 0;
+          bar.styles += ' continue-left';
         } else if (dfrom > 70) {
-          line.from = 70;
+          bar.from = 70;
         } else {
-          line.from = dfrom;
+          bar.from = dfrom;
         }
 
         // Set end
         if (dto < 0) {
-          line.to = 0;
+          bar.to = 0;
         } else if (dto > 70) {
-          line.to = 70;
-          line.styles += ' continue-right';
+          bar.to = 70;
+          bar.styles += ' continue-right';
         } else {
-          line.to = dto;
+          bar.to = dto;
         }
 
         // Hide bar
-        if ((line.to - line.from) < 1)  
-          line.styles = 'hide';
+        if ((bar.to - bar.from) < 1)
+          bar.styles = 'hide';
       }
     }
   }
+
+  isAvailable(row: any): boolean {
+    if (!row.bars || !row.bars.length) {
+      return false;
+    }
+    for (const elem of row.bars) {
+      if (elem.type === 'available') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  emitRadio(event: MatRadioChange, row: TimeChartRow): void {
+    for (const elemento of this.rows) {
+      elemento.checked = false;
+      if (elemento.id == row.id)
+        elemento.checked = true;
+    }
+  }
+
+  emitCheck(event: MatCheckboxChange, row: TimeChartRow): void {
+    row.checked = !row.checked;
+  }
+
+  isCheckable(row: TimeChartRow) {
+    let n = 0;
+    for (const elemento of this.rows) {
+      if (elemento.checked)
+        n = n + 1;
+    }
+    if (n >= this.max) {
+      return row.checked;
+    }
+    return this.isAvailable(row) || row.selected;
+  }
+
+  private getDay(date: Date): number {
+    let n = date.getDay() - 1;
+    if (n < 0)
+      n = 6;
+    return n;
+  }
+
+  public go_booking(link: string) {
+    if (link == '')
+      return;
+    parent.history.pushState("", "", link);
+    parent.history.go(-1);
+    parent.history.go(1);
+    parent.history.pushState("", "", link);
+    parent.history.go(-1);
+    parent.history.go(1);
+  }
+
 }

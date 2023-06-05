@@ -1,4 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+/* Angular theme **/
+
+@import '@angular/material/theming';
+$my-app-primary: mat-palette($mat-teal, 300);
+$my-app-basic: mat-palette($mat-gray, 800);
+$my-app-theme: mat-light-theme($my-app-primary, $my-app-basic);
+@include angular-material-theme($my-app-theme);
+
+/* Global styles */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: 'Roboto Flex',sans-serif; }
+h1 { font-size: 1.25rem; font-weight: 500; padding: 20px 15px 15px 25px; }
+a { color: #000; text-decoration: none; }
+mat-label { font-size: 15px; }

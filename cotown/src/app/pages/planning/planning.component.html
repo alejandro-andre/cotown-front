@@ -1,15 +1,162 @@
 <div class="container">
 
-    <h1>Planning</h1>
+	<h1>Planning</h1>
 
-    <div style="padding-bottom: 10px; text-align: right;">
-    <button (click)="goBackward()">&lt; Semana anterior</button>
-    &nbsp;
-    <button (click)="goForward()">Semana siguiente &gt;</button>
-    </div>
+	<div class="nav_container">
 
-    <div>
-        <app-time-chart-control [bars]="bars" [now]="now" [from]="from" [to]="to"></app-time-chart-control>
-    </div>
+		<form class="selectors_container airflows_container_selectors ">
+
+			<mat-form-field appearance="fill" style="margin-right: 10px;width: 15%;">
+				<mat-label class="cotown_label">{{ 'city' | translate }}</mat-label>
+				<mat-select
+          			[(ngModel)]="selectedCity"
+          			name="cities"
+          			(selectionChange)="onSelectCity()"
+					[placeholder]="'nothing' | translate">
+					<mat-option
+						*ngFor="let citie of cities"
+						[value]="citie.id">
+						{{ citie.name }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+
+			<mat-form-field appearance="fill" style="margin-right: 10px; width: 25%;">
+				<mat-label>{{ 'building' | translate}}</mat-label>
+				<mat-select
+          			[(ngModel)]="selectedBuildingId"
+          			name="buildings"
+          			(selectionChange)="onChangeFilter()"
+					[placeholder]="'nothing' | translate"
+					[disabled]="selectedCity === -1">
+					<mat-option  [value]=-1>{{ 'allM' | translate }}</mat-option>
+					<mat-option
+						*ngFor="let building of buildings"
+						[value]="building.id">
+						{{ building.name }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+
+			<mat-form-field appearance="fill" style="margin-right: 10px; width: 15%;">
+				<mat-label>{{ 'flatType' | translate }}</mat-label>
+				<mat-select
+          			[(ngModel)]="selectedResourceFlatTypeId"
+          			name="resourcesFlatTypes"
+          			(selectionChange)="onChangeFilter()"
+					[disabled]="!selectedBuildingId || selectedBuildingId === -99">
+				<mat-option  [value]="-1">{{ 'allM' | translate }}</mat-option>
+					<mat-option
+						*ngFor="let resourceType of resourceFlatTypes"
+						[value]="resourceType.id">
+						{{ resourceType.code }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+
+      		<mat-form-field appearance="fill" style="margin-right: 10px; width: 15%;">
+				<mat-label>{{ 'types' | translate }}</mat-label>
+				<mat-select
+          			[(ngModel)]="selectedResourcePlaceTypeId"
+          			name="resourcesPlaceTypes"
+          			(selectionChange)="onChangeFilter()"
+					[disabled]="!selectedBuildingId || selectedBuildingId === -99">
+				<mat-option  [value]="-1">{{ 'allM' | translate }}</mat-option>
+					<mat-option
+						*ngFor="let resourceType of resourcePlaceTypes"
+						[value]="resourceType.id">
+						{{ resourceType.code }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+
+			<mat-form-field appearance="fill" style="margin-right: 10px; width: 20%;">
+				<mat-label>{{ 'date range' | translate }}</mat-label>
+				<mat-date-range-input
+					[rangePicker]="picker"
+					[disabled]="!rows.length"
+					[formGroup]="range">
+					<input
+						matStartDate
+						formControlName="start"
+						[placeholder]="'from' | translate">
+					<input
+						matEndDate
+						formControlName="end"
+						[placeholder]="'to' | translate"
+						(dateChange)="onDateChange()">
+				</mat-date-range-input>
+				<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+				<mat-date-range-picker #picker></mat-date-range-picker>
+			</mat-form-field>
+
+			<button
+				*ngIf="isSelectButtonVisible"
+				[disabled]="!isSelectButtonActive"
+				mat-raised-button
+				color="primary"
+				style="color: white;"
+				(click)="closeWindow()">
+				{{ 'select' | translate }}
+			</button>
+
+		</form>
+
+		<div class="time_line_buttons">
+			<button
+				[disabled]="!rows.length"
+				mat-raised-button
+				color="basic"
+				(click)="goBackward('month')">
+				<mat-icon aria-hidden="false" color="black" fontIcon="arrow_back"></mat-icon>
+				{{ 'month' | translate }}
+			</button>
+			&nbsp;
+			<button
+				mat-raised-button
+				[disabled]="!rows.length"
+				color="basic"
+				(click)="goBackward('week')">
+				<mat-icon aria-hidden="false" color="black" fontIcon="arrow_back"></mat-icon>
+				{{ 'week' | translate }}
+			</button>
+			&nbsp;
+			<button
+				class="next-button "
+				[disabled]="!rows.length"
+				mat-raised-button
+				color="basic"
+				(click)="goForward('week')">
+				{{ 'week' | translate }}
+				<mat-icon class="next-arrow" aria-hidden="false" fontIcon="arrow_forward"></mat-icon>
+			</button>
+			&nbsp;
+			<button
+				class="next-button "
+				[disabled]="!rows.length"
+				mat-raised-button
+				color="basic"
+				(click)="goForward('month')">
+				{{ 'month' | translate }}
+				<mat-icon class="next-arow" aria-hidden="false" fontIcon="arrow_forward"></mat-icon>
+			</button>
+		</div>
+
+	</div>
+
+	<div class="spinner-box" *ngIf="spinnerActive">
+		<app-spinner-control></app-spinner-control>
+	</div>
+
+	<div *ngIf="rows.length">
+		<app-time-chart-control
+			[rows]="rows"
+			[now]="now"
+			[from]="initDate"
+			[to]="endDate"
+			[sel]="sel"
+			[max]="max">
+		</app-time-chart-control>
+	</div>
 
 </div>

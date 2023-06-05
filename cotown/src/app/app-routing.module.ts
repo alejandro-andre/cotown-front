@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CotownModal } from './pages/cotown-modal/cotown-modal.component';
-import { HomeComponent } from './pages/home/home.component';
+
 import { PlanningComponent } from './pages/planning/planning.component';
-import { SecondComponent } from './pages/second/second.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { DownloadComponent } from './pages/download/download.component';
 
 const routes: Routes = [
-  { path: '', component: PlanningComponent },
-  { path: 'home', component: HomeComponent },
-  { path: 'second', component: SecondComponent },
-  { path: 'cotown-modal', component: CotownModal}
+  { path: '', redirectTo: '/dashboard' ,  pathMatch: 'full' },
+  { path: 'planning', component: PlanningComponent },
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'download', component: DownloadComponent },
 ];
 
 @NgModule({

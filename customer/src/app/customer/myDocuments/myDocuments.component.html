@@ -1,0 +1,83 @@
+<div>
+  <h2>{{ 'documents' | translate }}</h2>
+
+  <app-spinner-control *ngIf="isLoading"></app-spinner-control>
+
+  <div *ngIf="documents.length; then thenBlock else elseBlock"></div>
+  <ng-template #thenBlock>
+    <div *ngFor="let document of documents" style="margin-top: 10px; display: flex;">
+      <div class="box">
+        <div>
+          <p>{{ 'documentType' | translate }}: {{ document.doctype.name }}</p>
+
+          <mat-form-field appearance="fill">
+            <mat-label>{{ 'expirityDate' | translate }}</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [formControl]="document.formDateControl"
+            >
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div style="margin-left: 10px;">
+          <button
+            mat-raised-button
+            color="basic"
+            (click)="save(document)"
+            [disabled]="isButtonOfDocDisabled(document)"
+          >
+            {{ 'save' | translate }}
+          </button>
+        </div>
+
+        <div
+          *ngFor="let doc of document.doctype.arrayOfImages; let i = index"
+          style="margin: 10px"
+        >
+          <label>{{  doc.name || 'document' | translate }}</label>
+          <input
+            *ngIf="doc.name === '' && (doc.oid === -1 || doc.oid === null) && !isViewEnabled(document)"
+            placeholder="Document"
+            [(ngModel)]="doc.file"
+            type="file"
+            (change)="upload($event, i, document)"
+          >
+
+          <button
+            *ngIf="doc.name !== '' && (doc.oid !== -1 || doc.oid !== null) && isViewEnabled(document)"
+            (click)="viewDoc(doc)"
+          >
+            {{ 'view' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <img
+        style="max-width: 200px; max-height: 200px;"
+        *ngIf="photo !== ''"
+        [src]="photo"
+      >
+
+      <pdf-viewer
+        *ngIf="pdfSrc !== ''"
+        class="pdf-viwer"
+        [src]="pdfSrc"
+        [render-text]="true"
+        [original-size]="false"
+        [show-all]="true"
+        style="min-width: 400px; min-width: 600px;"
+      ></pdf-viewer>
+    </div>
+  </ng-template>
+
+  <ng-template #elseBlock>
+    <div>
+      {{ 'notFoundResults' | translate }}
+    </div>
+  </ng-template>
+</div>

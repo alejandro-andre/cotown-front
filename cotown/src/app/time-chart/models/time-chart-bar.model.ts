@@ -1,8 +1,18 @@
-import { TimeChartLine } from "./time-chart-line.model";
-
 export class TimeChartBar {
+    // Set
+    id!: number;
     code: string = '';
-    info: string = '';
-    style: string = '';
-    lines: TimeChartLine[] = [];
+    color: string = '';
+    lock: boolean = false;
+    datefrom: Date = new Date();
+    dateto: Date = new Date();
+    type: string = '';
+    text: string = '';
+    tooltip: string = '';
+    link: string = '';
+
+    // Calculated
+    from: number = 0;
+    to: number = 0;
+    styles: string = '';
 }

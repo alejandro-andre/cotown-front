@@ -100,5 +100,8 @@
   "flight": "Vuelo/Tren",
   "check_in": "Entrada",
   "check_out": "Salida",
-  "discart": "Descartar"
+  "discart": "Descartar",
+  "payment_date": "Fecha de pago",
+  "payment_auth": "Autorización de pago",
+  "payment_order": "Orden de pago"
 }

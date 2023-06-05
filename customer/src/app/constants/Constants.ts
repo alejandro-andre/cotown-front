@@ -120,6 +120,8 @@ export class Constants {
   public static PAYMENT_CONCEPT = this.CONCEPT;
   public static PAYMENT_RESOURCE = this.RESOURCE;
   public static PAYMENT_CODE = this.CODE;
+  public static PAYMENT_ORDER = 'payment_order';
+  public static PAYMENT_AUTH = 'payment_auth';
   public static PAYMENT_AMOUNT = this.AMOUNT;
   public static PAYMENT_PAY = this.PAY;
   public static PAYMENT_DATE = this.DATE;
@@ -147,10 +149,12 @@ export class Constants {
   public static PROPERTY_PHONE = this.PHONE;
   public static PROPERTY_CODE = this.CODE;
   public static PROPERTY_ISSUE_DATE = 'issue_date';
+  public static PROPERTY_DATE = 'payment_date';
   public static PROPERTY_CONCEPT = this.CONCEPT;
   public static PROPERTY_BOOKING = 'booking';
   public static PROPERTY_PAY = 'pay';
   public static PROPERTY_ID = 'id';
+  public static PROPERTY_AUTH = 'payment_auth'
   public static PROPERTY_AMOUNT = this.AMOUNT;
   public static PROPERTY_TOTAL = this.TOTAL;
 

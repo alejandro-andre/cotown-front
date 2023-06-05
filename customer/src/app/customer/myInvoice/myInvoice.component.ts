@@ -4,6 +4,7 @@ import { Constants } from 'src/app/constants/Constants';
 import { BasicResponse, BookingResource, Invoice, Payment, TableObject } from 'src/app/constants/Interface';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
+import { formatDateWithTime } from 'src/app/utils/date.util';
 
 @Component({
   selector: 'app-my-invoice',
@@ -14,6 +15,7 @@ import { CustomerService } from 'src/app/services/customer.service';
 export class MyInvoiceComponent {
   public INVOICE_PROPERTY = Constants.INVOICE_RESOURCE;
   public PAY_PROPERTY = Constants.PAYMENT_PAY;
+  public PROPERTY_DATE = Constants.PROPERTY_DATE
 
   constructor(
     public customerService: CustomerService,
@@ -56,9 +58,19 @@ export class MyInvoiceComponent {
       name: Constants.PAY
     },
     {
-      header: Constants.PAYMENT_CODE,
-      property: Constants.PROPERTY_ID,
-      name: Constants.PAYMENT_NUMBER
+      header: Constants.PROPERTY_DATE,
+      property: Constants.PROPERTY_DATE,
+      name: Constants.PROPERTY_DATE
+    },
+    {
+      header: Constants.PAYMENT_AUTH,
+      property: Constants.PROPERTY_AUTH,
+      name: Constants.PROPERTY_AUTH
+    },
+    {
+      header: Constants.PAYMENT_ORDER,
+      property: Constants.PAYMENT_ORDER,
+      name: Constants.PAYMENT_ORDER
     },
     {
       header: Constants.PAYMENT_DATE,
@@ -73,7 +85,7 @@ export class MyInvoiceComponent {
     {
       header: Constants.PAYMENT_AMOUNT,
       property: Constants.PROPERTY_AMOUNT,
-      name: Constants.STATUS
+      name: Constants.AMOUNT
     },
     {
       header: Constants.PAYMENT_RESOURCE,
@@ -88,6 +100,25 @@ export class MyInvoiceComponent {
 
   getResource(resource: BookingResource): string {
     return resource?.resource?.code || '';
+  }
+
+
+  formatPropertyDate(date: string): string {
+    if (date !== '' && date !== null) {
+      const sendTo = new Date(date);
+      const val =formatDateWithTime(sendTo)
+      return val;
+    }
+
+    return '';
+  }
+
+  showPayButton(elem: any): boolean {
+    if (elem.payment_date !== null && elem.payment_date !== '') {
+      return false;
+    }
+
+    return true;
   }
 
   get displayedInvoiceColumns(): string[] {

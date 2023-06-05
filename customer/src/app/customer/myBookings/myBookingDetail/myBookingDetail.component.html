@@ -13,7 +13,7 @@
         </mat-form-field>
 
         <button
-          *ngIf="booking.status !== 'descartada'"
+          *ngIf="showDiscart"
           mat-raised-button
           (click)="discart()"
         >

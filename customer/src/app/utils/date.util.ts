@@ -1,5 +1,6 @@
 
 export const formatDateWithTime = (date: Date | null) : string => {
+
   if(date === null) {
     return '';
   }
@@ -16,11 +17,11 @@ export const formatDateWithTime = (date: Date | null) : string => {
 
 
 export const formatDate = (date: Date | null): string => {
+
   if (date !== null) {
     const year = date.getFullYear();
     const day = date.getDate();
     const month = date.getMonth() + 1;
-
     return `${year}-${month}-${day}`;
   }
 

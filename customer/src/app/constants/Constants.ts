@@ -1,7 +1,7 @@
 import { Nav } from "./Interface";
 
 export class Constants {
-  //APP SETTINGS
+
   public static defaultBaseLanguageForTranslation = 'en';
 
   public static SPANISH =     {
@@ -22,7 +22,6 @@ export class Constants {
   public static IMAGE_PNG = 'image/png';
   public static IMAGE_JPG = 'image/jpg';
   public static DOCUMENT_PDF = 'application/pdf';
-
 
   // REST OF VARIABLES
   public static DATA: Nav = {

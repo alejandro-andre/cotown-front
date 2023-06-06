@@ -1,7 +1,9 @@
 import { Constants } from "../constants/Constants";
 
 export const formatErrorBody = (error: Error, lang: string) => {
+
   const message = error.message.split('!!!');
+
   const bodyToSend = {
     title: 'Error',
     message: 'uknownError'

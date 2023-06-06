@@ -70,6 +70,9 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
     }
     payments: PaymentListViaCustomer_id {
       id
+      payment_date: Payment_date
+      payment_order: Payment_order
+      payment_auth: Payment_auth
       amount: Amount
       concept: Concept
       issue_date: Issued_date

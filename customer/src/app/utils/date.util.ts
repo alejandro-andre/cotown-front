@@ -12,9 +12,8 @@ export const formatDateWithTime = (date: Date | null) : string => {
   const hours = date.getHours();
   const sec = date.getSeconds();
 
-  return `${year}-${month}-${day}T${hours}:${min}:${sec}`;
+  return `${year}-${month}-${day} ${hours}:${min}:${sec}`;
 }
-
 
 export const formatDate = (date: Date | null): string => {
 

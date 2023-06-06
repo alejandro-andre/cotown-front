@@ -100,5 +100,8 @@
   "flight": "Flight/Train",
   "check_in": "Check in",
   "check_out": "Check out",
-  "discart": "Discart"
+  "discart": "Discart",
+  "payment_date": "Payment date",
+  "payment_auth": "Payment auth",
+  "payment_order": "Payment order"
 }

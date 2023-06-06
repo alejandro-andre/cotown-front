@@ -513,6 +513,10 @@ export class MyBookingDetailComponent implements OnInit {
     return this.booking.contract_signed;
   }
 
+  get showDiscart():boolean {
+    return this.booking.status.includes('solicitud') || this.booking.status.includes('alternativas');
+  }
+
   sign(type: String):void {
     this.isViewLoading = true;
     if (type === this.SERVICE_CONTRACT_TYPE) {

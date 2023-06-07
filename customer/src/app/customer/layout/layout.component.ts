@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 // Sevices
-import { AuthService } from 'src/app/auth/service/auth.service';
+import { AuthService } from 'src/app/auth/auth.service';
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 
 import { CountryService } from 'src/app/services/country.service';

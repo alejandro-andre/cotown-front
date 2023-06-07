@@ -42,7 +42,7 @@ export class MyDataComponent{
   ) {
   }
 
-  public appLangs = Constants.ARRAY_OF_LANGUAGES;
+  public appLangs = Constants.LANGUAGES;
   public saveActiveButton: boolean = false;
   public image!: File;
   public isLoading = false;

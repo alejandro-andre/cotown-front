@@ -42,9 +42,10 @@ export class MyDocumentsComponent implements OnInit {
       }
     });
   }
+  
   viewDoc(doc: DocFile) {
     this.axiosApi.getFile(doc.id, doc.type).then((response: any) => {
-      if (response.data && response.data.type ===  Constants.IMAGE_JPG || response.data.type ===  Constants.IMAGE_PNG) {
+      if (response.data && response.data.type !=  Constants.DOCUMENT_PDF) {
         this.pdfSrc = '';
         this.photo = URL.createObjectURL(response.data);
       } else {

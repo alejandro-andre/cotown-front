@@ -2,67 +2,47 @@ import { Nav } from "./Interface";
 
 export class Constants {
 
+  // Languages
   public static defaultBaseLanguageForTranslation = 'en';
-
   public static SPANISH =     {
     id: 'es',
     name: 'Español',
   };
-
-  public static ENGISH = {
+  public static ENGLISH = {
     id: 'en',
     name: 'English'
   }
-
-  public static ARRAY_OF_LANGUAGES = [
+  public static LANGUAGES = [
     this.SPANISH,
-    this.ENGISH
+    this.ENGLISH
   ];
 
-  public static IMAGE_PNG = 'image/png';
-  public static IMAGE_JPG = 'image/jpg';
+  // PDF Mimetype
   public static DOCUMENT_PDF = 'application/pdf';
 
-  // REST OF VARIABLES
-  public static DATA: Nav = {
-    name: 'myData',
-    url: 'data'
-  };
+  // Navigation
+  public static DATA:      Nav = { name: 'myData',      url: 'data' };
+  public static TUTOR:     Nav = { name: 'myTutor',     url: 'tutor' };
+  public static CONTACTS:  Nav = { name: 'myContacts',  url: 'contact' };
+  public static DOCUMENTS: Nav = { name: 'myDocuments', url: 'documents' };
+  public static BOOKINGS:  Nav = { name: 'myBookings',  url: 'bookings' };
+  public static INVOICES:  Nav = { name: 'myInvoices',  url: 'invoices' };
+  public static LOG_OUT:   Nav = { name: 'logOut',      url: 'logout' }
+  public static NAV_URLS: Nav[] = [
+    Constants.DATA,
+    Constants.TUTOR,
+    Constants.CONTACTS,
+    Constants.DOCUMENTS,
+    Constants.BOOKINGS,
+    Constants.INVOICES,
+    Constants.LOG_OUT
+  ];
 
-  public static TUTOR: Nav = {
-    name: 'myTutor',
-    url: 'tutor'
-  };
-
-  public static CONTACTS: Nav = {
-    name: 'myContacts',
-    url: 'contact'
-  };
-
-  public static DOCUMENTS: Nav = {
-    name: 'myDocuments',
-    url: 'documents'
-  };
-
-  public static BOOKINGS: Nav = {
-    name: 'myBookings',
-    url: 'bookings'
-  };
-
-  public static INVOICES: Nav = {
-    name: 'myInvoices',
-    url: 'invoices'
-  };
-
-  public static LOG_OUT: Nav = {
-    name: 'logOut',
-    url: 'logout'
-  }
-
-  public static DOCUMENT_TYPE_FRONT = 'Document';
-  public static DOCUMENT_TYPE_BACK = 'Document_back';
+  // Document fields
+  public static DOCUMENT_TYPE_FRONT   = 'Document';
+  public static DOCUMENT_TYPE_BACK    = 'Document_back';
   public static CONTRACT_SERVICES_PDF = 'Contract_services';
-  public static CONTRACT_RENT_PDF = 'Contract_rent';
+  public static CONTRACT_RENT_PDF     = 'Contract_rent';
 
   // GENERALS
   public static DATE = 'date';
@@ -156,17 +136,4 @@ export class Constants {
   public static PROPERTY_AMOUNT = this.AMOUNT;
   public static PROPERTY_TOTAL = this.TOTAL;
 
-  /**
-   * Urls of nav
-   */
-
-  public static NAV_URLS: Nav[] = [
-    Constants.DATA,
-    Constants.TUTOR,
-    Constants.CONTACTS,
-    Constants.DOCUMENTS,
-    Constants.BOOKINGS,
-    Constants.INVOICES,
-    Constants.LOG_OUT
-  ];
 };

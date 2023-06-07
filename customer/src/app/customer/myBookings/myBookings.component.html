@@ -1,5 +1,5 @@
+<h1>{{ 'bookings' | translate }}</h1>
 <div>
-  <h2>{{ 'bookings' | translate }}</h2>
   <div *ngIf="bookings.length; then thenBlock else elseBlock"></div>
   <ng-template #thenBlock>
     <table mat-table [dataSource]="bookings" class="mat-elevation-z8">

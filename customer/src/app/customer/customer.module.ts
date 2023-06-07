@@ -12,6 +12,7 @@ import localeES from '@angular/common/locales/es';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 // Material
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSelectModule } from '@angular/material/select'
 import { MatDatepickerModule } from '@angular/material/datepicker'
 import { MatNativeDateModule } from '@angular/material/core';
@@ -73,21 +74,23 @@ export function createTranslateLoader(http: HttpClient) {
   imports: [
     CommonModule,
     CustomerRoutingModule,
+    FormsModule,
+    PdfViewerModule,
+    ReactiveFormsModule,
     RouterModule,
+    MatToolbarModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule,
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    ReactiveFormsModule,
     MatTableModule,
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
-    PdfViewerModule,
     MatProgressSpinnerModule,
     MatDialogModule,
+
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

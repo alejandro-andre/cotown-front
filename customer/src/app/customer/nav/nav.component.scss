@@ -1,13 +1,12 @@
 li {
   list-style-type: none;
+  font-weight: 700;
   padding: 10px;
 }
-
 li:hover {
   cursor: pointer;
-  background-color: rgba(128, 255, 212, 0.2)
+  background-color: var(--turquoise)
 }
-
 .active {
-  background-color: rgb(128, 255, 212) !important;
+  background-color: var(--turquoise-light) !important;
 }

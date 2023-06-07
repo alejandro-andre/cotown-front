@@ -12,15 +12,17 @@ import { Nav } from 'src/app/constants/Interface';
 })
 
 export class NavComponent implements OnInit{
+
   @Input() showTutor!: Observable<boolean>;
   public showTutorVariable = false;
+
   public urls = Constants.NAV_URLS;
   public TUTOR = Constants.TUTOR;
   public selected: string = '';
 
   constructor(
-    private _router: Router,
-    private _authService: AuthService,
+    private router: Router,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -36,8 +38,8 @@ export class NavComponent implements OnInit{
   }
 
   setActiveRoute(): void {
-    const url = this._router.url ? this._router.url : '';
-    if (this._router.url && this._router.url !== '') {
+    const url = this.router.url ? this.router.url : '';
+    if (this.router.url && this.router.url !== '') {
       const arrayOfSplitedUrls = url.split('/');
       this.selected = arrayOfSplitedUrls[arrayOfSplitedUrls.length -1 ];
     }
@@ -46,7 +48,7 @@ export class NavComponent implements OnInit{
   onSelect(data: string) {
     if (data !== Constants.LOG_OUT.url) {
       this.selected = data;
-      this._router.navigate([`${data}`]);
+      this.router.navigate([`${data}`]);
     } else {
       this.logout();
     }
@@ -55,12 +57,12 @@ export class NavComponent implements OnInit{
   get navUrls (): Nav[] {
     if (this.showTutorVariable) {
       return this.urls;
-    }else {
+    } else {
       return this.urls.filter((elem) => elem.name !== Constants.TUTOR.name);
     }
   }
 
   public logout(): void {
-    this._authService.logout();
+    this.authService.logout();
   }
 }

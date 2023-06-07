@@ -1,5 +1,6 @@
+<h1>{{ 'contacts' | translate }}</h1>
+
 <div>
-  <h2>{{ 'contacts' | translate }}</h2>
   <div *ngIf="contacts.length; then thenBlock else elseBlock"></div>
   <ng-template #thenBlock>
     <!--Table of pays-->

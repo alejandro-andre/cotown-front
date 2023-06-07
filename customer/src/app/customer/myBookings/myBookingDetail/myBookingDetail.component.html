@@ -1,5 +1,5 @@
+<h1>{{ 'bookingDetail' | translate}}</h1>
 <div>
-  <h2>{{ 'bookingDetail' | translate}}</h2>
 
   <ng-container *ngIf="booking && booking.id && !showNotFound;  then showData; else showNotData">
   </ng-container>

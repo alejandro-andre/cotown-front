@@ -1,42 +1,23 @@
-<div class="example-container" [class.is-mobile]="mobileQuery.matches">
-  <mat-sidenav-container class="container">
-    <mat-sidenav
-      id="snav"
-      #snav
-      [opened]="isMenuOpened"
-      [mode]="mobileQuery.matches ? 'over' : 'side'"
-      [fixedInViewport]="mobileQuery.matches"
-    >
-      <div class="header-nav toolbar"
-        [ngStyle]="getStyles"
-      >
-        <button *ngIf="!mobileQuery.matches" (click)="snav.toggle()" mat-icon-button>
-          <mat-icon>menu</mat-icon>
-        </button>
-      </div>
+<div class="main">
 
-      <app-nav class="nav"
-        [showTutor]="showTutor.asObservable()"
-        [style.marginTop.px]="mobileQuery.matches ? 60 : 0"
-      ></app-nav>
-    </mat-sidenav>
+<mat-toolbar>
+  <button (click)="snav.toggle()" mat-icon-button>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <h1><span class="turquoise">C</span><span>OTOWN.</span></h1>
+</mat-toolbar>
 
-    <mat-sidenav-content class="content">
-      <div class="header-content">
-        <button
-          *ngIf="mobileQuery.matches || !snav.opened"
-          (click)="snav.toggle()"
-          mat-icon-button
-        >
-          <mat-icon>menu</mat-icon>
-        </button>
-      </div>
+<mat-sidenav-container>
 
-      <div class="app-container">
-        <router-outlet *ngIf="!isLoading"></router-outlet>
-          <app-spinner-control  *ngIf="isLoading"></app-spinner-control>
-      </div>
+  <mat-sidenav #snav id="snav" [opened]="!isMobile" [mode]="isMobile ? 'over' : 'side'">
+    <app-nav class="nav"></app-nav>
+  </mat-sidenav>
 
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+  <mat-sidenav-content>
+    <router-outlet *ngIf="!isLoading"></router-outlet>
+    <app-spinner-control  *ngIf="isLoading"></app-spinner-control>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+
 </div>

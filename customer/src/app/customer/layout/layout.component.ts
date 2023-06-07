@@ -1,13 +1,13 @@
 // Core
-import { Component, OnInit, ChangeDetectorRef, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MediaMatcher } from '@angular/cdk/layout';
-import { Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 // Sevices
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
+
 import { CountryService } from 'src/app/services/country.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { GenderService } from 'src/app/services/gender.service';
@@ -39,17 +39,17 @@ import { TUTOR_QUERY } from 'src/app/schemas/query-definitions/tutor.query';
   styleUrls: ['./layout.component.scss']
 })
 
-export class LayoutComponent implements OnInit, OnDestroy {
-  public showTutor: Subject<boolean> = new Subject<any>();
-  private _mobileQueryListener: () => void;
-  public isLoading = false;
+export class LayoutComponent implements OnInit {
+
   public userId: number | undefined;
-  public openMenu!: boolean;
+  public isLoading = false;
+  public isMobile: boolean = false;
 
   constructor(
-    private elRef:ElementRef,
     private authService: AuthService,
+    private translate: TranslateService,
     private apolloApi: ApolloQueryApi,
+    private breakpointObserver: BreakpointObserver,
     private customerService: CustomerService,
     private genderService: GenderService,
     private countryService: CountryService,
@@ -57,34 +57,22 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private identificationTypes: IdentificationDocTypesService,
     private schoolOrCompaniesService: schoolOrCompaniesService,
     private contactTypeService: ContactTypeService,
-    private translate: TranslateService,
-    private tutorService: TutorService,
-    changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher
+    private tutorService: TutorService
   ) {
-    this.openMenu = false;
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
+    breakpointObserver.observe([
+      Breakpoints.XLarge,
+      Breakpoints.Large,
+      Breakpoints.Medium
+    ]).subscribe(result => {
+      this.isMobile = !result.matches;
+      console.log(result);
+      console.log(this.isMobile);
+    });
   }
 
-  get isMenuOpened (): boolean {
-    const isMobile = this.mobileQuery.matches ? false: true;
-    return isMobile && this.openMenu;
-  }
-
-  /**
-   * Started config of nav
-   */
-  public mobileQuery!: MediaQueryList;
-  public navWidth: number = 160;
-
-  get getStyles(): any {
-    if(this.mobileQuery.matches) {
-      return {
-        width: `${this.navWidth}px`
-      };
-    }
+  ngOnInit(): void {
+    this.isLoading = true;
+    this.loadData();
   }
 
   setAppLanguage(lang: string = Constants.defaultBaseLanguageForTranslation) {
@@ -92,18 +80,32 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.translate.use(lang);
   }
 
-  ngAfterViewInit() {
-    const snav = this.elRef.nativeElement.querySelector('#snav');
-    this.navWidth = snav.offsetWidth;
+  loadData() {
+    this.authService.getAirflowsToken().then(async() => {
+      await this.loadUserId();
+      if (this.userId !== undefined && this.userId !== null) {
+        this.loadIdentificationDocTypes();
+        this.loadLanguages();
+        this.loadGenders();
+        this.loadCountries();
+        this.loadSchoolOrCompanies();
+        this.loadContactTypes();
+        this.loadCustomer();
+      }
+    })
   }
 
-  ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
+  loadUserId(): Promise<void> {
+    return new Promise((resolve) => {
+      this.apolloApi.getData(USER_ID).subscribe((resp) => {
+        if (resp.data && resp.data.data && resp.data.data.length > 0) {
+          this.userId = resp.data.data[0].id;
+        }
+        resolve();
+      })
+    });
   }
 
-  /**
-   * Endded the configuration of nav
-  */
   loadIdentificationDocTypes() {
     this.apolloApi.getData(IDENTIFICATION_DOC_TYPE_QUERY).subscribe((res) => {
       const value = res.data;
@@ -168,9 +170,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
       const numOfImages = doc.doctype.images;
       const images: DocFile[]= [];
 
-
-
-      for(let i = 0; i < numOfImages; i++) {
+      for (let i = 0; i < numOfImages; i++) {
         const docFile: DocFile = {
           file:  undefined,
           id: doc.id,
@@ -179,7 +179,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
           oid: -1,
           type: ''
         }
-
         images.push(docFile)
       }
 
@@ -243,48 +242,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
     })
   }
 
-  loadData() {
-    this.authService.getAirflowsToken().then( async() => {
-      await this.loadUserId();
-      if (this.userId !== undefined && this.userId !== null) {
-        this.loadIdentificationDocTypes();
-        this.loadLanguages();
-        this.loadGenders();
-        this.loadCountries();
-        this.loadSchoolOrCompanies();
-        this.loadContactTypes();
-        this.loadCustomer();
-      }
-    })
-  }
-
-  loadUserId(): Promise<void> {
-    return new Promise((resolve) => {
-      this.apolloApi.getData(USER_ID).subscribe((resp) => {
-        if (resp.data && resp.data.data && resp.data.data.length > 0) {
-          this.userId = resp.data.data[0].id;
-        }
-
-        resolve();
-      })
-    });
-  }
-
-  // TODO: may be is not the better way to do it
-  getAge(birthDate: Date | null): number {
-    const now = new Date().getTime();
-    const birthWithTime = birthDate?.getTime() || 0;
-    const diff = now - birthWithTime;
-    const diffParsed = (diff / 31536000000).toFixed(0);
-
-    return parseInt(diffParsed);
-  }
-
   loadCustomer(): void {
     const variables = {
       id: this.userId
     }
-
     this.apolloApi.getData(CUSTOMER_QUERY, variables).subscribe((res) => {
       const value = res.data;
       if (value && value.data && value.data.length) {
@@ -324,18 +285,20 @@ export class LayoutComponent implements OnInit, OnDestroy {
         this.setAppLanguage(appLang);
         this.customerService.setCustomerData(currentCustomer);
         if(age <= 18 && tutorId !== null) {
-          this.showTutor.next(true);
-          this.loadTutor(tutorId);
+          // TO DO
         }
-
-        this.openMenu = true;
         this.isLoading = false;
       }
     });
   }
 
-  ngOnInit(): void {
-    this.isLoading = true;
-    this.loadData();
+  // TODO: may be is not the better way to do it
+  getAge(birthDate: Date | null): number {
+    const now = new Date().getTime();
+    const birthWithTime = birthDate?.getTime() || 0;
+    const diff = now - birthWithTime;
+    const diffParsed = (diff / 31536000000).toFixed(0);
+    return parseInt(diffParsed);
   }
+
 }

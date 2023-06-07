@@ -88,7 +88,7 @@ export class Constants {
   public static PLACE_TYPE = 'placeType';
   public static RESOURCE_TYPE = 'resourceType';
   public static INVOICE_NUMBER = 'invoiceNumber';
-  public static ISSUE_DATE = 'issueDate';
+  public static ISSUE_DATE = 'issue_date';
   public static BOOKING = 'booking';
   public static PAYMENT_NUMBER = 'paymentNumber';
 
@@ -111,7 +111,7 @@ export class Constants {
   // Table header constants of Invoices
   public static INVOICE_CONCEPT = this.CONCEPT;
   public static INVOICE_RESOURCE = this.RESOURCE;
-  public static INVOICE_TOTAL = this.TOTAL;
+  public static INVOICE_AMOUNT = this.AMOUNT;
   public static INVOICE_DATE = this.DATE;
   public static INVOICE_CODE = this.CODE;
 
@@ -123,7 +123,7 @@ export class Constants {
   public static PAYMENT_AUTH = 'payment_auth';
   public static PAYMENT_AMOUNT = this.AMOUNT;
   public static PAYMENT_PAY = this.PAY;
-  public static PAYMENT_DATE = this.DATE;
+  public static PAYMENT_DATE = 'payment_date';
 
   // Table header constats of Contacts
   public static CONTACT_NAME = this.NAME;
@@ -148,7 +148,6 @@ export class Constants {
   public static PROPERTY_PHONE = this.PHONE;
   public static PROPERTY_CODE = this.CODE;
   public static PROPERTY_ISSUE_DATE = 'issue_date';
-  public static PROPERTY_DATE = 'payment_date';
   public static PROPERTY_CONCEPT = this.CONCEPT;
   public static PROPERTY_BOOKING = 'booking';
   public static PROPERTY_PAY = 'pay';

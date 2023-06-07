@@ -1,45 +1,47 @@
 <h1>{{ 'contacts' | translate }}</h1>
 
-<div>
-  <div *ngIf="contacts.length; then thenBlock else elseBlock"></div>
-  <ng-template #thenBlock>
-    <!--Table of pays-->
-    <table
-      style="margin-bottom: 10px;"
-      mat-table *ngIf="contacts && contacts.length"
-      [dataSource]="contacts"
-      class="mat-elevation-z8"
-    >
-      <ng-container [matColumnDef]="col.header" *ngFor="let col of tableFormat">
-        <th mat-header-cell *matHeaderCellDef>{{ col.name | translate }}</th>
-        <td mat-cell *matCellDef="let element">
-          <span *ngIf="col.property !== DELETE">
-            {{ element[col.property] }}
-          </span>
-          <span *ngIf="col.property === DELETE">
-            <button
-              mat-raised-button
-              color="basic"
-              (click)="deleteContact(element)"
-            >
-              {{ 'delete' | translate }}
-            </button>
-          </span>
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  </ng-template>
-  <ng-template #elseBlock>
-    <div>
-      {{ 'notFoundResults' | translate }}
-    </div>
-  </ng-template>
+<div *ngIf="contacts.length; then thenBlock else elseBlock"></div>
 
-  <button mat-raised-button color="basic" (click)="goToAdd()">
-    {{ 'addContact' | translate }}
-  </button>
+<ng-template #thenBlock>
 
-  <app-spinner-control *ngIf="isLoading"></app-spinner-control>
-</div>
+  <table
+    mat-table *ngIf="contacts && contacts.length"
+    [dataSource]="contacts"
+    class="table"
+  >
+    <ng-container [matColumnDef]="col.header" *ngFor="let col of tableFormat">
+      <th mat-header-cell *matHeaderCellDef>{{ col.name | translate }}</th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="col.property !== DELETE">
+          {{ element[col.property] }}
+        </span>
+        <span *ngIf="col.property === DELETE">
+          <button
+            mat-raised-button
+            color="basic"
+            (click)="deleteContact(element)"
+          >
+            {{ 'delete' | translate }}
+          </button>
+        </span>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
+</ng-template>
+
+<ng-template #elseBlock>
+  <div>
+    {{ 'errors.notFoundResults' | translate }}
+  </div>
+</ng-template>
+
+<button mat-raised-button class="action" color="primary" (click)="goToAdd()">
+  {{ 'addContact' | translate }}
+</button>
+
+<app-spinner-control *ngIf="isLoading"></app-spinner-control>

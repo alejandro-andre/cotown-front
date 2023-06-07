@@ -6,7 +6,7 @@ export const formatErrorBody = (error: Error, lang: string) => {
 
   const bodyToSend = {
     title: 'Error',
-    message: 'uknownError'
+    message: 'unknownError'
   };
 
   if (message && message.length && message.length >= 3) {

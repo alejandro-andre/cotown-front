@@ -1,22 +1,26 @@
-<div>
-  <h2>{{ 'newContact' | translate }}</h2>
-  <div>
-    <mat-form-field appearance="fill" style="margin-right: 10px;">
-      <mat-label>{{ 'contactType' | translate }}</mat-label>
-      <mat-select [(ngModel)]="contactType" [formControl]="contactTypeFormControl">
-        <mat-option *ngFor="let contact of contactTypes" [value]="contact.id">
-          {{ contact.name }}
-        </mat-option>
-      </mat-select>
+<h1>{{ 'newContact' | translate }}</h1>
 
-      <mat-error
-          class="mat-error"
-          *ngIf="contactTypeFormControl.hasError('required')"
-        >
-          {{ 'errors.contactTypeRequired' | translate }}
-        </mat-error>
-    </mat-form-field>
-    <p>
+<div class="group">
+  <div class="pure-g grid-container" >
+
+    <div class="pure-u-1 pure-u-lg-1-2">
+      <mat-form-field appearance="fill" style="margin-right: 10px;">
+        <mat-label>{{ 'contactType' | translate }}</mat-label>
+        <mat-select [(ngModel)]="contactType" [formControl]="contactTypeFormControl">
+          <mat-option *ngFor="let contact of contactTypes" [value]="contact.id">
+            {{ contact.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+            class="mat-error"
+            *ngIf="contactTypeFormControl.hasError('required')"
+          >
+            {{ 'errors.contactTypeRequired' | translate }}
+          </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="pure-u-1 pure-u-lg-1-2">
       <mat-form-field>
         <mat-label>{{ 'completeName' | translate }}</mat-label>
         <input
@@ -32,8 +36,9 @@
           {{ 'errors.nameRequired' | translate }}
         </mat-error>
       </mat-form-field>
-    </p>
-    <p>
+    </div>
+
+    <div class="pure-u-1 pure-u-lg-1-2">
       <mat-form-field>
         <mat-label>{{ 'email' | translate }}</mat-label>
         <input
@@ -54,6 +59,9 @@
           </span>
         </mat-error>
       </mat-form-field>
+    </div>
+
+    <div class="pure-u-1 pure-u-lg-1-2">
       <mat-form-field>
         <mat-label>{{ 'phone' | translate }}</mat-label>
         <input
@@ -62,20 +70,20 @@
           [(ngModel)]="phone"
         >
       </mat-form-field>
-    </p>
+    </div>
   </div>
-
-  <div>
-    <button
-      [disabled]="isDisabled"
-      mat-raised-button
-      color="basic"
-      (click)="save()"
-    >
-      {{ 'save' | translate }}
-    </button>
-  </div>
-
-  <app-spinner-control *ngIf="isLoading"></app-spinner-control>
-
 </div>
+
+<div>
+  <button
+    [disabled]="isDisabled"
+    mat-raised-button
+    color="primary"
+    class="action"
+    (click)="save()"
+  >
+    {{ 'save' | translate }}
+  </button>
+</div>
+
+<app-spinner-control *ngIf="isLoading"></app-spinner-control>

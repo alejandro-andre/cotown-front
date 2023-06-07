@@ -33,7 +33,7 @@ import { formatDate } from 'src/app/utils/date.util';
 export class MyBookingDetailComponent implements OnInit {
   public isViewLoading = false;
   public booking!: Booking;
-  public showNotFound: boolean = false;
+  public shownotFound: boolean = false;
   public contract_services = '';
   public contract_rent = '';
   public bookingId!: number;
@@ -172,7 +172,7 @@ export class MyBookingDetailComponent implements OnInit {
           this.selectedSchool = this.booking.school.id;
         }
       } else {
-        this.showNotFound = true;
+        this.shownotFound = true;
       }
     });
   }
@@ -201,7 +201,7 @@ export class MyBookingDetailComponent implements OnInit {
       } else {
         const body = {
           title: 'Error',
-          message: 'uknownError'
+          message: 'unknownError'
         };
 
         this.modalService.openModal(body);
@@ -225,7 +225,7 @@ export class MyBookingDetailComponent implements OnInit {
       } else {
         const body = {
           title: 'Error',
-          message: 'uknownError'
+          message: 'unknownError'
         };
 
         this.modalService.openModal(body);
@@ -248,7 +248,7 @@ export class MyBookingDetailComponent implements OnInit {
       } else {
         const body = {
           title: 'Error',
-          message: 'uknownError'
+          message: 'errors.unknownError'
         };
 
         this.modalService.openModal(body);
@@ -329,7 +329,7 @@ export class MyBookingDetailComponent implements OnInit {
             this.isViewLoading = false;
             const body = {
               title: 'Error',
-              message: 'uknownError'
+              message: 'unknownError'
             };
 
             this.modalService.openModal(body);
@@ -343,7 +343,7 @@ export class MyBookingDetailComponent implements OnInit {
         this.isViewLoading = false;
         const body = {
           title: 'Error',
-          message: 'uknownError'
+          message: 'unknownError'
         };
 
         this.modalService.openModal(body);
@@ -367,7 +367,7 @@ export class MyBookingDetailComponent implements OnInit {
       } else {
         const body = {
           title: 'Error',
-          message: 'uknownError'
+          message: 'unknownError'
         };
 
         this.modalService.openModal(body);
@@ -551,7 +551,7 @@ export class MyBookingDetailComponent implements OnInit {
           this.isViewLoading = false;
           const body = {
             title: 'Error',
-            message: 'uknownError'
+            message: 'unknownError'
           };
 
           this.modalService.openModal(body);
@@ -572,7 +572,7 @@ export class MyBookingDetailComponent implements OnInit {
       } else {
         const body = {
           title: 'Error',
-          message: 'uknownError'
+          message: 'unknownError'
         };
 
         this.modalService.openModal(body);

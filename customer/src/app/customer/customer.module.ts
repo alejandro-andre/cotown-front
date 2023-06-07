@@ -35,9 +35,9 @@ import { NewContactComponent } from './myContacts/newContacts/newContact.compone
 import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
 import { MyBookingsComponent } from './myBookings/myBookings.component';
 import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBookingDetail.component';
-import { MyInvoiceComponent } from './myInvoice/myInvoice.component';
+import { MyInvoicesComponent } from './myInvoices/myInvoices.component';
 import { MyTutorComponent } from './myTutor/myTutor.component';
-import { InvoicePayComponent } from './myInvoice/invoicePay/invoicePay.component';
+import { InvoicePayComponent } from './myInvoices/invoicePay/invoicePay.component';
 import { PaymentOkComponent } from './paymentOk/paymentOk.component';
 import { PaymentkOComponent } from './paymentKO/paymentkO.component'
 
@@ -64,7 +64,7 @@ export function createTranslateLoader(http: HttpClient) {
     MyDocumentsComponent,
     MyBookingsComponent,
     MyBookingDetailComponent,
-    MyInvoiceComponent,
+    MyInvoicesComponent,
     MyTutorComponent,
     InvoicePayComponent,
     PaymentOkComponent,

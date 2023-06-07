@@ -1,13 +1,13 @@
 <app-spinner-control *ngIf="isLoading"></app-spinner-control>
 
-<h1>Mis datos</h1>
+<h1>{{ 'data' | translate }}</h1>
 
-<h2>Datos personales</h2>
+<h2>{{ 'personalData' | translate }}</h2>
 <div class="group">
   <div class="pure-g grid-container" >
 
     <div class="pure-u-1">
-      <div class="label">Foto</div>
+      <div class="label">{{ 'photo' | translate }}</div>
       <div class="image-container">
         <img
           *ngIf="customer.photo !== null"
@@ -112,7 +112,7 @@
   </div>
 </div>
 
-<h2>Dirección</h2>
+<h2>{{ 'address' | translate }}</h2>
 <div class="group">
   <div class="pure-g">
 
@@ -195,7 +195,7 @@
   </div>
 </div>
 
-<h2>Edad</h2>
+<h2>{{ 'age' | translate }}</h2>
 <div class="group">
   <div class="pure-g">
 
@@ -227,7 +227,7 @@
   </div>
 </div>
 
-<h2>Otros datos</h2>
+<h2>{{ 'other' | translate }}</h2>
 <div class="group">
   <div class="pure-g">
 
@@ -380,8 +380,7 @@
 </div>
 
 <div class="pure-u-1">
-  <button [disabled]="isButtonDisabled" mat-raised-button color="basic" (click)="save()">
+  <button class="action" [disabled]="isButtonDisabled" mat-raised-button color="primary" (click)="save()">
     {{ 'save' | translate }}
   </button>
 </div>
-

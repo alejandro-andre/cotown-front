@@ -1,28 +1,26 @@
+const padL = (nr: number, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
 
 export const formatDateWithTime = (date: Date | null) : string => {
 
   if(date === null) {
     return '';
   }
-
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const min = date.getMinutes();
-  const hours = date.getHours();
-  const sec = date.getSeconds();
-
-  return `${year}-${month}-${day} ${hours}:${min}:${sec}`;
+  return `${
+    padL(date.getDate())}/${
+    padL(date.getMonth()+1)}/${
+    date.getFullYear()} ${
+    padL(date.getHours())}:${
+    padL(date.getMinutes())}:${
+    padL(date.getSeconds())}`;
 }
 
 export const formatDate = (date: Date | null): string => {
 
-  if (date !== null) {
-    const year = date.getFullYear();
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    return `${year}-${month}-${day}`;
+  if(date === null) {
+    return '';
   }
-
-  return '';
+  return `${
+    padL(date.getDate())}/${
+    padL(date.getMonth()+1)}/${
+    date.getFullYear()}`;
 }

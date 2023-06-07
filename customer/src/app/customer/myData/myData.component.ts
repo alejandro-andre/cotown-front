@@ -186,7 +186,7 @@ export class MyDataComponent{
           this.isLoading = false;
           const body = {
             title: 'Error',
-            message: 'uknownError'
+            message: 'unknownError'
           };
 
           this.modalService.openModal(body);
@@ -233,7 +233,7 @@ export class MyDataComponent{
             this.isLoading = false;
             const body = {
               title: 'Error',
-              message: 'uknownError'
+              message: 'unknownError'
             };
 
             this.modalService.openModal(body);

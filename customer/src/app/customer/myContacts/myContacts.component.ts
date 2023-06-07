@@ -75,7 +75,7 @@ export class MyContactsComponent {
         this.isLoading = false;
         const body = {
           title: 'Error',
-          message: 'uknownError'
+          message: 'unknownError'
         };
 
         this.modalService.openModal(body);

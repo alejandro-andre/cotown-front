@@ -9,11 +9,11 @@ import { MyContactsComponent } from './myContacts/myContacts.component';
 import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
 import { NewContactComponent } from './myContacts/newContacts/newContact.component';
 import { MyBookingsComponent } from './myBookings/myBookings.component';
-import { MyInvoiceComponent } from './myInvoice/myInvoice.component';
+import { MyInvoicesComponent } from './myInvoices/myInvoices.component';
 import { Constants } from '../constants/Constants';
 import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBookingDetail.component';
 import { MyTutorComponent } from './myTutor/myTutor.component';
-import { InvoicePayComponent } from './myInvoice/invoicePay/invoicePay.component';
+import { InvoicePayComponent } from './myInvoices/invoicePay/invoicePay.component';
 import { PaymentOkComponent } from './paymentOk/paymentOk.component';
 import { PaymentkOComponent } from './paymentKO/paymentkO.component';
 
@@ -57,7 +57,7 @@ const routes: Routes = [
       },
       {
         path: Constants.INVOICES.url,
-        component: MyInvoiceComponent,
+        component: MyInvoicesComponent,
       },
       {
         path: 'invoices/payment/:id',

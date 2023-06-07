@@ -1,7 +1,7 @@
 <h1>{{ 'bookingDetail' | translate}}</h1>
 <div>
 
-  <ng-container *ngIf="booking && booking.id && !showNotFound;  then showData; else showNotData">
+  <ng-container *ngIf="booking && booking.id && !shownotFound;  then showData; else showNotData">
   </ng-container>
 
   <ng-template #showData>
@@ -418,7 +418,7 @@
   </ng-template>
 
   <ng-template #showNotData>
-    {{ 'noBookingFound' | translate }}
+    {{ 'errors.noBookingFound' | translate }}
   </ng-template>
 
   <app-spinner-control *ngIf="isViewLoading"></app-spinner-control>

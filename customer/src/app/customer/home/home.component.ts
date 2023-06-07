@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AuthService } from 'src/app/auth/service/auth.service';
+import { AuthService } from 'src/app/auth/auth.service';
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 
 @Component({

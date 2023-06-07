@@ -3,7 +3,7 @@ import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
 
 import { AuthGuard } from './auth.guard';
 import { initializer } from './keycloak-initializer';
-import { AuthService } from './service/auth.service';
+import { AuthService } from './auth.service';
 
 @NgModule({
   declarations: [],

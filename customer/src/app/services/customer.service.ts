@@ -1,33 +1,35 @@
 import { Injectable } from '@angular/core';
+import { Booking, Contact, ICustomer } from '../constants/Interface';
 import { Customer } from '../models/Customer.model';
-import { Booking, Contact } from '../constants/Interface';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class CustomerService {
+
   private readOnly = {
     name: true,
     province: true,
     city: true,
-    country: true,
+    country_id: true,
     address: true,
-    postalCode: true,
+    zip: true,
     document: true,
     email: true,
-    phone: true,
-    genderId: true,
-    languageId: true,
-    originId: true,
-    nationality: true,
-    birthDate: true,
-    typeDoc: true,
-    schoolOrCompany: true,
-    bankAcount: true,
+    phones: true,
+    gender_id: true,
+    language_id: true,
+    country_origin_id: true,
+    nationality_id: true,
+    birth_date: true,
+    id_type_id: true,
+    school_id: true,
+    bank_account: true,
   };
 
-  public customer = new Customer();
+  public customer: Customer = new Customer();
+  
   constructor() {}
 
   setCustomerData(customer: Customer): void {
@@ -44,13 +46,17 @@ export class CustomerService {
   }
 
   updateBooking(booking: Booking){
-    const index = this.customer.bookings.findIndex((el) => el.id === booking.id);
-    this.customer.bookings[index] = booking;
+    if (this.customer.bookings) {
+      const index = this.customer.bookings?.findIndex((el) => el.id === booking.id);
+      this.customer.bookings[index] = booking;
+    }
   }
 
   removeContactById(id: number): void {
-    const copy = [...this.customer.contacts];
-    this.customer.contacts = copy.filter((ev: Contact) => ev.id !== id);
+    if (this.customer.contacts) {
+      const copy = [...this.customer.contacts];
+      this.customer.contacts = copy.filter((ev: Contact) => ev.id !== id);
+    }
   }
 
   setVisibility(): void {
@@ -72,10 +78,10 @@ export class CustomerService {
       this.readOnly.city = true;
     }
 
-    if (this.customer.country === null) {
-      this.readOnly.country = false;
+    if (this.customer.country_id === null) {
+      this.readOnly.country_id = false;
     } else {
-      this.readOnly.country = true;
+      this.readOnly.country_id = true;
     }
 
     if (this.customer.address === '' || this.customer.address === null) {
@@ -84,10 +90,10 @@ export class CustomerService {
       this.readOnly.address = true;
     }
 
-    if (this.customer.postalCode === '' || this.customer.postalCode === null) {
-      this.readOnly.postalCode = false;
+    if (this.customer.zip === '' || this.customer.zip === null) {
+      this.readOnly.zip = false;
     } else {
-      this.readOnly.postalCode = true;
+      this.readOnly.zip = true;
     }
 
     if (this.customer.document === '' || this.customer.document === null) {
@@ -102,58 +108,58 @@ export class CustomerService {
       this.readOnly.email = true;
     }
 
-    if (this.customer.phone === '' || this.customer.phone === null) {
-      this.readOnly.phone = false;
+    if (this.customer.phones === '' || this.customer.phones === null) {
+      this.readOnly.phones = false;
     } else {
-      this.readOnly.phone = true;
+      this.readOnly.phones = true;
     }
 
-    if (this.customer.genderId === null) {
-      this.readOnly.genderId = false;
+    if (this.customer.gender_id === null) {
+      this.readOnly.gender_id = false;
     } else {
-      this.readOnly.genderId = true;
+      this.readOnly.gender_id = true;
     }
 
-    if (this.customer.languageId === null) {
-      this.readOnly.languageId = false;
+    if (this.customer.language_id === null) {
+      this.readOnly.language_id = false;
     } else {
-      this.readOnly.languageId = true;
+      this.readOnly.language_id = true;
     }
 
-    if (this.customer.originId === null) {
-      this.readOnly.originId = false;
+    if (this.customer.country_origin_id === null) {
+      this.readOnly.country_origin_id = false;
     } else {
-      this.readOnly.originId = true;
+      this.readOnly.country_origin_id = true;
     }
 
-    if (this.customer.nationality === null) {
-      this.readOnly.nationality = false;
+    if (this.customer.nationality_id === null) {
+      this.readOnly.nationality_id = false;
     } else {
-      this.readOnly.nationality = true;
+      this.readOnly.nationality_id = true;
     }
 
-    if (this.customer.birthDate === null) {
-      this.readOnly.birthDate = false;
+    if (this.customer.birth_date === null) {
+      this.readOnly.birth_date = false;
     } else {
-      this.readOnly.birthDate = true;
+      this.readOnly.birth_date = true;
     }
 
-    if (this.customer.typeDoc === null) {
-      this.readOnly.typeDoc = false;
+    if (this.customer.id_type_id === null) {
+      this.readOnly.id_type_id = false;
     } else {
-      this.readOnly.typeDoc = true;
+      this.readOnly.id_type_id = true;
     }
 
-    if (this.customer.schoolOrCompany === null) {
-      this.readOnly.schoolOrCompany = false;
+    if (this.customer.school_id === null) {
+      this.readOnly.school_id = false;
     } else {
-      this.readOnly.schoolOrCompany = true;
+      this.readOnly.school_id = true;
     }
 
-    if (this.customer.bankAcount === '' || this.customer.bankAcount === null) {
-      this.readOnly.bankAcount = false;
+    if (this.customer.bank_account === '' || this.customer.bank_account === null) {
+      this.readOnly.bank_account = false;
     } else {
-      this.readOnly.bankAcount = true;
+      this.readOnly.bank_account = true;
     }
   }
 }

@@ -11,10 +11,9 @@ import { formatErrorBody } from 'src/app/utils/error.util';
 
 //Queries & constants
 import { Constants } from 'src/app/constants/Constants';
-import { BasicResponse, Booking, LookupInt, TableObject } from 'src/app/constants/Interface';
+import { BasicResponse, Booking, TableObject } from 'src/app/constants/Interface';
 import {
   ACCEPT_BOOKING_OPTION,
-  CHECKIN_OPTIONS,
   GET_BOOKING_BY_ID,
   SIGN_BOOKING_CONTRACT,
   UPDATE_BOOKING
@@ -30,9 +29,9 @@ import { LookupService } from 'src/app/services/lookup.service';
 })
 
 export class MyBookingDetailComponent implements OnInit {
+
   public isViewLoading = false;
   public booking!: Booking;
-  public shownotFound: boolean = false;
   public contract_services = '';
   public contract_rent = '';
   public bookingId!: number;
@@ -88,34 +87,19 @@ export class MyBookingDetailComponent implements OnInit {
     },
   ];
 
-  public tableForOptions: TableObject[] = [
-    {
-      header: Constants.BOOKING_FLAT,
-      property: Constants.PROPERTY_FLAT,
-      name: Constants.FLAT_TYPE
-    },
-    {
-      header: Constants.BOOKING_PLACE,
-      property: Constants.PROPERTY_PLACE,
-      name: Constants.PLACE_TYPE
-    },
-    {
-      header: Constants.BOOKING_RESOURCE_TYPE,
-      property: Constants.PROPERTY_RESOURCE_TYPE,
-      name: Constants.RESOURCE_TYPE
-    },
-    {
-      header: 'Accept',
-      property: 'accepted',
-      name: 'Accept'
-    },
+  public displayedColumnsOptions: string[] = [
+      'accept',
+      'building',
+      'resource_type',
+      'flat_type',
+      'place_type',
   ];
 
-  public checkinOptions: BasicResponse [] = [];
+  public enabledSave: boolean = false;
+
   public selectedReason!: number;
   public selectedSchool!: number;
   public selectedOption: number | null = null;
-  public activeSaveButton: boolean = false;
   public checkingFormControl = new FormControl<Date | null>(null);
   public checkoutFormControl = new FormControl<Date | null>(null);
   public flight:string = '';
@@ -134,14 +118,12 @@ export class MyBookingDetailComponent implements OnInit {
       const id = res['id'];
       this.bookingId = parseInt(id);
 
-
-      const finded = this.customerService.customer.bookings.find(
+      const finded = this.customerService.customer.bookings?.find(
         (booking: Booking) => booking.id === this.bookingId
       );
 
       if (finded) {
         this.booking = finded;
-        this.loadCheckinOptions();
         this.selectedOption = this.booking.check_in_id;
         this.flight = this.booking.flight !== null ? this.booking.flight : '';
         this.arrival = this.booking.arrival !== null ? this.booking.arrival : '';
@@ -168,12 +150,95 @@ export class MyBookingDetailComponent implements OnInit {
         } else {
           this.selectedSchool = this.booking.school.id;
         }
-      } else {
-        this.shownotFound = true;
       }
     });
   }
 
+  /*
+   * Getters
+   */
+
+  get status(): string {
+    if (this.booking && this.booking.status) {
+      const status = this.lookupService.status.find((elem) => elem.code === this.booking.status)
+      return (this.customerService.customer.appLang === Constants.SPANISH.id) ? status?.name || '' : status?.name_en || '';
+    }
+    return '';
+  }
+
+  get building(): string {
+    if (this.booking && this.booking.building) {
+      const { name, code } = this.booking.building;
+      return `${code}, ${name}`
+    }
+    return '';
+  }
+
+  get resourceType(): string {
+    if (this.booking && this.booking.resource_type) {
+      const status = this.lookupService.resourceTypes.find((elem) => elem.code === this.booking.resource_type)
+      return (this.customerService.customer.appLang === Constants.SPANISH.id) ? status?.name || '' : status?.name_en || '';
+    }
+    return '';
+  }
+
+  get flatType(): string {
+    if (this.booking && this.booking.flat_type) {
+      const { name, code } = this.booking.flat_type;
+      return `${code}, ${name} `;
+    }
+    return '';
+  }
+
+  get placeType(): string {
+    if (this.booking && this.booking.place_type) {
+      const { name, code } = this.booking.place_type;
+      return `${code}, ${name} `;
+    }
+    return '';
+  }
+
+  get resourceCode(): string {
+    return this.booking?.resource?.code || '';
+  }
+
+  get reasonName(): string {
+    return this.booking?.reason?.name || '';
+  }
+
+  get schoolName(): string {
+    return this.booking.school?.name || '';
+  }
+
+  get options(): any {
+
+    const options =  [];
+
+    for (const option of this.booking.options || []) {
+      if (!option.accepted) {
+        options.push({
+          'id': option.id,
+          'accepted': option.accepted,
+          'building': `${option.building.code || ''}, ${option.building.name || ''} `,
+          'resource_type': this.getResourceType(option.resource_type),
+          'flat_type': `${option.flat_type.code || ''}, ${option.flat_type.name || ''} `,
+          'place_type': `${option.place_type.code || ''}, ${option.place_type.name || ''}`,
+        })
+      }
+    }
+    return options;
+  }
+
+  getResourceType(code: string): string {
+    const status = this.lookupService.resourceTypes.find((elem) => elem.code === code)
+    return (this.customerService.customer.appLang === Constants.SPANISH.id) ? status?.name || '' : status?.name_en || '';
+  }
+
+  enableSave() {
+    this.enabledSave = true;
+  }
+
+  /* REVISAR */
 
   save () {
     this.isViewLoading = true;
@@ -200,42 +265,13 @@ export class MyBookingDetailComponent implements OnInit {
       }
     }, err  => {
       this.isViewLoading = false;
-      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
       this.modalService.openModal(bodyToSend);
-    })
-  }
-
-  activateSaveButton() {
-    this.activeSaveButton = true;
-  }
-
-  loadCheckinOptions() {
-    this.apollo.getData(CHECKIN_OPTIONS).subscribe({
-
-      next: (res) => {
-        const value = res.data;
-        this.isViewLoading = false;
-        if (value && value.options && value.options.length) {
-          this.checkinOptions = [ ...value.options ];
-        } else {
-          this.modalService.openModal({title: 'Error', message: 'unknownError'});
-        }
-      },
-
-      error: (err) => {
-        this.isViewLoading = false;
-        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
-        this.modalService.openModal(bodyToSend);
-      }
     })
   }
 
   get isSpanish(): boolean {
     return this.customerService.customer.appLang === Constants.SPANISH.id
-  }
-
-  get displayedColumnsOptions(): string[] {
-    return this.tableForOptions.map((elem) => elem.header);
   }
 
   get displayedColumns(): string[] {
@@ -253,25 +289,6 @@ export class MyBookingDetailComponent implements OnInit {
       }
       await this.getPdfsContracts();
     }
-  }
-
-  get options(): any {
-    const options =  [];
-    for(const option of  this.booking.options || []) {
-      if(!option.accepted) {
-        const newop = {
-          'id': option.id,
-          'accepted': option.accepted,
-          [Constants.PROPERTY_FLAT]: `${option.resource_flat.code || ''}, ${option.resource_flat.name || ''} `,
-          [Constants.PROPERTY_PLACE]: `${option.resource_place.code || ''}, ${option.resource_place.name || ''}`,
-          [Constants.PROPERTY_RESOURCE_TYPE]: option.resource
-        }
-
-        options.push(newop)
-      }
-    }
-
-    return options;
   }
 
   accept(id: number): void {
@@ -308,7 +325,7 @@ export class MyBookingDetailComponent implements OnInit {
             }, 
 
             error: err => {
-              const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+              const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
               this.isViewLoading = false;
               this.modalService.openModal(bodyToSend);
             }
@@ -323,7 +340,7 @@ export class MyBookingDetailComponent implements OnInit {
 
       error: (err) => {
         this.isViewLoading = false;
-        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
         this.modalService.openModal(bodyToSend);
       }
     })
@@ -337,7 +354,7 @@ export class MyBookingDetailComponent implements OnInit {
         this.isEditableSchool = false;
         const booking: Booking = data.booking[0];
         this.booking = booking;
-        this.activeSaveButton = false;
+        this.enabledSave = false;
       } else {
         const body = {
           title: 'Error',
@@ -349,53 +366,10 @@ export class MyBookingDetailComponent implements OnInit {
 
       this.isViewLoading = false;
     }, err => {
-      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
       this.isViewLoading = false;
       this.modalService.openModal(bodyToSend);
     });
-  }
-
-  get isOptionToBeShowed() : boolean {
-    return this.booking.status.includes('alternativas');
-  }
-
-  get buildingName(): string {
-    if (this.booking && this.booking.building && this.booking.building.id) {
-      const { name, code } = this.booking.building;
-      return `${code},${name}`
-    }
-
-    return '';
-  }
-
-  get flatTypeName(): string {
-    if (this.booking && this.booking.flat && this.booking.flat.id) {
-      const { name, code } = this.booking.flat;
-      return `${code}, ${name} `;
-    }
-
-    return '';
-  }
-
-  get placeTypeName(): string {
-    if (this.booking && this.booking.place && this.booking.place.id) {
-      const { name, code } = this.booking.place;
-      return `${code}, ${name} `;
-    }
-
-    return '';
-  }
-
-  get resourceCode(): string {
-    return this.booking?.resource?.code || '';
-  }
-
-  get reasonName(): string {
-    return this.booking?.reason?.name || '';
-  }
-
-  get schoolName(): string {
-    return this.booking.school?.name || '';
   }
 
   async getPdfsContracts() {
@@ -509,7 +483,7 @@ export class MyBookingDetailComponent implements OnInit {
        this.apollo.setData(SIGN_BOOKING_CONTRACT,variables).subscribe((res) => {
         const value = res.data.data[0].Contract_signed;
         if (value) {
-          const finded = this.customerService.customer.bookings.find((booking: Booking) => booking.id === this.bookingId );
+          const finded = this.customerService.customer.bookings?.find((booking: Booking) => booking.id === this.bookingId );
           if(finded) {
             const copy = JSON.parse(JSON.stringify(finded));
             copy.contract_signed = value;
@@ -531,7 +505,7 @@ export class MyBookingDetailComponent implements OnInit {
           this.modalService.openModal(body);
         }
       }, err => {
-        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
         this.isViewLoading = false;
         this.modalService.openModal(bodyToSend);
       });
@@ -553,7 +527,7 @@ export class MyBookingDetailComponent implements OnInit {
         this.isViewLoading = false;
       }
     }).catch((err) => {
-      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
       this.isViewLoading = false;
       this.modalService.openModal(bodyToSend);
     })

@@ -108,14 +108,6 @@ export const SIGN_BOOKING_CONTRACT = `mutation($id: Int!,$time: String){
   ){id, Contract_signed}
 }`;
 
-export const CHECKIN_OPTIONS = `query checking_list {
-  options: Booking_Checkin_typeList{
-    id
-    name: Name
-    name_en: Name_en
-  }
-}`;
-
 export const UPDATE_BOOKING = `mutation(
   $id: Int!,
   $checkin: String,

@@ -11,13 +11,13 @@ import { CustomerService } from 'src/app/services/customer.service';
 import { LookupService } from 'src/app/services/lookup.service';
 
 // Models
-import { Customer } from 'src/app/models/Customer.model';
-import { CustomerInterface, DocFile, Document } from 'src/app/constants/Interface';
+import { ICustomer, DocFile, Document } from 'src/app/constants/Interface';
 import { Constants } from 'src/app/constants/Constants';
 
 // Queries
 import { USER_ID, CUSTOMER_QUERY } from 'src/app/schemas/query-definitions/customer.query';
 import { getAge } from 'src/app/utils/date.util';
+import { Customer } from 'src/app/models/Customer.model';
 
 @Component({
   selector: 'app-layout',
@@ -90,45 +90,9 @@ export class LayoutComponent implements OnInit {
       (res) => {
         const value = res.data;
         if (value && value.data && value.data.length) {
-
-          const {
-            id, name , province, city, country, address, postal_code, document, email, phones,
-            gender_id, language, origin, tutorId, birth_date, nationality, type_doc, school_id,
-            bank, contacts, documents, bookings, invoices, payments, appLang, photo
-          } = value.data[0];
-
-          const birthDate = birth_date;
-          const contactsToSend = contacts !== null ? contacts : [];
-          const docToSend = this.loadDocuments(documents);
-          const bookingsToSend = bookings !== null ? JSON.parse(JSON.stringify(bookings)) : [];
-          const invoidesToSend = invoices !== null ? invoices : [];
-          const paymentsToSend = payments !== null ? payments : [];
-
-          const customer: CustomerInterface = {
-            id, name, province, city, country, address, document, email, nationality, birthDate, appLang, photo,
-            postalCode: postal_code,
-            phone: phones,
-            genderId: gender_id,
-            languageId: language,
-            originId:origin,
-            tutorId: tutorId,
-            typeDoc: type_doc,
-            schoolOrCompany: school_id,
-            bankAcount: bank,
-            contacts: contactsToSend,
-            documents: docToSend,
-            bookings: bookingsToSend,
-            invoices: invoidesToSend,
-            payments: paymentsToSend,
-          }
-
-          const currentCustomer = new Customer(customer);
-          const age = getAge(birthDate);
-          this.setAppLanguage(appLang);
-          this.customerService.setCustomerData(currentCustomer);
-          if(age <= 18 && tutorId !== null) {
-            // TO DO
-          }
+          const cust: ICustomer = value.data[0];
+          this.setAppLanguage(cust.appLang);
+          this.customerService.setCustomerData(new Customer(cust));
           this.isLoading = false;
         }
       }
@@ -147,33 +111,34 @@ export class LayoutComponent implements OnInit {
 
       for (let i = 0; i < numOfImages; i++) {
         const docFile: DocFile = {
-          file:  undefined,
           id: doc.id,
           index: i,
           name: '',
+          type: '',
+          file:  undefined,
+          fileName: '',
           oid: -1,
-          type: ''
+          size: 0,
         }
         images.push(docFile)
       }
 
       if (doc.front && doc.front !== null && doc.front.oid !== null) {
-        images[0].name = doc.front.name;
+        images[0].fileName = doc.front.name;
         images[0].oid = doc.front.oid
-        images[0].type = Constants.DOCUMENT_TYPE_FRONT;
+        images[0].name = Constants.DOCUMENT_TYPE_FRONT;
       }
 
       if (doc.back && doc.back !== null && doc.back.oid !== null) {
-        images[1].name = doc.back.name;
+        images[1].fileName = doc.back.name;
         images[1].oid = doc.back.oid;
-        images[1].type = Constants.DOCUMENT_TYPE_BACK;
+        images[1].name = Constants.DOCUMENT_TYPE_BACK;
       }
 
       const docObject = {
-        expirity_date: doc.expirity_date,
+        expiry_date: doc.expiry_date,
         id: doc.id,
-        formDateControl: new FormControl(doc.expirity_date),
-        created_at: doc.created_at,
+        formDateControl: new FormControl(doc.expiry_date),
         doctype: {
           name: doc.doctype.name,
           images: doc.doctype.images,

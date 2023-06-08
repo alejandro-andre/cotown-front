@@ -1,32 +1,32 @@
+export const USER_ID = `query user_id {
+  data: Customer_CustomerList {
+    id
+  }
+}`;
+
 export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
-  data: Customer_CustomerList(where: { id: { EQ: $id} }) {
+  data: Customer_CustomerList(where: { id: { EQ: $id } } ) {
     id,
     appLang: Lang
     name: Name
     email: Email
     city: City
-    postal_code: Zip
+    zip: Zip
     province: Province
     address: Address
-    bank: Bank_account
+    bank_account: Bank_account
     birth_date: Birth_date
     comments: Comments
     phones: Phones
     document: Document
-    origin: Country_origin_id
-    type_doc: Id_type_id
+    country_origin_id: Country_origin_id
+    id_type_id: Id_type_id
     school_id: School_id
     gender_id:  Gender_id
-    language: Language_id
-    nationality: Nationality_id
-    country: Country_id
-    tutorId: Tutor_id
-    photo: Photo {
-      name
-      oid
-      thumbnail
-      type
-    }
+    language_id: Language_id
+    nationality_id: Nationality_id
+    country_id: Country_id
+    photo: Photo { name oid thumbnail type size }
     contacts: Customer_contactListViaCustomer_id {
       id
       name: Name
@@ -39,20 +39,13 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
     }
     documents: Customer_docListViaCustomer_id {
       id
-      expirity_date: Expiry_date
-      created_at: Created_at
-      front: Document{
-        name
-        oid
-      }
-      back: Document_back{
-        name
-        oid
-      }
-      doctype: Customer_doc_typeViaCustomer_doc_type_id {
-        name: Name
-        images:Images
+      expiry_date: Expiry_date
+      front: Document { name oid type size }
+      back: Document_back { name oid type size }
+      doc_type: Customer_doc_typeViaCustomer_doc_type_id {
         id
+        name: Name
+        images: Images
       }
     }
     invoices: InvoiceListViaCustomer_id {
@@ -60,15 +53,12 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       code: Code
       concept: Concept
       total: Total
-      issue_date: Issued_date
-      document: Document{
-        name
-        oid
-      }
+      issued_date: Issued_date
+      document: Document { name oid type size }
       booking: BookingViaBooking_id {
         resource: ResourceViaResource_id {
-          code: Code
           id
+          code: Code
         }
       }
     }
@@ -79,12 +69,11 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       payment_auth: Payment_auth
       amount: Amount
       concept: Concept
-      issue_date: Issued_date
-      pay: Pay
-      booking: BookingViaBooking_id{
+      issued_date: Issued_date
+      booking: BookingViaBooking_id {
         resource: ResourceViaResource_id {
-          code: Code
           id
+          code: Code
         }
       }
     }
@@ -107,37 +96,31 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       check_out: Check_out
       arrival: Arrival
       flight: Flight
-      check_in_id: Check_in_option_id
-      contract_rent: Contract_rent{
-        name
-        oid
-      }
-      contract_services: Contract_services {
-        name
-        oid
-      }
-      contract_signed:Contract_signed
-      reason: Customer_reasonViaReason_id{
+      check_in_option_id: Check_in_option_id
+      contract_rent: Contract_rent { name oid type size }
+      contract_services: Contract_services { name oid type size }
+      contract_signed: Contract_signed
+      reason: Customer_reasonViaReason_id {
         id
         name: Name
       }
       school: SchoolViaSchool_id {
-        name: Name
         id
+        name: Name
       }
       building: BuildingViaBuilding_id {
+        id
         name: Name
         code: Code
-        id
       }
       payer: CustomerViaPayer_id {
         id
         name: Name
       }
-      flat_type: Resource_flat_typeViaFlat_type_id{
-          name: Name
-          id
-          code: Code
+      flat_type: Resource_flat_typeViaFlat_type_id {
+        id
+        name: Name
+        code: Code
       }
       place_type: Resource_place_typeViaPlace_type_id {
         id
@@ -145,36 +128,35 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
         name: Name
       }
       resource: ResourceViaResource_id {
-        code: Code
         id
+        code: Code
       }
       price_list: Booking_priceListViaBooking_id {
+        id
         rent: Rent
         services: Services
-        id
-        rent_date:Rent_date
+        rent_date: Rent_date
         rent_discount: Rent_discount
         service_discount: Services_discount
       }
       options: Booking_optionListViaBooking_id {
-        accepted: Accepted
         id
-        resource: Resource_type
-        resource_place: Resource_place_typeViaPlace_type_id {
-          code: Code
-          name: Name
-          id
-        }
-        resource_flat: Resource_flat_typeViaFlat_type_id {
-          code: Code
-          name: Name
-          id
-        }
-        booking_id: Booking_id
+        accepted: Accepted
+        resource_type: Resource_type
         building: BuildingViaBuilding_id {
+          id
           code: Code
           name: Name,
+        }
+        flat_type: Resource_flat_typeViaFlat_type_id {
           id
+          code: Code
+          name: Name
+        }
+        place_type: Resource_place_typeViaPlace_type_id {
+          id
+          code: Code
+          name: Name
         }
       }
     }
@@ -186,75 +168,66 @@ export const UPDATE_CUSTOMER = `
     $id: Int!,
     $province: String,
     $city: String,
-    $country: Int,
+    $country_id: Int,
     $address: String,
-    $postalCode: String,
+    $zip: String,
     $document: String,
-    $phone: String,
-    $genderId: Int,
-    $languageId: Int,
-    $originId: Int,
-    $nationality: Int,
-    $birthDate: String,
-    $typeDoc: Int,
-    $schoolOrCompany: Int,
-    $bankAcount: String
-    $appLang: Auxiliar_LangEnumType){
+    $phones: String,
+    $gender_id: Int,
+    $language_id: Int,
+    $country_origin_id: Int,
+    $nationality_id: Int,
+    $birth_date: String,
+    $id_type_id: Int,
+    $school_id: Int,
+    $bank_account: String
+    $appLang: Auxiliar_LangEnumType) {
   update: Customer_CustomerUpdate(
-    where:{ id: {EQ: $id} }
-    entity:{
-      Phones: $phone
+    where: { id: {EQ: $id} }
+    entity: {
+      Phones: $phones
       City: $city
-      Zip: $postalCode
+      Zip: $zip
       Province: $province
       Address: $address
-      Bank_account: $bankAcount
-      Birth_date: $birthDate
+      Bank_account: $bank_account
+      Birth_date: $birth_date
       Document: $document
-      Country_origin_id: $originId
-      Id_type_id: $typeDoc
-      School_id: $schoolOrCompany
-      Gender_id: $genderId
-      Language_id: $languageId
-      Nationality_id:$nationality
-      Country_id: $country
+      Country_origin_id: $countruy_origin_id
+      Id_type_id: $id_type_id
+      School_id: $school_id
+      Gender_id: $gender_id
+      Language_id: $language_id
+      Nationality_id:$nationality_id
+      Country_id: $country_id
       Lang: $appLang
-    }){id}
+    }) {id}
 }`;
 
-export const UPLOAD_CUSTOMER_DOCUMENT = `mutation ($id: Int! $billFront: Models_DocumentTypeInputType, $date: String) {
+export const UPLOAD_CUSTOMER_DOCUMENT = `mutation ($id: Int! $file: Models_DocumentTypeInputType, $date: String) {
   data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
     entity: {
-      Document: $billFront
+      Document: $file
+    }
+  ) { id }
+}`;
+
+export const UPLOAD_CUSTOMER_FULL_DOCUMENTS = `mutation ($id: Int!, $fileFront: Models_DocumentTypeInputType, $fileBack: Models_DocumentTypeInputType, $date: String) {
+  data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
+    entity: {
+      Document: $fileFront
+      Document_back: $fileBack
       Expiry_date: $date
     }
-  ){ id }
+  ) { id }
 }`;
 
-export const UPLOAD_CUSTOMER_DOCUMENT_BACK = `mutation ($id: Int! $bill: Models_DocumentTypeInputType) {
-  data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
-    entity: {
-      Document_back: $bill
-    }
-  ){ id }
-}`;
-
-export const UPLOAD_CUSTOMER_FULL_DOCUMENTS = `mutation ($id: Int!, $billFront: Models_DocumentTypeInputType, $billBack: Models_DocumentTypeInputType, $date: String) {
-  data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
-    entity: {
-      Document: $billFront
-      Document_back: $billBack
-      Expiry_date: $date
-    }
-  ){ id }
-}`;
-
-export const UPLOAD_CUSTOMER_PHOTO = `mutation ($id: Int! $bill: Models_DocumentTypeInputType) {
+export const UPLOAD_CUSTOMER_PHOTO = `mutation ($id: Int! $file: Models_DocumentTypeInputType) {
   data: Customer_CustomerUpdate ( where: { id: {EQ: $id} }
     entity: {
-      Photo: $bill
+      Photo: $file
     }
-  ){
+  ) {
     id
     photo: Photo {
       name
@@ -262,11 +235,5 @@ export const UPLOAD_CUSTOMER_PHOTO = `mutation ($id: Int! $bill: Models_Document
       thumbnail
       type
     }
-  }
-}`;
-
-export const USER_ID = `query user_id {
-  data: Customer_CustomerList{
-    id
   }
 }`;

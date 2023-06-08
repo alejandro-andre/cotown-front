@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
 import { TableObject } from 'src/app/constants/Interface';
 import { CustomerService } from 'src/app/services/customer.service';
+import { LookupService } from 'src/app/services/lookup.service';
 
 @Component({
   selector: 'app-bookings',
@@ -18,6 +19,7 @@ export class MyBookingsComponent {
 
   constructor(
     public customerService: CustomerService,
+    public lookupService: LookupService,
     private datePipe: DatePipe,
     private router: Router,
   ) {}
@@ -34,7 +36,7 @@ export class MyBookingsComponent {
   ]
   
   get bookings():Array<any> {
-    return this.customerService.customer.bookings;
+    return this.customerService.customer.bookings || [];
   }
 
   getComposedName(data: any): string {
@@ -63,8 +65,17 @@ export class MyBookingsComponent {
   }
 
   getName(item: any): string {
-    console.log(item);
     return item.name;
+  }
+
+  getStatus(code: string): string {
+    const status = this.lookupService.status.find((elem) => elem.code === code)
+    return (this.customerService.customer.appLang === Constants.SPANISH.id) ? status?.name || '' : status?.name_en || '';
+  }
+
+  getResourceType(code: string): string {
+    const status = this.lookupService.resourceTypes.find((elem) => elem.code === code)
+    return (this.customerService.customer.appLang === Constants.SPANISH.id) ? status?.name || '' : status?.name_en || '';
   }
 
   clickedRow(row: any) {

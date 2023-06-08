@@ -11,7 +11,7 @@ import { LookupService } from 'src/app/services/lookup.service';
 import { formatErrorBody } from 'src/app/utils/error.util';
 
 // Interface
-import { Contact } from 'src/app/constants/Interface';
+import { Contact, IContactType } from 'src/app/constants/Interface';
 
 // Queries
 import { GET_CONTACTS_BY_CUSTOMERID, INSERT_CONTACT } from 'src/app/schemas/query-definitions/contact.query';
@@ -27,7 +27,10 @@ export class NewContactComponent {
   // Spinner
   public isLoading = false;
 
-  public contact_type!: number;
+  public contact_type: IContactType = {
+    id: 0,
+    name: ''
+  };
   public name: string = '';
   public email: string = '';
   public phone: string = '';
@@ -68,10 +71,10 @@ export class NewContactComponent {
     this.isLoading = true;
 
     // GraphQL API
-    const variables: Contact = {
+    const variables = {
       id: this.customerService.customer.id,
       name: this.name,
-      cid: this.contact_type,
+      contact_type: this.contact_type,
       email: this.email.length > 0 ? this.email : undefined,
       phone: this.phone
     };
@@ -101,7 +104,7 @@ export class NewContactComponent {
 
             error: (err) => {
               this.isLoading = false;
-              const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+              const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
               this.modalService.openModal(bodyToSend);
             }
 
@@ -116,7 +119,7 @@ export class NewContactComponent {
 
       error: err => {
         this.isLoading = false;
-        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
         this.modalService.openModal(bodyToSend);
       }
 

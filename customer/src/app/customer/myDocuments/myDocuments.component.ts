@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
@@ -17,34 +18,38 @@ import { formatErrorBody } from 'src/app/utils/error.util';
 })
 
 export class MyDocumentsComponent implements OnInit {
+
+  // Spinner
+  public isLoading = false;
+
+  public enabledButtons: number[] = [] as number[];
+  public pdfSrc = '';
+  public photo = '';
+
   constructor(
     public customerService: CustomerService,
+    private datePipe: DatePipe,
     private router: Router,
     private axiosApi: AxiosApi,
     private Apollo: ApolloQueryApi,
     private modalService: ModalService
   ) {}
 
-  public enabledButtons: number[] = [] as number[];
-  public pdfSrc = '';
-  public isLoading = false;
-  public photo = '';
-
   ngOnInit(): void {
+    console.log(this.documents);
     this.documents.forEach((el: Document) => {
-      if(el.expirity_date === null) {
+      const finded = el.doctype.arrayOfImages?.filter(ev => ev.oid === -1);
+      console.log(finded);
+      if (finded && finded.length > 0) {
         this.enabledButtons.push(el.id);
-      } else {
-        const finded = el.doctype.arrayOfImages?.filter(ev => ev.oid === -1);
-        if (finded && finded.length > 0) {
-          this.enabledButtons.push(el.id);
-        }
       }
     });
   }
   
+  // Show document or image
   viewDoc(doc: DocFile) {
-    this.axiosApi.getFile(doc.id, doc.type).then((response: any) => {
+
+    this.axiosApi.getFile(doc.id, doc.name).then((response: any) => {
       if (response.data && response.data.type !=  Constants.DOCUMENT_PDF) {
         this.pdfSrc = '';
         this.photo = URL.createObjectURL(response.data);
@@ -53,15 +58,17 @@ export class MyDocumentsComponent implements OnInit {
         this.pdfSrc = URL.createObjectURL(response.data);
       }
     })
+
   }
 
   upload(event: any, index: number, document: Document) {
+
+    // Upload file
     const payload: PayloadFile  = {
       id: document.id,
       file: event.target.files[0],
       document: index === 0 ? 'Document': 'Document_back',
     };
-
     this.axiosApi.uploadFile(payload).then((res) => {
       const fileId = res.data;
       const name = event.target.files[0].name;
@@ -86,7 +93,7 @@ export class MyDocumentsComponent implements OnInit {
     if (files) {
       let variables: any = {
         id: document.id,
-        date:document.expirity_date,
+        date:document.expiry_date,
         billFront: {
           name: files[0].name,
           oid: files[0].oid,
@@ -120,7 +127,7 @@ export class MyDocumentsComponent implements OnInit {
       },
       err => {
         // Apollo error !!
-        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang)
+        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es')
         this.isLoading = false;
         this.modalService.openModal(bodyToSend);
       })
@@ -146,23 +153,11 @@ export class MyDocumentsComponent implements OnInit {
 
   save(document: Document) {
     this.isLoading = true;
-    document.expirity_date = this.formatDate(document.formDateControl.value);
+    document.expiry_date = this.datePipe.transform(document.formDateControl.value, 'yyyy-MM-dd');
     this.uploadDataOnApollo(document);
   }
 
-  formatDate(date: Date) {
-    if (date !== null) {
-      const year = date.getFullYear();
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-
-      return `${year}-${month}-${day}`;
-    }
-
-    return null;
-  }
-
   get documents(): Document[] {
-    return this.customerService.customer.documents;
+    return this.customerService.customer.documents || [];
   }
 }

@@ -25,13 +25,13 @@ export const formatDate = (date: Date | null): string => {
     date.getFullYear()}`;
 }
 
-export const getAge = (birthdate: string): number => {
+export const getAge = (birth_date: string): number => {
 
-  if(!birthdate) {
+  if(!birth_date) {
     return 0;
   }
 
-  var bdt = new Date(birthdate);
+  var bdt = new Date(birth_date);
   var now = new Date();
   var age = now.getFullYear() - bdt.getFullYear();
 

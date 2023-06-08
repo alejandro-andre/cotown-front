@@ -33,7 +33,7 @@ export class MyContactsComponent {
   ) {}
 
   get contacts(): Contact[] {
-    return this.customerService.customer.contacts;
+    return this.customerService.customer.contacts || [];
   }
 
   goToAdd(): void {
@@ -65,7 +65,7 @@ export class MyContactsComponent {
 
       error: (err) => {
         this.isLoading = false;
-        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
         this.modalService.openModal(bodyToSend);
       }
     });

@@ -59,6 +59,7 @@ h1 {
   width: calc(100% - 10px);
 }
 .mdc-data-table__table {
+  min-width: 99%;
   border: 1px solid lightgray !important;
   background-color: #f5f5f5 !important;
 }

@@ -11,8 +11,7 @@ import { ModalService } from 'src/app/services/modal.service';
 
 // Constants and interfaces
 import { Constants } from 'src/app/constants/Constants';
-import { PayloadFile } from 'src/app/constants/Interface';
-import { Customer } from 'src/app/models/Customer.model';
+import { ICustomer, PayloadFile } from 'src/app/constants/Interface';
 import { UPDATE_CUSTOMER, UPLOAD_CUSTOMER_PHOTO } from 'src/app/schemas/query-definitions/customer.query';
 import { formatErrorBody } from 'src/app/utils/error.util';
 import { LookupService } from 'src/app/services/lookup.service';
@@ -51,8 +50,8 @@ export class MyDataComponent implements OnInit {
 
   // On init
   ngOnInit() {
-    if (this.customerService.customer.birthDate) {
-      const date = new Date(this.customerService.customer.birthDate)
+    if (this.customerService.customer.birth_date) {
+      const date = new Date(this.customerService.customer.birth_date)
       this.birthDateControl.setValue(date);
     }
   }
@@ -62,7 +61,7 @@ export class MyDataComponent implements OnInit {
   */
 
   // Return the current customer
-  get customer (): Customer {
+  get customer (): ICustomer {
     return this.customerService.customer;
   }
 
@@ -79,51 +78,51 @@ export class MyDataComponent implements OnInit {
   // Return gender name of current customer
   get gender(): string {
     if (this.isSpanish)
-      return this.lookupService.genders.find((elem) => elem.id === this.customer.genderId)?.name || '';
-    return this.lookupService.genders.find((elem) => elem.id === this.customer.genderId)?.name_en || '';
+      return this.lookupService.genders.find((elem) => elem.id === this.customer.gender_id)?.name || '';
+    return this.lookupService.genders.find((elem) => elem.id === this.customer.gender_id)?.name_en || '';
   }
 
   // Return the country of the current customer
   get country(): string {
     if (this.isSpanish)
-      return this.lookupService.countries.find((elem) => elem.id === this.customer.country)?.name || '';
-    return this.lookupService.countries.find((elem) => elem.id === this.customer.country)?.name_en || '';
+      return this.lookupService.countries.find((elem) => elem.id === this.customer.country_id)?.name || '';
+    return this.lookupService.countries.find((elem) => elem.id === this.customer.country_id)?.name_en || '';
   }
 
   // Return the documentation type name of current customer
   get idType(): string {
     if (this.isSpanish)
-      return this.lookupService.idTypes.find((elem) => elem.id === this.customer.typeDoc)?.name || '';
-    return this.lookupService.idTypes.find((elem) => elem.id === this.customer.typeDoc)?.name_en || '';
+      return this.lookupService.idTypes.find((elem) => elem.id === this.customer.id_type_id)?.name || '';
+    return this.lookupService.idTypes.find((elem) => elem.id === this.customer.id_type_id)?.name_en || '';
   }
 
   // Return nationality of current customer
   get nationality(): string {
     if (this.isSpanish)
-      return this.lookupService.countries.find((elem) => elem.id === this.customer.nationality)?.name || '';
-    return this.lookupService.countries.find((elem) => elem.id === this.customer.nationality)?.name_en || '';
+      return this.lookupService.countries.find((elem) => elem.id === this.customer.nationality_id)?.name || '';
+    return this.lookupService.countries.find((elem) => elem.id === this.customer.nationality_id)?.name_en || '';
   }
 
   // Return language of current customer
   get language(): string {
     if (this.isSpanish)
-      return this.lookupService.languages.find((elem) => elem.id === this.customer.languageId)?.name || '';
-    return this.lookupService.languages.find((elem) => elem.id === this.customer.languageId)?.name_en || '';
+      return this.lookupService.languages.find((elem) => elem.id === this.customer.language_id)?.name || '';
+    return this.lookupService.languages.find((elem) => elem.id === this.customer.language_id)?.name_en || '';
   }
 
   // Return origin country of current customer
   get origin(): string {
     if (this.isSpanish)
-      return this.lookupService.countries.find((elem) => elem.id === this.customer.originId)?.name || '';
-    return this.lookupService.countries.find((elem) => elem.id === this.customer.originId)?.name_en || '';
+      return this.lookupService.languages.find((elem) => elem.id === this.customer.country_origin_id)?.name || '';
+    return this.lookupService.languages.find((elem) => elem.id === this.customer.country_origin_id)?.name_en || '';
   }
 
   // Return school name of current customer
   get school(): string {
-    return this.lookupService.schools.find((elem) => elem.id === this.customer.schoolOrCompany)?.name || '';
+    return this.lookupService.schools.find((elem) => elem.id === this.customer.school_id)?.name || '';
   }
 
-  // Return formated birthdate of current customer
+  // Return formated birth_date of current customer
   get birthDate(): string | null {
     const date = this.birthDateControl.value;
     if (date !== null) {
@@ -143,7 +142,7 @@ export class MyDataComponent implements OnInit {
   }
 
   changeLang() {
-    this.translate.use(this.customer.appLang);
+    this.translate.use(this.customer.appLang || 'es');
     this.enableSave();
   }
 
@@ -161,7 +160,7 @@ export class MyDataComponent implements OnInit {
     if (this.customerService.customer.document === '') {
       this.customerService.customer.document = null;
     }
-    this.customerService.customer.birthDate = this.datePipe.transform(this.birthDateControl.value, 'yyyy-MM-dd');
+    this.customerService.customer.birth_date = this.datePipe.transform(this.birthDateControl.value, 'yyyy-MM-dd');
 
     // Variables to update
     const variables: any = {
@@ -184,7 +183,7 @@ export class MyDataComponent implements OnInit {
       }, 
 
       error: (err) => {
-        const bodyToSend = formatErrorBody(err, this.customer.appLang);
+        const bodyToSend = formatErrorBody(err, this.customer.appLang || 'es');
         this.isLoading = false;
         this.modalService.openModal(bodyToSend);
       }
@@ -218,9 +217,9 @@ export class MyDataComponent implements OnInit {
           const imageAsB64 = reader.result;
           const variables = {
             id,
-            bill: {
-              name: fileInfo.name,
+            file: {
               oid: oid,
+              name: fileInfo.name,
               type: fileInfo.type,
               thumbnail: imageAsB64
             }
@@ -240,7 +239,7 @@ export class MyDataComponent implements OnInit {
 
             error: (err) => {
               this.isLoading = false;
-              const bodyToSend = formatErrorBody(err, this.customer.appLang);
+              const bodyToSend = formatErrorBody(err, this.customer.appLang || 'es');
               this.modalService.openModal(bodyToSend);
             }
           })

@@ -21,8 +21,8 @@
 
     <div class="pure-u-1 pure-u-lg-1-2">
       <mat-form-field>
-        <mat-label>{{ 'completeName' | translate }}</mat-label>
-        <input matInput placeholder="{{'completeName' | translate}}" [(ngModel)]="name" [formControl]="nameFormControl">
+        <mat-label>{{ 'full_name' | translate }}</mat-label>
+        <input matInput placeholder="{{'full_name' | translate}}" [(ngModel)]="name" [formControl]="nameFormControl">
         <mat-error class="mat-error" *ngIf="nameFormControl.hasError('required')">
           {{ 'errors.nameRequired' | translate }}
         </mat-error>

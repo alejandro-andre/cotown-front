@@ -1,84 +1,59 @@
+<app-spinner-control *ngIf="isLoading"></app-spinner-control>
+
 <h1>{{ 'documents' | translate }}</h1>
+<div *ngIf="documents.length; then thenBlock else elseBlock"></div>
 
-<div>
+<ng-template #thenBlock>
 
-  <app-spinner-control *ngIf="isLoading"></app-spinner-control>
+  <div *ngFor="let document of documents">
 
-  <div *ngIf="documents.length; then thenBlock else elseBlock"></div>
-  <ng-template #thenBlock>
-    <div *ngFor="let document of documents" style="margin-top: 10px; display: flex;">
-      <div class="box">
-        <div>
-          <p>{{ 'documentType' | translate }}: {{ document.doctype.name }}</p>
+    <h2>{{ document.doctype.name }}</h2>
 
+    <div class="group">
+
+      <div class="pure-g">
+        <div class="pure-u-1 pure-u-lg-1-4">
           <mat-form-field appearance="fill">
-            <mat-label>{{ 'expirityDate' | translate }}</mat-label>
-            <input
-              matInput
-              [matDatepicker]="picker"
-              [formControl]="document.formDateControl"
-            >
+            <mat-label>{{ 'expiry_date' | translate }}</mat-label>
+            <input matInput [matDatepicker]="picker" [formControl]="document.formDateControl">
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </div>
+      </div>
 
-        <div style="margin-left: 10px;">
-          <button
-            mat-raised-button
-            color="basic"
-            (click)="save(document)"
-            [disabled]="isButtonOfDocDisabled(document)"
-          >
-            {{ 'save' | translate }}
-          </button>
+      <div class="pure-g">
+        <div *ngFor="let doc of document.doctype.arrayOfImages; let i = index" class="pure-u-lg-1-2">
+          <div class="doc-container">
+            <input 
+              *ngIf="doc.name === '' && (doc.oid === -1 || doc.oid === null)"
+              id="{{doc.id}}-{{i}}" type="file" [(ngModel)]="doc.file" (change)="upload($event, i, document)">
+            <label for="{{doc.id}}-{{i}}">Subir documento</label>
+          </div>
         </div>
+      </div>
 
-        <div
-          *ngFor="let doc of document.doctype.arrayOfImages; let i = index"
-          style="margin: 10px"
-        >
-          <label>{{  doc.name || 'document' | translate }}</label>
-          <input
-            *ngIf="doc.name === '' && (doc.oid === -1 || doc.oid === null) && !isViewEnabled(document)"
-            placeholder="Document"
-            [(ngModel)]="doc.file"
-            type="file"
-            (change)="upload($event, i, document)"
-          >
+    </div>
 
-          <button
-            *ngIf="doc.name !== '' && (doc.oid !== -1 || doc.oid !== null) && isViewEnabled(document)"
-            (click)="viewDoc(doc)"
-          >
-            {{ 'view' | translate }}
-          </button>
-        </div>
+    <div class="pure-g">
+      <div class="pure-u-1">
+        <button mat-raised-button color="primary" (click)="save(document)" [disabled]="isButtonOfDocDisabled(document)" >
+          {{ 'save' | translate }}
+        </button>
       </div>
     </div>
 
     <div>
-      <img
-        style="max-width: 200px; max-height: 200px;"
-        *ngIf="photo !== ''"
-        [src]="photo"
-      >
-
-      <pdf-viewer
-        *ngIf="pdfSrc !== ''"
-        class="pdf-viwer"
-        [src]="pdfSrc"
-        [render-text]="true"
-        [original-size]="false"
-        [show-all]="true"
-        style="min-width: 400px; min-width: 600px;"
-      ></pdf-viewer>
+      <img *ngIf="photo !== ''" [src]="photo">
+      <pdf-viewer *ngIf="pdfSrc !== ''" [src]="pdfSrc" class="pdf-viwer" [render-text]="true" [original-size]="false" [show-all]="true"></pdf-viewer>
     </div>
-  </ng-template>
 
-  <ng-template #elseBlock>
-    <div>
-      {{ 'errors.notFoundResults' | translate }}
-    </div>
-  </ng-template>
-</div>
+  </div>
+
+</ng-template>
+
+<ng-template #elseBlock>
+  <div>
+    {{ 'errors.notFoundResults' | translate }}
+  </div>
+</ng-template>

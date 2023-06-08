@@ -20,14 +20,14 @@
       <div class="pure-u-1 pure-u-lg-1-2">
         <mat-form-field>
           <mat-label>{{ 'name' | translate }}</mat-label>
-          <input matInput [readonly]="visibility['name']" [(ngModel)]="customerService.customer.name" (change)="activeButton()">
+          <input matInput [readonly]="visibility['name']" [(ngModel)]="customerService.customer.name" (change)="enableSave()">
         </mat-form-field>
       </div>
 
       <div class="pure-u-1-2 pure-u-lg-1-4">
         <mat-form-field *ngIf="!visibility['typeDoc']">
           <mat-label>{{ 'documentType' | translate }}</mat-label>
-          <mat-select [(ngModel)]="customerService.customer.typeDoc" (selectionChange)="activeButton()">
+          <mat-select [(ngModel)]="customerService.customer.typeDoc" (selectionChange)="enableSave()">
             <mat-option *ngFor="let c of lookupService.idTypes" [value]="c.id">
               {{ isSpanish ? c.name : c.name_en  }}
             </mat-option>
@@ -42,7 +42,7 @@
       <div class="pure-u-1-2 pure-u-lg-1-4">
         <mat-form-field>
           <mat-label>{{ 'document' | translate}}</mat-label>
-          <input matInput [readonly]="visibility['document']" (change)="validateDoc()" [(ngModel)]="customerService.customer.document">
+          <input matInput [readonly]="visibility['document']" (change)="enableSave()" [(ngModel)]="customerService.customer.document">
         </mat-form-field>
       </div>
          
@@ -57,7 +57,7 @@
         <mat-form-field>
           <mat-label>{{ 'phone' | translate }}</mat-label>
           <input matInput [readonly]="visibility['phone']" placeholder="{{'phone' | translate}}" 
-                 [(ngModel)]="customerService.customer.phone" (change)="activeButton()">
+                 [(ngModel)]="customerService.customer.phone" (change)="enableSave()">
         </mat-form-field>
       </div>
   
@@ -85,7 +85,7 @@
       <mat-form-field>
         <mat-label>{{ 'address' | translate }}</mat-label>
         <input matInput [readonly]="visibility['address']" placeholder="{{'address' | translate}}" 
-               [(ngModel)]="customerService.customer.address" (change)="activeButton()">
+               [(ngModel)]="customerService.customer.address" (change)="enableSave()">
       </mat-form-field>
     </div>
 
@@ -93,21 +93,21 @@
       <mat-form-field>
         <mat-label>{{ 'postalCode' | translate }}</mat-label>
         <input matInput maxlength="5" [readonly]="visibility['postalCode']" placeholder="{{'postalCode' | translate}}" 
-               [(ngModel)]="customerService.customer.postalCode" (change)="activeButton()" >
+               [(ngModel)]="customerService.customer.postalCode" (change)="enableSave()" >
       </mat-form-field>
     </div>
     <div class="pure-u-1-2 pure-u-lg-1-4">
       <mat-form-field>
         <mat-label>{{ 'city' | translate }}</mat-label>
         <input matInput [readonly]="visibility['city']" placeholder="{{'city' | translate}}"
-               [(ngModel)]="customerService.customer.city" (change)="activeButton()">
+               [(ngModel)]="customerService.customer.city" (change)="enableSave()">
       </mat-form-field>
     </div>
     <div class="pure-u-1-2 pure-u-lg-1-4">
       <mat-form-field>
         <mat-label>{{ 'province' | translate }}</mat-label>
         <input matInput [readonly]="visibility['province']" placeholder="{{'province' | translate}}"
-               [(ngModel)]="customerService.customer.province" (change)="activeButton()">
+               [(ngModel)]="customerService.customer.province" (change)="enableSave()">
       </mat-form-field>
     </div>
     <div class="pure-u-1-2 pure-u-lg-1-4">
@@ -117,7 +117,7 @@
       </mat-form-field>
       <mat-form-field *ngIf="!visibility['country']">
         <mat-label>{{ 'country' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customerService.customer.country" (selectionChange)="activeButton()">
+        <mat-select [(ngModel)]="customerService.customer.country" (selectionChange)="enableSave()">
           <mat-option *ngFor="let c of lookupService.countries" [value]="c.id">
             {{ isSpanish ? c.name : c.name_en }}
           </mat-option>
@@ -139,7 +139,7 @@
         </mat-form-field>
         <mat-form-field appearance="fill" *ngIf="!visibility['birthDate']">
           <mat-label>{{ 'birthdate' | translate }}</mat-label>
-          <input matInput [matDatepicker]="picker" [formControl]="customerService.customer.formControl" (dateInput)="activeButton()">
+          <input matInput [matDatepicker]="picker" [formControl]="customerService.customer.formControl" (dateInput)="enableSave()">
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
@@ -159,7 +159,7 @@
       </mat-form-field>
       <mat-form-field *ngIf="!visibility['genderId']">
         <mat-label>{{ 'gender' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customerService.customer.genderId" (selectionChange)="activeButton()">
+        <mat-select [(ngModel)]="customerService.customer.genderId" (selectionChange)="enableSave()">
           <mat-option *ngFor="let c of lookupService.genders" [value]="c.id">
             {{ isSpanish ? c.name : c.name_en  }}
           </mat-option>
@@ -174,7 +174,7 @@
       </mat-form-field>
       <mat-form-field *ngIf="!visibility['languageId']">
         <mat-label>{{ 'language' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customerService.customer.languageId" (selectionChange)="activeButton()">
+        <mat-select [(ngModel)]="customerService.customer.languageId" (selectionChange)="enableSave()">
           <mat-option *ngFor="let c of lookupService.languages" [value]="c.id">
             {{ isSpanish ? c.name : c.name_en }}
           </mat-option>
@@ -189,7 +189,7 @@
       </mat-form-field>
       <mat-form-field *ngIf="!visibility['nationality']">
         <mat-label>{{ 'nationality' | translate}}</mat-label>
-        <mat-select [(ngModel)]="customerService.customer.nationality" (selectionChange)="activeButton()">
+        <mat-select [(ngModel)]="customerService.customer.nationality" (selectionChange)="enableSave()">
           <mat-option *ngFor="let c of lookupService.countries" [value]="c.id">
             {{ isSpanish ? c.name : c.name_en }}
           </mat-option>
@@ -204,7 +204,7 @@
       </mat-form-field>
       <mat-form-field *ngIf="!visibility['originId']">
         <mat-label>{{ 'countryOfOrigin' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customerService.customer.originId" (selectionChange)="activeButton()">
+        <mat-select [(ngModel)]="customerService.customer.originId" (selectionChange)="enableSave()">
           <mat-option *ngFor="let c of lookupService.countries" [value]="c.id">
             {{ isSpanish ? c.name : c.name_en }}
           </mat-option>
@@ -219,7 +219,7 @@
       </mat-form-field>
       <mat-form-field *ngIf="!visibility['schoolOrCompany']">
         <mat-label>{{ 'school/company' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customerService.customer.schoolOrCompany" (selectionChange)="activeButton()">
+        <mat-select [(ngModel)]="customerService.customer.schoolOrCompany" (selectionChange)="enableSave()">
           <mat-option *ngFor="let c of lookupService.schools" [value]="c.id">
             {{ c.name }}
           </mat-option>
@@ -231,7 +231,7 @@
       <mat-form-field>
         <mat-label>{{ 'bankAccount' | translate }}</mat-label>
         <input matInput [readonly]="visibility['bankAcount']" placeholder="{{'bankAccount' | translate}}"
-               [(ngModel)]="customerService.customer.bankAcount" (change)="activeButton()">
+               [(ngModel)]="customerService.customer.bankAcount" (change)="enableSave()">
       </mat-form-field>
     </div>
 

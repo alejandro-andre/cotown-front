@@ -12,7 +12,6 @@ import { MyBookingsComponent } from './myBookings/myBookings.component';
 import { MyInvoicesComponent } from './myInvoices/myInvoices.component';
 import { Constants } from '../constants/Constants';
 import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBookingDetail.component';
-import { MyTutorComponent } from './myTutor/myTutor.component';
 import { InvoicePayComponent } from './myInvoices/invoicePay/invoicePay.component';
 import { PaymentOkComponent } from './paymentOk/paymentOk.component';
 import { PaymentkOComponent } from './paymentKO/paymentkO.component';
@@ -30,10 +29,6 @@ const routes: Routes = [
       {
         path: Constants.DATA.url,
         component: MyDataComponent,
-      },
-      {
-        path: Constants.TUTOR.url,
-        component: MyTutorComponent,
       },
       {
         path: Constants.CONTACTS.url,

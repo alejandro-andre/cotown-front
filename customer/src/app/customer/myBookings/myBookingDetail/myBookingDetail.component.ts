@@ -7,12 +7,11 @@ import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { ModalService } from 'src/app/services/modal.service';
-import { schoolOrCompaniesService } from 'src/app/services/schoolOrCompanies.service';
 import { formatErrorBody } from 'src/app/utils/error.util';
 
 //Queries & constants
 import { Constants } from 'src/app/constants/Constants';
-import { BasicResponse, Booking, TableObject } from 'src/app/constants/Interface';
+import { BasicResponse, Booking, LookupInt, TableObject } from 'src/app/constants/Interface';
 import {
   ACCEPT_BOOKING_OPTION,
   CHECKIN_OPTIONS,
@@ -23,6 +22,7 @@ import {
 import { CUSTOMER_REASONS_QUERY } from 'src/app/schemas/query-definitions/customer.query';
 import { FormControl } from '@angular/forms';
 import { formatDate } from 'src/app/utils/date.util';
+import { LookupService } from 'src/app/services/lookup.service';
 
 @Component({
   selector: 'app-booking-detail',
@@ -125,7 +125,7 @@ export class MyBookingDetailComponent implements OnInit {
 
   constructor(
     public customerService: CustomerService,
-    public schoolService: schoolOrCompaniesService,
+    public lookupService: LookupService,
     private activeRoute: ActivatedRoute,
     private axiosApi: AxiosApi,
     private apollo: ApolloQueryApi,

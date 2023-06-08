@@ -7,15 +7,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 // Sevices
 import { AuthService } from 'src/app/auth/auth.service';
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
-
-import { CountryService } from 'src/app/services/country.service';
 import { CustomerService } from 'src/app/services/customer.service';
-import { GenderService } from 'src/app/services/gender.service';
-import { IdentificationDocTypesService } from 'src/app/services/identificationDocTypes.service';
-import { LanguageService } from 'src/app/services/languages.service';
-import { schoolOrCompaniesService } from 'src/app/services/schoolOrCompanies.service';
-import { ContactTypeService } from 'src/app/services/contact-type.service';
-import { TutorService } from 'src/app/services/tutor.service';
+import { LookupService } from 'src/app/services/lookup.service';
 
 // Models
 import { Customer } from 'src/app/models/Customer.model';
@@ -24,15 +17,7 @@ import { Constants } from 'src/app/constants/Constants';
 import { Tutor } from 'src/app/models/Tutor.model';
 
 // Queries
-import { ID_TYPE_QUERY } from 'src/app/schemas/query-definitions/id-type.query';
-import { COUNTRY_QUERY } from 'src/app/schemas/query-definitions/countries.query';
 import { USER_ID, CUSTOMER_QUERY } from 'src/app/schemas/query-definitions/customer.query';
-import { GENDER_QUERY } from 'src/app/schemas/query-definitions/gender.query';
-import { LANGUAGE_QUERY } from 'src/app/schemas/query-definitions/languages.query';
-import { SCHOOL_QUERY } from 'src/app/schemas/query-definitions/school.query';
-import { CONTACT_TYPE_QUERY } from 'src/app/schemas/query-definitions/contact-type.query';
-import { TUTOR_QUERY } from 'src/app/schemas/query-definitions/tutor.query';
-import { LookupService } from 'src/app/services/lookup.service';
 
 @Component({
   selector: 'app-layout',
@@ -52,7 +37,6 @@ export class LayoutComponent implements OnInit {
     private apolloApi: ApolloQueryApi,
     private breakpointObserver: BreakpointObserver,
     private customerService: CustomerService,
-    private tutorService: TutorService,
     private lookupService: LookupService
   ) {
     breakpointObserver.observe([
@@ -153,35 +137,6 @@ export class LayoutComponent implements OnInit {
     });
 
     return returnData;
-  }
-
-  loadTutor (tutorId: number): void {
-    const variables = {
-      id: tutorId
-    };
-
-    this.apolloApi.getData(TUTOR_QUERY, variables).subscribe((res) => {
-      const value = res.data;
-      if (value && value.data && value.data.length) {
-        const {
-          id, name, province, city, country, address, postal_code, document,
-          email, phones, language, origin, birth_date, nationality, type_doc,
-        } = value.data[0];
-
-        const birthDate = birth_date !== null ? new Date(birth_date) : null;
-        const tutor: CustomerInterface = {
-          id, name, province, city, email, country, nationality, birthDate, address, document,
-          phone: phones,
-          postalCode: postal_code,
-          languageId: language,
-          originId: origin,
-          typeDoc: type_doc,
-        };
-
-        const customerTutor = new Tutor(tutor);
-        this.tutorService.setTutorData(customerTutor);
-      }
-    })
   }
 
   loadCustomer(): void {

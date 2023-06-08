@@ -4,7 +4,6 @@ import { FormControl, Validators } from '@angular/forms';
 
 // Services
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
-import { ContactTypeService } from 'src/app/services/contact-type.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { formatErrorBody } from 'src/app/utils/error.util';
@@ -14,6 +13,7 @@ import { BasicResponse, ContactVariables } from 'src/app/constants/Interface';
 
 // Queries
 import { GET_CONTACTS_BY_CUSTOMERID, INSERT_CONTACT } from 'src/app/schemas/query-definitions/contact.query';
+import { LookupService } from 'src/app/services/lookup.service';
 
 @Component({
   selector: 'app-contact-new',
@@ -38,15 +38,11 @@ export class NewContactComponent {
 
   constructor(
     public customerService: CustomerService,
-    private contactTypeService: ContactTypeService,
+    public lookupService: LookupService,
     private apollo: ApolloQueryApi,
     private location: Location,
     private modalService: ModalService
   ) {}
-
-  get contactTypes(): BasicResponse[] {
-    return this.contactTypeService.contacts;
-  }
 
   get isDisabled (): boolean {
     return(

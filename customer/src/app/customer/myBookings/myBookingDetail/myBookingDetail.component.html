@@ -171,7 +171,7 @@
         [(ngModel)]="selectedSchool"
         (selectionChange)="activateSaveButton()"
       >
-        <mat-option *ngFor="let school of schoolService.schoolOrCompanies" [value]="school.id">
+        <mat-option *ngFor="let school of lookupService.schools" [value]="school.id">
           {{ school.name }}
         </mat-option>
       </mat-select>

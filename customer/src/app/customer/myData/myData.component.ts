@@ -4,23 +4,19 @@ import { FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
 //Service
-import { CountryService } from 'src/app/services/country.service';
 import { CustomerService } from 'src/app/services/customer.service';
-import { GenderService } from 'src/app/services/gender.service';
-import { LanguageService } from 'src/app/services/languages.service';
-import { IdentificationDocTypesService } from 'src/app/services/identificationDocTypes.service';
-import { schoolOrCompaniesService } from 'src/app/services/schoolOrCompanies.service';
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { ModalService } from 'src/app/services/modal.service';
 
 // Constants and interfaces
 import { Constants } from 'src/app/constants/Constants';
-import { BasicResponse, PayloadFile } from 'src/app/constants/Interface';
+import { PayloadFile } from 'src/app/constants/Interface';
 import { Customer } from 'src/app/models/Customer.model';
 import { UPDATE_CUSTOMER, UPLOAD_CUSTOMER_PHOTO } from 'src/app/schemas/query-definitions/customer.query';
 import { formatErrorBody } from 'src/app/utils/error.util';
 import { LookupService } from 'src/app/services/lookup.service';
+import { formatDate } from 'src/app/utils/date.util';
 
 @Component({
   selector: 'app-my-data',
@@ -33,19 +29,14 @@ export class MyDataComponent{
     public customerService: CustomerService,
     public lookupService: LookupService,
     private apolloApi: ApolloQueryApi,
-    private translate: TranslateService,
     private axiosApi: AxiosApi,
+    private translate: TranslateService,
     private modalService: ModalService
-  ) {
-  }
+  ) {}
 
-  public saveActiveButton: boolean = false;
+  public saveEnabled: boolean = false;
   public image!: File;
   public isLoading = false;
-
-  public dniFormControl = new FormControl('', [
-    Validators.pattern('\d{8}[a-z A-Z]/')
-  ]);
 
   /**
   * Getters
@@ -56,6 +47,7 @@ export class MyDataComponent{
     return this.customerService.customer;
   }
 
+  // Check current language
   get isSpanish(): boolean {
     return this.customer.appLang === Constants.SPANISH.id
   }
@@ -70,11 +62,6 @@ export class MyDataComponent{
     if (this.isSpanish)
       return this.lookupService.genders.find((elem) => elem.id === this.customer.genderId)?.name || '';
     return this.lookupService.genders.find((elem) => elem.id === this.customer.genderId)?.name_en || '';
-  }
-
-  // Return school name of current customer
-  get school(): string {
-    return this.lookupService.schools.find((elem) => elem.id === this.customer.schoolOrCompany)?.name || '';
   }
 
   // Return the country of the current customer
@@ -112,79 +99,82 @@ export class MyDataComponent{
     return this.lookupService.countries.find((elem) => elem.id === this.customer.originId)?.name_en || '';
   }
 
+  // Return school name of current customer
+  get school(): string {
+    return this.lookupService.schools.find((elem) => elem.id === this.customer.schoolOrCompany)?.name || '';
+  }
+
   // Return formated birthdate of current customer
   get birthDate(): string | null {
     const date = this.customer.formControl.value;
-
     if (date !== null) {
-      const year = date.getFullYear();
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-
-      return `${year}-${month}-${day}`;
+      return formatDate(date);
     }
-
     return null;
   }
 
   // Return if the button is or not disabled
   get isButtonDisabled(): boolean {
-    return !this.saveActiveButton;
+    return !this.saveEnabled;
   }
 
   /**
    * Methods
    */
 
-  activeButton() {
-    this.saveActiveButton = true;
+  enableSave() {
+    this.saveEnabled = true;
   }
 
   changeLang() {
     this.translate.use(this.customer.appLang);
-    this.activeButton();
+    this.enableSave();
   }
 
   validateDoc() {
-    this.activeButton();
+    this.enableSave();
   }
 
   save() {
+
     this.isLoading = true;
+
     const variables: any = {
       ...this.customerService.customer,
       birthDate: this.birthDate
     };
 
+    console.log(variables);
+    
     delete variables.formControl
 
     this.apolloApi.setData(UPDATE_CUSTOMER, variables).subscribe(
-      res => {
+      (res) => {
         const val = res.data;
         if (val && val.update && val.update.length) {
           this.customerService.setVisibility();
           this.isLoading = false;
-          this.saveActiveButton = false;
+          this.saveEnabled = false;
         } else {
-          // something wrong
           this.isLoading = false;
-          const body = {
+          this.modalService.openModal({
             title: 'Error',
             message: 'unknownError'
-          };
-
-          this.modalService.openModal(body);
+          });
         }
-    }, (err) =>{
-      // Apollo error !!
-      const bodyToSend = formatErrorBody(err, this.customer.appLang);
-      this.isLoading = false;
-      this.modalService.openModal(bodyToSend);
-    })
+      }, 
+      (err) => {
+        const bodyToSend = formatErrorBody(err, this.customer.appLang);
+        this.isLoading = false;
+        this.modalService.openModal(bodyToSend);
+      }
+    )
   }
 
   upload(event: any) {
+
     this.isLoading = true;
+
     const fileInfo = event.target.files[0]
     const payload:PayloadFile = {
       file: event.target.files[0],
@@ -208,29 +198,28 @@ export class MyDataComponent{
           }
         };
 
-        this.apolloApi.setData(UPLOAD_CUSTOMER_PHOTO, variables).subscribe((response: any) => {
-          const val = response.data;
-          if (val.data && val.data.length && val.data[0]) {
-            const photo = val.data[0].photo;
-            this.customer.photo = photo;
-          } else {
+        this.apolloApi.setData(UPLOAD_CUSTOMER_PHOTO, variables).subscribe(
+          (res: any) => {
+            const val = res.data;
+            if (val.data && val.data.length && val.data[0]) {
+              const photo = val.data[0].photo;
+              this.customer.photo = photo;
+            } else {
+              this.isLoading = false;
+              this.modalService.openModal({
+                title: 'Error',
+                message: 'unknownError'
+              });
+            }
             this.isLoading = false;
-            const body = {
-              title: 'Error',
-              message: 'unknownError'
-            };
-
-            this.modalService.openModal(body);
+          }, 
+          (err) => {
+            const bodyToSend = formatErrorBody(err, this.customer.appLang);
+            this.isLoading = false;
+            this.modalService.openModal(bodyToSend);
           }
-
-          this.isLoading = false;
-        }, err => {
-          const bodyToSend = formatErrorBody(err, this.customer.appLang);
-          this.isLoading = false;
-          this.modalService.openModal(bodyToSend);
-        })
+        )
       }
-
       reader.readAsDataURL(fileInfo);
     })
   }

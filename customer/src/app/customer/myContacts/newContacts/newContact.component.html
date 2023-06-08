@@ -7,7 +7,7 @@
       <mat-form-field appearance="fill" style="margin-right: 10px;">
         <mat-label>{{ 'contact_type' | translate }}</mat-label>
         <mat-select [(ngModel)]="contact_type" [formControl]="contactTypeFormControl">
-          <mat-option *ngFor="let contact of contactTypes" [value]="contact.id">
+          <mat-option *ngFor="let contact of lookupService.contactTypes" [value]="contact.id">
             {{ contact.name }}
           </mat-option>
         </mat-select>

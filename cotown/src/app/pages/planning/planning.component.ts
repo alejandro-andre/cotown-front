@@ -71,7 +71,7 @@ export class PlanningComponent {
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
   });
-  public selectedCity: number = Constants.allStaticNumericValue; // Current city
+  public selectedCityId: number = Constants.allStaticNumericValue; // Current city
   public selectedBuildingId: number = -99; // Selected building
   public selectedResourcePlaceTypeId = Constants.allStaticNumericValue;
   public selectedResourceFlatTypeId=  Constants.allStaticNumericValue;
@@ -165,8 +165,6 @@ export class PlanningComponent {
       }
     }
 
-    console.log(this.params.value);
-    
     // Check if change
     if (this.selectedResourceFlatTypeId != this.initialResourceFlatTypeId || this.selectedResourcePlaceTypeId != this.initialResourcePlaceTypeId) {
 
@@ -265,7 +263,7 @@ export class PlanningComponent {
         this.range.setValue({ start: new Date(data.date_from), end: new Date(data.date_to) });
         const finded = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
         if (finded) {
-          this.selectedCity = finded.location.city.id;
+          this.selectedCityId = finded.location.city.id;
         }
         this.now = new Date(data.date_from)
         if (data.rooms)
@@ -349,34 +347,37 @@ export class PlanningComponent {
   // Get filtered resources
   async queryResources() {
 
-    let params = '';
+    let params = '$cityId: Int';
     let where = ''
 
     if (this.selectedBuildingId > 0) {
-      if (params != '') params += ','
-      if (where != '') where += ','
-      params += '$buildingId: Int'
-      where += 'Building_id: { EQ: $buildingId }'
+      params += ' $buildingId: Int'
+      where += ' Building_id: { EQ: $buildingId }'
+    }
+
+    if (this.selectedBuildingId > 0) {
+      params += ' $buildingId: Int'
+      where += ' Building_id: { EQ: $buildingId }'
     }
 
     if (this.selectedResourceFlatTypeId != Constants.allStaticNumericValue) {
-      if (params != '') params += ','
-      if (where != '') where += ','
-      params += '$resourceFlatTypeId: Int'
-      where += 'Flat_type_id: { EQ: $resourceFlatTypeId }'
+      params += ' $resourceFlatTypeId: Int'
+      where += ' Flat_type_id: { EQ: $resourceFlatTypeId }'
     }
 
     if (this.selectedResourcePlaceTypeId != Constants.allStaticNumericValue) {
-      if (params != '') params += ','
-      if (where != '') where += ','
-      params += '$resourcePlaceTypeId: Int'
-      where += 'Place_type_id: { EQ: $resourcePlaceTypeId }'
+      params += ' $resourcePlaceTypeId: Int'
+      where += ' Place_type_id: { EQ: $resourcePlaceTypeId }'
     }
+
+    if (where != '')
+      where = 'where:{' + where + '}';
 
     if (params != '')  {
       this.spinnerActive = true;
-      const q = 'query ResourceList(' + params + ') {data:Resource_ResourceList(orderBy: [{attribute: Code, direction:ASC, nullsGo: FIRST}],where:{' + where + '})' + ResourceListQuery + '}';
+      const q = 'query ResourceList(' + params + ') {data:Resource_ResourceList(orderBy: [{attribute: Code direction: ASC nullsGo: FIRST}] ' + where + ')' + ResourceListQuery + '}';
       await this.getResources(q, {
+        cityId: this.selectedCityId,
         buildingId: this.selectedBuildingId,
         resourceFlatTypeId: this.selectedResourceFlatTypeId,
         resourcePlaceTypeId: this.selectedResourcePlaceTypeId
@@ -387,33 +388,31 @@ export class PlanningComponent {
   // Get filtered bookings
   queryBookings(): void {
 
-    let params = '';
+    let params = '$cityId: Int';
     let where = ''
 
     if (this.selectedBuildingId > 0) {
-      if (params != '') params += ','
-      if (where != '') where += ','
-      params += '$buildingId: Int'
-      where += 'Building_id: { EQ: $buildingId }'
+      params += ' $buildingId: Int'
+      where += ' Building_id: { EQ: $buildingId }'
     }
 
     if (this.selectedResourceFlatTypeId != Constants.allStaticNumericValue) {
-      if (params != '') params += ','
-      if (where != '') where += ','
-      params += '$resourceFlatTypeId: Int'
-      where += 'Flat_type_id: { EQ: $resourceFlatTypeId }'
+      params += ' $resourceFlatTypeId: Int'
+      where += ' Flat_type_id: { EQ: $resourceFlatTypeId }'
     }
 
     if (this.selectedResourcePlaceTypeId != Constants.allStaticNumericValue) {
-      if (params != '') params += ','
-      if (where != '') where += ','
-      params += '$resourcePlaceTypeId: Int'
-      where += 'Place_type_id: { EQ: $resourcePlaceTypeId }'
+      params += ' $resourcePlaceTypeId: Int'
+      where += ' Place_type_id: { EQ: $resourcePlaceTypeId }'
     }
 
+    if (where != '')
+      where = '(where:{' + where + '})';
+
     if (params != '')  {
-      const q = 'query BookingList(' + params + ') {data:Booking_Booking_detailList(where:{' + where + '})' + BookingListQuery + '}';
+      const q = 'query BookingList(' + params + ') {data:Booking_Booking_detailList' + where + BookingListQuery + '}';
       this.getBookings(q, {
+        cityId: this.selectedCityId,
         buildingId: this.selectedBuildingId,
         resourceFlatTypeId: this.selectedResourceFlatTypeId,
         resourcePlaceTypeId: this.selectedResourcePlaceTypeId
@@ -426,7 +425,7 @@ export class PlanningComponent {
     return new Promise<void>((resolve) => {
       this.apolloApi.getData(query, variables).subscribe((res: any) => {
         for (const elem of res.data.data) {
-          const type = elem.resource_type === 'piso' ? elem.flat.code : elem.resource_place_type?.code;
+          const type = elem.resource_type === 'piso' ? elem.flat_type.code : elem.place_type?.code;
           this.resources.push({
             Resource_id: elem.id,
             Resource_code: elem.code,
@@ -624,8 +623,8 @@ export class PlanningComponent {
   // ************************************
 
   get cityName(): string {
-    if (this.selectedCity) {
-      const finded = this.cities.find((cit) => cit.id === this.selectedCity);
+    if (this.selectedCityId) {
+      const finded = this.cities.find((cit) => cit.id === this.selectedCityId);
       return finded ? finded.name : ''
     }
     return '';
@@ -714,7 +713,7 @@ export class PlanningComponent {
     this.rows = [];
 
     // Filter
-    if (this.selectedCity === Constants.allStaticNumericValue) {
+    if (this.selectedCityId === Constants.allStaticNumericValue) {
       this.getBuildings();
     } else {
       this.getBuildingsByCityName();

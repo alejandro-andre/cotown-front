@@ -9,7 +9,7 @@
 			<mat-form-field appearance="fill" style="margin-right: 10px;width: 15%;">
 				<mat-label class="cotown_label">{{ 'city' | translate }}</mat-label>
 				<mat-select
-          			[(ngModel)]="selectedCity"
+          			[(ngModel)]="selectedCityId"
           			name="cities"
           			(selectionChange)="onSelectCity()"
 					[placeholder]="'nothing' | translate">
@@ -28,7 +28,7 @@
           			name="buildings"
           			(selectionChange)="onChangeFilter()"
 					[placeholder]="'nothing' | translate"
-					[disabled]="selectedCity === -1">
+					[disabled]="selectedCityId === -1">
 					<mat-option  [value]=-1>{{ 'allM' | translate }}</mat-option>
 					<mat-option
 						*ngFor="let building of buildings"

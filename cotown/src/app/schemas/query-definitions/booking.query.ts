@@ -2,56 +2,56 @@ export const BookingListQuery = `{
   building_id: Building_id
   rooming: Booking_rooming_id
   group_id: Booking_group_id
-  building: BuildingViaBuilding_id {
-    code: Code,
+  building: BuildingViaBuilding_id (joinType: INNER) {
+      code: Code
+      DistrictViaDistrict_id (joinType: INNER where: { Location_id: { EQ: $cityId } } ) { id }
   }
   room_user: Booking_roomingViaBooking_rooming_id {
-    email: Email
-    name: Name,
-    phones: Phones
+      email: Email
+      name: Name,
+      phones: Phones
   }
   group: Booking_groupViaBooking_group_id {
-    customer: CustomerViaPayer_id {
+      customer: CustomerViaPayer_id {
       name: Name
       email: Email
       phones: Phones
-    }
+      }
   }
   booking_id: Booking_id
   booking: BookingViaBooking_id {
-    customer: CustomerViaCustomer_id {
+      customer: CustomerViaCustomer_id {
       name: Name
       birth_date: Birth_date
       gender: GenderViaGender_id {
-        code: Code
-        name: Name
+          code: Code
+          name: Name
       }
       email: Email
       phones: Phones
       country: CountryViaCountry_id {
-        name: Name
+          name: Name
       }
-    }
+      }
   }
   status: Status
   resource: ResourceViaResource_id{
-    id
-    code: Code
+      id
+      code: Code
   }
   date_from: Date_from
   date_to: Date_to
   lock: Lock
   flat_type: Resource_flat_typeViaFlat_type_id {
-    code: Code
-    name: Name,
-    id
+      code: Code
+      name: Name,
+      id
   }
   place_type: Resource_place_typeViaPlace_type_id {
-    code: Code
-    name: Name
+      code: Code
+      name: Name
   }
-}
-`;
+}`;
 
 export const BuildingDataViaBooking = `query bookingQuery($id: Int)
 {

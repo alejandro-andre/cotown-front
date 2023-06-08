@@ -27,11 +27,11 @@ export const nextMonth = (date: Date): Date => {
   return new Date(year, month, 1);
 }
 
-export const getAge = (birthdate: string) => {
-  if(!birthdate) {
+export const getAge = (birth_date: string) => {
+  if(!birth_date) {
     return '';
   }
-  var bdt = new Date(birthdate);
+  var bdt = new Date(birth_date);
   var now = new Date();
   var age = now.getFullYear() - bdt.getFullYear();
   if (bdt.getMonth() > now.getMonth() || (bdt.getMonth() == now.getMonth() && bdt.getDate() > now.getDate())) {

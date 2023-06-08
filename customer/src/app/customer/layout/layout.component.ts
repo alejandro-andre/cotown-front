@@ -64,12 +64,7 @@ export class LayoutComponent implements OnInit {
     this.authService.getAirflowsToken().then(async() => {
       await this.loadUserId();
       if (this.userId !== undefined && this.userId !== null) {
-        this.lookupService.loadIdTypes();
-        this.lookupService.loadLanguages();
-        this.lookupService.loadGenders();
-        this.lookupService.loadCountries();
-        this.lookupService.loadSchools();
-        this.lookupService.loadContactTypes();
+        this.lookupService.load();
         this.loadCustomer();
       }
     })

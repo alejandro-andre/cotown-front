@@ -273,13 +273,3 @@ export const USER_ID = `query user_id {
   }
 }`;
 
-export const CUSTOMER_REASONS_QUERY = `query customerReasons {
-  reasons: Booking_Customer_reasonList(
-    orderBy: [{attribute: Name, direction:ASC, nullsGo: FIRST}]
-  ){
-    id
-    name: Name
-    name_en: Name_en
-  }
-}`
-;

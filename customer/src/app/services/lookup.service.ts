@@ -2,12 +2,7 @@ import { Injectable } from '@angular/core';
 import { Lookup, LookupInt } from '../constants/Interface';
 import { ApolloQueryApi } from './apollo-api.service';
 
-import { ID_TYPE_QUERY } from 'src/app/schemas/query-definitions/id-type.query';
-import { COUNTRY_QUERY } from 'src/app/schemas/query-definitions/countries.query';
-import { GENDER_QUERY } from 'src/app/schemas/query-definitions/gender.query';
-import { LANGUAGE_QUERY } from 'src/app/schemas/query-definitions/languages.query';
-import { SCHOOL_QUERY } from 'src/app/schemas/query-definitions/school.query';
-import { CONTACT_TYPE_QUERY } from 'src/app/schemas/query-definitions/contact-type.query';
+import { CONTACT_TYPE_QUERY, COUNTRY_QUERY, REASONS_QUERY, GENDER_QUERY, ID_TYPE_QUERY, LANGUAGE_QUERY, SCHOOL_QUERY } from 'src/app/schemas/query-definitions/lookup.query';
 import { Constants } from '../constants/Constants';
 
 @Injectable({
@@ -22,10 +17,23 @@ export class LookupService {
   public languages: LookupInt[] = [];
   public idTypes: LookupInt[] = [];
   public genders: LookupInt[] = [];
+  public reasons: LookupInt[] = [];
+  
   public appLangs = Constants.LANGUAGES;
   
   constructor(private apolloApi: ApolloQueryApi) {}
 
+  // Load all
+  load() {
+    this.loadContactTypes();
+    this.loadCountries();
+    this.loadGenders();
+    this.loadIdTypes();
+    this.loadLanguages();
+    this.loadReasons();
+    this.loadSchools();
+  }
+  
   // Languages
   loadLanguages() {
     this.apolloApi.getData(LANGUAGE_QUERY).subscribe((res) => {
@@ -91,4 +99,14 @@ export class LookupService {
     });
   }
 
+  // Load reasons
+  loadReasons() {
+    this.apolloApi.getData(REASONS_QUERY).subscribe((res) => {
+      const value = res.data;
+      if(value && value.data && value.data.length) {
+        console.log(value.data);
+        this.reasons = value.data;
+      }
+    });
+  }
 }

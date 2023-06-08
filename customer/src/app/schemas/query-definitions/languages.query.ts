@@ -1,9 +1,0 @@
-export const LANGUAGE_QUERY = `query get {
-  data: Auxiliar_LanguageList(
-    orderBy: [{attribute: Name, direction: ASC, nullsGo: FIRST}]
-  ) {
-    id
-    name: Name
-    name_en: Name_en
-  }
-}`;

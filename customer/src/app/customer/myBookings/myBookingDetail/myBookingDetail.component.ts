@@ -19,7 +19,6 @@ import {
   SIGN_BOOKING_CONTRACT,
   UPDATE_BOOKING
 } from 'src/app/schemas/query-definitions/booking.query';
-import { CUSTOMER_REASONS_QUERY } from 'src/app/schemas/query-definitions/customer.query';
 import { FormControl } from '@angular/forms';
 import { formatDate } from 'src/app/utils/date.util';
 import { LookupService } from 'src/app/services/lookup.service';
@@ -112,7 +111,6 @@ export class MyBookingDetailComponent implements OnInit {
     },
   ];
 
-  public reasons: BasicResponse[] = [];
   public checkinOptions: BasicResponse [] = [];
   public selectedReason!: number;
   public selectedSchool!: number;
@@ -160,7 +158,6 @@ export class MyBookingDetailComponent implements OnInit {
 
         if (this.reasonName === '') {
           this.isEditableReason = true;
-          this.loadCustomerReasons();
         } else {
           this.selectedReason = this.booking.reason.id;
           this.isViewLoading = false;
@@ -233,29 +230,6 @@ export class MyBookingDetailComponent implements OnInit {
 
       this.isViewLoading = false;
     },err => {
-      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
-      this.isViewLoading = false;
-      this.modalService.openModal(bodyToSend);
-    })
-  }
-
-  loadCustomerReasons() {
-    this.apollo.getData(CUSTOMER_REASONS_QUERY).subscribe((res) => {
-      this.isViewLoading = false;
-      const result = res.data;
-      if(result && result.reasons && result.reasons.length) {
-        this.reasons = [ ...result.reasons ];
-      } else {
-        const body = {
-          title: 'Error',
-          message: 'errors.unknownError'
-        };
-
-        this.modalService.openModal(body);
-      }
-
-      this.isViewLoading = false;
-    }, err => {
       const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
       this.isViewLoading = false;
       this.modalService.openModal(bodyToSend);

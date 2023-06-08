@@ -145,8 +145,8 @@
             [(ngModel)]="selectedReason"
             (selectionChange)="activateSaveButton()"
           >
-            <mat-option *ngFor="let reason of reasons" [value]="reason.id">
-              {{ isSpanish ? reason.name : reason.name_en  }}
+            <mat-option *ngFor="let c of lookupService.reasons" [value]="c.id">
+              {{ isSpanish ? c.name : c.name_en  }}
             </mat-option>
           </mat-select>
         </mat-form-field>

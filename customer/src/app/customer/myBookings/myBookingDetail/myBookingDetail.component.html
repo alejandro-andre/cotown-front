@@ -1,4 +1,7 @@
+<app-spinner-control *ngIf="isViewLoading"></app-spinner-control>
+
 <h1>{{ 'bookingDetail' | translate}}</h1>
+
 <div>
 
   <ng-container *ngIf="booking && booking.id && !shownotFound;  then showData; else showNotData">
@@ -39,7 +42,7 @@
           <input
             matInput
             placeholder="{{'dateFrom' | translate}}"
-            [(ngModel)]="booking.start"
+            [(ngModel)]="booking.date_from"
             readonly
           >
         </mat-form-field>
@@ -48,7 +51,7 @@
           <input
             matInput
             placeholder="{{'dateTo' | translate}}"
-            [(ngModel)]="booking.end"
+            [(ngModel)]="booking.date_to"
             readonly
           >
         </mat-form-field>
@@ -421,5 +424,4 @@
     {{ 'errors.noBookingFound' | translate }}
   </ng-template>
 
-  <app-spinner-control *ngIf="isViewLoading"></app-spinner-control>
 </div>

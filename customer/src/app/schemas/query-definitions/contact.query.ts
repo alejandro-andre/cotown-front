@@ -1,16 +1,20 @@
 export const GET_CONTACTS_BY_CUSTOMERID =`query get($customerId: Int) {
-  contacts: Customer_Customer_contactList(
-    where: { Customer_id: { EQ: $customerId} }
+  data: Customer_Customer_contactList(
+    where: { Customer_id: { EQ: $customerId } }
   ) {
     id
     name: Name
-    phone: Phones
+    phones: Phones
     email: Email
+    contact_type: Customer_contact_typeViaCustomer_contact_type_id {
+      id
+      name: Name
+    }
   }
 }`;
 
 export const INSERT_CONTACT = `mutation($id: Int!, $cid: Int!, $name: String!, $email:String, $phone: String) {
-  Customer_Customer_contactCreate(
+  data: Customer_Customer_contactCreate(
     entity: {
       Customer_id: $id
       Customer_contact_type_id: $cid
@@ -22,7 +26,7 @@ export const INSERT_CONTACT = `mutation($id: Int!, $cid: Int!, $name: String!, $
 }`;
 
 export const DELETE_CONTACT = `mutation($id: Int!, $customer_id: Int!) {
-  Customer_Customer_contactDelete(
+  data: Customer_Customer_contactDelete(
     where: { Customer_id: { EQ: $customer_id }, id: { EQ: $id } }
   ) { id }
 }`;

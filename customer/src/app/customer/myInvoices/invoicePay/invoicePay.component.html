@@ -1,79 +1,53 @@
+<app-spinner-control *ngIf="!loaded"></app-spinner-control>
+
 <h1>{{ 'paymentData' | translate }}</h1>
-<div class="container">
-  <p>{{ 'payInfo' | translate }}</p><br/>
-  <form
-    name="form"
-    *ngIf="loaded"
-    action="https://sis-t.redsys.es:25443/sis/realizarPago"
-    method="POST"
-    ngNoForm
-    target="_top"
-  >
-    <mat-form-field class="data c10">
-      <mat-label>{{ 'identifier' | translate }}</mat-label>
-      <input
-        matInput
-        id="id"
-        [value]="identifier"
-      >
+
+<h2>{{ 'payInfo' | translate }}</h2>
+
+<form ngNoForm name="form" *ngIf="loaded" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST" target="_top">
+
+<div class="group">
+  <div class="pure-g grid-container" >
+
+    <div class="pure-u-1 pure-u-lg-1-2">
+      <mat-form-field>
+        <mat-label>{{ 'identifier' | translate }}</mat-label>
+        <input matInput id="id" [value]="identifier" >
       </mat-form-field>
+    </div>
 
-    <mat-form-field class="data c20">
-      <mat-label>{{ 'orderNumber' | translate }}</mat-label>
-      <input
-        matInput
-        id="order"
-        [value]="order"
-      >
-    </mat-form-field>
+    <div class="pure-u-1 pure-u-lg-1-2">
+      <mat-form-field>
+        <mat-label>{{ 'orderNumber' | translate }}</mat-label>
+        <input matInput id="order" [value]="order">
+      </mat-form-field>
+    </div>
 
-    <mat-form-field class="data c20">
-      <mat-label>{{ 'concept' | translate }}</mat-label>
-      <input
-        matInput
-        id="concept"
-        [value]="concept"
-      >
-    </mat-form-field>
+    <div class="pure-u-1">
+      <mat-form-field>
+        <mat-label>{{ 'concept' | translate }}</mat-label>
+        <input matInput id="concept" [value]="concept">
+      </mat-form-field> 
+    </div>
 
-    <mat-form-field class="data c20">
-      <mat-label>{{ 'amount' | translate }}</mat-label>
-      <input
-        matInput
-        id="amount"
-        [value]="amount"
-    >
-    </mat-form-field>
+    <div class="pure-u-1 pure-u-lg-1-2">
+      <mat-form-field>
+        <mat-label>{{ 'amount' | translate }} €</mat-label>
+        <input matInput id="amount" [value]="amount">
+      </mat-form-field>
+    </div>
 
+    <input type="hidden" id="Ds_SignatureVersion" name="Ds_SignatureVersion" [value]="Ds_SignatureVersion">
+    <input type="hidden" id="Ds_MerchantParameters" name="Ds_MerchantParameters" [value]="Ds_MerchantParameters">
+    <input type="hidden" id="Ds_Signature" name="Ds_Signature" [value]="Ds_Signature">
 
-    <button
-      id="submit"
-      [disabled]="buttonDisabled"
-      class="primary c20"
-      type="submit"
-    >
-      {{ 'pay' | translate }}
-    </button>
-
-    <input
-      type="hidden"
-      id="Ds_SignatureVersion"
-      name="Ds_SignatureVersion"
-      [value]="Ds_SignatureVersion"
-    />
-    <input
-      type="hidden"
-      id="Ds_MerchantParameters"
-      name="Ds_MerchantParameters"
-      [value]="Ds_MerchantParameters"
-    />
-    <input
-      type="hidden"
-      id="Ds_Signature"
-      name="Ds_Signature"
-      [value]="Ds_Signature"
-    />
-  </form>
-
-  <app-spinner-control *ngIf="!loaded"></app-spinner-control>
+  </div>
 </div>
+
+<div class="pure-u-1">
+  <button id="submit" class="action" [disabled]="buttonDisabled" type="submit">
+    {{ 'pay' | translate }}
+  </button>
+</div>
+
+</form>

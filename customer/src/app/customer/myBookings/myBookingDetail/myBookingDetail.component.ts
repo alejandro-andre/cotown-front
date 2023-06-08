@@ -196,16 +196,11 @@ export class MyBookingDetailComponent implements OnInit {
       if(value && value.data && value.data.length) {
         this.getBookingById();
       } else {
-        const body = {
-          title: 'Error',
-          message: 'unknownError'
-        };
-
-        this.modalService.openModal(body);
+        this.modalService.openModal({title: 'Error',message: 'unknownError'});
       }
     }, err  => {
-      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
       this.isViewLoading = false;
+      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
       this.modalService.openModal(bodyToSend);
     })
   }
@@ -215,24 +210,23 @@ export class MyBookingDetailComponent implements OnInit {
   }
 
   loadCheckinOptions() {
-    this.apollo.getData(CHECKIN_OPTIONS).subscribe((res) => {
-      const value = res.data;
-      if (value && value.options && value.options.length) {
-        this.checkinOptions = [ ...value.options ];
-      } else {
-        const body = {
-          title: 'Error',
-          message: 'unknownError'
-        };
+    this.apollo.getData(CHECKIN_OPTIONS).subscribe({
 
-        this.modalService.openModal(body);
+      next: (res) => {
+        const value = res.data;
+        this.isViewLoading = false;
+        if (value && value.options && value.options.length) {
+          this.checkinOptions = [ ...value.options ];
+        } else {
+          this.modalService.openModal({title: 'Error', message: 'unknownError'});
+        }
+      },
+
+      error: (err) => {
+        this.isViewLoading = false;
+        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+        this.modalService.openModal(bodyToSend);
       }
-
-      this.isViewLoading = false;
-    },err => {
-      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
-      this.isViewLoading = false;
-      this.modalService.openModal(bodyToSend);
     })
   }
 
@@ -281,52 +275,58 @@ export class MyBookingDetailComponent implements OnInit {
   }
 
   accept(id: number): void {
+
+    // Spinner
     this.isViewLoading = true;
+
+    // GraphQL variables
     const variables = {
       id,
       accepted: true
     };
+    this.apollo.setData(ACCEPT_BOOKING_OPTION, variables).subscribe({
 
-     this.apollo.setData(ACCEPT_BOOKING_OPTION, variables).subscribe((resp) => {
-      const value = resp.data;
+      next: (res) => {
 
-      if (value && value.updated && value.updated.length) {
-        const variablesForId = {
-          id: this.booking.id,
-        };
+        const value = res.data;
 
-         this.apollo.getData(GET_BOOKING_BY_ID, variablesForId).subscribe((response) => {
-          if (response && response.data && response.data.booking) {
-            this.booking = JSON.parse(JSON.stringify(response.data.booking[0]));
-            this.isViewLoading = false;
-          } else {
-            this.isViewLoading = false;
-            const body = {
-              title: 'Error',
-              message: 'unknownError'
-            };
+        if (value && value.updated && value.updated.length) {
 
-            this.modalService.openModal(body);
-          }
-        }, err => {
-          const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+          const variablesForId = {
+            id: this.booking.id,
+          };
+          this.apollo.getData(GET_BOOKING_BY_ID, variablesForId).subscribe({
+
+            next: (response) => {
+              if (response && response.data && response.data.booking) {
+                this.booking = JSON.parse(JSON.stringify(response.data.booking[0]));
+                this.isViewLoading = false;
+              } else {
+                this.isViewLoading = false;
+                this.modalService.openModal({title: 'Error', message: 'unknownError'});
+              }
+            }, 
+
+            error: err => {
+              const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+              this.isViewLoading = false;
+              this.modalService.openModal(bodyToSend);
+            }
+          })
+
+        } else {
           this.isViewLoading = false;
-          this.modalService.openModal(bodyToSend);
-        });
-      } else {
-        this.isViewLoading = false;
-        const body = {
-          title: 'Error',
-          message: 'unknownError'
-        };
+          this.modalService.openModal({title: 'Error', message: 'unknownError'});
+        }
 
-        this.modalService.openModal(body);
+      },
+
+      error: (err) => {
+        this.isViewLoading = false;
+        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+        this.modalService.openModal(bodyToSend);
       }
-    }, err => {
-      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
-      this.isViewLoading = false;
-      this.modalService.openModal(bodyToSend);
-    });
+    })
   }
 
   getBookingById () {

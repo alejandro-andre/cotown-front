@@ -62,8 +62,8 @@ export class MyDocumentsComponent implements OnInit {
       document: index === 0 ? 'Document': 'Document_back',
     };
 
-    this.axiosApi.uploadFile(payload).then((resp) => {
-      const fileId = resp.data;
+    this.axiosApi.uploadFile(payload).then((res) => {
+      const fileId = res.data;
       const name = event.target.files[0].name;
       const type = event.target.files[0].type;
       if (document.doctype.arrayOfImages) {

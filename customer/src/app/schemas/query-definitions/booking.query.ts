@@ -1,8 +1,8 @@
 export const GET_BOOKING_BY_ID = `query booking($id: Int){
   booking: Booking_BookingList(where: { id: { EQ: $id } }) {
     id
-    start: Date_from
-    end: Date_to
+    date_from: Date_from
+    date_to: Date_to
     status: Status
     building_id: Building_id
     resource_type: Resource_type
@@ -45,7 +45,7 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
       id
       name: Name
     }
-    flat: Resource_flat_typeViaFlat_type_id{
+    flat_type: Resource_flat_typeViaFlat_type_id{
       name: Name
       id
       code: Code

@@ -13,7 +13,7 @@ export const ResourceListQuery = `{
     code: Code
     address: Address
   }
-  flat: Resource_flat_typeViaFlat_type_id{
+  flat_type: Resource_flat_typeViaFlat_type_id{
     id,
     name: Name,
     code: Code

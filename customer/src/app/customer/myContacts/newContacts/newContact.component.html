@@ -1,3 +1,5 @@
+<app-spinner-control *ngIf="isLoading"></app-spinner-control>
+
 <h1>{{ 'newContact' | translate }}</h1>
 
 <div class="group">
@@ -11,28 +13,17 @@
             {{ contact.name }}
           </mat-option>
         </mat-select>
-        <mat-error
-            class="mat-error"
-            *ngIf="contactTypeFormControl.hasError('required')"
-          >
-            {{ 'errors.contactTypeRequired' | translate }}
-          </mat-error>
+        <mat-error class="mat-error" *ngIf="contactTypeFormControl.hasError('required')">
+          {{ 'errors.contactTypeRequired' | translate }}
+        </mat-error>
       </mat-form-field>
     </div>
 
     <div class="pure-u-1 pure-u-lg-1-2">
       <mat-form-field>
         <mat-label>{{ 'completeName' | translate }}</mat-label>
-        <input
-          matInput
-          placeholder="{{'completeName' | translate}}"
-          [(ngModel)]="name"
-          [formControl]="nameFormControl"
-        >
-        <mat-error
-          class="mat-error"
-          *ngIf="nameFormControl.hasError('required')"
-        >
+        <input matInput placeholder="{{'completeName' | translate}}" [(ngModel)]="name" [formControl]="nameFormControl">
+        <mat-error class="mat-error" *ngIf="nameFormControl.hasError('required')">
           {{ 'errors.nameRequired' | translate }}
         </mat-error>
       </mat-form-field>
@@ -41,16 +32,8 @@
     <div class="pure-u-1 pure-u-lg-1-2">
       <mat-form-field>
         <mat-label>{{ 'email' | translate }}</mat-label>
-        <input
-          matInput
-          placeholder="{{'email' | translate}}"
-          [(ngModel)]="email"
-          [formControl]="emailFormControl"
-        >
-        <mat-error
-          class="mat-error"
-          *ngIf="emailFormControl.hasError('pattern') || emailFormControl.hasError('required')"
-        >
+        <input matInput placeholder="{{'email' | translate}}" [(ngModel)]="email" [formControl]="emailFormControl">
+        <mat-error class="mat-error" *ngIf="emailFormControl.hasError('pattern') || emailFormControl.hasError('required')">
           <span  *ngIf="emailFormControl.hasError('pattern') && !emailFormControl.hasError('required')">
             {{ 'errors.invalidEmail' | translate }}
           </span>
@@ -64,26 +47,14 @@
     <div class="pure-u-1 pure-u-lg-1-2">
       <mat-form-field>
         <mat-label>{{ 'phone' | translate }}</mat-label>
-        <input
-          matInput
-          placeholder="{{'phone' | translate}}"
-          [(ngModel)]="phone"
-        >
+        <input matInput placeholder="{{'phone' | translate}}" [(ngModel)]="phone">
       </mat-form-field>
     </div>
   </div>
 </div>
 
 <div>
-  <button
-    [disabled]="isDisabled"
-    mat-raised-button
-    color="primary"
-    class="action"
-    (click)="save()"
-  >
+  <button [disabled]="!isSaveEnabled" mat-raised-button color="primary" class="action" (click)="save()" >
     {{ 'save' | translate }}
   </button>
 </div>
-
-<app-spinner-control *ngIf="isLoading"></app-spinner-control>

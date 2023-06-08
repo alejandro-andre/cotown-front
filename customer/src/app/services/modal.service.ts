@@ -18,7 +18,7 @@ export class ModalService {
     dialogConfig.data = body;
     const modalDialog = this.matDialog.open(ModalComponent, dialogConfig);
 
-    modalDialog.afterClosed().subscribe((resp) => {
+    modalDialog.afterClosed().subscribe((res) => {
       modalDialog.close();
     })
   }

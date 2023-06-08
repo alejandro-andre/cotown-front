@@ -1,3 +1,4 @@
+// Common
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
@@ -6,14 +7,14 @@ import { FormControl, Validators } from '@angular/forms';
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { ModalService } from 'src/app/services/modal.service';
+import { LookupService } from 'src/app/services/lookup.service';
 import { formatErrorBody } from 'src/app/utils/error.util';
 
 // Interface
-import { BasicResponse, ContactVariables } from 'src/app/constants/Interface';
+import { Contact } from 'src/app/constants/Interface';
 
 // Queries
 import { GET_CONTACTS_BY_CUSTOMERID, INSERT_CONTACT } from 'src/app/schemas/query-definitions/contact.query';
-import { LookupService } from 'src/app/services/lookup.service';
 
 @Component({
   selector: 'app-contact-new',
@@ -22,10 +23,16 @@ import { LookupService } from 'src/app/services/lookup.service';
 })
 
 export class NewContactComponent {
+
+  // Spinner
+  public isLoading = false;
+
   public contact_type!: number;
   public name: string = '';
   public email: string = '';
   public phone: string = '';
+
+  // Form controls
   public emailFormControl = new FormControl(
    '',
     [
@@ -34,8 +41,8 @@ export class NewContactComponent {
   );
   public nameFormControl = new FormControl('', [ Validators.required ]);
   public contactTypeFormControl = new FormControl('', [ Validators.required ]);
-  public isLoading = false;
 
+  // Constructor
   constructor(
     public customerService: CustomerService,
     public lookupService: LookupService,
@@ -44,8 +51,8 @@ export class NewContactComponent {
     private modalService: ModalService
   ) {}
 
-  get isDisabled (): boolean {
-    return(
+  get isSaveEnabled (): boolean {
+    return !(
       this.contact_type === null ||
       this.name === '' ||
       (this.email === '' && this.phone === '') ||
@@ -55,60 +62,64 @@ export class NewContactComponent {
     );
   }
 
-  get isElemntsDisabled () : boolean {
-    return this.contact_type === null || !this.contact_type;
-  }
-
   save() {
+
+    // Spinner
     this.isLoading = true;
-    const variables: ContactVariables = {
-      name: this.name,
+
+    // GraphQL API
+    const variables: Contact = {
       id: this.customerService.customer.id,
+      name: this.name,
       cid: this.contact_type,
       email: this.email.length > 0 ? this.email : undefined,
       phone: this.phone
     };
+    this.apollo.setData(INSERT_CONTACT, variables).subscribe({
 
-    this.apollo.setData(INSERT_CONTACT, variables).subscribe((ev) => {
-      const value = ev.data;
-      if (value && value.data && value.data.id) {
-        const varToSend = {
-          customerId: this.customerService.customer.id
-        };
+      next: (res) => {
 
-        this.apollo.getData(GET_CONTACTS_BY_CUSTOMERID, varToSend).subscribe((res) => {
-          if(res.data && res.data.contacts) {
-            this.isLoading = false;
-            this.customerService.setContacts(res.data.contacts);
-            this.location.back();
-          } else {
-            this.isLoading = false;
-            const body = {
-              title: 'Error',
-              message: 'unknownError'
-            };
+        const value = res.data;
+        if (value && value.data && value.data.id) {
 
-            this.modalService.openModal(body);
-          }
-        }, err => {
-          const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+          // Update contacts
+          const varToSend = {
+            customerId: this.customerService.customer.id
+          };
+          this.apollo.getData(GET_CONTACTS_BY_CUSTOMERID, varToSend).subscribe({
+
+            next: (res) => {
+              this.isLoading = false;
+              const value = res.data;
+              if(value && value.data) {
+                this.customerService.setContacts(value.data);
+                this.location.back();
+              } else {
+                this.modalService.openModal({title: 'Error', message: 'unknownError'});
+              }
+            }, 
+
+            error: (err) => {
+              this.isLoading = false;
+              const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+              this.modalService.openModal(bodyToSend);
+            }
+
+          })
+
+        } else {
           this.isLoading = false;
-          this.modalService.openModal(bodyToSend);
-        });
-      } else {
-        this.isLoading = false;
-        const body = {
-          title: 'Error',
-          message: 'unknownError'
-        };
+          this.modalService.openModal({title: 'Error', message: 'unknownError' });
+        }
 
-        this.modalService.openModal(body);
+      },
+
+      error: err => {
+        this.isLoading = false;
+        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+        this.modalService.openModal(bodyToSend);
       }
 
-    }, err => {
-      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
-      this.isLoading = false;
-      this.modalService.openModal(bodyToSend);
     });
   }
 }

@@ -54,10 +54,10 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinnerActive  = true;
-    axiosApi.getDashboard(this.apolloApi.token).then((resp) => {
-      this.dashboard = resp.data;
-      axiosApi.getLabels(7, "es_ES", this.apolloApi.token).then((resp) => {
-        this.labels = resp.data;
+    axiosApi.getDashboard(this.apolloApi.token).then((res) => {
+      this.dashboard = res.data;
+      axiosApi.getLabels(7, "es_ES", this.apolloApi.token).then((res) => {
+        this.labels = res.data;
         this.spinnerActive  = false;
       }); 
     })       
@@ -66,8 +66,8 @@ export class DashboardComponent implements OnInit {
   getBookings(status: string): void {
     this.status = status;
     this.rows = null;
-    axiosApi.getDashboardBookings(this.status, this.apolloApi.token).then((resp) => {
-      this.rows = resp.data;
+    axiosApi.getDashboardBookings(this.status, this.apolloApi.token).then((res) => {
+      this.rows = res.data;
       this.spinnerActive  = false;
     });      
   }

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Constants } from 'src/app/constants/Constants';
-import { Contact, TableObject } from 'src/app/constants/Interface';
+import { Contact } from 'src/app/constants/Interface';
 import { DELETE_CONTACT } from 'src/app/schemas/query-definitions/contact.query';
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -43,30 +42,32 @@ export class MyContactsComponent {
 
   deleteContact(event: Contact): void {
 
+    // Spinner
     this.isLoading = true;
 
+    // GraphQL
     const variables = {
       id: event.id,
       customer_id: this.customerService.customer.id,
     };
+    this.apollo.setData(DELETE_CONTACT, variables).subscribe({
 
-    this.apollo.setData(DELETE_CONTACT, variables).subscribe((response) => {
-      const value = response.data;
-      if (value && value.data &&  value.data.length && value.data[0].id === event.id) {
+      next: (res) => {
+        const value = res.data;
+        console.log(value, value.data, value.data[0].id === event.id);
         this.isLoading = false;
-        this.customerService.removeContactById(event.id);
-      } else {
+        if (value && value.data && value.data.length && value.data[0].id === event.id) {
+          this.customerService.removeContactById(event.id);
+        } else {
+          this.modalService.openModal({title: 'Error',message: 'unknownError'});
+        }
+      }, 
+
+      error: (err) => {
         this.isLoading = false;
-        const body = {
-          title: 'Error',
-          message: 'unknownError'
-        };
-        this.modalService.openModal(body);
+        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
+        this.modalService.openModal(bodyToSend);
       }
-    }, err => {
-      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang);
-      this.isLoading = false;
-      this.modalService.openModal(bodyToSend);
     });
   }
 }

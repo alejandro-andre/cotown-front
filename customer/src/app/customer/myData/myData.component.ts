@@ -127,7 +127,9 @@ export class MyDataComponent implements OnInit {
   get birthDate(): string | null {
     const date = this.birthDateControl.value;
     if (date !== null) {
-      return this.datePipe.transform(date, 'short', this.customer.appLang.locale);
+      const locale = Constants.LANGUAGES.find((elem) => elem.id === this.customer.appLang)?.date;
+      const formattedDate = this.datePipe.transform(date, locale);
+      return formattedDate;
     }
     return null;
   }

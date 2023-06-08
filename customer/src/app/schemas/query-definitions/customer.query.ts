@@ -90,8 +90,8 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
     }
     bookings: BookingListViaCustomer_id {
       id
-      start: Date_from
-      end: Date_to
+      date_from: Date_from
+      date_to: Date_to
       status: Status
       building_id: Building_id
       resource_type: Resource_type
@@ -134,19 +134,19 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
         id
         name: Name
       }
-      flat: Resource_flat_typeViaFlat_type_id{
+      flat_type: Resource_flat_typeViaFlat_type_id{
           name: Name
           id
           code: Code
       }
-      resource: ResourceViaResource_id {
-        code: Code
-        id
-      }
-      place: Resource_place_typeViaPlace_type_id {
+      place_type: Resource_place_typeViaPlace_type_id {
         id
         code: Code
         name: Name
+      }
+      resource: ResourceViaResource_id {
+        code: Code
+        id
       }
       price_list: Booking_priceListViaBooking_id {
         rent: Rent
@@ -239,7 +239,6 @@ export const UPLOAD_CUSTOMER_DOCUMENT_BACK = `mutation ($id: Int! $bill: Models_
   ){ id }
 }`;
 
-
 export const UPLOAD_CUSTOMER_FULL_DOCUMENTS = `mutation ($id: Int!, $billFront: Models_DocumentTypeInputType, $billBack: Models_DocumentTypeInputType, $date: String) {
   data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
     entity: {
@@ -249,7 +248,6 @@ export const UPLOAD_CUSTOMER_FULL_DOCUMENTS = `mutation ($id: Int!, $billFront: 
     }
   ){ id }
 }`;
-
 
 export const UPLOAD_CUSTOMER_PHOTO = `mutation ($id: Int! $bill: Models_DocumentTypeInputType) {
   data: Customer_CustomerUpdate ( where: { id: {EQ: $id} }
@@ -272,4 +270,3 @@ export const USER_ID = `query user_id {
     id
   }
 }`;
-

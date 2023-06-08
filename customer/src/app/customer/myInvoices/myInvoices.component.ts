@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { Constants } from 'src/app/constants/Constants';
 import { BasicResponse, BookingResource, Invoice, Payment, TableObject } from 'src/app/constants/Interface';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
-import { formatDate, formatDateWithTime } from 'src/app/utils/date.util';
+import { Constants } from 'src/app/constants/Constants';
 
 @Component({
   selector: 'app-my-invoice',
@@ -14,19 +14,14 @@ import { formatDate, formatDateWithTime } from 'src/app/utils/date.util';
 
 export class MyInvoicesComponent {
 
-  public INVOICE_DATE = Constants.INVOICE_DATE;
-  public INVOICE_PROPERTY = Constants.INVOICE_RESOURCE;
-  public PAY_PROPERTY = Constants.PAYMENT_PAY;
-  public PAYMENT_DATE = Constants.PAYMENT_DATE
-
   constructor(
     public customerService: CustomerService,
+    private datePipe: DatePipe,
     private axiosApi: AxiosApi,
     private router: Router,
   ) {}
 
   public displayedInvoiceColumns: string[] = [
-    'view',
     'issue_date',
     'concept',
     'amount',
@@ -35,7 +30,6 @@ export class MyInvoicesComponent {
   ];
 
   public displayedPaymentColumns: string[] = [
-    'pay',
     'issue_date',
     'concept',
     'amount',
@@ -43,6 +37,7 @@ export class MyInvoicesComponent {
     'payment_date',
     'payment_auth',
     'payment_order',
+    'pay',
   ];
 
   getResource(resource: BookingResource): string {
@@ -51,14 +46,18 @@ export class MyInvoicesComponent {
 
   formatOnlyDate(date: string): string {
     if (date !== '' && date !== null) {
-      return formatDate(new Date(date))
+      const locale = Constants.LANGUAGES.find((elem) => elem.id === this.customerService.customer.appLang)?.date;
+      const formattedDate = this.datePipe.transform(date, locale);
+      return formattedDate || '';
     }
     return '';
   }
 
   formatPropertyDate(date: string): string {
     if (date !== '' && date !== null) {
-      return formatDateWithTime(new Date(date))
+      const locale = Constants.LANGUAGES.find((elem) => elem.id === this.customerService.customer.appLang)?.date;
+      const formattedDate = this.datePipe.transform(date, locale + ' HH:MM:SS');
+      return formattedDate || '';
     }
     return '';
   }
@@ -80,8 +79,8 @@ export class MyInvoicesComponent {
   }
 
   viewInvoice(id: number) {
-    this.axiosApi.getInvoice(id).then((resp) => {
-      const fileURL = URL.createObjectURL(resp.data);
+    this.axiosApi.getInvoice(id).then((res) => {
+      const fileURL = URL.createObjectURL(res.data);
       window.open(fileURL, '_blank');
     });
   }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AxiosApi } from 'src/app/services/axios-api.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-my-invoice-pay',
@@ -9,6 +10,8 @@ import { AxiosApi } from 'src/app/services/axios-api.service';
 })
 
 export class InvoicePayComponent {
+
+  // Form fields
   public identifier = '';
   public order = '';
   public concept = '';
@@ -16,6 +19,8 @@ export class InvoicePayComponent {
   public Ds_SignatureVersion = '';
   public Ds_MerchantParameters = '';
   public Ds_Signature = '';
+
+  // Flags
   public buttonDisabled = true;
   public loaded = false;
 
@@ -23,11 +28,14 @@ export class InvoicePayComponent {
     private axiosApi: AxiosApi,
     private activeRoute: ActivatedRoute
   ) {
+
+    // Get Redsys payment info
     this.activeRoute.params.subscribe((res) => {
+
       const id = res['id'];
-      const url = `https://dev.cotown.ciber.es/api/v1/pay/${id}`;
-      this.axiosApi.get(url).then((resp) => {
-        const { data } =resp;
+      const url = environment.backURL + '/pay/' + id;
+      this.axiosApi.get(url).then((res) => {
+        const { data } = res;
         if (data) {
           this.amount = data.Amount;
           this.identifier = data.id;

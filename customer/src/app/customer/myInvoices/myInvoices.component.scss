@@ -1,3 +1,12 @@
+.mat-mdc-row.clickable .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+}
+.mat-mdc-row.clickable:hover .mat-mdc-cell {
+    border-color: currentColor;
+}
+  
 .mat-column-view       { width: 5%; }
 .mat-column-pay        { width: 5%; }
 .mat-column-issue_date { width: 15%; }
@@ -5,5 +14,3 @@
 .mat-column-amount     { width: 10%; text-align: right; }
 .mat-column-booking    { width: 10%; }
 .mat-column-code       { width: 10%; }
-
-.link { cursor: pointer; }

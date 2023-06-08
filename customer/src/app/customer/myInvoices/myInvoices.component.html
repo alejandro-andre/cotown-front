@@ -16,7 +16,7 @@
     </ng-container>
     <ng-container matColumnDef="amount">
       <th mat-header-cell *matHeaderCellDef>{{ 'amount' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ element.total }}</span></td>
+      <td mat-cell *matCellDef="let element"><span>{{ element.total }} €</span></td>
     </ng-container>
     <ng-container matColumnDef="resource">
       <th mat-header-cell *matHeaderCellDef>{{ 'resource' | translate }}</th>
@@ -26,14 +26,8 @@
       <th mat-header-cell *matHeaderCellDef>{{ 'invoice_code' | translate }}</th>
       <td mat-cell *matCellDef="let element"><span>{{ element.code }}</span></td>
     </ng-container>
-    <ng-container matColumnDef="view">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <span><button mat-raised-button (click)="viewInvoice(element.id)">{{ 'view' | translate }}</button></span>
-      </td>
-    </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedInvoiceColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedInvoiceColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedInvoiceColumns;" class="clickable" (click)="viewInvoice(row.id)"></tr>
   </table>
 
 </ng-template>
@@ -58,7 +52,7 @@
     </ng-container>
     <ng-container matColumnDef="amount">
       <th mat-header-cell *matHeaderCellDef>{{ 'amount' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ element.amount }}</span></td>
+      <td mat-cell *matCellDef="let element"><span>{{ element.amount }} €</span></td>
     </ng-container>
     <ng-container matColumnDef="resource">
       <th mat-header-cell *matHeaderCellDef>{{ 'resource' | translate }}</th>

@@ -68,9 +68,9 @@ export class LayoutComponent implements OnInit {
   // Get ID of logged user
   loadUserId(): Promise<void> {
     return new Promise((resolve) => {
-      this.apolloApi.getData(USER_ID).subscribe((resp) => {
-        if (resp.data && resp.data.data && resp.data.data.length > 0) {
-          this.userId = resp.data.data[0].id;
+      this.apolloApi.getData(USER_ID).subscribe((res) => {
+        if (res.data && res.data.data && res.data.data.length > 0) {
+          this.userId = res.data.data[0].id;
         }
         resolve();
       })

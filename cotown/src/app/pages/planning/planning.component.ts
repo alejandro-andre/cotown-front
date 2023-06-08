@@ -675,8 +675,8 @@ export class PlanningComponent {
       }
 
       // Get availability
-      axiosApi.getAvailability(data, this.apolloApi.token).then((resp) => {
-        this.availableResources = resp.data;
+      axiosApi.getAvailability(data, this.apolloApi.token).then((res) => {
+        this.availableResources = res.data;
         this.rows = [];
         for (const available of this.availableResources) {
           const finded: number = this.bookings.findIndex((elem: Booking) => elem.Resource_id === available);

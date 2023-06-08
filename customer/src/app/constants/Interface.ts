@@ -48,8 +48,8 @@ export interface Booking {
   check_in: string | null,
   check_out: string | null,
   id: number,
-  start: string,
-  end: string,
+  date_from: string,
+  date_to: string,
   status: string,
   building_id: number,
   resource_type: string,
@@ -123,11 +123,6 @@ export interface Document extends BasicResponse {
   back?: DocFile
 }
 
-export interface Contact extends BasicResponse {
-  phone: string,
-  email: string
-}
-
 export interface CustomerInterface {
   id: number,
   name: string,
@@ -167,7 +162,7 @@ export interface Photo extends ServerFileDocument  {
   type: string
 }
 
-export interface ContactVariables {
+export interface Contact {
   id: number,
   cid: number,
   name: string,

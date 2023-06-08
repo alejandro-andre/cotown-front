@@ -15,7 +15,7 @@ import { ICustomer, DocFile, Document } from 'src/app/constants/Interface';
 import { Constants } from 'src/app/constants/Constants';
 
 // Queries
-import { USER_ID, CUSTOMER_QUERY } from 'src/app/schemas/query-definitions/customer.query';
+import { CUSTOMER_ID_QUERY, CUSTOMER_QUERY } from 'src/app/schemas/query-definitions/customer.query';
 import { getAge } from 'src/app/utils/date.util';
 import { Customer } from 'src/app/models/Customer.model';
 
@@ -68,7 +68,7 @@ export class LayoutComponent implements OnInit {
   // Get ID of logged user
   loadUserId(): Promise<void> {
     return new Promise((resolve) => {
-      this.apolloApi.getData(USER_ID).subscribe((res) => {
+      this.apolloApi.getData(CUSTOMER_ID_QUERY).subscribe((res) => {
         if (res.data && res.data.data && res.data.data.length > 0) {
           this.userId = res.data.data[0].id;
         }

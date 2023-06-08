@@ -660,9 +660,9 @@ export class PlanningComponent {
 
       // Availability payload
       const data: AvailabilityPayload = {
-        date_from: formatDate(this.initDate),
-        date_to: formatDate(this.endDate),
-        building: this.selectedBuildingId,
+        date_from: formatDate(this.initDate),
+        date_to: formatDate(this.endDate),
+        building: this.selectedBuildingId,
         flat_type: 0,
         place_type: 0
       };

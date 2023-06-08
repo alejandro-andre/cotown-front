@@ -1,5 +1,6 @@
 const padL = (nr: number, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
 
+/*
 export const formatDateWithTime = (date: Date | null) : string => {
 
   if(date === null) {
@@ -24,7 +25,7 @@ export const formatDate = (date: Date | null): string => {
     padL(date.getMonth()+1)}/${
     date.getFullYear()}`;
 }
-
+*/
 export const getAge = (birth_date: string): number => {
 
   if(!birth_date) {

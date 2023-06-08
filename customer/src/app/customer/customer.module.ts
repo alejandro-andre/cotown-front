@@ -88,7 +88,6 @@ export function createTranslateLoader(http: HttpClient) {
     MatButtonModule,
     MatProgressSpinnerModule,
     MatDialogModule,
-
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

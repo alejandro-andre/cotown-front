@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
+import { DateAdapter } from '@angular/material/core'; 
 
 //Service
 import { CustomerService } from 'src/app/services/customer.service';
@@ -42,6 +43,7 @@ export class MyDataComponent implements OnInit {
     public customerService: CustomerService,
     public lookupService: LookupService,
     private apolloApi: ApolloQueryApi,
+    private dateAdapter: DateAdapter<any>,
     private axiosApi: AxiosApi,
     private translate: TranslateService,
     private datePipe: DatePipe,
@@ -50,6 +52,7 @@ export class MyDataComponent implements OnInit {
 
   // On init
   ngOnInit() {
+    this.changeLang();
     if (this.customerService.customer.birth_date) {
       const date = new Date(this.customerService.customer.birth_date)
       this.birthDateControl.setValue(date);
@@ -128,6 +131,7 @@ export class MyDataComponent implements OnInit {
     if (date !== null) {
       const locale = Constants.LANGUAGES.find((elem) => elem.id === this.customer.appLang)?.date;
       const formattedDate = this.datePipe.transform(date, locale);
+      console.log(locale, formattedDate)
       return formattedDate;
     }
     return null;
@@ -142,7 +146,13 @@ export class MyDataComponent implements OnInit {
   }
 
   changeLang() {
-    this.translate.use(this.customer.appLang || 'es');
+    if (this.customer.appLang === 'es') {
+      this.translate.use(this.customer.appLang || Constants.SPANISH.id);
+      this.dateAdapter.setLocale(Constants.SPANISH.locale)
+    } else {
+      this.translate.use(this.customer.appLang || Constants.ENGLISH.id);
+      this.dateAdapter.setLocale(Constants.ENGLISH.locale)
+    }
     this.enableSave();
   }
 

@@ -1,4 +1,4 @@
-export const USER_ID = `query user_id {
+export const CUSTOMER_ID_QUERY = `query user_id {
   data: Customer_CustomerList {
     id
   }
@@ -193,7 +193,7 @@ export const UPDATE_CUSTOMER = `
       Bank_account: $bank_account
       Birth_date: $birth_date
       Document: $document
-      Country_origin_id: $countruy_origin_id
+      Country_origin_id: $country_origin_id
       Id_type_id: $id_type_id
       School_id: $school_id
       Gender_id: $gender_id

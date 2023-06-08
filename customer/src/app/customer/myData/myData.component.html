@@ -139,7 +139,7 @@
         </mat-form-field>
         <mat-form-field appearance="fill" *ngIf="!visibility['birthDate']">
           <mat-label>{{ 'birthdate' | translate }}</mat-label>
-          <input matInput [matDatepicker]="picker" [formControl]="customerService.customer.formControl" (dateInput)="enableSave()">
+          <input matInput [matDatepicker]="picker" [formControl]="birthDateControl" (dateInput)="enableSave()">
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
@@ -240,7 +240,7 @@
 </div>
 
 <div class="pure-u-1">
-  <button class="action" [disabled]="isButtonDisabled" mat-raised-button color="primary" (click)="save()">
+  <button class="action" [disabled]="!isSaveEnabled" mat-raised-button color="primary" (click)="save()">
     {{ 'save' | translate }}
   </button>
 </div>

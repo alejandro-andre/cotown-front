@@ -1,7 +1,7 @@
 // Core
-import { Component } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { DatePipe } from '@angular/common';
 
 //Service
 import { CustomerService } from 'src/app/services/customer.service';
@@ -16,7 +16,7 @@ import { Customer } from 'src/app/models/Customer.model';
 import { UPDATE_CUSTOMER, UPLOAD_CUSTOMER_PHOTO } from 'src/app/schemas/query-definitions/customer.query';
 import { formatErrorBody } from 'src/app/utils/error.util';
 import { LookupService } from 'src/app/services/lookup.service';
-import { formatDate } from 'src/app/utils/date.util';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-my-data',
@@ -24,19 +24,38 @@ import { formatDate } from 'src/app/utils/date.util';
   styleUrls: ['./myData.component.scss']
 })
 
-export class MyDataComponent{
+export class MyDataComponent implements OnInit {
+
+  // Spinner
+  public isLoading = false;
+
+  // Save bbutton enabled?
+  public isSaveEnabled: boolean = false;
+
+  // Birth date control
+  public birthDateControl = new FormControl();
+  
+  // Image file
+  public image!: File;
+
+  // Constructor
   constructor(
     public customerService: CustomerService,
     public lookupService: LookupService,
     private apolloApi: ApolloQueryApi,
     private axiosApi: AxiosApi,
     private translate: TranslateService,
+    private datePipe: DatePipe,
     private modalService: ModalService
   ) {}
 
-  public saveEnabled: boolean = false;
-  public image!: File;
-  public isLoading = false;
+  // On init
+  ngOnInit() {
+    if (this.customerService.customer.birthDate) {
+      const date = new Date(this.customerService.customer.birthDate)
+      this.birthDateControl.setValue(date);
+    }
+  }
 
   /**
   * Getters
@@ -106,16 +125,11 @@ export class MyDataComponent{
 
   // Return formated birthdate of current customer
   get birthDate(): string | null {
-    const date = this.customer.formControl.value;
+    const date = this.birthDateControl.value;
     if (date !== null) {
-      return formatDate(date);
+      return this.datePipe.transform(date, 'short', this.customer.appLang.locale);
     }
     return null;
-  }
-
-  // Return if the button is or not disabled
-  get isButtonDisabled(): boolean {
-    return !this.saveEnabled;
   }
 
   /**
@@ -123,7 +137,7 @@ export class MyDataComponent{
    */
 
   enableSave() {
-    this.saveEnabled = true;
+    this.isSaveEnabled = true;
   }
 
   changeLang() {
@@ -135,92 +149,104 @@ export class MyDataComponent{
     this.enableSave();
   }
 
+  // Update customer
   save() {
 
+    // Spinner
     this.isLoading = true;
 
+    // Adjust fields
+    if (this.customerService.customer.document === '') {
+      this.customerService.customer.document = null;
+    }
+    this.customerService.customer.birthDate = this.datePipe.transform(this.birthDateControl.value, 'yyyy-MM-dd');
+
+    // Variables to update
     const variables: any = {
       ...this.customerService.customer,
-      birthDate: this.birthDate
-    };
-
-    console.log(variables);
-    
+    };  
     delete variables.formControl
 
-    this.apolloApi.setData(UPDATE_CUSTOMER, variables).subscribe(
-      (res) => {
+    // Call Graphql API
+    this.apolloApi.setData(UPDATE_CUSTOMER, variables).subscribe({
+
+      next: (res) => {
         const val = res.data;
+        this.isLoading = false;
         if (val && val.update && val.update.length) {
           this.customerService.setVisibility();
-          this.isLoading = false;
-          this.saveEnabled = false;
+          this.isSaveEnabled = false;
         } else {
-          this.isLoading = false;
-          this.modalService.openModal({
-            title: 'Error',
-            message: 'unknownError'
-          });
+          this.modalService.openModal({title: 'Error', message: 'unknownError'});
         }
       }, 
-      (err) => {
+
+      error: (err) => {
         const bodyToSend = formatErrorBody(err, this.customer.appLang);
         this.isLoading = false;
         this.modalService.openModal(bodyToSend);
       }
-    )
+    })
   }
 
   upload(event: any) {
 
+    // Spinner
     this.isLoading = true;
 
+    // File info
+    const id = this.customer.id;
+    const reader = new FileReader();
     const fileInfo = event.target.files[0]
     const payload:PayloadFile = {
       file: event.target.files[0],
       id: this.customer.id,
     }
 
-    this.axiosApi.uploadImage(payload).then((res) => {
-      const reader = new FileReader();
-      const id = this.customer.id;
+    // Upload image
+    this.axiosApi.uploadImage(payload).then(
 
-      reader.onloadend = () => {
-        const imageAsB64 = reader.result;
-        const oid = res.data;
-        const variables = {
-          id,
-          bill: {
-            name: fileInfo.name,
-            oid: oid,
-            type: fileInfo.type,
-            thumbnail: imageAsB64
-          }
-        };
+      (res) => {
 
-        this.apolloApi.setData(UPLOAD_CUSTOMER_PHOTO, variables).subscribe(
-          (res: any) => {
-            const val = res.data;
-            if (val.data && val.data.length && val.data[0]) {
-              const photo = val.data[0].photo;
-              this.customer.photo = photo;
-            } else {
-              this.isLoading = false;
-              this.modalService.openModal({
-                title: 'Error',
-                message: 'unknownError'
-              });
+        // Image read?
+        reader.onloadend = () => {
+
+          // Update record
+          const oid = res.data;
+          const imageAsB64 = reader.result;
+          const variables = {
+            id,
+            bill: {
+              name: fileInfo.name,
+              oid: oid,
+              type: fileInfo.type,
+              thumbnail: imageAsB64
             }
-            this.isLoading = false;
-          }, 
-          (err) => {
-            const bodyToSend = formatErrorBody(err, this.customer.appLang);
-            this.isLoading = false;
-            this.modalService.openModal(bodyToSend);
-          }
-        )
-      }
-      reader.readAsDataURL(fileInfo);
-    })
+          };
+          this.apolloApi.setData(UPLOAD_CUSTOMER_PHOTO, variables).subscribe({
+
+            next: (res: any) => {
+              const val = res.data;
+              this.isLoading = false;
+              if (val.data && val.data.length && val.data[0]) {
+                const photo = val.data[0].photo;
+                this.customer.photo = photo;
+              } else {
+                this.modalService.openModal({title: 'Error', message: 'unknownError'});
+              }
+            }, 
+
+            error: (err) => {
+              this.isLoading = false;
+              const bodyToSend = formatErrorBody(err, this.customer.appLang);
+              this.modalService.openModal(bodyToSend);
+            }
+          })
+        }
+
+        // Read image
+        reader.readAsDataURL(fileInfo);
+
+      })
   }
 }

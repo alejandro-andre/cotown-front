@@ -14,10 +14,10 @@ import { LookupService } from 'src/app/services/lookup.service';
 import { Customer } from 'src/app/models/Customer.model';
 import { CustomerInterface, DocFile, Document } from 'src/app/constants/Interface';
 import { Constants } from 'src/app/constants/Constants';
-import { Tutor } from 'src/app/models/Tutor.model';
 
 // Queries
 import { USER_ID, CUSTOMER_QUERY } from 'src/app/schemas/query-definitions/customer.query';
+import { getAge } from 'src/app/utils/date.util';
 
 @Component({
   selector: 'app-layout',
@@ -45,22 +45,11 @@ export class LayoutComponent implements OnInit {
       Breakpoints.Medium
     ]).subscribe(result => {
       this.isMobile = !result.matches;
-      console.log(result);
-      console.log(this.isMobile);
     });
   }
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.loadData();
-  }
-
-  setAppLanguage(lang: string = Constants.defaultBaseLanguageForTranslation) {
-    this.translate.setDefaultLang(Constants.defaultBaseLanguageForTranslation);
-    this.translate.use(lang);
-  }
-
-  loadData() {
     this.authService.getAirflowsToken().then(async() => {
       await this.loadUserId();
       if (this.userId !== undefined && this.userId !== null) {
@@ -70,6 +59,13 @@ export class LayoutComponent implements OnInit {
     })
   }
 
+  // Set app lang
+  setAppLanguage(lang: string = Constants.defaultBaseLanguageForTranslation) {
+    this.translate.setDefaultLang(Constants.defaultBaseLanguageForTranslation);
+    this.translate.use(lang);
+  }
+
+  // Get ID of logged user
   loadUserId(): Promise<void> {
     return new Promise((resolve) => {
       this.apolloApi.getData(USER_ID).subscribe((resp) => {
@@ -79,6 +75,64 @@ export class LayoutComponent implements OnInit {
         resolve();
       })
     });
+  }
+
+  loadCustomer(): void {
+
+    // GraphQL call variables
+    const variables = {
+      id: this.userId
+    }
+
+    // Get data
+    this.apolloApi.getData(CUSTOMER_QUERY, variables).subscribe(
+
+      (res) => {
+        const value = res.data;
+        if (value && value.data && value.data.length) {
+
+          const {
+            id, name , province, city, country, address, postal_code, document, email, phones,
+            gender_id, language, origin, tutorId, birth_date, nationality, type_doc, school_id,
+            bank, contacts, documents, bookings, invoices, payments, appLang, photo
+          } = value.data[0];
+
+          const birthDate = birth_date;
+          const contactsToSend = contacts !== null ? contacts : [];
+          const docToSend = this.loadDocuments(documents);
+          const bookingsToSend = bookings !== null ? JSON.parse(JSON.stringify(bookings)) : [];
+          const invoidesToSend = invoices !== null ? invoices : [];
+          const paymentsToSend = payments !== null ? payments : [];
+
+          const customer: CustomerInterface = {
+            id, name, province, city, country, address, document, email, nationality, birthDate, appLang, photo,
+            postalCode: postal_code,
+            phone: phones,
+            genderId: gender_id,
+            languageId: language,
+            originId:origin,
+            tutorId: tutorId,
+            typeDoc: type_doc,
+            schoolOrCompany: school_id,
+            bankAcount: bank,
+            contacts: contactsToSend,
+            documents: docToSend,
+            bookings: bookingsToSend,
+            invoices: invoidesToSend,
+            payments: paymentsToSend,
+          }
+
+          const currentCustomer = new Customer(customer);
+          const age = getAge(birthDate);
+          this.setAppLanguage(appLang);
+          this.customerService.setCustomerData(currentCustomer);
+          if(age <= 18 && tutorId !== null) {
+            // TO DO
+          }
+          this.isLoading = false;
+        }
+      }
+    );
   }
 
   loadDocuments (documents: Document[]): Document[] {
@@ -132,65 +186,6 @@ export class LayoutComponent implements OnInit {
     });
 
     return returnData;
-  }
-
-  loadCustomer(): void {
-    const variables = {
-      id: this.userId
-    }
-    this.apolloApi.getData(CUSTOMER_QUERY, variables).subscribe((res) => {
-      const value = res.data;
-      if (value && value.data && value.data.length) {
-        const {
-          id, name , province, city, country, address, postal_code, document, email, phones,
-          gender_id, language, origin, tutorId, birth_date, nationality, type_doc, school_id,
-          bank, contacts, documents, bookings, invoices, payments, appLang, photo
-        } = value.data[0];
-
-        const birthDate = birth_date !== null ? new Date(birth_date) : null;
-        const contactsToSend = contacts !== null ? contacts : [];
-        const docToSend = this.loadDocuments(documents);
-        const bookingsToSend = bookings !== null ? JSON.parse(JSON.stringify(bookings)) : [];
-        const invoidesToSend = invoices !== null ? invoices : [];
-        const paymentsToSend = payments !== null ? payments : [];
-
-        const customer: CustomerInterface = {
-          id, name, province, city, country, address, document, email, nationality, birthDate, appLang, photo,
-          postalCode: postal_code,
-          phone: phones,
-          genderId: gender_id,
-          languageId: language,
-          originId:origin,
-          tutorId: tutorId,
-          typeDoc: type_doc,
-          schoolOrCompany: school_id,
-          bankAcount: bank,
-          contacts: contactsToSend,
-          documents: docToSend,
-          bookings: bookingsToSend,
-          invoices: invoidesToSend,
-          payments: paymentsToSend,
-        }
-
-        const currentCustomer = new Customer(customer);
-        const age = this.getAge(birthDate);
-        this.setAppLanguage(appLang);
-        this.customerService.setCustomerData(currentCustomer);
-        if(age <= 18 && tutorId !== null) {
-          // TO DO
-        }
-        this.isLoading = false;
-      }
-    });
-  }
-
-  // TODO: may be is not the better way to do it
-  getAge(birthDate: Date | null): number {
-    const now = new Date().getTime();
-    const birthWithTime = birthDate?.getTime() || 0;
-    const diff = now - birthWithTime;
-    const diffParsed = (diff / 31536000000).toFixed(0);
-    return parseInt(diffParsed);
   }
 
 }

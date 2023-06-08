@@ -49,7 +49,6 @@ export class LookupService {
     this.apolloApi.getData(ID_TYPE_QUERY).subscribe((res) => {
       const value = res.data;
       if (value && value.data) {
-        console.log(value.data);
         this.idTypes = value.data;
       }
     });
@@ -60,7 +59,6 @@ export class LookupService {
     this.apolloApi.getData(GENDER_QUERY).subscribe((res) => {
       const value = res.data;
       if (value && value.data) {
-        console.log(value.data);
         this.genders = value.data;
       }
     });
@@ -71,7 +69,6 @@ export class LookupService {
     this.apolloApi.getData(COUNTRY_QUERY).subscribe((res) => {
       const value = res.data;
       if (value && value.data) {
-        console.log(value.data);
         this.countries = value.data;
       }
     });
@@ -82,7 +79,6 @@ export class LookupService {
     this.apolloApi.getData(CONTACT_TYPE_QUERY).subscribe((res) => {
       const value = res.data;
       if(value && value.data) {
-        console.log(value.data);
         this.contactTypes = value.data;
       }
     });
@@ -93,7 +89,6 @@ export class LookupService {
     this.apolloApi.getData(SCHOOL_QUERY).subscribe((res) => {
       const value = res.data;
       if(value && value.data && value.data.length) {
-        console.log(value.data);
         this.schools = value.data;
       }
     });
@@ -104,7 +99,6 @@ export class LookupService {
     this.apolloApi.getData(REASONS_QUERY).subscribe((res) => {
       const value = res.data;
       if(value && value.data && value.data.length) {
-        console.log(value.data);
         this.reasons = value.data;
       }
     });

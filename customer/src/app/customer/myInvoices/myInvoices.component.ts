@@ -68,7 +68,6 @@ export class MyInvoicesComponent {
   }
 
   get invoices(): Invoice[] {
-    console.log(this.customerService.customer?.invoices || []);
     return this.customerService.customer?.invoices || [];
   }
 

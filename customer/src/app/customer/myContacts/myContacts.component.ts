@@ -34,7 +34,6 @@ export class MyContactsComponent {
   ) {}
 
   get contacts(): Contact[] {
-    console.log(this.customerService.customer.contacts);
     return this.customerService.customer.contacts;
   }
 

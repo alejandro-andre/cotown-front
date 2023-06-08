@@ -6,10 +6,12 @@ export class Constants {
   public static defaultBaseLanguageForTranslation = 'en';
   public static SPANISH =     {
     id: 'es',
+    locale: 'es_ES',
     name: 'Español',
   };
   public static ENGLISH = {
     id: 'en',
+    locale: 'en_US',
     name: 'English'
   }
   public static LANGUAGES = [

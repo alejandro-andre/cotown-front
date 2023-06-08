@@ -24,3 +24,20 @@ export const formatDate = (date: Date | null): string => {
     padL(date.getMonth()+1)}/${
     date.getFullYear()}`;
 }
+
+export const getAge = (birthdate: string): number => {
+
+  if(!birthdate) {
+    return 0;
+  }
+
+  var bdt = new Date(birthdate);
+  var now = new Date();
+  var age = now.getFullYear() - bdt.getFullYear();
+
+  if (bdt.getMonth() > now.getMonth() || (bdt.getMonth() == now.getMonth() && bdt.getDate() > now.getDate())) {
+    age--;
+  }
+
+  return age;
+}

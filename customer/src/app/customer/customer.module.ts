@@ -1,6 +1,6 @@
 // Core
 import { NgModule } from '@angular/core';
-import { CommonModule, registerLocaleData } from '@angular/common';
+import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -112,6 +112,9 @@ export function createTranslateLoader(http: HttpClient) {
     MatButtonModule,
     TranslateModule,
     MatDialogModule
+  ],
+  providers: [
+    DatePipe
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

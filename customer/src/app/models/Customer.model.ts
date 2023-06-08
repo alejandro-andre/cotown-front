@@ -9,7 +9,7 @@ export class Customer implements CustomerInterface {
   country: number | null = null;
   address: string = '';
   postalCode: string = '';
-  document: string = '';
+  document: string | null = null;
   email: string = '';
   phone: string = '';
   genderId: number | null = null;
@@ -17,7 +17,7 @@ export class Customer implements CustomerInterface {
   originId: number | null = null;
   nationality: number | null = null;
   tutorId: number | null = null;
-  birthDate: Date | null = null;
+  birthDate: string | null = null;
   typeDoc: number | null = null;
   formControl = new FormControl<Date | null>(null);
   schoolOrCompany: number | null = null;
@@ -47,7 +47,6 @@ export class Customer implements CustomerInterface {
     this.nationality = data.nationality || null;
     this.tutorId = data.tutorId || null;
     this.birthDate = data.birthDate || null;
-    this.formControl = new FormControl(this.birthDate);
     this.typeDoc = data.typeDoc || null;
     this.schoolOrCompany = data.schoolOrCompany || null;
     this.bankAcount = data.bankAcount || '';

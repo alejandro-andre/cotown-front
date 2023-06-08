@@ -5,11 +5,22 @@ export interface Nav {
   url: string
 };
 
-export interface BasicResponse {
+export interface Lookup {
+  id: number,
+  name?: string,
+};
+
+export interface LookupInt {
+  id: number,
   name?: string,
   name_en?: string,
+};
+
+export interface BasicResponse {
   id: number,
   code?: string
+  name?: string,
+  name_en?: string,
 };
 
 export interface Rent extends BasicResponse {

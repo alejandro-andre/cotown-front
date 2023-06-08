@@ -26,14 +26,16 @@ export class MyInvoicesComponent {
   ) {}
 
   public displayedInvoiceColumns: string[] = [
+    'view',
     'issue_date',
     'concept',
     'amount',
     'resource',
-    'code'
+    'code',
   ];
 
   public displayedPaymentColumns: string[] = [
+    'pay',
     'issue_date',
     'concept',
     'amount',
@@ -41,12 +43,7 @@ export class MyInvoicesComponent {
     'payment_date',
     'payment_auth',
     'payment_order',
-    'pay'
   ];
-
-  pay(id: number) {
-    this.router.navigate(['/invoices/payment/', id])
-  }
 
   getResource(resource: BookingResource): string {
     return resource?.resource?.code || '';
@@ -83,12 +80,15 @@ export class MyInvoicesComponent {
     return resource?.code || '';
   }
 
-  clickedRow(row: any) {
-    if (row.document && row.document.oid) {
-      this.axiosApi.getInvoice(row.id).then((resp) => {
-        const fileURL = URL.createObjectURL(resp.data);
-        window.open(fileURL, '_blank');
-      });
-    }
+  viewInvoice(id: number) {
+    this.axiosApi.getInvoice(id).then((resp) => {
+      const fileURL = URL.createObjectURL(resp.data);
+      window.open(fileURL, '_blank');
+    });
   }
+
+  pay(id: number) {
+    this.router.navigate(['/invoices/payment/', id])
+  }
+
 }

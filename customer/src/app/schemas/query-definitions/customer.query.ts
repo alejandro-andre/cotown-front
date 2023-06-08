@@ -28,10 +28,14 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       type
     }
     contacts: Customer_contactListViaCustomer_id {
-      name: Name
       id
-      phone: Phones
+      name: Name
+      phones: Phones
       email: Email
+      contact_type: Customer_contact_typeViaCustomer_contact_type_id {
+        id
+        name: Name
+      }
     }
     documents: Customer_docListViaCustomer_id {
       id

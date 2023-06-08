@@ -20,6 +20,7 @@ import { BasicResponse, PayloadFile } from 'src/app/constants/Interface';
 import { Customer } from 'src/app/models/Customer.model';
 import { UPDATE_CUSTOMER, UPLOAD_CUSTOMER_PHOTO } from 'src/app/schemas/query-definitions/customer.query';
 import { formatErrorBody } from 'src/app/utils/error.util';
+import { LookupService } from 'src/app/services/lookup.service';
 
 @Component({
   selector: 'app-my-data',
@@ -30,11 +31,7 @@ import { formatErrorBody } from 'src/app/utils/error.util';
 export class MyDataComponent{
   constructor(
     public customerService: CustomerService,
-    private genderService: GenderService,
-    private countryService: CountryService,
-    private languageService: LanguageService,
-    private identificationTypesService: IdentificationDocTypesService,
-    private schoolOrCompaniesService: schoolOrCompaniesService,
+    public lookupService: LookupService,
     private apolloApi: ApolloQueryApi,
     private translate: TranslateService,
     private axiosApi: AxiosApi,
@@ -42,7 +39,6 @@ export class MyDataComponent{
   ) {
   }
 
-  public appLangs = Constants.LANGUAGES;
   public saveActiveButton: boolean = false;
   public image!: File;
   public isLoading = false;
@@ -63,69 +59,57 @@ export class MyDataComponent{
   get isSpanish(): boolean {
     return this.customer.appLang === Constants.SPANISH.id
   }
-  // Return types of documents
-  get identificationTypes(): BasicResponse [] {
-    return this.identificationTypesService.types;
-  }
-
-  // Return country list
-  get countries(): BasicResponse [] {
-    return this.countryService.countries;
-  }
-
-  // Return school list
-  get schoolOrCompanies() :BasicResponse [] {
-    return this.schoolOrCompaniesService.schoolOrCompanies;
-  }
-
-  // Return gender list
-  get genders(): BasicResponse [] {
-    return this.genderService.genders;
-  }
-
-  // Return language list
-  get languages(): BasicResponse [] {
-    return this.languageService.languages;
-  }
-
-  // Return gender name of current customer
-  get gender(): string {
-    return this.genders.find((elem) => elem.id === this.customer.genderId)?.name || '';
-  }
 
   // Return array of sections with true or false value to set as readOnly or not
   get visibility():{ [key: string]: boolean } {
     return this.customerService.visibility;
   }
 
+  // Return gender name of current customer
+  get gender(): string {
+    if (this.isSpanish)
+      return this.lookupService.genders.find((elem) => elem.id === this.customer.genderId)?.name || '';
+    return this.lookupService.genders.find((elem) => elem.id === this.customer.genderId)?.name_en || '';
+  }
+
   // Return school name of current customer
-  get schoolName(): string {
-    return this.schoolOrCompanies.find((elem) => elem.id === this.customer.schoolOrCompany)?.name || '';
+  get school(): string {
+    return this.lookupService.schools.find((elem) => elem.id === this.customer.schoolOrCompany)?.name || '';
   }
 
   // Return the country of the current customer
   get country(): string {
-    return this.countries.find(elem => elem.id === this.customer.country)?.name || '';
+    if (this.isSpanish)
+      return this.lookupService.countries.find((elem) => elem.id === this.customer.country)?.name || '';
+    return this.lookupService.countries.find((elem) => elem.id === this.customer.country)?.name_en || '';
   }
 
   // Return the documentation type name of current customer
-  get docType() :string {
-    return this.identificationTypes.find((elem ) => elem.id === this.customer.typeDoc)?.name || '';
+  get idType(): string {
+    if (this.isSpanish)
+      return this.lookupService.idTypes.find((elem) => elem.id === this.customer.typeDoc)?.name || '';
+    return this.lookupService.idTypes.find((elem) => elem.id === this.customer.typeDoc)?.name_en || '';
   }
 
   // Return nationality of current customer
   get nationality(): string {
-    return this.countries.find(elem => elem.id === this.customer.nationality)?.name || '';
+    if (this.isSpanish)
+      return this.lookupService.countries.find((elem) => elem.id === this.customer.nationality)?.name || '';
+    return this.lookupService.countries.find((elem) => elem.id === this.customer.nationality)?.name_en || '';
   }
 
   // Return language of current customer
   get language(): string {
-    return this.languages.find((elem) => elem.id === this.customer.languageId)?.name || '';
+    if (this.isSpanish)
+      return this.lookupService.languages.find((elem) => elem.id === this.customer.languageId)?.name || '';
+    return this.lookupService.languages.find((elem) => elem.id === this.customer.languageId)?.name_en || '';
   }
 
   // Return origin country of current customer
   get origin(): string {
-    return this.countries.find((elem) => elem.id === this.customer.originId)?.name || '';
+    if (this.isSpanish)
+      return this.lookupService.countries.find((elem) => elem.id === this.customer.originId)?.name || '';
+    return this.lookupService.countries.find((elem) => elem.id === this.customer.originId)?.name_en || '';
   }
 
   // Return formated birthdate of current customer

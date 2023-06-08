@@ -14,7 +14,7 @@ import { GenderService } from 'src/app/services/gender.service';
 import { IdentificationDocTypesService } from 'src/app/services/identificationDocTypes.service';
 import { LanguageService } from 'src/app/services/languages.service';
 import { schoolOrCompaniesService } from 'src/app/services/schoolOrCompanies.service';
-import { ContactTypeService } from 'src/app/services/contactType.service';
+import { ContactTypeService } from 'src/app/services/contact-type.service';
 import { TutorService } from 'src/app/services/tutor.service';
 
 // Models
@@ -24,14 +24,15 @@ import { Constants } from 'src/app/constants/Constants';
 import { Tutor } from 'src/app/models/Tutor.model';
 
 // Queries
-import { IDENTIFICATION_DOC_TYPE_QUERY } from 'src/app/schemas/query-definitions/IdentificationDocTypes.query';
+import { ID_TYPE_QUERY } from 'src/app/schemas/query-definitions/id-type.query';
 import { COUNTRY_QUERY } from 'src/app/schemas/query-definitions/countries.query';
 import { USER_ID, CUSTOMER_QUERY } from 'src/app/schemas/query-definitions/customer.query';
 import { GENDER_QUERY } from 'src/app/schemas/query-definitions/gender.query';
 import { LANGUAGE_QUERY } from 'src/app/schemas/query-definitions/languages.query';
-import { SCHOOL_COMPANY_QUERY } from 'src/app/schemas/query-definitions/schoolOrCompanies.query';
-import { CONTACT_TYPE_QUERY } from 'src/app/schemas/query-definitions/contactType.query';
+import { SCHOOL_QUERY } from 'src/app/schemas/query-definitions/school.query';
+import { CONTACT_TYPE_QUERY } from 'src/app/schemas/query-definitions/contact-type.query';
 import { TUTOR_QUERY } from 'src/app/schemas/query-definitions/tutor.query';
+import { LookupService } from 'src/app/services/lookup.service';
 
 @Component({
   selector: 'app-layout',
@@ -51,13 +52,8 @@ export class LayoutComponent implements OnInit {
     private apolloApi: ApolloQueryApi,
     private breakpointObserver: BreakpointObserver,
     private customerService: CustomerService,
-    private genderService: GenderService,
-    private countryService: CountryService,
-    private languageSerice: LanguageService,
-    private identificationTypes: IdentificationDocTypesService,
-    private schoolOrCompaniesService: schoolOrCompaniesService,
-    private contactTypeService: ContactTypeService,
-    private tutorService: TutorService
+    private tutorService: TutorService,
+    private lookupService: LookupService
   ) {
     breakpointObserver.observe([
       Breakpoints.XLarge,
@@ -84,12 +80,12 @@ export class LayoutComponent implements OnInit {
     this.authService.getAirflowsToken().then(async() => {
       await this.loadUserId();
       if (this.userId !== undefined && this.userId !== null) {
-        this.loadIdentificationDocTypes();
-        this.loadLanguages();
-        this.loadGenders();
-        this.loadCountries();
-        this.loadSchoolOrCompanies();
-        this.loadContactTypes();
+        this.lookupService.loadIdTypes();
+        this.lookupService.loadLanguages();
+        this.lookupService.loadGenders();
+        this.lookupService.loadCountries();
+        this.lookupService.loadSchools();
+        this.lookupService.loadContactTypes();
         this.loadCustomer();
       }
     })
@@ -103,60 +99,6 @@ export class LayoutComponent implements OnInit {
         }
         resolve();
       })
-    });
-  }
-
-  loadIdentificationDocTypes() {
-    this.apolloApi.getData(IDENTIFICATION_DOC_TYPE_QUERY).subscribe((res) => {
-      const value = res.data;
-      if (value && value.types) {
-        this.identificationTypes.setTypesData(value.types);
-      }
-    });
-  }
-
-  loadLanguages() {
-    this.apolloApi.getData(LANGUAGE_QUERY).subscribe((res) => {
-      const value = res.data;
-      if (value && value.languages) {
-        this.languageSerice.setLanguageData(value.languages);
-      }
-    });
-  }
-
-  loadGenders() {
-    this.apolloApi.getData(GENDER_QUERY).subscribe((res) => {
-      const value = res.data;
-      if (value && value.genders) {
-        this.genderService.setGenderData(value.genders);
-      }
-    });
-  }
-
-  loadCountries() {
-    this.apolloApi.getData(COUNTRY_QUERY).subscribe((res) => {
-      const value = res.data;
-      if (value && value.countries && value.countries.length) {
-        this.countryService.setCountryData(value.countries);
-      }
-    });
-  }
-
-  loadSchoolOrCompanies() {
-    this.apolloApi.getData(SCHOOL_COMPANY_QUERY).subscribe((res) => {
-      const value = res.data;
-      if(value && value.data && value.data.length) {
-        this.schoolOrCompaniesService.setSchoolOrCompaniesData(value.data);
-      }
-    });
-  }
-
-  loadContactTypes() {
-    this.apolloApi.getData(CONTACT_TYPE_QUERY).subscribe((res) => {
-      const value = res.data;
-      if(value && value.contacts && value.contacts.length) {
-        this.contactTypeService.setContactTypesData(value.contacts);
-      }
     });
   }
 

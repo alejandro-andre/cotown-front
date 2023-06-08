@@ -1,9 +1,9 @@
-export const COUNTRY_QUERY = `query CountryQuery {
-  countries: Geo_CountryList(
-    orderBy: [{attribute: Name, direction:ASC, nullsGo: FIRST}]
-  ){
-    name: Name
+export const COUNTRY_QUERY = `query get {
+  data: Geo_CountryList(
+    orderBy: [{attribute: Name, direction: ASC, nullsGo: FIRST}]
+  ) {
     id
+    name: Name
     name_en: Name_en
   }
 }`;

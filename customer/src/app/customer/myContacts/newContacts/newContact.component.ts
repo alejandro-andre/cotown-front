@@ -4,7 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 
 // Services
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
-import { ContactTypeService } from 'src/app/services/contactType.service';
+import { ContactTypeService } from 'src/app/services/contact-type.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { formatErrorBody } from 'src/app/utils/error.util';
@@ -13,7 +13,7 @@ import { formatErrorBody } from 'src/app/utils/error.util';
 import { BasicResponse, ContactVariables } from 'src/app/constants/Interface';
 
 // Queries
-import { GET_CONTACTS_BY_CUSTOMERID, SET_NEW_CONTACT } from 'src/app/schemas/query-definitions/contact.query';
+import { GET_CONTACTS_BY_CUSTOMERID, INSERT_CONTACT } from 'src/app/schemas/query-definitions/contact.query';
 
 @Component({
   selector: 'app-contact-new',
@@ -22,7 +22,7 @@ import { GET_CONTACTS_BY_CUSTOMERID, SET_NEW_CONTACT } from 'src/app/schemas/que
 })
 
 export class NewContactComponent {
-  public contactType!: number;
+  public contact_type!: number;
   public name: string = '';
   public email: string = '';
   public phone: string = '';
@@ -50,7 +50,7 @@ export class NewContactComponent {
 
   get isDisabled (): boolean {
     return(
-      this.contactType === null ||
+      this.contact_type === null ||
       this.name === '' ||
       (this.email === '' && this.phone === '') ||
       !this.emailFormControl.valid ||
@@ -60,7 +60,7 @@ export class NewContactComponent {
   }
 
   get isElemntsDisabled () : boolean {
-    return this.contactType === null || !this.contactType;
+    return this.contact_type === null || !this.contact_type;
   }
 
   save() {
@@ -68,12 +68,12 @@ export class NewContactComponent {
     const variables: ContactVariables = {
       name: this.name,
       id: this.customerService.customer.id,
-      cid: this.contactType,
+      cid: this.contact_type,
       email: this.email.length > 0 ? this.email : undefined,
       phone: this.phone
     };
 
-    this.apollo.setData(SET_NEW_CONTACT, variables).subscribe((ev) => {
+    this.apollo.setData(INSERT_CONTACT, variables).subscribe((ev) => {
       const value = ev.data;
       if (value && value.data && value.data.id) {
         const varToSend = {

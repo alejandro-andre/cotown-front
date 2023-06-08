@@ -5,8 +5,8 @@
 
     <div class="pure-u-1 pure-u-lg-1-2">
       <mat-form-field appearance="fill" style="margin-right: 10px;">
-        <mat-label>{{ 'contactType' | translate }}</mat-label>
-        <mat-select [(ngModel)]="contactType" [formControl]="contactTypeFormControl">
+        <mat-label>{{ 'contact_type' | translate }}</mat-label>
+        <mat-select [(ngModel)]="contact_type" [formControl]="contactTypeFormControl">
           <mat-option *ngFor="let contact of contactTypes" [value]="contact.id">
             {{ contact.name }}
           </mat-option>

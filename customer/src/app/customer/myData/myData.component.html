@@ -9,17 +9,8 @@
     <div class="pure-u-1">
       <div class="label">{{ 'photo' | translate }}</div>
       <div class="image-container">
-        <img
-          *ngIf="customer.photo !== null"
-          [src]="customer.photo.thumbnail"
-          [alt]="customer.photo.name"
-        >
-        <input
-          id="photo"
-          [(ngModel)]="image"
-          type="file"
-          (change)="upload($event)"
-        >
+        <img *ngIf="customer.photo !== null" [src]="customer.photo.thumbnail" [alt]="customer.photo.name">
+        <input id="photo" [(ngModel)]="image" type="file" (change)="upload($event)">
         <label *ngIf="!customer.photo || customer.photo === null" for="photo">Subir foto</label>
       </div>
     </div>      
@@ -29,79 +20,53 @@
       <div class="pure-u-1 pure-u-lg-1-2">
         <mat-form-field>
           <mat-label>{{ 'name' | translate }}</mat-label>
-          <input
-            matInput
-            [readonly]="visibility['name']"
-            [(ngModel)]="customerService.customer.name"
-            (change)="activeButton()"
-          >
+          <input matInput [readonly]="visibility['name']" [(ngModel)]="customerService.customer.name" (change)="activeButton()">
         </mat-form-field>
       </div>
 
       <div class="pure-u-1-2 pure-u-lg-1-4">
-        <mat-form-field
-          appearance="fill"
-          style="margin-right: 10px;"
-          *ngIf="!visibility['typeDoc']"
-        >
+        <mat-form-field *ngIf="!visibility['typeDoc']">
           <mat-label>{{ 'documentType' | translate }}</mat-label>
           <mat-select [(ngModel)]="customerService.customer.typeDoc" (selectionChange)="activeButton()">
-            <mat-option *ngFor="let doc of identificationTypes" [value]="doc.id">
-              {{ isSpanish ? doc.name : doc.name_en  }}
+            <mat-option *ngFor="let c of lookupService.idTypes" [value]="c.id">
+              {{ isSpanish ? c.name : c.name_en  }}
             </mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field *ngIf="visibility['typeDoc']">
           <mat-label>{{ 'documentType' | translate }}</mat-label>
-          <input matInput readonly [ngModel]="docType">
+          <input matInput readonly [ngModel]="idType">
         </mat-form-field>
       </div>
 
       <div class="pure-u-1-2 pure-u-lg-1-4">
         <mat-form-field>
           <mat-label>{{ 'document' | translate}}</mat-label>
-          <input
-            matInput
-            [readonly]="visibility['document']"
-            (change)="validateDoc()"
-            [(ngModel)]="customerService.customer.document"
-          >
+          <input matInput [readonly]="visibility['document']" (change)="validateDoc()" [(ngModel)]="customerService.customer.document">
         </mat-form-field>
       </div>
          
       <div class="pure-u-1 pure-u-lg-1-2">
         <mat-form-field>
           <mat-label>{{ 'email' | translate }}</mat-label>
-          <input
-            matInput
-            readonly
-            placeholder="{{'email' | translate}}"
-            [(ngModel)]="customerService.customer.email"
-          >
+          <input matInput readonly placeholder="{{'email' | translate}}" [(ngModel)]="customerService.customer.email">
         </mat-form-field>
       </div>
   
       <div class="pure-u-1 pure-u-lg-1-2">
         <mat-form-field>
           <mat-label>{{ 'phone' | translate }}</mat-label>
-          <input
-            [readonly]="visibility['phone']"
-            matInput placeholder="{{'phone' | translate}}"
-            [(ngModel)]="customerService.customer.phone"
-            (change)="activeButton()"
-          >
+          <input matInput [readonly]="visibility['phone']" placeholder="{{'phone' | translate}}" 
+                 [(ngModel)]="customerService.customer.phone" (change)="activeButton()">
         </mat-form-field>
       </div>
   
       <div class="pure-u-1 pure-u-lg-1-4">
         <mat-form-field appearance="fill" style="margin-right: 10px;">
           <mat-label>{{ 'language' | translate }}</mat-label>
-          <mat-select
-            [(ngModel)]="customerService.customer.appLang"
-            (selectionChange)="changeLang()"
-          >
-            <mat-option *ngFor="let lang of appLangs" [value]="lang.id">
-              {{ lang.name }}
+          <mat-select [(ngModel)]="customerService.customer.appLang" (selectionChange)="changeLang()">
+            <mat-option *ngFor="let c of lookupService.appLangs" [value]="c.id">
+              {{ c.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -119,78 +84,46 @@
     <div class="pure-u-1">
       <mat-form-field>
         <mat-label>{{ 'address' | translate }}</mat-label>
-        <input
-          matInput
-          [readonly]="visibility['address']"
-          placeholder="{{'address' | translate}}"
-          [(ngModel)]="customerService.customer.address"
-          (change)="activeButton()"
-        >
+        <input matInput [readonly]="visibility['address']" placeholder="{{'address' | translate}}" 
+               [(ngModel)]="customerService.customer.address" (change)="activeButton()">
       </mat-form-field>
     </div>
 
     <div class="pure-u-1-2 pure-u-lg-1-4">
       <mat-form-field>
         <mat-label>{{ 'postalCode' | translate }}</mat-label>
-        <input
-          matInput maxlength="5"
-          [readonly]="visibility['postalCode']"
-          placeholder="{{'postalCode' | translate}}"
-          [(ngModel)]="customerService.customer.postalCode"
-          (change)="activeButton()"
-        >
+        <input matInput maxlength="5" [readonly]="visibility['postalCode']" placeholder="{{'postalCode' | translate}}" 
+               [(ngModel)]="customerService.customer.postalCode" (change)="activeButton()" >
       </mat-form-field>
     </div>
     <div class="pure-u-1-2 pure-u-lg-1-4">
       <mat-form-field>
         <mat-label>{{ 'city' | translate }}</mat-label>
-        <input
-          matInput
-          [readonly]="visibility['city']"
-          placeholder="{{'city' | translate}}"
-          [(ngModel)]="customerService.customer.city"
-          (change)="activeButton()"
-        >
+        <input matInput [readonly]="visibility['city']" placeholder="{{'city' | translate}}"
+               [(ngModel)]="customerService.customer.city" (change)="activeButton()">
       </mat-form-field>
     </div>
     <div class="pure-u-1-2 pure-u-lg-1-4">
       <mat-form-field>
         <mat-label>{{ 'province' | translate }}</mat-label>
-        <input
-          matInput
-          [readonly]="visibility['province']"
-          placeholder="{{'province' | translate}}"
-          (change)="activeButton()"
-          [(ngModel)]="customerService.customer.province"
-        >
+        <input matInput [readonly]="visibility['province']" placeholder="{{'province' | translate}}"
+               [(ngModel)]="customerService.customer.province" (change)="activeButton()">
       </mat-form-field>
     </div>
     <div class="pure-u-1-2 pure-u-lg-1-4">
-      <!--Country section-->
       <mat-form-field *ngIf="visibility['country']">
         <mat-label>{{ 'country' | translate }}</mat-label>
-        <input
-          matInput
-          readonly
-          placeholder="{{ 'country' | translate }}"
-          [ngModel]="country"
-        >
+        <input matInput readonly placeholder="{{ 'country' | translate }}" [ngModel]="country">
       </mat-form-field>
-      <mat-form-field
-        *ngIf="!visibility['country']"
-        appearance="fill"
-        style="margin-right: 10px;"
-      >
+      <mat-form-field *ngIf="!visibility['country']">
         <mat-label>{{ 'country' | translate }}</mat-label>
         <mat-select [(ngModel)]="customerService.customer.country" (selectionChange)="activeButton()">
-          <mat-option *ngFor="let country of countries" [value]="country.id">
-            {{ isSpanish ? country.name : country.name_en }}
+          <mat-option *ngFor="let c of lookupService.countries" [value]="c.id">
+            {{ isSpanish ? c.name : c.name_en }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <!--End country-->
     </div>
-
 
   </div>
 </div>
@@ -200,28 +133,16 @@
   <div class="pure-g">
 
     <div class="pure-u-1-2 pure-u-lg-1-4">
-        <!--BirthDate-->
         <mat-form-field *ngIf="visibility['birthDate']">
           <mat-label>{{ 'birthdate' | translate }}</mat-label>
-          <input
-            matInput
-            readonly
-            placeholder="{{ 'birthdate' | translate }}"
-            [ngModel]="birthDate"
-          >
+          <input matInput readonly placeholder="{{ 'birthdate' | translate }}" [ngModel]="birthDate">
         </mat-form-field>
         <mat-form-field appearance="fill" *ngIf="!visibility['birthDate']">
           <mat-label>{{ 'birthdate' | translate }}</mat-label>
-          <input
-            matInput
-            [matDatepicker]="picker"
-            [formControl]="customerService.customer.formControl"
-            (dateInput)="activeButton()"
-          >
+          <input matInput [matDatepicker]="picker" [formControl]="customerService.customer.formControl" (dateInput)="activeButton()">
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
-        <!--End Birthdate-->
     </div>
 
   </div>
@@ -232,147 +153,86 @@
   <div class="pure-g">
 
     <div class="pure-u-1-2 pure-u-lg-1-4">
-      <!--Gender section-->
       <mat-form-field *ngIf="visibility['genderId']">
         <mat-label>{{ 'gender' | translate }}</mat-label>
-        <input
-          matInput
-          readonly
-          placeholder="{{ 'gender' | translate }}"
-          [ngModel]="gender"
-        >
+        <input matInput readonly placeholder="{{ 'gender' | translate }}" [ngModel]="gender">
       </mat-form-field>
-      <mat-form-field
-        *ngIf="!visibility['genderId']"
-        appearance="fill"
-        style="margin-right: 10px;"
-      >
+      <mat-form-field *ngIf="!visibility['genderId']">
         <mat-label>{{ 'gender' | translate }}</mat-label>
         <mat-select [(ngModel)]="customerService.customer.genderId" (selectionChange)="activeButton()">
-          <mat-option *ngFor="let gender of genders" [value]="gender.id">
-            {{ isSpanish ? gender.name : gender.name_en  }}
+          <mat-option *ngFor="let c of lookupService.genders" [value]="c.id">
+            {{ isSpanish ? c.name : c.name_en  }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <!--End gender-->
     </div>
 
     <div class="pure-u-1-2 pure-u-lg-1-4">
-      <!--Origin country-->
-      <mat-form-field *ngIf="visibility['originId']">
-        <mat-label>{{ 'countryOfOrigin' | translate }}</mat-label>
-        <input
-          matInput
-          readonly
-          placeholder="{{ 'countryOfOrigin' | translate }}"
-          [ngModel]="origin"
-        >
-      </mat-form-field>
-      <mat-form-field
-        *ngIf="!visibility['originId']"
-        appearance="fill"
-        style="margin-right: 10px;"
-      >
-        <mat-label>{{ 'countryOfOrigin' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customerService.customer.originId" (selectionChange)="activeButton()">
-          <mat-option *ngFor="let country of countries" [value]="country.id">
-            {{ isSpanish ? country.name : country.name_en }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <!--End origin country-->
-    </div>
-
-    <div class="pure-u-1-2 pure-u-lg-1-4">
-      <!--Language-->
       <mat-form-field *ngIf="visibility['languageId']">
         <mat-label>{{ 'language' | translate }}</mat-label>
-        <input
-          matInput
-          readonly
-          placeholder="{{ 'language' | translate }}"
-          [ngModel]="language"
-        >
+        <input matInput readonly placeholder="{{ 'language' | translate }}" [ngModel]="language">
       </mat-form-field>
-      <mat-form-field
-        *ngIf="!visibility['languageId']"
-        appearance="fill"
-        style="margin-right: 10px;"
-      >
+      <mat-form-field *ngIf="!visibility['languageId']">
         <mat-label>{{ 'language' | translate }}</mat-label>
         <mat-select [(ngModel)]="customerService.customer.languageId" (selectionChange)="activeButton()">
-          <mat-option *ngFor="let lang of languages" [value]="lang.id">
-            {{ isSpanish ? lang.name : lang.name_en }}
+          <mat-option *ngFor="let c of lookupService.languages" [value]="c.id">
+            {{ isSpanish ? c.name : c.name_en }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <!--End language-->
-      </div>
+    </div>
 
     <div class="pure-u-1-2 pure-u-lg-1-4">
-      <!--Nationality-->
       <mat-form-field *ngIf="visibility['nationality']">
         <mat-label>{{ 'nationality' | translate }}</mat-label>
-        <input
-          matInput
-          readonly
-          placeholder="{{ 'nationality' | translate }}"
-          [ngModel]="nationality"
-        >
+        <input matInput readonly placeholder="{{ 'nationality' | translate }}" [ngModel]="nationality">
       </mat-form-field>
-      <mat-form-field
-        *ngIf="!visibility['nationality']"
-        appearance="fill"
-        style="margin-right: 10px;"
-      >
+      <mat-form-field *ngIf="!visibility['nationality']">
         <mat-label>{{ 'nationality' | translate}}</mat-label>
         <mat-select [(ngModel)]="customerService.customer.nationality" (selectionChange)="activeButton()">
-          <mat-option *ngFor="let country of countries" [value]="country.id">
-            {{ isSpanish ? country.name : country.name_en }}
+          <mat-option *ngFor="let c of lookupService.countries" [value]="c.id">
+            {{ isSpanish ? c.name : c.name_en }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <!--End nationality-->
     </div>
 
-    <div class="pure-u-1">     
-      <!--School-->
+    <div class="pure-u-1-2 pure-u-lg-1-4">
+      <mat-form-field *ngIf="visibility['originId']">
+        <mat-label>{{ 'countryOfOrigin' | translate }}</mat-label>
+        <input matInput readonly placeholder="{{ 'countryOfOrigin' | translate }}" [ngModel]="origin">
+      </mat-form-field>
+      <mat-form-field *ngIf="!visibility['originId']">
+        <mat-label>{{ 'countryOfOrigin' | translate }}</mat-label>
+        <mat-select [(ngModel)]="customerService.customer.originId" (selectionChange)="activeButton()">
+          <mat-option *ngFor="let c of lookupService.countries" [value]="c.id">
+            {{ isSpanish ? c.name : c.name_en }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="pure-u-1 pure-u-lg-1-2">     
       <mat-form-field *ngIf="visibility['schoolOrCompany']">
         <mat-label>{{ 'school/company' | translate }}</mat-label>
-        <input
-          matInput
-          readonly
-          placeholder="{{ 'school/company' | translate }}"
-          [ngModel]="schoolName"
-        >
+        <input matInput readonly placeholder="{{ 'school/company' | translate }}" [ngModel]="school">
       </mat-form-field>
-      <mat-form-field
-        *ngIf="!visibility['schoolOrCompany']"
-        appearance="fill"
-        style="margin-right: 10px;"
-      >
+      <mat-form-field *ngIf="!visibility['schoolOrCompany']">
         <mat-label>{{ 'school/company' | translate }}</mat-label>
         <mat-select [(ngModel)]="customerService.customer.schoolOrCompany" (selectionChange)="activeButton()">
-          <mat-option *ngFor="let school of schoolOrCompanies" [value]="school.id">
-            {{ school.name }}
+          <mat-option *ngFor="let c of lookupService.schools" [value]="c.id">
+            {{ c.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <!--End school-->
     </div>
 
-    <div class="pure-u-1">     
-      <!--Bank account-->
+    <div class="pure-u-1 pure-u-lg-1-2">     
       <mat-form-field>
         <mat-label>{{ 'bankAccount' | translate }}</mat-label>
-        <input
-          [readonly]="visibility['bankAcount']"
-          matInput placeholder="{{'bankAccount' | translate}}"
-          [(ngModel)]="customerService.customer.bankAcount"
-          (change)="activeButton()"
-        >
+        <input matInput [readonly]="visibility['bankAcount']" placeholder="{{'bankAccount' | translate}}"
+               [(ngModel)]="customerService.customer.bankAcount" (change)="activeButton()">
       </mat-form-field>
-      <!--End Bank account-->
     </div>
 
   </div>

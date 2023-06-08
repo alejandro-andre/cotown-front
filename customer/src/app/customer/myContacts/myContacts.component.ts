@@ -15,7 +15,17 @@ import { formatErrorBody } from 'src/app/utils/error.util';
 })
 
 export class MyContactsComponent {
-  public DELETE = Constants.DELETE;
+
+  public isLoading = false;
+
+  public displayedColumns: string[] = [
+    "contact_type",
+    "name",
+    "email",
+    "phones",
+    "delete"
+  ];
+
   constructor(
     public customerService: CustomerService,
     private router: Router,
@@ -23,36 +33,9 @@ export class MyContactsComponent {
     private modalService: ModalService
   ) {}
 
-  public isLoading = false;
-  public tableFormat: TableObject[] = [
-    {
-      header: Constants.CONTACT_NAME,
-      property: Constants.PROPERTY_NAME,
-      name: Constants.name
-    },
-    {
-      header: Constants.CONTACT_EMAIL,
-      property: Constants.PROPERTY_EMAIL,
-      name: Constants.EMAIL
-    },
-    {
-      header: Constants.CONTACT_PHONE,
-      property: Constants.PROPERTY_PHONE,
-      name: Constants.PHONE
-    },
-    {
-      header: Constants.DELETE,
-      property: Constants.DELETE,
-      name: Constants.DELETE
-    }
-  ];
-
   get contacts(): Contact[] {
+    console.log(this.customerService.customer.contacts);
     return this.customerService.customer.contacts;
-  }
-
-  get displayedColumns (): string[] {
-    return this.tableFormat.map((elem) => elem.header);
   }
 
   goToAdd(): void {
@@ -60,7 +43,9 @@ export class MyContactsComponent {
   }
 
   deleteContact(event: Contact): void {
+
     this.isLoading = true;
+
     const variables = {
       id: event.id,
       customer_id: this.customerService.customer.id,
@@ -77,7 +62,6 @@ export class MyContactsComponent {
           title: 'Error',
           message: 'unknownError'
         };
-
         this.modalService.openModal(body);
       }
     }, err => {

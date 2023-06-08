@@ -67,7 +67,7 @@ export class Constants {
   public static FLAT_TYPE = 'flatType';
   public static PLACE_TYPE = 'placeType';
   public static RESOURCE_TYPE = 'resourceType';
-  public static INVOICE_NUMBER = 'invoiceNumber';
+  public static INVOICE_NUMBER = 'invoice_code';
   public static ISSUE_DATE = 'issue_date';
   public static BOOKING = 'booking';
   public static PAYMENT_NUMBER = 'paymentNumber';

@@ -5,7 +5,7 @@
     "contactTypeRequired": "The contact type is required",
     "invalidEmail": "Invalid email",
     "noBookingFound": "No booking found with that id",
-    "notFoundResults": "Not results found",
+    "notFoundResults": "No results found",
     "unknownError": "Unknown error, please refresh the page"
   },
   "nav": {

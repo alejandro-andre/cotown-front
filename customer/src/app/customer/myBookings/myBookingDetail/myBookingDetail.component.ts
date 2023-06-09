@@ -1,5 +1,5 @@
 // Core
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -357,8 +357,8 @@ export class MyBookingDetailComponent {
             }, 
 
             error: err => {
-              const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
               this.isViewLoading = false;
+              const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
               this.modalService.openModal(bodyToSend);
             }
           })
@@ -377,6 +377,10 @@ export class MyBookingDetailComponent {
     })
   }
 
+  isDiscardable() {
+    return ['solicitud','solicitudpagada','alternativas','alternativaspagada','pendientepago'].includes(this.booking.status)
+  }
+  
   // Cancel booking
   discard () {
 

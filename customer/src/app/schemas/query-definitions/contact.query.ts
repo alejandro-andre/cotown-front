@@ -13,11 +13,11 @@ export const GET_CONTACTS_BY_CUSTOMERID =`query get($customerId: Int) {
   }
 }`;
 
-export const INSERT_CONTACT = `mutation($id: Int!, $cid: Int!, $name: String!, $email:String, $phone: String) {
+export const INSERT_CONTACT = `mutation($id: Int!, $contact_type: Int!, $name: String!, $email:String, $phone: String) {
   data: Customer_Customer_contactCreate(
     entity: {
       Customer_id: $id
-      Customer_contact_type_id: $cid
+      Customer_contact_type_id: $contact_type
       Name: $name
       Email: $email
       Phones: $phone

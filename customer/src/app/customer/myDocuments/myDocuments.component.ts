@@ -1,13 +1,16 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { DateAdapter } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
+import { IDocFile, IDocument, IPayloadFile } from 'src/app/constants/Interface';
+import { Document } from 'src/app/models/Document.model';
 
-import { DocFile, Document, PayloadFile } from 'src/app/constants/Interface';
 import { UPLOAD_CUSTOMER_DOCUMENT, UPLOAD_CUSTOMER_FULL_DOCUMENTS } from 'src/app/schemas/query-definitions/customer.query';
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
+import { FileService } from 'src/app/services/file.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { formatErrorBody } from 'src/app/utils/error.util';
 
@@ -22,140 +25,193 @@ export class MyDocumentsComponent implements OnInit {
   // Spinner
   public isLoading = false;
 
-  public enabledButtons: number[] = [] as number[];
-  public pdfSrc = '';
-  public photo = '';
+  // Documents
+  public documents: IDocument[] = [];
 
   constructor(
     public customerService: CustomerService,
+    private fileService: FileService,
     private datePipe: DatePipe,
     private router: Router,
+    private dateAdapter: DateAdapter<any>,
     private axiosApi: AxiosApi,
     private Apollo: ApolloQueryApi,
     private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
-    this.documents.forEach((el: Document) => {
-      const finded = el.doctype.arrayOfImages?.filter(ev => ev.oid === -1);
-      if (finded && finded.length > 0) {
-        this.enabledButtons.push(el.id);
+    if (this.customerService.customer.appLang === 'es') {
+      this.dateAdapter.setLocale(Constants.SPANISH.locale)
+    } else {
+      this.dateAdapter.setLocale(Constants.ENGLISH.locale)
+    }
+    this.getDocs();
+  }
+  
+  getDocumentName(document: IDocument): string {
+    if (this.customerService.customer.appLang === 'es')
+      return document.doc_type?.name || '';
+    return document.doc_type?.name_en || '';
+  }
+
+  // Show document or image
+  getDocs() {
+
+    // New array
+    this.documents = [];
+
+    // Loop thru documents
+    this.customerService.customer.documents.forEach((doc) => {
+
+      // Create object
+      const document = new Document(doc);
+      const images = document.doc_type?.images || 1;
+
+      // Front doc
+      if (document.front?.oid) {
+        this.axiosApi.getFile(document.id, "Document").then((response: any) => {
+          document.front = {
+            id: document.id || 0,
+            name: document.front?.name || '',
+            oid: document.front?.oid || 0,
+            type: response.data.type,
+            size: response.data.size,
+            thumbnail: null,
+            content: URL.createObjectURL(response.data)
+          }
+        })
+      }
+
+      // Back doc
+      if (document.back?.oid) {
+        this.axiosApi.getFile(doc.id, "Document_back").then((response: any) => {
+          document.back = {
+            id: document.id || 0,
+            name: document.back?.name || '',
+            oid: document.back?.oid || 0,
+            type: response.data.type,
+            size: response.data.size,
+            thumbnail: null,
+            content: URL.createObjectURL(response.data)
+          }
+        })
+      }
+
+      // Push new document
+      this.documents.push(document);
+    });
+
+  }
+
+  async upload (event: any, field: string, document: IDocument) {
+    
+    console.log(document);
+    
+    // Read file
+    const file = event.target.files[0] 
+    const data = await this.fileService.readFile(file);
+
+    // Thumbnail
+    const uint8Array = new Uint8Array(data);
+    const array = Array.from(uint8Array);
+    const base64String = btoa(array.map(byte => String.fromCharCode(byte)).join(''));
+    const imageSrc = `data:${file.type};base64,${base64String}`;
+
+    // Show file on screen
+    event.target.src = imageSrc;
+
+    // Call API
+    const payload: IPayloadFile  = {
+      id: document.id,
+      data: data,
+      type: file.type,
+    };
+    this.axiosApi.uploadFile(payload, field).then((res) => {     
+      const docFile: IDocFile = {
+        id: document.id || 0,
+        oid: res.data,
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        file: file,
+        content: imageSrc,
+        thumbnail: file.type === Constants.DOCUMENT_PDF ? null : imageSrc
+      }
+      if (field === 'Document') {
+        document.front = docFile;
+      } else {
+        document.back = docFile;
       }
     });
   }
-  
-  // Show document or image
-  viewDoc(doc: DocFile) {
 
-    this.axiosApi.getFile(doc.id, doc.name).then((response: any) => {
-      if (response.data && response.data.type !=  Constants.DOCUMENT_PDF) {
-        this.pdfSrc = '';
-        this.photo = URL.createObjectURL(response.data);
-      } else {
-        this.photo = '';
-        this.pdfSrc = URL.createObjectURL(response.data);
-      }
-    })
-
+  isReadOnly(document: IDocument) {
+    if (document.front && !document.frontFile)
+      return true;
+    if (document.back && !document.backFile)
+      return true;
+    return false;
   }
 
-  upload(event: any, index: number, document: Document) {
-
-    // Upload file
-    const payload: PayloadFile  = {
-      id: document.id,
-      file: event.target.files[0],
-      document: index === 0 ? 'Document': 'Document_back',
-    };
-    this.axiosApi.uploadFile(payload).then((res) => {
-      const fileId = res.data;
-      const name = event.target.files[0].name;
-      const type = event.target.files[0].type;
-      if (document.doctype.arrayOfImages) {
-        document.doctype.arrayOfImages[index].oid = fileId;
-        document.doctype.arrayOfImages[index].name = name
-        document.doctype.arrayOfImages[index].typeFile = type;
-        document.doctype.arrayOfImages[index].type = index === 0 ? Constants.DOCUMENT_TYPE_FRONT : Constants.DOCUMENT_TYPE_BACK;
-      }
-    })
-  }
-
-  isViewEnabled(document: Document) {
-    const finded = this.enabledButtons.find((el) => el === document.id);
-    return finded === undefined;
-  }
-
-  uploadDataOnApollo(document: Document) {
-    const query = document.doctype.images === 1 ? UPLOAD_CUSTOMER_DOCUMENT : UPLOAD_CUSTOMER_FULL_DOCUMENTS;
-    const files = document.doctype.arrayOfImages;
-    if (files) {
-      let variables: any = {
-        id: document.id,
-        date:document.expiry_date,
-        billFront: {
-          name: files[0].name,
-          oid: files[0].oid,
-          type: files[0].typeFile
-        }
-      }
-
-      if (files.length === 2) {
-        variables.billBack = {
-          name: files[1].name,
-          oid: files[1].oid,
-          type: files[1].typeFile
-        }
-      }
-
-      this.Apollo.setData(query, variables).subscribe((response) => {
-        const value = response.data;
-        if (value && value.data && value.data.length && value.data[0].id) {
-          this.isLoading = false;
-          const newArray = this.enabledButtons.filter((elem) => elem !== document.id);
-          this.enabledButtons = [ ...newArray];
-        } else {
-          // Something wrong but not know what
-          this.isLoading = false;
-          const body = {
-            title: 'Error',
-            message: 'unknownError'
-          };
-          this.modalService.openModal(body);
-        }
-      },
-      err => {
-        // Apollo error !!
-        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es')
-        this.isLoading = false;
-        this.modalService.openModal(bodyToSend);
-      })
-    }
-  }
-
-  isButtonOfDocDisabled(document: Document) {
-    const finded = this.enabledButtons.find((el) => el === document.id);
-    if(finded) {
-      if (document.doctype.arrayOfImages) {
-        const filtered = document.doctype.arrayOfImages.filter(ev => ev.oid !== -1 && ev.file !== '')
-
-        if(filtered && filtered.length === document.doctype.images) {
-          return false;
-        } else {
-          return true;
-        }
-      }
-    }
-
+  isSaveEnabled(document: IDocument) {
+    if (!document.frontFile)
+      return false;
+    const images = document.doc_type?.images || 0;
+    if (images > 1 && !document.backFile)
+      return false;
     return true;
   }
 
-  save(document: Document) {
+  save (document: IDocument) {
+
+    // Spinner
     this.isLoading = true;
+
+    // Expiration date
     document.expiry_date = this.datePipe.transform(document.formDateControl.value, 'yyyy-MM-dd');
-    this.uploadDataOnApollo(document);
+
+    // Query
+    const query = document.doc_type?.images === 1 ? UPLOAD_CUSTOMER_DOCUMENT : UPLOAD_CUSTOMER_FULL_DOCUMENTS;
+    let variables: any = {
+      id: document.id,
+      date:document.expiry_date
+    }
+    if (document.frontFile) {
+      variables.fileFront = {
+        name: document.front?.name,
+        oid: document.front?.oid,
+        type: document.front?.type,
+        thumbnail: document.front?.thumbnail
+      }
+    }
+    if (document.backFile) {
+      variables.fileBack = {
+        name: document.back?.name,
+        oid: document.back?.oid,
+        type: document.back?.type,
+        thumbnail: document.back?.thumbnail
+      }
+    }
+ 
+    this.Apollo.setData(query, variables).subscribe({
+
+      next: (response) => {
+        this.isLoading = false;
+        const value = response.data;
+        if (value && value.data && value.data.length && value.data[0].id) {
+          delete document.frontFile;
+          delete document.backFile;
+        } else {
+          this.modalService.openModal({title: 'Error', message: 'unknownError'});
+        }
+      },
+
+      error: (err) => {
+        this.isLoading = false;
+        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es')
+        this.modalService.openModal(bodyToSend);
+      }
+    })
   }
 
-  get documents(): Document[] {
-    return this.customerService.customer.documents || [];
-  }
 }

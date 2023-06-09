@@ -12,11 +12,12 @@ import { ModalService } from 'src/app/services/modal.service';
 
 // Constants and interfaces
 import { Constants } from 'src/app/constants/Constants';
-import { ICustomer, PayloadFile } from 'src/app/constants/Interface';
+import { ICustomer, IPayloadFile } from 'src/app/constants/Interface';
 import { UPDATE_CUSTOMER, UPLOAD_CUSTOMER_PHOTO } from 'src/app/schemas/query-definitions/customer.query';
 import { formatErrorBody } from 'src/app/utils/error.util';
 import { LookupService } from 'src/app/services/lookup.service';
 import { FormControl } from '@angular/forms';
+import { FileService } from 'src/app/services/file.service';
 
 @Component({
   selector: 'app-my-data',
@@ -42,6 +43,7 @@ export class MyDataComponent implements OnInit {
   constructor(
     public customerService: CustomerService,
     public lookupService: LookupService,
+    private fileService: FileService,
     private apolloApi: ApolloQueryApi,
     private dateAdapter: DateAdapter<any>,
     private axiosApi: AxiosApi,
@@ -199,64 +201,64 @@ export class MyDataComponent implements OnInit {
     })
   }
 
-  upload(event: any) {
+  async upload(event: any) {
 
-    // Spinner
-    this.isLoading = true;
+    // Read file
+    const file = event.target.files[0] 
+    const data = await this.fileService.readFile(file);
 
-    // File info
-    const id = this.customer.id;
-    const reader = new FileReader();
-    const fileInfo = event.target.files[0]
-    const payload:PayloadFile = {
-      file: event.target.files[0],
+    // Thumbnail
+    const uint8Array = new Uint8Array(data);
+    const array = Array.from(uint8Array);
+    const base64String = btoa(array.map(byte => String.fromCharCode(byte)).join(''));
+    const imageSrc = `data:${file.type};base64,${base64String}`;
+
+    // Show file on screen
+    if (this.customer && this.customer.photo)
+      this.customer.photo.thumbnail = data;
+
+    // Call API
+    const payload: IPayloadFile = {
       id: this.customer.id,
-    }
+      data: data,
+      type: file.type,
+    };
 
     // Upload image
-    this.axiosApi.uploadImage(payload).then(
-
+    this.axiosApi.uploadImage(payload).then (
       (res) => {
+        const variables = {
+          id: this.customer.id,
+          file: {
+            oid: res.data,
+            name: file.name,
+            type: file.type,
+            thumbnail: imageSrc
+          }
+        };
+        console.log(UPLOAD_CUSTOMER_PHOTO);
+        console.log(variables);
+        this.apolloApi.setData(UPLOAD_CUSTOMER_PHOTO, variables).subscribe({
 
-        // Image read?
-        reader.onloadend = () => {
-
-          // Update record
-          const oid = res.data;
-          const imageAsB64 = reader.result;
-          const variables = {
-            id,
-            file: {
-              oid: oid,
-              name: fileInfo.name,
-              type: fileInfo.type,
-              thumbnail: imageAsB64
+          next: (res: any) => {
+            const val = res.data;
+            this.isLoading = false;
+            if (val.data && val.data.length && val.data[0]) {
+              const photo = val.data[0].photo;
+              this.customer.photo = photo;
+            } else {
+              this.modalService.openModal({title: 'Error', message: 'unknownError'});
             }
-          };
-          this.apolloApi.setData(UPLOAD_CUSTOMER_PHOTO, variables).subscribe({
+          }, 
 
-            next: (res: any) => {
-              const val = res.data;
-              this.isLoading = false;
-              if (val.data && val.data.length && val.data[0]) {
-                const photo = val.data[0].photo;
-                this.customer.photo = photo;
-              } else {
-                this.modalService.openModal({title: 'Error', message: 'unknownError'});
-              }
-            }, 
-
-            error: (err) => {
-              this.isLoading = false;
-              const bodyToSend = formatErrorBody(err, this.customer.appLang || 'es');
-              this.modalService.openModal(bodyToSend);
-            }
-          })
-        }
-
-        // Read image
-        reader.readAsDataURL(fileInfo);
-
-      })
+          error: (err) => {
+            this.isLoading = false;
+            const bodyToSend = formatErrorBody(err, this.customer.appLang || 'es');
+            this.modalService.openModal(bodyToSend);
+          }
+        })
+      }
+    )
   }
+  
 }

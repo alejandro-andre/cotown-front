@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Booking, Contact, ICustomer } from '../constants/Interface';
+import { Booking, IContact, ICustomer } from '../constants/Interface';
 import { Customer } from '../models/Customer.model';
 
 @Injectable({
@@ -41,7 +41,7 @@ export class CustomerService {
     return this.readOnly;
   }
 
-  setContacts(contacts: Contact[]): void{
+  setContacts(contacts: IContact[]): void{
     this.customer.contacts = contacts;
   }
 
@@ -55,7 +55,7 @@ export class CustomerService {
   removeContactById(id: number): void {
     if (this.customer.contacts) {
       const copy = [...this.customer.contacts];
-      this.customer.contacts = copy.filter((ev: Contact) => ev.id !== id);
+      this.customer.contacts = copy.filter((ev: IContact) => ev.id !== id);
     }
   }
 

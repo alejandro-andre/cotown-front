@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Contact } from 'src/app/constants/Interface';
+import { IContact } from 'src/app/constants/Interface';
 import { DELETE_CONTACT } from 'src/app/schemas/query-definitions/contact.query';
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -32,7 +32,7 @@ export class MyContactsComponent {
     private modalService: ModalService
   ) {}
 
-  get contacts(): Contact[] {
+  get contacts(): IContact[] {
     return this.customerService.customer.contacts || [];
   }
 
@@ -40,7 +40,7 @@ export class MyContactsComponent {
     this.router.navigate(['/cantacts/new']);
   }
 
-  deleteContact(event: Contact): void {
+  deleteContact(event: IContact): void {
 
     // Spinner
     this.isLoading = true;

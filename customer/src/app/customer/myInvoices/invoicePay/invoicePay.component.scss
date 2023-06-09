@@ -1,19 +1,18 @@
 button {
+  cursor: pointer;
   background-color: #00BFB2;
   border-radius: 8px;
   border: none;
-  color: white;
+  color: black;
   padding: 12px 32px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 14px;
+  font-size: 16px;
 }
-
 button:hover {
   background-color: #008F82;
 }
-
 button:active {
   background-color: #00EFE2;
 }

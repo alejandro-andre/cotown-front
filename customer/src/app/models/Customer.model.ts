@@ -1,6 +1,6 @@
 import { FormControl } from '@angular/forms';
-import { ICustomer, Photo } from '../constants/Interface';
-import { Booking, Contact, Invoice, Payment, Document } from '../constants/Interface';
+import { ICustomer, IPhoto } from '../constants/Interface';
+import { Booking, IContact, Invoice, Payment, IDocument } from '../constants/Interface';
 
 export class Customer implements ICustomer {
 
@@ -23,10 +23,10 @@ export class Customer implements ICustomer {
   school_id: number | null = null;
   bank_account: string = '';
   appLang: string = 'es';
-  photo: Photo | null = null;
+  photo: IPhoto | null = null;
 
-  contacts: Contact[] = [] as Contact[];
-  documents: Document[] = [] as Document[];
+  contacts: IContact[] = [] as IContact[];
+  documents: IDocument[] = [] as IDocument[];
   bookings: Booking[] = [] as Booking[];
   invoices: Invoice[] = [] as Invoice[];
   payments: Payment[] = [] as Payment[];

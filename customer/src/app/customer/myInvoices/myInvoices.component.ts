@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { BasicResponse, BookingResource, Invoice, Payment, TableObject } from 'src/app/constants/Interface';
+import { IBase, BookingResource, Invoice, Payment, ICode } from 'src/app/constants/Interface';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { Constants } from 'src/app/constants/Constants';
@@ -22,7 +22,8 @@ export class MyInvoicesComponent {
   ) {}
 
   public displayedInvoiceColumns: string[] = [
-    'issue_date',
+    'view',
+    'issued_date',
     'concept',
     'amount',
     'resource',
@@ -30,14 +31,14 @@ export class MyInvoicesComponent {
   ];
 
   public displayedPaymentColumns: string[] = [
-    'issue_date',
+    'pay',
+    'issued_date',
     'concept',
     'amount',
     'resource',
     'payment_date',
     'payment_auth',
     'payment_order',
-    'pay',
   ];
 
   getResource(resource: BookingResource): string {
@@ -74,7 +75,7 @@ export class MyInvoicesComponent {
     return this.customerService.customer?.payments || [];
   }
 
-  getPaymentResource(resource: BasicResponse):string {
+  getPaymentResource(resource: ICode):string {
     return resource?.code || '';
   }
 

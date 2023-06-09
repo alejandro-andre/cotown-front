@@ -1,25 +1,34 @@
-.doc-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 1px dotted gray;
+.doc-viewer {
     width: 100%;
-    height: 250px;
-    margin: 10px 0 20px 0;
-  }
-  .doc-container img {
+    height: 360px;
+    align-items: center;
+    background: gray;
+    border: 3px dashed black;
+    overflow-y: auto;
+}
+.doc-viewer img {
+    width: 100%;
+    height: auto;
+}
+.pdf-viewer {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-  }
-  .doc-container input {
+}
+
+.files {
+    display: flex;
+    flex-direction: column;
+    height: 380px;
+}
+.files input {
     display: none;
-  }
-  .doc-container label{
-    cursor: pointer;
+}
+.files label{
+    margin: 5px;
+    width: 160px;
     border: 1px solid gray;
     border-radius: 5px;
-    align-items: center; 
     padding: 5px;
-  }
+    text-align: center;
+    cursor: pointer;
+}

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import axios from 'axios';
 
 import { ApolloQueryApi } from './apollo-api.service';
-import { PayloadFile } from '../constants/Interface';
+import { IPayloadFile } from '../constants/Interface';
 
 const axiosInstance = axios.create({
   baseURL: 'https://experis.flows.ninja/'
@@ -19,25 +19,23 @@ const secondInstance = axios.create({
 export class AxiosApi {
   constructor(private apollo: ApolloQueryApi){}
 
-  uploadFile(payload: PayloadFile) {
+  uploadFile(payload: IPayloadFile, field: string) {
     const token = this.apollo.token;
-    const url = `/document/Customer/Customer_doc/${payload.id}/${payload.document}/contents?access_token=${token}`;
-    return axiosInstance.post(url, { file: payload.file }, { headers: { 'Content-Type': 'multipart/form-data' } } )
+    const url = `/document/Customer/Customer_doc/${payload.id}/${field}/contents?access_token=${token}`;
+    return axiosInstance.post(url, payload.data, { headers: { 'Content-Type': payload.type } } )
   }
 
   get(url: string) {
     const params: any = {
       token: this.apollo.token
     }
-
     return axios.get(url, params);
   }
 
-
-  uploadImage(payload: PayloadFile) {
+  uploadImage(payload: IPayloadFile) {
     const token = this.apollo.token;
     const url = `/document/Customer/Customer/${payload.id}/Photo/contents?access_token=${token}`;
-    return axiosInstance.post(url, { file: payload.file }, { headers: { 'Content-Type': 'multipart/form-data' } } )
+    return axiosInstance.post(url, payload.data, { headers: { 'Content-Type': payload.type } } )
   }
 
   getFile(id: number, type: string) {

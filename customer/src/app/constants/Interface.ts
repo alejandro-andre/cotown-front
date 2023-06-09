@@ -1,21 +1,28 @@
 import { FormControl } from "@angular/forms"
 
-// Classes
-
+// Interfaces
 export interface IBase  {
   id: number,
   name: string
 }
 
-export interface IContactType extends IBase {
-}
+// Lookup tables
+export interface Lookup extends IBase {};
+export interface LookupInt extends IBase {
+  name_en?: string,
+};
 
-export interface Contact extends IBase {
+// Customer contact type
+export interface IContactType extends IBase {}
+
+// Customer contact
+export interface IContact extends IBase {
   email?: string,
   phones?: string,
   contact_type: IContactType,
 };
 
+// Customer
 export interface ICustomer extends IBase {
   appLang?: string,
   email: string,
@@ -34,79 +41,56 @@ export interface ICustomer extends IBase {
   language_id: number | null,
   nationality_id: number | null,
   country_id: number | null,
-  
-  photo?: Photo | null,
-  contacts?: Contact[],
-  documents?: Document[],
+  photo?: IPhoto | null,
+  contacts?: IContact[],
+  documents?: IDocument[],
   invoices?: Invoice[],
   payments?: Payment[],
   bookings?: Booking[],
 };
 
-export interface DocFile {
-  name: string,
-  oid: number,
-  type: string,
-  size: number
-
-  id: number,
-  index?: number
-  file?: File,
-  fileName: string,
+// Customer document
+export interface IDocType extends IBase {
+  name_en: string,
+  images: number
 }
-
-export interface Document {
+export interface IDocument {
   id: number,
   expiry_date: string | null ,
-  front?: DocFile,
-  back?: DocFile,
-  doctype: DocType,
-  formDateControl: FormControl,
+  doc_type?: IDocType,
+  front?: IDocFile,
+  back?: IDocFile,
+  frontFile?: File,
+  backFile?: File,
+  formDateControl: FormControl
 }
 
-export interface IBuilding extends IBase {
-  code: string
-}
-
-export interface IFlatType extends IBase {
-  code: string
-}
-
-export interface IPlaceType extends IBase {
-  code: string
-}
-
-export interface Nav {
+// Files
+export interface IFile {
   name: string,
-  url: string
-};
-
-export interface Lookup {
+  oid: number,
+  type: string
+  size: number
+}
+export interface IPhoto extends IFile  {
+  thumbnail: any | null,
+  content: any,
+}
+export interface IDocFile extends IPhoto {
   id: number,
-  name?: string,
-};
-
-export interface LookupInt {
-  id: number,
-  name?: string,
-  name_en?: string,
-};
-
-export interface BasicResponse {
-  id: number,
-  code?: string
-  name?: string,
-  name_en?: string,
-};
-
-export interface Rent extends BasicResponse {
-  rent: number,
-  services: number,
-  rent_date: string
-  rent_discount: number,
-  service_discount: number
+  file?: File,
+  content: any,
 }
 
+// Building, flat and place types
+export interface ICode extends IBase {
+  code: string
+}
+export interface IBuilding extends ICode {}
+export interface IFlatType extends ICode {}
+export interface IPlaceType extends ICode {}
+
+// Booking options
 export interface IOption {
   id: number,
   accepted: boolean,
@@ -116,10 +100,24 @@ export interface IOption {
   flat_type: IFlatType,
 }
 
+// Navigation
+export interface Nav {
+  name: string,
+  url: string
+};
+
+export interface Rent extends IBase {
+  rent: number,
+  services: number,
+  rent_date: string
+  rent_discount: number,
+  service_discount: number
+}
+
 export interface Booking {
   id: number,
   status: string,
-  payer: BasicResponse,
+  payer: IBase,
   date_from: string,
   date_to: string,
   request_date: string,
@@ -127,49 +125,36 @@ export interface Booking {
   expiry_date: string | null,
   check_in: string | null,
   check_out: string | null,
-
   building: IBuilding,
   resource_type: string,
   flat_type: IFlatType,
   place_type: IPlaceType,
-
-  resource: BasicResponse
-
+  resource: ICode,
   rent: number,
   services: number,
   limit: number,
   deposit: number
-
-  reason: BasicResponse,
-  school: BasicResponse,
-
-  contract_rent: ServerFileDocument | null,
-  contract_services: ServerFileDocument | null,
+  reason: IBase,
+  school: IBase,
+  contract_rent: IDocFile | null,
+  contract_services: IDocFile | null,
   contract_signed: string | null,
-
   check_in_id: number | null,
   flight: string | null,
   arrival: string | null,
-  
   price_list?: Rent[],
   options: IOption[] | null
 };
 
-export interface TableObject {
-  header: string,
-  property: string,
-  name: string
-}
-
 export interface BookingResource {
-  resource: BasicResponse
+  resource: ICode
 }
 
 export interface Invoice {
   id: string,
   concept: string,
   total: number,
-  issue_date: string,
+  issued_date: string,
   booking: BookingResource,
 };
 
@@ -177,28 +162,13 @@ export interface Payment {
   id: string,
   amount: number,
   concept: string,
-  issue_date: string,
+  issued_date: string,
   pay: string,
   booking: BookingResource
 }
 
-export interface DocType extends BasicResponse {
-  images: number,
-  arrayOfImages?: Array<any>
-}
-
-export interface ServerFileDocument {
-  name: string,
-  oid: number,
-}
-
-export interface Photo extends ServerFileDocument  {
-  thumbnail: string | null,
-  type: string
-}
-
-export interface PayloadFile  {
-  file: File,
+export interface IPayloadFile {
   id: number,
-  document?: string,
+  type: string,
+  data: any 
 }

@@ -2,7 +2,6 @@ import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
-import { TableObject } from 'src/app/constants/Interface';
 import { CustomerService } from 'src/app/services/customer.service';
 import { LookupService } from 'src/app/services/lookup.service';
 

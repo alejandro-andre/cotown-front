@@ -45,6 +45,7 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       doc_type: Customer_doc_typeViaCustomer_doc_type_id {
         id
         name: Name
+        name_en: Name_en
         images: Images
       }
     }
@@ -204,22 +205,31 @@ export const UPDATE_CUSTOMER = `
     }) {id}
 }`;
 
-export const UPLOAD_CUSTOMER_DOCUMENT = `mutation ($id: Int! $file: Models_DocumentTypeInputType, $date: String) {
+export const UPLOAD_CUSTOMER_DOCUMENT = `mutation ($id: Int! $fileFront: Models_DocumentTypeInputType, $date: String) {
   data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
     entity: {
-      Document: $file
+      Expiry_date: $date
+      Document: $fileFront
     }
-  ) { id }
+  ) { 
+    id 
+    Document { oid name type size }
+    Document_back { oid name type size }
+  }
 }`;
 
 export const UPLOAD_CUSTOMER_FULL_DOCUMENTS = `mutation ($id: Int!, $fileFront: Models_DocumentTypeInputType, $fileBack: Models_DocumentTypeInputType, $date: String) {
   data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
     entity: {
+      Expiry_date: $date
       Document: $fileFront
       Document_back: $fileBack
-      Expiry_date: $date
     }
-  ) { id }
+  ) { 
+    id 
+    Document { oid name type size }
+    Document_back { oid name type size }
+  }
 }`;
 
 export const UPLOAD_CUSTOMER_PHOTO = `mutation ($id: Int! $file: Models_DocumentTypeInputType) {

@@ -11,12 +11,11 @@ import { CustomerService } from 'src/app/services/customer.service';
 import { LookupService } from 'src/app/services/lookup.service';
 
 // Models
-import { ICustomer, DocFile, Document } from 'src/app/constants/Interface';
+import { ICustomer, IDocFile, IDocument } from 'src/app/constants/Interface';
 import { Constants } from 'src/app/constants/Constants';
 
 // Queries
 import { CUSTOMER_ID_QUERY, CUSTOMER_QUERY } from 'src/app/schemas/query-definitions/customer.query';
-import { getAge } from 'src/app/utils/date.util';
 import { Customer } from 'src/app/models/Customer.model';
 
 @Component({
@@ -99,55 +98,52 @@ export class LayoutComponent implements OnInit {
     );
   }
 
-  loadDocuments (documents: Document[]): Document[] {
+  loadDocuments (documents: IDocument[]): IDocument[] {
     if (documents === null) {
-      return [] as Document[];
+      return [] as IDocument[];
     }
 
-    const returnData: Document[] = [] ;
-    documents.forEach((doc: Document) => {
-      const numOfImages = doc.doctype.images;
-      const images: DocFile[]= [];
+    const returnData: IDocument[] = [] ;
+    documents.forEach((doc: IDocument) => {
+      const numOfImages = doc.doc_type?.images || 1;
+      const images: IDocFile[]= [];
 
       for (let i = 0; i < numOfImages; i++) {
-        const docFile: DocFile = {
+        const IDocFile: IDocFile = {
           id: doc.id,
-          index: i,
+          oid: -1,
           name: '',
           type: '',
-          file:  undefined,
-          fileName: '',
-          oid: -1,
           size: 0,
+          content: '',
+          thumbnail: ''
         }
-        images.push(docFile)
+        images.push(IDocFile)
       }
 
       if (doc.front && doc.front !== null && doc.front.oid !== null) {
-        images[0].fileName = doc.front.name;
+        images[0].name = doc.front.name;
         images[0].oid = doc.front.oid
-        images[0].name = Constants.DOCUMENT_TYPE_FRONT;
       }
 
       if (doc.back && doc.back !== null && doc.back.oid !== null) {
-        images[1].fileName = doc.back.name;
+        images[1].name = doc.back.name;
         images[1].oid = doc.back.oid;
-        images[1].name = Constants.DOCUMENT_TYPE_BACK;
       }
 
       const docObject = {
         expiry_date: doc.expiry_date,
         id: doc.id,
         formDateControl: new FormControl(doc.expiry_date),
-        doctype: {
-          name: doc.doctype.name,
-          images: doc.doctype.images,
-          id: doc.doctype.id,
+        doc_type: {
+          id: doc.doc_type?.id || 0,
+          name: doc.doc_type?.name,
+          images: doc.doc_type?.images || 1,
           arrayOfImages: images
         }
       };
 
-      returnData.push(docObject);
+      //returnData.push(docObject);
     });
 
     return returnData;

@@ -11,7 +11,7 @@
       <div class="image-container">
         <img *ngIf="customer.photo !== null" [src]="customer.photo?.thumbnail" [alt]="customer.photo?.name">
         <input id="photo" [(ngModel)]="image" type="file" (change)="upload($event)">
-        <label *ngIf="!customer.photo || customer.photo === null" for="photo">Subir foto</label>
+        <label *ngIf="!customer.photo || customer.photo === null" for="photo">{{ 'upload_image' | translate }}</label>
       </div>
     </div>      
     

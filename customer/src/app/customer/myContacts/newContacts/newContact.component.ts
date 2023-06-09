@@ -11,7 +11,7 @@ import { LookupService } from 'src/app/services/lookup.service';
 import { formatErrorBody } from 'src/app/utils/error.util';
 
 // Interface
-import { Contact, IContactType } from 'src/app/constants/Interface';
+import { IContact, IContactType } from 'src/app/constants/Interface';
 
 // Queries
 import { GET_CONTACTS_BY_CUSTOMERID, INSERT_CONTACT } from 'src/app/schemas/query-definitions/contact.query';

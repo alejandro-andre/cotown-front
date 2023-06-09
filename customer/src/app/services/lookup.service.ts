@@ -114,7 +114,6 @@ export class LookupService {
   loadCheckinOptions() {
     this.apolloApi.getData(CHECKIN_OPTIONS_QUERY).subscribe((res) => {
       const value = res.data;
-      console.log(value);
       if(value && value.data && value.data.length) {
         this.checkinOptions = value.data;
       }

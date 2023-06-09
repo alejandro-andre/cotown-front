@@ -54,7 +54,6 @@ export class MyContactsComponent {
 
       next: (res) => {
         const value = res.data;
-        console.log(value, value.data, value.data[0].id === event.id);
         this.isLoading = false;
         if (value && value.data && value.data.length && value.data[0].id === event.id) {
           this.customerService.removeContactById(event.id);

@@ -58,7 +58,7 @@ export class AxiosApi {
     return axiosInstance.get(url, { responseType: 'blob' });
   }
 
-  discartBooking(id: number) {
+  discardBooking(id: number) {
     const token = this.apollo.token;
     return secondInstance.get(`/booking/${id}/status/descartada?access_token=${token}`);
   }

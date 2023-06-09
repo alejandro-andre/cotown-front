@@ -13,9 +13,6 @@ import { LookupService } from 'src/app/services/lookup.service';
 })
 
 export class MyBookingsComponent {
-  public RESOURCE_PROPERTY = Constants.BOOKING_RESOURCE;
-  public FLAT_TYPE_PROPERTY = Constants.BOOKING_FLAT;
-  public PLACE_TYPE_PROPERTY = Constants.BOOKING_PLACE;
 
   constructor(
     public customerService: CustomerService,

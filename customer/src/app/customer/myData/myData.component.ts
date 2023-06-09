@@ -131,7 +131,6 @@ export class MyDataComponent implements OnInit {
     if (date !== null) {
       const locale = Constants.LANGUAGES.find((elem) => elem.id === this.customer.appLang)?.date;
       const formattedDate = this.datePipe.transform(date, locale);
-      console.log(locale, formattedDate)
       return formattedDate;
     }
     return null;

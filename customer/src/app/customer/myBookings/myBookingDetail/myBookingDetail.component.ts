@@ -1,26 +1,22 @@
 // Core
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 // Services
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
+import { LookupService } from 'src/app/services/lookup.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { formatErrorBody } from 'src/app/utils/error.util';
 
 //Queries & constants
 import { Constants } from 'src/app/constants/Constants';
-import { Booking, TableObject } from 'src/app/constants/Interface';
-import {
-  ACCEPT_BOOKING_OPTION,
-  GET_BOOKING_BY_ID,
-  SIGN_BOOKING_CONTRACT,
-  UPDATE_BOOKING
-} from 'src/app/schemas/query-definitions/booking.query';
-import { FormControl } from '@angular/forms';
-import { LookupService } from 'src/app/services/lookup.service';
-import { DatePipe } from '@angular/common';
+import { Booking } from 'src/app/constants/Interface';
+import { ACCEPT_BOOKING_OPTION, GET_BOOKING_BY_ID, SIGN_BOOKING_CONTRACT, UPDATE_BOOKING } from 'src/app/schemas/query-definitions/booking.query';
+import { PDFDocumentProxy } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-booking-detail',
@@ -28,37 +24,45 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./myBookingDetail.component.scss']
 })
 
-export class MyBookingDetailComponent implements OnInit {
+export class MyBookingDetailComponent {
 
-  public isViewLoading = false;
+  @ViewChild('pdfRent') pdfRent: any;
+  @ViewChild('pdfServices') pdfServices: any;
+
+  // Current booking
   public booking!: Booking;
-  public contract_services = '';
-  public contract_rent = '';
-  public bookingId!: number;
+
+  // Contract data
   public contractMessage: string = '';
   public formatedDate: string = '';
+
+  // Flags
+  public isViewLoading = false;
   public isEditableSchool: boolean = false;
   public isEditableReason: boolean = false;
-  private contract_rent_info = {
-    total_pages: -1,
-    current_page: -1,
-    loaded: false,
+  public enabledSave: boolean = false;
+
+  // Contracts info
+  public contractRentInfo = {
+    contract: '',
+    total_pages: 1,
+    current_page: 1,
     signed: false,
     rendered: false,
   };
-
-  private contract_service_info = {
-    total_pages: -1,
-    current_page: -1,
-    loaded: false,
+  public contractServicesInfo = {
+    contract: '',
+    total_pages: 1,
+    current_page: 1,
     signed: false,
     rendered: false
   };
 
+  // Constants
   public RENT_CONTRACT_TYPE = 'RENT_CONTRACT';
   public SERVICE_CONTRACT_TYPE = 'SERVICE_CONTRACT';
-  public ACCEPT_PROPERTY = 'Accept'
-
+  
+  // Tables
   public displayedColumnsOptions: string[] = [
       'accept',
       'building',
@@ -66,8 +70,7 @@ export class MyBookingDetailComponent implements OnInit {
       'flat_type',
       'place_type',
   ];
-
-  public displayedColumns: string[] = [
+  public displayedColumnsPrices: string[] = [
     'rent_date',
     'rent',
     'services',
@@ -75,13 +78,12 @@ export class MyBookingDetailComponent implements OnInit {
     'services_discount',
   ];
 
-  public enabledSave: boolean = false;
-
+  // Form data
+  public checkinFormControl = new FormControl<Date | null>(null);
+  public checkoutFormControl = new FormControl<Date | null>(null);
   public selectedReason!: number;
   public selectedSchool!: number;
   public selectedOption: number | null = null;
-  public checkinFormControl = new FormControl<Date | null>(null);
-  public checkoutFormControl = new FormControl<Date | null>(null);
   public flight:string = '';
   public arrival: string = '';
 
@@ -98,55 +100,14 @@ export class MyBookingDetailComponent implements OnInit {
     // Spinner
     this.isViewLoading = true;
 
-    // Get id
+    // Look for booking
     this.activeRoute.params.subscribe((res) => {
-      const id = res['id'];
-      this.bookingId = parseInt(id);
-      const finded = this.customerService.customer.bookings?.find(
-        (booking: Booking) => booking.id === this.bookingId
-      );
-      if (finded) {
-        this.booking = finded;
-        this.selectedOption = this.booking.check_in_id;
-        this.flight = this.booking.flight !== null ? this.booking.flight : '';
-        this.arrival = this.booking.arrival !== null ? this.booking.arrival : '';
-        this.checkinFormControl = new FormControl(
-          this.booking.check_in !== null ?
-          new Date(this.booking.check_in) : null
-        );
-        this.checkoutFormControl = new FormControl(
-          this.booking.check_out !== null ?
-          new Date(this.booking.check_out) : null
-        )
-        if (this.reasonName === '') {
-          this.isEditableReason = true;
-        } else {
-          this.selectedReason = this.booking.reason.id;
-          this.isViewLoading = false;
-        }
-        if (this.schoolName === '') {
-          this.isEditableSchool = true;
-        } else {
-          this.selectedSchool = this.booking.school.id;
-        }
+      const found = this.customerService.customer.bookings?.find((b: Booking) => b.id === parseInt(res['id']));
+      if (found) {
+        this.setBooking(found)
+        this.getPdfsContracts();
       }
     });
-  }
-
-  async ngOnInit(): Promise<void> {
-
-    // Get contracts
-    if (this.booking) {
-      if (this.booking.contract_signed !== null) {
-        this.contractMessage = 'signed_message';
-        const locale = Constants.LANGUAGES.find((elem) => elem.id === this.customerService.customer.appLang)?.date;
-        this.formatedDate = this.datePipe.transform(this.booking.contract_signed, locale + ' HH:MM:SS') || '';
-      } else {
-        this.contractMessage = 'sign_message';
-      }
-      await this.getPdfsContracts();
-    }
-    
   }
 
   /*
@@ -228,13 +189,13 @@ export class MyBookingDetailComponent implements OnInit {
     return this.customerService.customer.appLang === Constants.SPANISH.id
   }
   
+  /*
+   * Methods
+   */
+
   getResourceType(code: string): string {
     const status = this.lookupService.resourceTypes.find((elem) => elem.code === code)
     return (this.customerService.customer.appLang === Constants.SPANISH.id) ? status?.name || '' : status?.name_en || '';
-  }
-
-  enableSave() {
-    this.enabledSave = true;
   }
 
   formatDate(date: string | null): string {
@@ -246,6 +207,84 @@ export class MyBookingDetailComponent implements OnInit {
     return '';
   }
 
+  enableSave() {
+    this.enabledSave = true;
+  }
+
+  setBooking(booking: any) {
+
+    // Assign booking
+    this.booking = booking;
+
+    // Fill form fields
+    this.selectedOption = this.booking.check_in_id;
+    this.flight = this.booking.flight !== null ? this.booking.flight : '';
+    this.arrival = this.booking.arrival !== null ? this.booking.arrival : '';
+
+    // Checkin date
+    this.checkinFormControl = new FormControl(
+      this.booking.check_in !== null ?
+      new Date(this.booking.check_in) : null
+    );
+
+    // Checkout date
+    this.checkoutFormControl = new FormControl(
+      this.booking.check_out !== null ?
+      new Date(this.booking.check_out) : null
+    )
+
+    // Reason
+    if (this.reasonName === '') {
+      this.isEditableReason = true;
+    } else {
+      this.selectedReason = this.booking.reason.id;
+      this.isViewLoading = false;
+    }
+
+    // School
+    if (this.schoolName === '') {
+      this.isEditableSchool = true;
+    } else {
+      this.selectedSchool = this.booking.school.id;
+    }
+
+    // Signature
+    if (this.booking.contract_signed !== null) {
+      this.contractMessage = 'signed_message';
+      const locale = Constants.LANGUAGES.find((elem) => elem.id === this.customerService.customer.appLang)?.date;
+      this.formatedDate = this.datePipe.transform(this.booking.contract_signed, locale + ' HH:MM:SS') || '';
+    } else {
+      this.contractMessage = 'sign_message';
+    }
+
+  }
+
+  // Refresh booking
+  getBookingById () {
+    this.apollo.getData(GET_BOOKING_BY_ID, { id: this.booking.id }).subscribe({
+
+      next: (res) => {
+        const data = res.data;
+        this.isViewLoading = false;
+        if (data && data.booking && data.booking.length) {
+          this.enabledSave = false;
+          this.setBooking(data.booking[0]);
+        } else {
+          this.modalService.openModal({ title: 'Error', message: 'unknownError' });
+        }
+
+      }, 
+
+      error: (err) => {
+        this.isViewLoading = false;
+        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
+        this.modalService.openModal(bodyToSend);
+      }
+
+    });
+  }
+
+  // Save changes
   save () {
 
     // Spinner
@@ -286,6 +325,7 @@ export class MyBookingDetailComponent implements OnInit {
     })
   }
 
+  // Accept option
   accept (id: number): void {
 
     // Spinner
@@ -308,8 +348,8 @@ export class MyBookingDetailComponent implements OnInit {
 
             next: (response) => {
               if (response && response.data && response.data.booking) {
-                this.booking = JSON.parse(JSON.stringify(response.data.booking[0]));
                 this.isViewLoading = false;
+                this.setBooking(JSON.parse(JSON.stringify(response.data.booking[0])));
               } else {
                 this.isViewLoading = false;
                 this.modalService.openModal({title: 'Error', message: 'unknownError'});
@@ -327,7 +367,6 @@ export class MyBookingDetailComponent implements OnInit {
           this.isViewLoading = false;
           this.modalService.openModal({title: 'Error', message: 'unknownError'});
         }
-
       },
 
       error: (err) => {
@@ -338,180 +377,14 @@ export class MyBookingDetailComponent implements OnInit {
     })
   }
 
-  /* REVISAR */
-
-  getBookingById () {
-    this.apollo.getData(GET_BOOKING_BY_ID, { id: this.booking.id }).subscribe({
-
-      next: (res) => {
-        const data = res.data;
-        this.isViewLoading = false;
-        if (data && data.booking && data.booking.length) {
-          this.isEditableReason = false;
-          this.isEditableSchool = false;
-          this.booking = data.booking[0];
-          this.enabledSave = false;
-        } else {
-          this.modalService.openModal({ title: 'Error', message: 'unknownError' });
-        }
-
-      }, 
-
-      error: (err) => {
-        this.isViewLoading = false;
-        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
-        this.modalService.openModal(bodyToSend);
-      }
-
-    });
-  }
-
-  /* PDFs */
-
-  async getPdfsContracts() {
-
-    if (this.booking.contract_services) {
-      const type = Constants.CONTRACT_SERVICES_PDF;
-      const contract_services = await this.axiosApi.getContract(this.booking.id, type);
-      if (contract_services && contract_services.data) {
-        this.contract_services = URL.createObjectURL(contract_services.data);
-        this.contract_service_info.rendered = true;
-      }
-    }
-
-    if (this.booking.contract_rent) {
-      const type = Constants.CONTRACT_RENT_PDF;
-      const contract_rent = await this.axiosApi.getContract(this.booking.id, type);
-      if (contract_rent && contract_rent.data) {
-        this.contract_rent = URL.createObjectURL(contract_rent.data);
-        this.contract_rent_info.rendered = true;
-      }
-    }
-  }
-
-  pageRenderedRent(e: any) {
-
-    this.contract_rent_info.current_page = e.pageNumber;
-    if (
-      this.contract_rent_info.current_page === this.contract_rent_info.total_pages &&
-      !this.contract_rent_info.loaded
-    ) {
-      this.contract_rent_info.loaded = true
-    }
-  }
-
-  afterLoadRent(event: any) {
-    this.contract_rent_info.total_pages = event._pdfInfo.numPages;
-  }
-
-  pageRenderedService(e: any) {
-    this.contract_service_info.current_page = e.pageNumber;
-    if(
-      this.contract_service_info.current_page === this.contract_service_info.total_pages &&
-      !this.contract_service_info.loaded
-    ) {
-      this.contract_service_info.loaded = true
-    }
-  }
-
-  afterLoadService(event: any) {
-    this.contract_service_info.total_pages = event._pdfInfo.numPages;
-  }
-
-  get isRentContractLoaded(): boolean {
-    if (this.booking.contract_rent && this.booking.contract_rent.oid) {
-      return this.contract_rent_info.loaded;
-    }
-    return false;
-  }
-
-  get isServiceContractLoaded(): boolean {
-    if (this.booking.contract_services && this.booking.contract_services.oid) {
-      return this.contract_service_info.loaded;
-    }
-    return false;
-  }
-
-  get allContractsRendered(): boolean {
-    if (
-      this.booking.contract_rent &&
-      this.booking.contract_rent.oid &&
-      this.booking.contract_services &&
-      this.booking.contract_services.oid
-    ) {
-      return this.contract_rent_info.rendered && this.contract_service_info.rendered
-    }
-
-    if (this.booking.contract_rent && this.booking.contract_rent.oid) {
-      return this.contract_rent_info.rendered;
-    }
-
-    if (this.booking.contract_services && this.booking.contract_services.oid) {
-      return this.contract_service_info.rendered;
-    }
-
-    return false
-  }
-
-  get contractSigned (): String | null {
-    return this.booking.contract_signed;
-  }
-
-  get showDiscart():boolean {
-    return this.booking.status.includes('solicitud') || this.booking.status.includes('alternativas');
-  }
-
-  sign (type: String):void {
-    this.isViewLoading = true;
-    if (type === this.SERVICE_CONTRACT_TYPE) {
-      this.contract_service_info.signed = true;
-    } else{
-      this.contract_rent_info.signed = true;
-    }
-
-    if(this.contract_rent_info.signed && this.contract_service_info.signed) {
-      const variables = {
-        id: this.booking.id,
-        time: this.datePipe.transform(new Date(), 'yyyy-MM-dd')
-      }
-      this.apollo.setData(SIGN_BOOKING_CONTRACT,variables).subscribe({
-
-        next: (res) => {
-          const value = res.data.data[0].Contract_signed;
-          this.isViewLoading = false;
-          if (value) {
-            const finded = this.customerService.customer.bookings?.find((booking: Booking) => booking.id === this.bookingId );
-            if (finded) {
-              const copy = JSON.parse(JSON.stringify(finded));
-              copy.contract_signed = value;
-              this.customerService.updateBooking(copy);
-              this.booking = copy;
-              this.contractMessage ='signedMessage';
-              const date = value.split('T');
-              this.formatedDate = `${date[0]} ${date[1]}`;
-            }
-          } else {
-            this.modalService.openModal({title: 'Error', message: 'unknownError'});
-          }
-        }, 
-      
-        error: (err) => {
-          const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
-          this.isViewLoading = false;
-          this.modalService.openModal(bodyToSend);
-        }
-
-      });
-    }
-  }
-
-  discard() {
+  // Cancel booking
+  discard () {
 
     // Spinner
     this.isViewLoading = true;
 
-    // API REEST
-    this.axiosApi.discartBooking(this.booking.id).then((respose) =>{
+    // API REST
+    this.axiosApi.discardBooking(this.booking.id).then((respose) =>{
       if (respose && respose.data === 'ok') {
         this.getBookingById();
       } else {
@@ -523,5 +396,100 @@ export class MyBookingDetailComponent implements OnInit {
       this.isViewLoading = false;
       this.modalService.openModal(bodyToSend);
     })
+  }
+
+  /* PDFs */
+
+  async getPdfsContracts() {
+
+    if (this.booking.contract_services) {
+      const type = Constants.CONTRACT_SERVICES_PDF;
+      const data = await this.axiosApi.getContract(this.booking.id, type);
+      if (data && data.data) {
+        this.contractServicesInfo.contract = URL.createObjectURL(data.data);
+        this.contractServicesInfo.rendered = true;
+      }
+    }
+
+    if (this.booking.contract_rent) {
+      const type = Constants.CONTRACT_RENT_PDF;
+      const data = await this.axiosApi.getContract(this.booking.id, type);
+      if (data && data.data) {
+        this.contractRentInfo.contract = URL.createObjectURL(data.data);
+        this.contractRentInfo.rendered = true;
+      }
+    }
+  }
+
+  afterLoadRent(pdf: PDFDocumentProxy) {
+    this.pdfRent = pdf;
+    this.contractRentInfo.total_pages = pdf._pdfInfo.numPages;
+  }
+
+  afterLoadServices(pdf: PDFDocumentProxy) {
+    this.pdfServices = pdf;
+    this.contractServicesInfo.total_pages = pdf._pdfInfo.numPages;
+  }
+
+  get contractsRendered(): boolean {
+    return this.contractRentInfo.rendered || this.contractServicesInfo.rendered
+  }
+
+  get contractsSigned (): String | null {
+    return this.booking.contract_signed;
+  }
+
+  sign (type: String):void {
+
+    // Spinner
+    this.isViewLoading = true;
+
+    // Signed contract
+    if (type === this.SERVICE_CONTRACT_TYPE) {
+      this.contractServicesInfo.signed = true;
+    } else {
+      this.contractRentInfo.signed = true;
+    }
+
+    // Both signed
+    if (this.contractRentInfo.signed && this.contractServicesInfo.signed) {
+      const variables = {
+        id: this.booking.id,
+        time: this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss')
+      }
+      this.apollo.setData(SIGN_BOOKING_CONTRACT, variables).subscribe({
+
+        next: (res) => {
+          this.isViewLoading = false;
+          this.getBookingById();
+        }, 
+      
+        error: (err) => {
+          this.isViewLoading = false;
+          const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
+          this.modalService.openModal(bodyToSend);
+        }
+
+      });
+    }
+  }
+
+  downloadRent() {
+    this.download(this.pdfRent, this.booking.contract_rent?.name || 'Contrato renta.pdf');
+  }
+
+  downloadServices() {
+    this.download(this.pdfServices, this.booking.contract_services?.name || 'Contrato servicios.pdf');
+  }
+
+  download(pdf: any, name: string) {
+    pdf.getData().then((data:any) => {
+      let blob = new Blob([data.buffer], { type: 'application/pdf' });
+      const blobUrl = window.URL.createObjectURL((blob));
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = name;
+      link.click();
+    });
   }
 }

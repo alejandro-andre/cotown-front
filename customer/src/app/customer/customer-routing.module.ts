@@ -23,15 +23,15 @@ const routes: Routes = [
     children:  [
       {
         path: '',
-        redirectTo:  Constants.DATA.url,
+        redirectTo:  Constants.NAV_DATA.url,
         pathMatch: 'full'
       },
       {
-        path: Constants.DATA.url,
+        path: Constants.NAV_DATA.url,
         component: MyDataComponent,
       },
       {
-        path: Constants.CONTACTS.url,
+        path: Constants.NAV_CONTACTS.url,
         component: MyContactsComponent,
       },
       {
@@ -39,11 +39,11 @@ const routes: Routes = [
         component: NewContactComponent,
       },
       {
-        path: Constants.DOCUMENTS.url,
+        path: Constants.NAV_DOCUMENTS.url,
         component: MyDocumentsComponent,
       },
       {
-        path: Constants.BOOKINGS.url,
+        path: Constants.NAV_BOOKINGS.url,
         component: MyBookingsComponent,
       },
       {
@@ -51,7 +51,7 @@ const routes: Routes = [
         component: MyBookingDetailComponent,
       },
       {
-        path: Constants.INVOICES.url,
+        path: Constants.NAV_INVOICES.url,
         component: MyInvoicesComponent,
       },
       {

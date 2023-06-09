@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Constants } from 'src/app/constants/Constants';
 import { Nav } from 'src/app/constants/Interface';
@@ -13,11 +12,7 @@ import { Nav } from 'src/app/constants/Interface';
 
 export class NavComponent implements OnInit{
 
-  @Input() showTutor!: Observable<boolean>;
-  public showTutorVariable = false;
-
   public urls = Constants.NAV_URLS;
-  public TUTOR = Constants.TUTOR;
   public selected: string = '';
 
   constructor(
@@ -26,9 +21,6 @@ export class NavComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    if (this.showTutor) {
-      this.showTutor.subscribe((ev:boolean ) => this.showTutorVariable = ev);
-    }
   }
 
   ngAfterViewInit(): void {
@@ -40,13 +32,13 @@ export class NavComponent implements OnInit{
   setActiveRoute(): void {
     const url = this.router.url ? this.router.url : '';
     if (this.router.url && this.router.url !== '') {
-      const arrayOfSplitedUrls = url.split('/');
-      this.selected = arrayOfSplitedUrls[arrayOfSplitedUrls.length -1 ];
+      const urls = url.split('/');
+      this.selected = urls[urls.length -1 ];
     }
   }
 
   onSelect(data: string) {
-    if (data !== Constants.LOG_OUT.url) {
+    if (data !== Constants.NAV_LOG_OUT.url) {
       this.selected = data;
       this.router.navigate([`${data}`]);
     } else {
@@ -55,11 +47,7 @@ export class NavComponent implements OnInit{
   }
 
   get navUrls (): Nav[] {
-    if (this.showTutorVariable) {
-      return this.urls;
-    } else {
-      return this.urls.filter((elem) => elem.name !== Constants.TUTOR.name);
-    }
+    return this.urls;
   }
 
   public logout(): void {

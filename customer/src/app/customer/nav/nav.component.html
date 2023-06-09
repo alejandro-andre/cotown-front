@@ -1,9 +1,5 @@
 <div>
-  <li
-    *ngFor="let path of navUrls"
-    (click)="onSelect(path.url)"
-    [ngClass]="{'active': selected === path.url }"
-  >
-    {{ 'nav.' + path.name | translate}}
+  <li *ngFor="let path of navUrls" (click)="onSelect(path.url)" [ngClass]="{'active': selected === path.url }">
+    {{ 'nav.' + path.name | translate }}
   </li>
 </div>

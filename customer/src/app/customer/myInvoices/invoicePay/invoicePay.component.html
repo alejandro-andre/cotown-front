@@ -2,7 +2,7 @@
 
 <h1>{{ 'payment_data' | translate }}</h1>
 
-<h2>{{ 'payInfo' | translate }}</h2>
+<h2>{{ 'pay_info' | translate }}</h2>
 
 <form ngNoForm name="form" *ngIf="loaded" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST" target="_top">
 
@@ -18,7 +18,7 @@
 
     <div class="pure-u-1 pure-u-lg-1-2">
       <mat-form-field>
-        <mat-label>{{ 'orderNumber' | translate }}</mat-label>
+        <mat-label>{{ 'order_number' | translate }}</mat-label>
         <input matInput id="order" [value]="order">
       </mat-form-field>
     </div>

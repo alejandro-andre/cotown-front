@@ -36,10 +36,8 @@ export class MyDocumentsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.documents);
     this.documents.forEach((el: Document) => {
       const finded = el.doctype.arrayOfImages?.filter(ev => ev.oid === -1);
-      console.log(finded);
       if (finded && finded.length > 0) {
         this.enabledButtons.push(el.id);
       }

@@ -26,7 +26,7 @@
 
       <div class="pure-u-1-2 pure-u-lg-1-4">
         <mat-form-field *ngIf="!visibility['typeDoc']">
-          <mat-label>{{ 'documentType' | translate }}</mat-label>
+          <mat-label>{{ 'id_type' | translate }}</mat-label>
           <mat-select [(ngModel)]="customerService.customer.id_type_id" (selectionChange)="enableSave()">
             <mat-option *ngFor="let c of lookupService.idTypes" [value]="c.id">
               {{ isSpanish ? c.name : c.name_en  }}
@@ -34,7 +34,7 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field *ngIf="visibility['typeDoc']">
-          <mat-label>{{ 'documentType' | translate }}</mat-label>
+          <mat-label>{{ 'id_type' | translate }}</mat-label>
           <input matInput readonly [ngModel]="idType">
         </mat-form-field>
       </div>
@@ -91,8 +91,8 @@
 
     <div class="pure-u-1-2 pure-u-lg-1-4">
       <mat-form-field>
-        <mat-label>{{ 'postalCode' | translate }}</mat-label>
-        <input matInput maxlength="5" [readonly]="visibility['postalCode']" placeholder="{{'postalCode' | translate}}" 
+        <mat-label>{{ 'zip' | translate }}</mat-label>
+        <input matInput maxlength="5" [readonly]="visibility['zip']" placeholder="{{'zip' | translate}}" 
                [(ngModel)]="customerService.customer.zip" (change)="enableSave()" >
       </mat-form-field>
     </div>
@@ -214,11 +214,11 @@
 
     <div class="pure-u-1 pure-u-lg-1-2">     
       <mat-form-field *ngIf="visibility['schoolOrCompany']">
-        <mat-label>{{ 'school/company' | translate }}</mat-label>
-        <input matInput readonly placeholder="{{ 'school/company' | translate }}" [ngModel]="school">
+        <mat-label>{{ 'school' | translate }}</mat-label>
+        <input matInput readonly placeholder="{{ 'school' | translate }}" [ngModel]="school">
       </mat-form-field>
       <mat-form-field *ngIf="!visibility['schoolOrCompany']">
-        <mat-label>{{ 'school/company' | translate }}</mat-label>
+        <mat-label>{{ 'school' | translate }}</mat-label>
         <mat-select [(ngModel)]="customerService.customer.school_id" (selectionChange)="enableSave()">
           <mat-option *ngFor="let c of lookupService.schools" [value]="c.id">
             {{ c.name }}

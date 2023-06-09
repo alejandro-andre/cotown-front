@@ -47,13 +47,10 @@
 
   <tbody>
     <tr *ngFor="let r of rows" (click)="goBooking(r.id)" class="link">
-      <td>{{ getLabel(r.Status) }}</td>
-      <td>{{ r.Name }}</td>
-      <td>{{ r.Date_from }}</td>
-      <td>{{ r.Date_to }}</td>
-      <td>{{ r.Check_in }}</td>
-      <td>{{ r.Building }}</td>
-      <td>{{ r.Resource }}</td>
+      <td *ngFor="let h of header">
+        <span *ngIf="h.key === 'Status'">{{ getLabel(r[h.key]) }}</span>
+        <span *ngIf="h.key !== 'Status'">{{ r[h.key] }}</span>
+      </td>
     </tr>
   </tbody>
 

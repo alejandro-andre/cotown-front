@@ -19,6 +19,11 @@ export class Customer implements ICustomer {
   country_origin_id: number | null = null;
   nationality_id: number | null = null;
   birth_date: string | null = null;
+  tutor_id_type_id: number | null = null;
+  tutor_document: string | null = null;
+  tutor_name: string | null = null;
+  tutor_email: string | null = null;
+  tutor_phones: string | null = null;
   id_type_id: number | null = null;
   school_id: number | null = null;
   bank_account: string = '';
@@ -36,20 +41,25 @@ export class Customer implements ICustomer {
   constructor(data: ICustomer = {} as ICustomer ) {
     this.id = data.id;
     this.name = data.name || '';
-    this.province = data.province || '';
-    this.city = data.city || '';
-    this.country_id = data.country_id || null;
-    this.address = data.address || '';
-    this.zip = data.zip || '';
+    this.id_type_id = data.id_type_id;
     this.document = data.document || '';
     this.email = data.email;
     this.phones = data.phones || '';
+    this.address = data.address || '';
+    this.zip = data.zip || '';
+    this.city = data.city || '';
+    this.province = data.province || '';
+    this.country_id = data.country_id;
     this.gender_id = data.gender_id || null;
-    this.language_id = data.language_id || null;
-    this.country_origin_id = data.country_origin_id || null;
-    this.nationality_id = data.nationality_id || null;
-    this.birth_date = data.birth_date || null;
-    this.id_type_id = data.id_type_id || null;
+    this.language_id = data.language_id;
+    this.country_origin_id = data.country_origin_id;
+    this.nationality_id = data.nationality_id;
+    this.birth_date = data.birth_date;
+    this.tutor_id_type_id = data.tutor_id_type_id;
+    this.tutor_document = data.tutor_document;
+    this.tutor_name = data.tutor_name;
+    this.tutor_email = data.tutor_email;
+    this.tutor_phones = data.tutor_phones;
     this.school_id = data.school_id || null;
     this.bank_account = data.bank_account || '';
     this.appLang = data.appLang || 'es';
@@ -61,4 +71,5 @@ export class Customer implements ICustomer {
     this.invoices = data.invoices || [];
     this.payments = data.payments || [];
   }
+  
 };

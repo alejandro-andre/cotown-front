@@ -26,7 +26,7 @@ export const formatDate = (date: Date | null): string => {
     date.getFullYear()}`;
 }
 */
-export const getAge = (birth_date: string): number => {
+export const getAge = (birth_date: string | null): number => {
 
   if(!birth_date) {
     return 0;

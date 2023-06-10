@@ -16,7 +16,8 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
     address: Address
     bank_account: Bank_account
     birth_date: Birth_date
-    tutor_id_typd_id: Tutor_id_type_id
+    tutor_id_type_id: Tutor_id_type_id
+    tutor_document: Tutor_document
     tutor_name: Tutor_name
     tutor_email: Tutor_email
     tutor_phones: Tutor_phones
@@ -182,7 +183,7 @@ export const UPDATE_CUSTOMER = `
     $country_origin_id: Int
     $nationality_id: Int
     $birth_date: String
-    $tutor_id_typd_id: Int
+    $tutor_id_type_id: Int
     $tutor_name: String
     $tutor_email: String
     $tutor_phones: String
@@ -200,7 +201,7 @@ export const UPDATE_CUSTOMER = `
       Zip: $zip
       Province: $province
       Birth_date: $birth_date
-      Tutor_id_typd_id: $tutor_id_type_id
+      Tutor_id_type_id: $tutor_id_type_id
       Tutor_name: $tutor_name
       Tutor_email: $tutor_email
       Tutor_phones: $tutor_phones

@@ -55,6 +55,7 @@ export class MyDataComponent implements OnInit {
   // On init
   ngOnInit() {
     this.changeLang();
+    console.log(this.customerService.customer);
     if (this.customerService.customer.birth_date) {
       const date = new Date(this.customerService.customer.birth_date)
       this.birthDateControl.setValue(date);
@@ -85,6 +86,13 @@ export class MyDataComponent implements OnInit {
     if (this.isSpanish)
       return this.lookupService.genders.find((elem) => elem.id === this.customer.gender_id)?.name || '';
     return this.lookupService.genders.find((elem) => elem.id === this.customer.gender_id)?.name_en || '';
+  }
+
+  // Return tutor id type name of current customer
+  get tutor_id_type(): string {
+    if (this.isSpanish)
+      return this.lookupService.idTypes.find((elem) => elem.id === this.customer.tutor_id_type_id)?.name || '';
+    return this.lookupService.idTypes.find((elem) => elem.id === this.customer.tutor_id_type_id)?.name_en || '';
   }
 
   // Return the country of the current customer
@@ -186,7 +194,7 @@ export class MyDataComponent implements OnInit {
         const val = res.data;
         this.isLoading = false;
         if (val && val.update && val.update.length) {
-          this.customerService.setVisibility();
+          this.customerService.setvisibility();
           this.isSaveEnabled = false;
         } else {
           this.modalService.openModal({title: 'Error', message: 'unknown_error'});

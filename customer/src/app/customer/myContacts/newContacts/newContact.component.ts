@@ -98,7 +98,7 @@ export class NewContactComponent {
                 this.customerService.setContacts(value.data);
                 this.location.back();
               } else {
-                this.modalService.openModal({title: 'Error', message: 'unknownError'});
+                this.modalService.openModal({title: 'Error', message: 'unknown_error'});
               }
             }, 
 
@@ -112,7 +112,7 @@ export class NewContactComponent {
 
         } else {
           this.isLoading = false;
-          this.modalService.openModal({title: 'Error', message: 'unknownError' });
+          this.modalService.openModal({title: 'Error', message: 'unknown_error' });
         }
 
       },

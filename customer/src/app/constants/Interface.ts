@@ -1,14 +1,20 @@
 import { FormControl } from "@angular/forms"
 
+// Navigation
+export interface INav {
+  name: string,
+  url: string
+};
+
 // Interfaces
 export interface IBase  {
   id: number,
   name: string
 }
 
-// Lookup tables
-export interface Lookup extends IBase {};
-export interface LookupInt extends IBase {
+// ILookup tables
+export interface ILookup extends IBase {};
+export interface ILookupInt extends IBase {
   name_en?: string,
 };
 
@@ -44,9 +50,9 @@ export interface ICustomer extends IBase {
   photo?: IPhoto | null,
   contacts?: IContact[],
   documents?: IDocument[],
-  invoices?: Invoice[],
-  payments?: Payment[],
-  bookings?: Booking[],
+  invoices?: IInvoice[],
+  payments?: IPayment[],
+  bookings?: IBooking[],
 };
 
 // Customer document
@@ -100,13 +106,7 @@ export interface IOption {
   flat_type: IFlatType,
 }
 
-// Navigation
-export interface Nav {
-  name: string,
-  url: string
-};
-
-export interface Rent extends IBase {
+export interface IRent extends IBase {
   rent: number,
   services: number,
   rent_date: string
@@ -114,7 +114,7 @@ export interface Rent extends IBase {
   service_discount: number
 }
 
-export interface Booking {
+export interface IBooking {
   id: number,
   status: string,
   payer: IBase,
@@ -142,29 +142,29 @@ export interface Booking {
   check_in_id: number | null,
   flight: string | null,
   arrival: string | null,
-  price_list?: Rent[],
+  price_list?: IRent[],
   options: IOption[] | null
 };
 
-export interface BookingResource {
+export interface IBookingResource {
   resource: ICode
 }
 
-export interface Invoice {
+export interface IInvoice {
   id: string,
   concept: string,
   total: number,
   issued_date: string,
-  booking: BookingResource,
+  booking: IBookingResource,
 };
 
-export interface Payment {
+export interface IPayment {
   id: string,
   amount: number,
   concept: string,
   issued_date: string,
   pay: string,
-  booking: BookingResource
+  booking: IBookingResource
 }
 
 export interface IPayloadFile {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { IBase, BookingResource, Invoice, Payment, ICode } from 'src/app/constants/Interface';
+import { IBase, IBookingResource, IInvoice, ICode, IPayment } from 'src/app/constants/Interface';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { Constants } from 'src/app/constants/Constants';
@@ -41,7 +41,7 @@ export class MyInvoicesComponent {
     'payment_order',
   ];
 
-  getResource(resource: BookingResource): string {
+  getResource(resource: IBookingResource): string {
     return resource?.resource?.code || '';
   }
 
@@ -67,11 +67,11 @@ export class MyInvoicesComponent {
     return !(elem.payment_date !== null && elem.payment_date !== '') ;
   }
 
-  get invoices(): Invoice[] {
+  get invoices(): IInvoice[] {
     return this.customerService.customer?.invoices || [];
   }
 
-  get payments(): Payment[] {
+  get payments(): IPayment[] {
     return this.customerService.customer?.payments || [];
   }
 

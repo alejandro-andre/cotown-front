@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Lookup, LookupInt } from '../constants/Interface';
+import { ILookup, ILookupInt } from '../constants/Interface';
 import { ApolloQueryApi } from './apollo-api.service';
 
 import { CONTACT_TYPE_QUERY, COUNTRY_QUERY, REASONS_QUERY, GENDER_QUERY, ID_TYPE_QUERY, LANGUAGE_QUERY, SCHOOL_QUERY, STATUS_QUERY, RESOURCE_TYPE_QUERY, CHECKIN_OPTIONS_QUERY } from 'src/app/schemas/query-definitions/lookup.query';
@@ -11,14 +11,14 @@ import { Constants } from '../constants/Constants';
 
 export class LookupService {
 
-  public schools: Lookup[] = [];
-  public contactTypes: Lookup[] = [];
-  public countries: LookupInt[] = [];
-  public languages: LookupInt[] = [];
-  public idTypes: LookupInt[] = [];
-  public genders: LookupInt[] = [];
-  public reasons: LookupInt[] = [];
-  public checkinOptions: LookupInt[] = [];
+  public schools: ILookup[] = [];
+  public contactTypes: ILookup[] = [];
+  public countries: ILookupInt[] = [];
+  public languages: ILookupInt[] = [];
+  public idTypes: ILookupInt[] = [];
+  public genders: ILookupInt[] = [];
+  public reasons: ILookupInt[] = [];
+  public checkinOptions: ILookupInt[] = [];
   public resourceTypes: {code:string, name:string, name_en: string}[] = [];
   public status: {code:string, name:string, name_en: string}[] = [];
   

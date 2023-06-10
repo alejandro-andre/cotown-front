@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Booking, IContact, ICustomer } from '../constants/Interface';
+import { IBooking, IContact, ICustomer } from '../constants/Interface';
 import { Customer } from '../models/Customer.model';
 
 @Injectable({
@@ -45,7 +45,7 @@ export class CustomerService {
     this.customer.contacts = contacts;
   }
 
-  updateBooking(booking: Booking){
+  updateBooking(booking: IBooking){
     if (this.customer.bookings) {
       const index = this.customer.bookings?.findIndex((el) => el.id === booking.id);
       this.customer.bookings[index] = booking;

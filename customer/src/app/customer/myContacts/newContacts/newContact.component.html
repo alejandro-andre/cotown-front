@@ -14,7 +14,7 @@
           </mat-option>
         </mat-select>
         <mat-error class="mat-error" *ngIf="contactTypeFormControl.hasError('required')">
-          {{ 'errors.contactTypeRequired' | translate }}
+          {{ 'errors.contact_type_required' | translate }}
         </mat-error>
       </mat-form-field>
     </div>
@@ -24,7 +24,7 @@
         <mat-label>{{ 'full_name' | translate }}</mat-label>
         <input matInput placeholder="{{'full_name' | translate}}" [(ngModel)]="name" [formControl]="nameFormControl">
         <mat-error class="mat-error" *ngIf="nameFormControl.hasError('required')">
-          {{ 'errors.nameRequired' | translate }}
+          {{ 'errors.name_required' | translate }}
         </mat-error>
       </mat-form-field>
     </div>
@@ -35,10 +35,10 @@
         <input matInput placeholder="{{'email' | translate}}" [(ngModel)]="email" [formControl]="emailFormControl">
         <mat-error class="mat-error" *ngIf="emailFormControl.hasError('pattern') || emailFormControl.hasError('required')">
           <span  *ngIf="emailFormControl.hasError('pattern') && !emailFormControl.hasError('required')">
-            {{ 'errors.invalidEmail' | translate }}
+            {{ 'errors.invalid_email' | translate }}
           </span>
           <span *ngIf="emailFormControl.hasError('required')">
-            {{ 'errors.emailRequired' | translate }}
+            {{ 'errors.email_required' | translate }}
           </span>
         </mat-error>
       </mat-form-field>

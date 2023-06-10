@@ -1,21 +1,21 @@
 {
   "errors" : {
-    "emailRequired": "El email es necesario",
-    "nameRequired": "El nombre es necesario",
-    "contactTypeRequired": "El tipo de contacto es necesario",
-    "invalidEmail" : "Email invalido",
-    "errors.noBookingFound": "No se ha encontrado ningún booking con ese id",
-    "errors.notFoundResults": "No se han encontrado resultados",
-    "unknownError": "Error desconocido, por favor refresque la página"
+    "email_required": "El email es necesario",
+    "name_required": "El nombre es necesario",
+    "contact_type_required": "El tipo de contacto es necesario",
+    "invalid_email" : "Email invalido",
+    "no_booking": "No se ha encontrado ningún booking con ese id",
+    "no_results": "No se han encontrado resultados",
+    "unknown_error": "Error desconocido, por favor refresque la página"
   },
   "nav": {
-    "logOut": "Cerrar sesión",
-    "myData": "Mis datos",
-    "myTutor": "Mi tutor",
-    "myContacts": "Mis contactos",
-    "myDocuments": "Mis documentos",
-    "myBookings": "Mis reservas",
-    "myInvoices": "Mis facturas"
+    "log_out": "Cerrar sesión",
+    "my_data": "Mis datos",
+    "my_tutor": "Mi tutor",
+    "my_contacts": "Mis contactos",
+    "my_documents": "Mis documentos",
+    "my_bookings": "Mis reservas",
+    "my_invoices": "Mis facturas"
   },
   "accept": "Aceptar",
   "addContact": "Añadir contacto",

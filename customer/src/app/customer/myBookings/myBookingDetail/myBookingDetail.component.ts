@@ -14,7 +14,7 @@ import { formatErrorBody } from 'src/app/utils/error.util';
 
 //Queries & constants
 import { Constants } from 'src/app/constants/Constants';
-import { Booking, IOption } from 'src/app/constants/Interface';
+import { IBooking, IOption } from 'src/app/constants/Interface';
 import { ACCEPT_BOOKING_OPTION, GET_BOOKING_BY_ID, SIGN_BOOKING_CONTRACT, UPDATE_BOOKING } from 'src/app/schemas/query-definitions/booking.query';
 import { PDFDocumentProxy } from 'ng2-pdf-viewer';
 
@@ -30,7 +30,7 @@ export class MyBookingDetailComponent {
   @ViewChild('pdfServices') pdfServices: any;
 
   // Current booking
-  public booking!: Booking;
+  public booking!: IBooking;
 
   // Contract data
   public contractMessage: string = '';
@@ -102,7 +102,7 @@ export class MyBookingDetailComponent {
 
     // Look for booking
     this.activeRoute.params.subscribe((res) => {
-      const found = this.customerService.customer.bookings?.find((b: Booking) => b.id === parseInt(res['id']));
+      const found = this.customerService.customer.bookings?.find((b: IBooking) => b.id === parseInt(res['id']));
       if (found) {
         this.setBooking(found)
         this.getPdfsContracts();
@@ -270,7 +270,7 @@ export class MyBookingDetailComponent {
           this.enabledSave = false;
           this.setBooking(data.booking[0]);
         } else {
-          this.modalService.openModal({ title: 'Error', message: 'unknownError' });
+          this.modalService.openModal({ title: 'Error', message: 'unknown_error' });
         }
 
       }, 
@@ -312,7 +312,7 @@ export class MyBookingDetailComponent {
         if(value && value.data && value.data.length) {
           this.getBookingById();
         } else {
-          this.modalService.openModal({title: 'Error',message: 'unknownError'});
+          this.modalService.openModal({title: 'Error',message: 'unknown_error'});
         }
       }, 
 
@@ -352,7 +352,7 @@ export class MyBookingDetailComponent {
                 this.setBooking(JSON.parse(JSON.stringify(response.data.booking[0])));
               } else {
                 this.isViewLoading = false;
-                this.modalService.openModal({title: 'Error', message: 'unknownError'});
+                this.modalService.openModal({title: 'Error', message: 'unknown_error'});
               }
             }, 
 
@@ -365,7 +365,7 @@ export class MyBookingDetailComponent {
 
         } else {
           this.isViewLoading = false;
-          this.modalService.openModal({title: 'Error', message: 'unknownError'});
+          this.modalService.openModal({title: 'Error', message: 'unknown_error'});
         }
       },
 
@@ -392,7 +392,7 @@ export class MyBookingDetailComponent {
       if (respose && respose.data === 'ok') {
         this.getBookingById();
       } else {
-        this.modalService.openModal({ title: 'Error', message: 'unknownError'});
+        this.modalService.openModal({ title: 'Error', message: 'unknown_error'});
         this.isViewLoading = false;
       }
     }).catch((err) => {

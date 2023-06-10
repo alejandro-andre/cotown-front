@@ -16,6 +16,10 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
     address: Address
     bank_account: Bank_account
     birth_date: Birth_date
+    tutor_id_typd_id: Tutor_id_type_id
+    tutor_name: Tutor_name
+    tutor_email: Tutor_email
+    tutor_phones: Tutor_phones
     comments: Comments
     phones: Phones
     document: Document
@@ -164,41 +168,49 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
 
 export const UPDATE_CUSTOMER = `
   mutation(
-    $id: Int!,
-    $province: String,
-    $city: String,
-    $country_id: Int,
-    $address: String,
-    $zip: String,
-    $document: String,
-    $phones: String,
-    $gender_id: Int,
-    $language_id: Int,
-    $country_origin_id: Int,
-    $nationality_id: Int,
-    $birth_date: String,
-    $id_type_id: Int,
-    $school_id: Int,
+    $id: Int!
+    $id_type_id: Int
+    $document: String
+    $phones: String
+    $address: String
+    $zip: String
+    $province: String
+    $city: String
+    $country_id: Int
+    $gender_id: Int
+    $language_id: Int
+    $country_origin_id: Int
+    $nationality_id: Int
+    $birth_date: String
+    $tutor_id_typd_id: Int
+    $tutor_name: String
+    $tutor_email: String
+    $tutor_phones: String
+    $school_id: Int
     $bank_account: String
     $appLang: Auxiliar_LangEnumType) {
   update: Customer_CustomerUpdate(
     where: { id: {EQ: $id} }
     entity: {
+      Id_type_id: $id_type_id
+      Document: $document
       Phones: $phones
+      Address: $address
       City: $city
       Zip: $zip
       Province: $province
-      Address: $address
-      Bank_account: $bank_account
       Birth_date: $birth_date
-      Document: $document
+      Tutor_id_typd_id: $tutor_id_type_id
+      Tutor_name: $tutor_name
+      Tutor_email: $tutor_email
+      Tutor_phones: $tutor_phones
       Country_origin_id: $country_origin_id
-      Id_type_id: $id_type_id
       School_id: $school_id
       Gender_id: $gender_id
       Language_id: $language_id
       Nationality_id:$nationality_id
       Country_id: $country_id
+      Bank_account: $bank_account
       Lang: $appLang
     }) {id}
 }`;

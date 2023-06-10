@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Constants } from 'src/app/constants/Constants';
-import { Nav } from 'src/app/constants/Interface';
+import { INav } from 'src/app/constants/Interface';
 
 @Component({
   selector: 'app-nav',
@@ -46,7 +46,7 @@ export class NavComponent implements OnInit{
     }
   }
 
-  get navUrls (): Nav[] {
+  get navUrls (): INav[] {
     return this.urls;
   }
 

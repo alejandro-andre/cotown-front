@@ -202,7 +202,7 @@ export class MyDocumentsComponent implements OnInit {
           delete document.frontFile;
           delete document.backFile;
         } else {
-          this.modalService.openModal({title: 'Error', message: 'unknownError'});
+          this.modalService.openModal({title: 'Error', message: 'unknown_error'});
         }
       },
 

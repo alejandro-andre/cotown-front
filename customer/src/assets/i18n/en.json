@@ -1,21 +1,21 @@
 {
   "errors" : {
-    "emailRequired": "The email is required",
-    "nameRequired": "The name is required",
-    "contactTypeRequired": "The contact type is required",
-    "invalidEmail": "Invalid email",
-    "noBookingFound": "No booking found with that id",
-    "notFoundResults": "No results found",
-    "unknownError": "Unknown error, please refresh the page"
+    "email_required": "The email is required",
+    "name_required": "The name is required",
+    "contact_type_required": "The contact type is required",
+    "invalid_email": "Invalid email",
+    "no_booking": "No booking found with that id",
+    "no_results": "No results found",
+    "unknown_error": "Unknown error, please refresh the page"
   },
   "nav": {
-    "logOut": "Log Out",
-    "myData": "My data",
-    "myTutor": "My tutor",
-    "myContacts": "My contacts",
-    "myDocuments": "My documents",
-    "myBookings": "My bookings",
-    "myInvoices": "My invoices"
+    "log_out": "Log Out",
+    "my_data": "My data",
+    "my_tutor": "My tutor",
+    "my_contacts": "My contacts",
+    "my_documents": "My documents",
+    "my_bookings": "My bookings",
+    "my_invoices": "My invoices"
   },
   "accept": "Accept",
   "addContact": "Add contact",

@@ -1,9 +1,9 @@
-import { Nav } from "./Interface";
+import { INav } from "./Interface";
 
 export class Constants {
 
   // Languages
-  public static defaultBaseLanguageForTranslation = 'en';
+  public static defaultBaseLanguageForTranslation = 'es';
   public static SPANISH =     {
     id: 'es',
     locale: 'es-ES',
@@ -22,13 +22,13 @@ export class Constants {
   ];
 
   // Navigation
-  public static NAV_DATA:      Nav = { name: 'myData',      url: 'data' };
-  public static NAV_CONTACTS:  Nav = { name: 'myContacts',  url: 'contact' };
-  public static NAV_DOCUMENTS: Nav = { name: 'myDocuments', url: 'documents' };
-  public static NAV_BOOKINGS:  Nav = { name: 'myBookings',  url: 'bookings' };
-  public static NAV_INVOICES:  Nav = { name: 'myInvoices',  url: 'invoices' };
-  public static NAV_LOG_OUT:   Nav = { name: 'logOut',      url: 'logout' }
-  public static NAV_URLS: Nav[] = [
+  public static NAV_DATA:      INav = { name: 'my_data',      url: 'data' };
+  public static NAV_CONTACTS:  INav = { name: 'my_contacts',  url: 'contact' };
+  public static NAV_DOCUMENTS: INav = { name: 'my_documents', url: 'documents' };
+  public static NAV_BOOKINGS:  INav = { name: 'my_bookings',  url: 'bookings' };
+  public static NAV_INVOICES:  INav = { name: 'my_invoices',  url: 'invoices' };
+  public static NAV_LOG_OUT:   INav = { name: 'log_out',      url: 'logout' }
+  public static NAV_URLS: INav[] = [
     Constants.NAV_DATA,
     Constants.NAV_CONTACTS,
     Constants.NAV_DOCUMENTS,

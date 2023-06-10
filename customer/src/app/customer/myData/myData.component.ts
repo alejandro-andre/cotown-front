@@ -189,7 +189,7 @@ export class MyDataComponent implements OnInit {
           this.customerService.setVisibility();
           this.isSaveEnabled = false;
         } else {
-          this.modalService.openModal({title: 'Error', message: 'unknownError'});
+          this.modalService.openModal({title: 'Error', message: 'unknown_error'});
         }
       }, 
 
@@ -247,7 +247,7 @@ export class MyDataComponent implements OnInit {
               const photo = val.data[0].photo;
               this.customer.photo = photo;
             } else {
-              this.modalService.openModal({title: 'Error', message: 'unknownError'});
+              this.modalService.openModal({title: 'Error', message: 'unknown_error'});
             }
           }, 
 

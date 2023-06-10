@@ -1,90 +1,80 @@
 export const GET_BOOKING_BY_ID = `query booking($id: Int){
   booking: Booking_BookingList(where: { id: { EQ: $id } }) {
     id
+    status: Status
     date_from: Date_from
     date_to: Date_to
-    status: Status
-    building_id: Building_id
-    resource_type: Resource_type
-    created_at: Created_at
-    services: Services
-    rent: Rent
-    deposit: Deposit
     request_date: Request_date
     confirmation_date: Confirmation_date
     expiry_date: Expiry_date
-    limit: Limit
     check_in: Check_in
     check_out: Check_out
+    resource_type: Resource_type
+    rent: Rent
+    services: Services
+    deposit: Deposit
+    limit: Limit
     arrival: Arrival
     flight: Flight
     check_in_id: Check_in_option_id
-    contract_rent: Contract_rent{
-      name
-      oid
-    }
-    contract_services: Contract_services {
-      name
-      oid
-    }
-    contract_signed:Contract_signed
+    contract_rent: Contract_rent { name oid type size }
+    contract_services: Contract_services { name oid type size }    contract_signed:Contract_signed
     reason: Customer_reasonViaReason_id{
       id
       name: Name
     }
     school: SchoolViaSchool_id {
-      name: Name
       id
+      name: Name
     }
     building: BuildingViaBuilding_id {
+      id
       name: Name
       code: Code
-      id
     }
     payer: CustomerViaPayer_id {
       id
       name: Name
     }
     flat_type: Resource_flat_typeViaFlat_type_id{
+      id
       name: Name
+      code: Code
+    }
+    place_type: Resource_place_typeViaPlace_type_id {
       id
       code: Code
+      name: Name
     }
     resource: ResourceViaResource_id {
-      code: Code
-      id
-    }
-    place: Resource_place_typeViaPlace_type_id {
       id
       code: Code
-      name: Name
     }
     price_list: Booking_priceListViaBooking_id {
-      rent: Rent
-      services: Services
       id
       rent_date:Rent_date
+      rent: Rent
+      services: Services
       rent_discount: Rent_discount
       service_discount: Services_discount
     }
     options: Booking_optionListViaBooking_id {
-      accepted: Accepted
       id
+      accepted: Accepted
       resource: Resource_type
-      resource_place: Resource_place_typeViaPlace_type_id {
-        code: Code
-        name: Name
-        id
-      }
-      resource_flat: Resource_flat_typeViaFlat_type_id {
-        code: Code
-        name: Name
-        id
-      }
-      booking_id: Booking_id
       building: BuildingViaBuilding_id {
         code: Code
         name: Name,
+        id
+      }
+      flat_type: Resource_flat_typeViaFlat_type_id {
+        code: Code
+        name: Name
+        id
+      }
+      place_type: Resource_place_typeViaPlace_type_id {
+        code: Code
+        name: Name
         id
       }
     }

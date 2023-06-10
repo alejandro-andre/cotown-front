@@ -14,7 +14,7 @@ import { formatErrorBody } from 'src/app/utils/error.util';
 
 //Queries & constants
 import { Constants } from 'src/app/constants/Constants';
-import { Booking } from 'src/app/constants/Interface';
+import { Booking, IOption } from 'src/app/constants/Interface';
 import { ACCEPT_BOOKING_OPTION, GET_BOOKING_BY_ID, SIGN_BOOKING_CONTRACT, UPDATE_BOOKING } from 'src/app/schemas/query-definitions/booking.query';
 import { PDFDocumentProxy } from 'ng2-pdf-viewer';
 
@@ -326,14 +326,14 @@ export class MyBookingDetailComponent {
   }
 
   // Accept option
-  accept (id: number): void {
+  accept (option: IOption): void {
 
     // Spinner
     this.isViewLoading = true;
 
     // GraphQL variables
     const variables = {
-      id,
+      id: option.id,
       accepted: true
     };
     this.apollo.setData(ACCEPT_BOOKING_OPTION, variables).subscribe({

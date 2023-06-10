@@ -80,21 +80,19 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
     }
     bookings: BookingListViaCustomer_id {
       id
+      status: Status
       date_from: Date_from
       date_to: Date_to
-      status: Status
-      building_id: Building_id
-      resource_type: Resource_type
-      created_at: Created_at
-      services: Services
-      rent: Rent
-      deposit: Deposit
       request_date: Request_date
       confirmation_date: Confirmation_date
       expiry_date: Expiry_date
-      limit: Limit
       check_in: Check_in
       check_out: Check_out
+      resource_type: Resource_type
+      rent: Rent
+      services: Services
+      deposit: Deposit
+      limit: Limit
       arrival: Arrival
       flight: Flight
       check_in_option_id: Check_in_option_id
@@ -134,9 +132,9 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       }
       price_list: Booking_priceListViaBooking_id {
         id
+        rent_date: Rent_date
         rent: Rent
         services: Services
-        rent_date: Rent_date
         rent_discount: Rent_discount
         service_discount: Services_discount
       }

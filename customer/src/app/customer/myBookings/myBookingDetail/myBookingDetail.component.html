@@ -152,7 +152,7 @@
       <ng-container matColumnDef="accept">
         <th mat-header-cell *matHeaderCellDef>{{ 'accept' | translate }}</th>
         <td mat-cell *matCellDef="let element">
-            <button mat-raised-button (click)="accept(element.id)">
+            <button mat-raised-button (click)="accept(element)">
               {{ 'accept' | translate }}
             </button>
       </ng-container>

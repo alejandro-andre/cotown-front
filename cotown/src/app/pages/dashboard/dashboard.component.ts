@@ -74,7 +74,7 @@ export class DashboardComponent implements OnInit {
     this.rows = null;
     axiosApi.getDashboardBookings(this.status, this.apolloApi.token).then((res) => { 
       this.rows = res.data;
-      if (this.rows) { 
+      if (this.rows.length) { 
         console.log(this.rows)
         const keys = Object.keys(this.rows[0]);
         this.header = this.headerFields.filter(d => keys.includes(d.key));

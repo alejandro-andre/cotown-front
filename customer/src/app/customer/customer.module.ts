@@ -26,7 +26,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 
 // Components
-import { HomeComponent } from './home/home.component';
 import { LayoutComponent } from './layout/layout.component';
 import { NavComponent } from './nav/nav.component';
 import { MyDataComponent } from './myData/myData.component';
@@ -54,7 +53,6 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
   declarations: [
-    HomeComponent,
     NavComponent,
     LayoutComponent,
     MyDataComponent,

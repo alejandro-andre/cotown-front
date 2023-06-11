@@ -6,34 +6,36 @@
 
 <ng-template #thenBlock>
 
-  <table mat-table [dataSource]="contacts" class="table">
-    <ng-container matColumnDef="contact_type">
-      <th mat-header-cell *matHeaderCellDef>{{ 'contact_type' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ element.contact_type.name }}</span></td>
-    </ng-container>
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>{{ 'name' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ element.name }}</span></td>
-    </ng-container>
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef>{{ 'email' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ element.email }}</span></td>
-    </ng-container>
-    <ng-container matColumnDef="phones">
-      <th mat-header-cell *matHeaderCellDef>{{ 'phones' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ element.phones }}</span></td>
-    </ng-container>
-    <ng-container matColumnDef="delete">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-raised-button color="basic" (click)="deleteContact(element)">
-          {{ 'delete' | translate }}
-        </button>
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+  <div style="border: 1px solid lightgray; overflow-x: auto;">
+      <table mat-table [dataSource]="contacts" class="table">
+      <ng-container matColumnDef="contact_type">
+        <th mat-header-cell *matHeaderCellDef>{{ 'contact_type' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ element.contact_type.name }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>{{ 'name' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ element.name }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>{{ 'email' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ element.email }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="phones">
+        <th mat-header-cell *matHeaderCellDef>{{ 'phones' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ element.phones }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-raised-button color="basic" (click)="deleteContact(element)">
+            {{ 'delete' | translate }}
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
 
 </ng-template>
 

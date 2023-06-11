@@ -5,36 +5,38 @@
 
 <ng-template #thenInvoicesBlock>
 
-  <table mat-table [dataSource]="invoices" class="table">
-    <ng-container matColumnDef="view">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-raised-button (click)="viewInvoice(element.id)">{{ 'view' | translate }}</button>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="issued_date">
-      <th mat-header-cell *matHeaderCellDef>{{ 'issued_date' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ formatOnlyDate(element.issued_date) }}</span></td>
-    </ng-container>
-    <ng-container matColumnDef="concept">
-      <th mat-header-cell *matHeaderCellDef>{{ 'concept' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ element.concept }}</span></td>
-    </ng-container>
-    <ng-container matColumnDef="amount">
-      <th mat-header-cell *matHeaderCellDef>{{ 'amount' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ element.total }} €</span></td>
-    </ng-container>
-    <ng-container matColumnDef="resource">
-      <th mat-header-cell *matHeaderCellDef>{{ 'resource' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ getResource(element.booking) }}</span></td>
-    </ng-container>
-    <ng-container matColumnDef="code">
-      <th mat-header-cell *matHeaderCellDef>{{ 'invoice_code' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ element.code }}</span></td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedInvoiceColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedInvoiceColumns;" class="clickable" (click)="viewInvoice(row.id)"></tr>
-  </table>
+  <div style="border: 1px solid lightgray; overflow-x: auto;">
+    <table mat-table [dataSource]="invoices" class="table">
+      <ng-container matColumnDef="view">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-raised-button (click)="viewInvoice(element.id)">{{ 'view' | translate }}</button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="issued_date">
+        <th mat-header-cell *matHeaderCellDef>{{ 'issued_date' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ formatOnlyDate(element.issued_date) }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="concept">
+        <th mat-header-cell *matHeaderCellDef>{{ 'concept' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ element.concept }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>{{ 'amount' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ element.total }} €</span></td>
+      </ng-container>
+      <ng-container matColumnDef="resource">
+        <th mat-header-cell *matHeaderCellDef>{{ 'resource' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ getResource(element.booking) }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef>{{ 'invoice_code' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ element.code }}</span></td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedInvoiceColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedInvoiceColumns;" class="clickable" (click)="viewInvoice(row.id)"></tr>
+    </table>
+  </div>
 
 </ng-template>
 
@@ -47,44 +49,46 @@
 
 <ng-template #thenPaymentsBlock>
 
-  <table mat-table [dataSource]="payments" class="table">
-    <ng-container matColumnDef="issued_date">
-      <th mat-header-cell *matHeaderCellDef>{{ 'issued_date' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ formatOnlyDate(element.issued_date) }}</span></td>
-    </ng-container>
-    <ng-container matColumnDef="concept">
-      <th mat-header-cell *matHeaderCellDef>{{ 'concept' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ element.concept }}</span></td>
-    </ng-container>
-    <ng-container matColumnDef="amount">
-      <th mat-header-cell *matHeaderCellDef>{{ 'amount' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ element.amount }} €</span></td>
-    </ng-container>
-    <ng-container matColumnDef="resource">
-      <th mat-header-cell *matHeaderCellDef>{{ 'resource' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ getResource(element.booking) }}</span></td>
-    </ng-container>
-    <ng-container matColumnDef="payment_date">
-      <th mat-header-cell *matHeaderCellDef>{{ 'payment_date' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ formatPropertyDate(element.payment_date) }}</span></td>
-    </ng-container>
-    <ng-container matColumnDef="payment_auth">
-      <th mat-header-cell *matHeaderCellDef>{{ 'payment_auth' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span>{{ element.payment_auth }}</span></td>
-    </ng-container>
-    <ng-container matColumnDef="payment_order">
-      <th mat-header-cell *matHeaderCellDef>{{ 'payment_order' | translate }}</th>
-      <td mat-cell *matCellDef="let element"><span *ngIf="element.payment_auth">{{ element.payment_order }}</span></td>
-    </ng-container>
-    <ng-container matColumnDef="pay">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <span *ngIf="showPayButton(element)"><button mat-raised-button (click)="pay(element.id)">{{ 'pay' | translate }}</button></span>
-    </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedPaymentColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedPaymentColumns;"></tr>
-  </table>
+  <div style="border: 1px solid lightgray; overflow-x: auto;">
+    <table mat-table [dataSource]="payments" class="table">
+      <ng-container matColumnDef="issued_date">
+        <th mat-header-cell *matHeaderCellDef>{{ 'issued_date' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ formatOnlyDate(element.issued_date) }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="concept">
+        <th mat-header-cell *matHeaderCellDef>{{ 'concept' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ element.concept }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>{{ 'amount' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ element.amount }} €</span></td>
+      </ng-container>
+      <ng-container matColumnDef="resource">
+        <th mat-header-cell *matHeaderCellDef>{{ 'resource' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ getResource(element.booking) }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="payment_date">
+        <th mat-header-cell *matHeaderCellDef>{{ 'payment_date' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ formatPropertyDate(element.payment_date) }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="payment_auth">
+        <th mat-header-cell *matHeaderCellDef>{{ 'payment_auth' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ element.payment_auth }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="payment_order">
+        <th mat-header-cell *matHeaderCellDef>{{ 'payment_order' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span *ngIf="element.payment_auth">{{ element.payment_order }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="pay">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="showPayButton(element)"><button mat-raised-button (click)="pay(element.id)">{{ 'pay' | translate }}</button></span>
+      </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedPaymentColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedPaymentColumns;"></tr>
+    </table>
+  </div>
 
 </ng-template>
 

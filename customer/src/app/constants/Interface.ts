@@ -107,8 +107,8 @@ export interface IOption {
   accepted: boolean,
   building: IBuilding,
   resource_type: string,
-  place_type: IPlaceType,
   flat_type: IFlatType,
+  place_type: IPlaceType,
 }
 
 export interface IRent extends IBase {

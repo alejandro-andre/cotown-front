@@ -17,6 +17,8 @@ import { Constants } from 'src/app/constants/Constants';
 // Queries
 import { CUSTOMER_ID_QUERY, CUSTOMER_QUERY } from 'src/app/schemas/query-definitions/customer.query';
 import { Customer } from 'src/app/models/Customer.model';
+import { CustomDateAdapter } from 'src/app/utils/date-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS } from '@angular/material/core';
 
 @Component({
   selector: 'app-layout',
@@ -32,6 +34,7 @@ export class LayoutComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private dateAdapter: DateAdapter<any>,
     private translate: TranslateService,
     private apolloApi: ApolloQueryApi,
     private breakpointObserver: BreakpointObserver,
@@ -61,6 +64,12 @@ export class LayoutComponent implements OnInit {
   setAppLanguage(lang: string = Constants.defaultBaseLanguageForTranslation) {
     this.translate.setDefaultLang(Constants.defaultBaseLanguageForTranslation);
     this.translate.use(lang);
+    if (lang === 'es') {
+      this.dateAdapter.setLocale(Constants.SPANISH.locale);
+    } else {
+      this.dateAdapter.setLocale(Constants.ENGLISH.locale);
+    }
+
   }
 
   // Get ID of logged user
@@ -68,9 +77,13 @@ export class LayoutComponent implements OnInit {
     this.isLoading = true;
     return new Promise((resolve) => {
       this.apolloApi.getData(CUSTOMER_ID_QUERY).subscribe((res) => {
-        if (res.data && res.data.data && res.data.data.length > 0) {
-          this.userId = res.data.data[0].id;
-          this.isLoading = false;
+        this.isLoading = false;
+        if (res.data && res.data.data) {
+          if (res.data.data.length == 1) {
+            this.userId = res.data.data[0].id;
+          } else {
+            this.authService.logout();
+          }
         }
         resolve();
       })

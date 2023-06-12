@@ -2,7 +2,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
-import { DateAdapter } from '@angular/material/core'; 
 
 //Service
 import { CustomerService } from 'src/app/services/customer.service';
@@ -18,6 +17,8 @@ import { formatErrorBody } from 'src/app/utils/error.util';
 import { LookupService } from 'src/app/services/lookup.service';
 import { FormControl } from '@angular/forms';
 import { FileService } from 'src/app/services/file.service';
+import { CustomDateAdapter } from 'src/app/utils/date-adapter';
+import { DateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-my-data',
@@ -55,7 +56,6 @@ export class MyDataComponent implements OnInit {
   // On init
   ngOnInit() {
     this.changeLang();
-    console.log(this.customerService.customer);
     if (this.customerService.customer.birth_date) {
       const date = new Date(this.customerService.customer.birth_date)
       this.birthDateControl.setValue(date);
@@ -157,10 +157,10 @@ export class MyDataComponent implements OnInit {
   changeLang() {
     if (this.customer.appLang === 'es') {
       this.translate.use(this.customer.appLang || Constants.SPANISH.id);
-      this.dateAdapter.setLocale(Constants.SPANISH.locale)
+      this.dateAdapter.setLocale(Constants.SPANISH.locale);
     } else {
       this.translate.use(this.customer.appLang || Constants.ENGLISH.id);
-      this.dateAdapter.setLocale(Constants.ENGLISH.locale)
+      this.dateAdapter.setLocale(Constants.ENGLISH.locale);
     }
     this.enableSave();
   }
@@ -242,8 +242,6 @@ export class MyDataComponent implements OnInit {
             thumbnail: imageSrc
           }
         };
-        console.log(UPLOAD_CUSTOMER_PHOTO);
-        console.log(variables);
         this.apolloApi.setData(UPLOAD_CUSTOMER_PHOTO, variables).subscribe({
 
           next: (res: any) => {

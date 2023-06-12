@@ -29,7 +29,7 @@ export const formatDate = (date: Date | null): string => {
 export const getAge = (birth_date: string | null): number => {
 
   if(!birth_date) {
-    return 0;
+    return 18;
   }
 
   var bdt = new Date(birth_date);

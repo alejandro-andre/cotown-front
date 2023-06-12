@@ -97,6 +97,7 @@ export class MyBookingDetailComponent {
     private modalService: ModalService
   ) {
 
+    this.enableSave();
     // Look for booking
     this.isLoading = true;
     this.activeRoute.params.subscribe((res) => {
@@ -107,6 +108,7 @@ export class MyBookingDetailComponent {
         this.getPdfsContracts();
       }
     });
+
   }
 
   /*
@@ -307,7 +309,7 @@ export class MyBookingDetailComponent {
       next: (res) => {
         const value = res.data;
         this.isLoading = false;
-        if(value && value.data && value.data.length) {
+        if (value && value.data && value.data.length) {
           this.getBookingById();
         } else {
           this.modalService.openModal({title: 'Error',message: 'unknown_error'});
@@ -336,30 +338,10 @@ export class MyBookingDetailComponent {
 
       next: (res) => {
         const value = res.data;
+        this.isLoading = false;
         if (value && value.updated && value.updated.length) {
-          const variablesForId = {
-            id: this.booking.id,
-          };
-          this.apollo.getData(GET_BOOKING_BY_ID, variablesForId).subscribe({
-
-            next: (response) => {
-              this.isLoading = false;
-              if (response && response.data && response.data.booking) {
-                this.setBooking(JSON.parse(JSON.stringify(response.data.booking[0])));
-              } else {
-                this.modalService.openModal({title: 'Error', message: 'unknown_error'});
-              }
-            }, 
-
-            error: err => {
-              this.isLoading = false;
-              const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
-              this.modalService.openModal(bodyToSend);
-            }
-          })
-
+          this.getBookingById();
         } else {
-          this.isLoading = false;
           this.modalService.openModal({title: 'Error', message: 'unknown_error'});
         }
       },

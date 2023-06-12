@@ -1,6 +1,5 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { DateAdapter } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/constants/Constants';
 import { IDocFile, IDocument, IPayloadFile } from 'src/app/constants/Interface';
@@ -12,6 +11,7 @@ import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { FileService } from 'src/app/services/file.service';
 import { ModalService } from 'src/app/services/modal.service';
+import { CustomDateAdapter } from 'src/app/utils/date-adapter';
 import { formatErrorBody } from 'src/app/utils/error.util';
 
 @Component({
@@ -33,18 +33,12 @@ export class MyDocumentsComponent implements OnInit {
     private fileService: FileService,
     private datePipe: DatePipe,
     private router: Router,
-    private dateAdapter: DateAdapter<any>,
     private axiosApi: AxiosApi,
     private Apollo: ApolloQueryApi,
     private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
-    if (this.customerService.customer.appLang === 'es') {
-      this.dateAdapter.setLocale(Constants.SPANISH.locale)
-    } else {
-      this.dateAdapter.setLocale(Constants.ENGLISH.locale)
-    }
     this.getDocs();
   }
   
@@ -105,8 +99,6 @@ export class MyDocumentsComponent implements OnInit {
 
   async upload (event: any, field: string, document: IDocument) {
     
-    console.log(document);
-    
     // Read file
     const file = event.target.files[0] 
     const data = await this.fileService.readFile(file);
@@ -142,6 +134,7 @@ export class MyDocumentsComponent implements OnInit {
       } else {
         document.back = docFile;
       }
+      this.customerService.customer.documents = this.documents;
     });
   }
 
@@ -197,8 +190,6 @@ export class MyDocumentsComponent implements OnInit {
         this.isLoading = false;
         const value = response.data;
         if (value && value.data && value.data.length && value.data[0].id) {
-          delete document.frontFile;
-          delete document.backFile;
         } else {
           this.modalService.openModal({title: 'Error', message: 'unknown_error'});
         }

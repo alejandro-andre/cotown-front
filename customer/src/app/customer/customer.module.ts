@@ -15,7 +15,6 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSelectModule } from '@angular/material/select'
 import { MatDatepickerModule } from '@angular/material/datepicker'
-import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule,  } from '@angular/material/form-field';
 import { MatInputModule  } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table'
@@ -42,6 +41,8 @@ import { PaymentkOComponent } from './paymentKO/paymentkO.component'
 // Routing
 import { CustomerRoutingModule } from './customer-routing.module';
 import { SpinnerControlComponent } from './spinner/spinner-control.component';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, MatNativeDateModule } from '@angular/material/core';
+import { CustomDateAdapter } from '../utils/date-adapter';
 
 // Config of translation
 registerLocaleData(localeES, 'es-ES');
@@ -111,7 +112,9 @@ export function createTranslateLoader(http: HttpClient) {
     MatDialogModule
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    { provide: DateAdapter, useClass: CustomDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS },
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

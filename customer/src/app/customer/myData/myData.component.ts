@@ -172,9 +172,6 @@ export class MyDataComponent implements OnInit {
   // Update customer
   save() {
 
-    // Spinner
-    this.isLoading = true;
-
     // Adjust fields
     if (this.customerService.customer.document === '') {
       this.customerService.customer.document = null;
@@ -188,6 +185,7 @@ export class MyDataComponent implements OnInit {
     delete variables.formControl
 
     // Call Graphql API
+    this.isLoading = true;
     this.apolloApi.setData(UPDATE_CUSTOMER, variables).subscribe({
 
       next: (res) => {
@@ -202,8 +200,8 @@ export class MyDataComponent implements OnInit {
       }, 
 
       error: (err) => {
-        const bodyToSend = formatErrorBody(err, this.customer.appLang || 'es');
         this.isLoading = false;
+        const bodyToSend = formatErrorBody(err, this.customer.appLang || 'es');
         this.modalService.openModal(bodyToSend);
       }
     })

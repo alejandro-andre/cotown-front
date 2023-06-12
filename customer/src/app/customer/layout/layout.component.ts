@@ -48,7 +48,6 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isLoading = true;
     this.authService.getAirflowsToken().then(async() => {
       await this.loadUserId();
       if (this.userId !== undefined && this.userId !== null) {
@@ -66,10 +65,12 @@ export class LayoutComponent implements OnInit {
 
   // Get ID of logged user
   loadUserId(): Promise<void> {
+    this.isLoading = true;
     return new Promise((resolve) => {
       this.apolloApi.getData(CUSTOMER_ID_QUERY).subscribe((res) => {
         if (res.data && res.data.data && res.data.data.length > 0) {
           this.userId = res.data.data[0].id;
+          this.isLoading = false;
         }
         resolve();
       })
@@ -84,18 +85,24 @@ export class LayoutComponent implements OnInit {
     }
 
     // Get data
-    this.apolloApi.getData(CUSTOMER_QUERY, variables).subscribe(
+    this.isLoading = true;
+    this.apolloApi.getData(CUSTOMER_QUERY, variables).subscribe({
 
-      (res) => {
+      next: (res) => {
+        this.isLoading = false;
         const value = res.data;
         if (value && value.data && value.data.length) {
           const cust: ICustomer = value.data[0];
           this.setAppLanguage(cust.appLang);
           this.customerService.setCustomerData(new Customer(cust));
-          this.isLoading = false;
         }
-      }
-    );
+      },
+
+      error: (err) => {
+        this.isLoading = false;
+      } 
+      
+    });
   }
 
   loadDocuments (documents: IDocument[]): IDocument[] {

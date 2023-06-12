@@ -37,7 +37,7 @@ export class MyBookingDetailComponent {
   public formatedDate: string = '';
 
   // Flags
-  public isViewLoading = false;
+  public isLoading = false;
   public isEditableSchool: boolean = false;
   public isEditableReason: boolean = false;
   public enabledSave: boolean = false;
@@ -97,11 +97,10 @@ export class MyBookingDetailComponent {
     private modalService: ModalService
   ) {
 
-    // Spinner
-    this.isViewLoading = true;
-
     // Look for booking
+    this.isLoading = true;
     this.activeRoute.params.subscribe((res) => {
+      this.isLoading = false;
       const found = this.customerService.customer.bookings?.find((b: IBooking) => b.id === parseInt(res['id']));
       if (found) {
         this.setBooking(found)
@@ -238,7 +237,6 @@ export class MyBookingDetailComponent {
       this.isEditableReason = true;
     } else {
       this.selectedReason = this.booking.reason.id;
-      this.isViewLoading = false;
     }
 
     // School
@@ -261,11 +259,12 @@ export class MyBookingDetailComponent {
 
   // Refresh booking
   getBookingById () {
+    this.isLoading = true;
     this.apollo.getData(GET_BOOKING_BY_ID, { id: this.booking.id }).subscribe({
 
       next: (res) => {
         const data = res.data;
-        this.isViewLoading = false;
+        this.isLoading = false;
         if (data && data.booking && data.booking.length) {
           this.enabledSave = false;
           this.setBooking(data.booking[0]);
@@ -276,7 +275,7 @@ export class MyBookingDetailComponent {
       }, 
 
       error: (err) => {
-        this.isViewLoading = false;
+        this.isLoading = false;
         const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
         this.modalService.openModal(bodyToSend);
       }
@@ -286,9 +285,6 @@ export class MyBookingDetailComponent {
 
   // Save changes
   save () {
-
-    // Spinner
-    this.isViewLoading = true;
 
     // Format dates
     const checkin = this.checkinFormControl.value !== null ? this.datePipe.transform(this.checkinFormControl.value, 'yyyy-MM-dd') : null;
@@ -305,10 +301,12 @@ export class MyBookingDetailComponent {
       selectedReason : this.selectedReason,
       option: this.selectedOption,
     }
+    this.isLoading = true;
     this.apollo.setData(UPDATE_BOOKING, variables).subscribe({
 
       next: (res) => {
         const value = res.data;
+        this.isLoading = false;
         if(value && value.data && value.data.length) {
           this.getBookingById();
         } else {
@@ -317,7 +315,7 @@ export class MyBookingDetailComponent {
       }, 
 
       error: (err)  => {
-        this.isViewLoading = false;
+        this.isLoading = false;
         const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
         this.modalService.openModal(bodyToSend);
       }
@@ -328,14 +326,12 @@ export class MyBookingDetailComponent {
   // Accept option
   accept (option: IOption): void {
 
-    // Spinner
-    this.isViewLoading = true;
-
     // GraphQL variables
     const variables = {
       id: option.id,
       accepted: true
     };
+    this.isLoading = true;
     this.apollo.setData(ACCEPT_BOOKING_OPTION, variables).subscribe({
 
       next: (res) => {
@@ -347,30 +343,29 @@ export class MyBookingDetailComponent {
           this.apollo.getData(GET_BOOKING_BY_ID, variablesForId).subscribe({
 
             next: (response) => {
+              this.isLoading = false;
               if (response && response.data && response.data.booking) {
-                this.isViewLoading = false;
                 this.setBooking(JSON.parse(JSON.stringify(response.data.booking[0])));
               } else {
-                this.isViewLoading = false;
                 this.modalService.openModal({title: 'Error', message: 'unknown_error'});
               }
             }, 
 
             error: err => {
-              this.isViewLoading = false;
+              this.isLoading = false;
               const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
               this.modalService.openModal(bodyToSend);
             }
           })
 
         } else {
-          this.isViewLoading = false;
+          this.isLoading = false;
           this.modalService.openModal({title: 'Error', message: 'unknown_error'});
         }
       },
 
       error: (err) => {
-        this.isViewLoading = false;
+        this.isLoading = false;
         const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
         this.modalService.openModal(bodyToSend);
       }
@@ -384,20 +379,18 @@ export class MyBookingDetailComponent {
   // Cancel booking
   discard () {
 
-    // Spinner
-    this.isViewLoading = true;
-
     // API REST
+    this.isLoading = true;
     this.axiosApi.discardBooking(this.booking.id).then((respose) =>{
+      this.isLoading = false;
       if (respose && respose.data === 'ok') {
         this.getBookingById();
       } else {
         this.modalService.openModal({ title: 'Error', message: 'unknown_error'});
-        this.isViewLoading = false;
       }
     }).catch((err) => {
+      this.isLoading = false;
       const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
-      this.isViewLoading = false;
       this.modalService.openModal(bodyToSend);
     })
   }
@@ -445,9 +438,6 @@ export class MyBookingDetailComponent {
 
   sign (type: String):void {
 
-    // Spinner
-    this.isViewLoading = true;
-
     // Signed contract
     if (type === this.SERVICE_CONTRACT_TYPE) {
       this.contractServicesInfo.signed = true;
@@ -461,15 +451,16 @@ export class MyBookingDetailComponent {
         id: this.booking.id,
         time: this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss')
       }
+      this.isLoading = true;
       this.apollo.setData(SIGN_BOOKING_CONTRACT, variables).subscribe({
 
         next: (res) => {
-          this.isViewLoading = false;
+          this.isLoading = false;
           this.getBookingById();
         }, 
       
         error: (err) => {
-          this.isViewLoading = false;
+          this.isLoading = false;
           const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
           this.modalService.openModal(bodyToSend);
         }

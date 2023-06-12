@@ -164,9 +164,6 @@ export class MyDocumentsComponent implements OnInit {
 
   save (document: IDocument) {
 
-    // Spinner
-    this.isLoading = true;
-
     // Expiration date
     document.expiry_date = this.datePipe.transform(document.formDateControl.value, 'yyyy-MM-dd');
 
@@ -193,6 +190,7 @@ export class MyDocumentsComponent implements OnInit {
       }
     }
  
+    this.isLoading = true;
     this.Apollo.setData(query, variables).subscribe({
 
       next: (response) => {
@@ -211,6 +209,7 @@ export class MyDocumentsComponent implements OnInit {
         const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es')
         this.modalService.openModal(bodyToSend);
       }
+      
     })
   }
 

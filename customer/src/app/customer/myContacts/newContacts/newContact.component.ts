@@ -67,9 +67,6 @@ export class NewContactComponent {
 
   save() {
 
-    // Spinner
-    this.isLoading = true;
-
     // GraphQL API
     const variables = {
       id: this.customerService.customer.id,
@@ -78,6 +75,7 @@ export class NewContactComponent {
       email: this.email.length > 0 ? this.email : undefined,
       phone: this.phone
     };
+    this.isLoading = true;
     this.apollo.setData(INSERT_CONTACT, variables).subscribe({
 
       next: (res) => {

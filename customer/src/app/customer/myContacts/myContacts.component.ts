@@ -42,14 +42,12 @@ export class MyContactsComponent {
 
   deleteContact(event: IContact): void {
 
-    // Spinner
-    this.isLoading = true;
-
     // GraphQL
     const variables = {
       id: event.id,
       customer_id: this.customerService.customer.id,
     };
+    this.isLoading = true;
     this.apollo.setData(DELETE_CONTACT, variables).subscribe({
 
       next: (res) => {

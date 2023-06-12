@@ -176,10 +176,10 @@ export class MyBookingDetailComponent {
         options.push({
           'id': option.id,
           'accepted': option.accepted,
-          'building': `${option.building.code || ''}, ${option.building.name || ''} `,
+          'building': `${option.building?.code || ''}, ${option.building?.name || ''} `,
           'resource_type': this.getResourceType(option.resource_type),
-          'flat_type': `${option.flat_type.code || ''}, ${option.flat_type.name || ''} `,
-          'place_type': `${option.place_type.code || ''}, ${option.place_type.name || ''}`,
+          'flat_type': `${option.flat_type?.code || ''}, ${option.flat_type?.name || ''} `,
+          'place_type': `${option.place_type?.code || ''}, ${option.place_type?.name || ''}`,
         })
       }
     }

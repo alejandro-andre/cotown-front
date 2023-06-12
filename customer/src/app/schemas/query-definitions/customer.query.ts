@@ -31,7 +31,7 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
     language_id: Language_id
     nationality_id: Nationality_id
     country_id: Country_id
-    photo: Photo { name oid thumbnail type size }
+    photo: Photo { name oid type size }
     contacts: Customer_contactListViaCustomer_id {
       id
       name: Name
@@ -52,35 +52,6 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
         name: Name
         name_en: Name_en
         images: Images
-      }
-    }
-    invoices: InvoiceListViaCustomer_id {
-      id,
-      code: Code
-      concept: Concept
-      total: Total
-      issued_date: Issued_date
-      document: Document { name oid type size }
-      booking: BookingViaBooking_id {
-        resource: ResourceViaResource_id {
-          id
-          code: Code
-        }
-      }
-    }
-    payments: PaymentListViaCustomer_id {
-      id
-      payment_date: Payment_date
-      payment_order: Payment_order
-      payment_auth: Payment_auth
-      amount: Amount
-      concept: Concept
-      issued_date: Issued_date
-      booking: BookingViaBooking_id {
-        resource: ResourceViaResource_id {
-          id
-          code: Code
-        }
       }
     }
     bookings: BookingListViaCustomer_id {
@@ -135,14 +106,6 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
         id
         code: Code
       }
-      price_list: Booking_priceListViaBooking_id {
-        id
-        rent_date: Rent_date
-        rent: Rent
-        services: Services
-        rent_discount: Rent_discount
-        service_discount: Services_discount
-      }
       options: Booking_optionListViaBooking_id {
         id
         accepted: Accepted
@@ -150,7 +113,7 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
         building: BuildingViaBuilding_id {
           id
           code: Code
-          name: Name,
+          name: Name
         }
         flat_type: Resource_flat_typeViaFlat_type_id {
           id
@@ -161,6 +124,43 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
           id
           code: Code
           name: Name
+        }
+      }
+      price_list: Booking_priceListViaBooking_id {
+        id
+        rent_date: Rent_date
+        rent: Rent
+        services: Services
+        rent_discount: Rent_discount
+        service_discount: Services_discount
+      }
+    }
+    invoices: InvoiceListViaCustomer_id {
+      id,
+      code: Code
+      concept: Concept
+      total: Total
+      issued_date: Issued_date
+      document: Document { name oid type size }
+      booking: BookingViaBooking_id {
+        resource: ResourceViaResource_id {
+          id
+          code: Code
+        }
+      }
+    }
+    payments: PaymentListViaCustomer_id {
+      id
+      payment_date: Payment_date
+      payment_order: Payment_order
+      payment_auth: Payment_auth
+      amount: Amount
+      concept: Concept
+      issued_date: Issued_date
+      booking: BookingViaBooking_id {
+        resource: ResourceViaResource_id {
+          id
+          code: Code
         }
       }
     }

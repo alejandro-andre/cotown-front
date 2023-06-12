@@ -15,9 +15,8 @@ import { ICustomer, IPayloadFile } from 'src/app/constants/Interface';
 import { UPDATE_CUSTOMER, UPLOAD_CUSTOMER_PHOTO } from 'src/app/schemas/query-definitions/customer.query';
 import { formatErrorBody } from 'src/app/utils/error.util';
 import { LookupService } from 'src/app/services/lookup.service';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FileService } from 'src/app/services/file.service';
-import { CustomDateAdapter } from 'src/app/utils/date-adapter';
 import { DateAdapter } from '@angular/material/core';
 
 @Component({
@@ -34,16 +33,29 @@ export class MyDataComponent implements OnInit {
   // Save bbutton enabled?
   public isSaveEnabled: boolean = false;
 
-  // Birth date control
-  public birthDateControl = new FormControl();
-  
   // Image file
   public image!: File;
+
+  // Form fields
+  public id_type_idControl = new FormControl('', [ Validators.required ]);
+  public documentControl = new FormControl('', [ Validators.required ]);
+  public addressControl = new FormControl('', [ Validators.required ]);
+  public zipControl = new FormControl('', [ Validators.required ]);
+  public cityControl = new FormControl('', [ Validators.required ]);
+  public provinceControl = new FormControl('', [ Validators.required ]);
+  public country_idControl = new FormControl('', [ Validators.required ]);
+  public birth_dateControl = new FormControl<any>('', [ Validators.required ]);
+  public tutor_id_type_idControl = new FormControl('', [ Validators.required ]);
+  public tutor_documentControl = new FormControl('', [ Validators.required ]);
+  public tutor_nameControl = new FormControl('', [ Validators.required ]);
+  public tutor_emailControl = new FormControl('', [ Validators.required ]);
+  public tutor_phonesControl = new FormControl('', [ Validators.required ]);
 
   // Constructor
   constructor(
     public customerService: CustomerService,
     public lookupService: LookupService,
+    public formBuilder: FormBuilder,
     private fileService: FileService,
     private apolloApi: ApolloQueryApi,
     private dateAdapter: DateAdapter<any>,
@@ -51,14 +63,14 @@ export class MyDataComponent implements OnInit {
     private translate: TranslateService,
     private datePipe: DatePipe,
     private modalService: ModalService
-  ) {}
+  ) { }
 
   // On init
   ngOnInit() {
     this.changeLang();
     if (this.customerService.customer.birth_date) {
       const date = new Date(this.customerService.customer.birth_date)
-      this.birthDateControl.setValue(date);
+      this.birth_dateControl.setValue(date);
     }
   }
 
@@ -137,7 +149,7 @@ export class MyDataComponent implements OnInit {
 
   // Return formated birth_date of current customer
   get birthDate(): string | null {
-    const date = this.birthDateControl.value;
+    const date = this.birth_dateControl.value;
     if (date !== null) {
       const locale = Constants.LANGUAGES.find((elem) => elem.id === this.customer.appLang)?.date;
       const formattedDate = this.datePipe.transform(date, locale);
@@ -146,11 +158,16 @@ export class MyDataComponent implements OnInit {
     return null;
   }
 
+  get age() {
+    return this.customerService.age;
+  }
+  
   /**
    * Methods
    */
 
   enableSave() {
+    console.log(this.customerService.age);
     this.isSaveEnabled = true;
   }
 
@@ -165,18 +182,44 @@ export class MyDataComponent implements OnInit {
     this.enableSave();
   }
 
-  validateDoc() {
-    this.enableSave();
-  }
-
   // Update customer
   save() {
 
-    // Adjust fields
-    if (this.customerService.customer.document === '') {
-      this.customerService.customer.document = null;
+    this.customerService.customer.birth_date = this.datePipe.transform(this.birth_dateControl.value, 'yyyy-MM-dd');
+
+    // Check and show errors
+    this.id_type_idControl.markAsTouched();
+    this.documentControl.markAsTouched();
+    this.addressControl.markAsTouched();
+    this.zipControl.markAsTouched();
+    this.cityControl.markAsTouched();
+    this.provinceControl.markAsTouched();
+    this.country_idControl.markAsTouched();
+    this.birth_dateControl.markAsTouched();
+    this.tutor_id_type_idControl.markAllAsTouched();
+    this.tutor_documentControl.markAllAsTouched();
+    this.tutor_nameControl.markAllAsTouched();
+    this.tutor_emailControl.markAllAsTouched();
+    this.tutor_phonesControl.markAllAsTouched();
+    if (this.id_type_idControl.errors ||
+      this.documentControl.errors ||
+      this.addressControl.errors ||
+      this.zipControl.errors ||
+      this.cityControl.errors ||
+      this.provinceControl.errors ||
+      this.country_idControl.errors ||
+      this.birth_dateControl.errors || 
+      this.customerService.age < 18 && (
+        this.tutor_id_type_idControl.errors ||
+        this.tutor_documentControl.errors ||
+        this.tutor_nameControl.errors ||
+        this.tutor_emailControl.errors ||
+        this.tutor_phonesControl.errors
+      )
+    ) {
+      this.modalService.openModal({title: 'Error', message: 'missing_fields'});
+      return;
     }
-    this.customerService.customer.birth_date = this.datePipe.transform(this.birthDateControl.value, 'yyyy-MM-dd');
 
     // Variables to update
     const variables: any = {

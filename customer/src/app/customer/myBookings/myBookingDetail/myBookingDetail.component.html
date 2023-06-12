@@ -1,12 +1,11 @@
 <app-spinner-control *ngIf="isLoading"></app-spinner-control>
 
-<h1>{{ 'booking_detail' | translate }} #{{ booking.id }}</h1>
-
-<div *ngIf="booking.id; then thenBlock else elseBlock"></div>
+<div *ngIf="booking; then thenBlock else elseBlock"></div>
 
 <ng-template #thenBlock>
 
-  <h2>{{ 'booking_detail' | translate }}</h2>
+  <h1>{{ 'booking_detail' | translate }} #{{ booking.id }}</h1>
+
   <div class="group">
     <div class="pure-g">
 

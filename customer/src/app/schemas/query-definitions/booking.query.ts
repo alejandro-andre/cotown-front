@@ -62,20 +62,20 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
       id
       accepted: Accepted
       resource: Resource_type
-      building: BuildingViaBuilding_id {
-        code: Code
-        name: Name,
-        id
-      }
       flat_type: Resource_flat_typeViaFlat_type_id {
+        id
         code: Code
         name: Name
-        id
       }
       place_type: Resource_place_typeViaPlace_type_id {
+        id
         code: Code
         name: Name
+      }
+      building: BuildingViaBuilding_id {
         id
+        code: Code
+        name: Name
       }
     }
   }

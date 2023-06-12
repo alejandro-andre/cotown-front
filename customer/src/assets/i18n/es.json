@@ -2,6 +2,7 @@
   "errors" : {
     "email_required": "El email es necesario",
     "name_required": "El nombre es necesario",
+    "missing_fields": "Faltan datos obligatorios por completar",
     "contact_type_required": "El tipo de contacto es necesario",
     "invalid_email" : "Email invalido",
     "no_booking": "No se ha encontrado ningún booking con ese id",

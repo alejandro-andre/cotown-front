@@ -1,35 +1,107 @@
-<h1>Descargas de datos</h1>
+<h1>Informes</h1>
 
-<div class="row cell" style="font-size:.75em;color: rgba(0, 0, 0, 0.54);">Datos a descargar</div>
-
-<div class="row cell"><a [href]="link('propietarios')">Propietarios</a></div>
-<div class="row cell"><a [href]="link('edificios')">Edificios</a></div>
-<div class="row cell"><a [href]="link('recursos')">Recursos, precios y tarifas</a></div>
-<div class="row cell"><a [href]="link('precios')">Precios</a></div>
-<div class="row cell"><a [href]="link('tarifas')">Tarifas</a></div>
-<div class="row">
-    <div class="cell" style="width:200px;">
-        <a [href]="link('facturas')">Facturas</a>
-    </div>
-    <div style="margin-bottom: -22px;">
-        <mat-form-field>
-            <mat-label>Mes y año</mat-label>
-            <input MonthYearPickerFormat="MM/YYYY" matInput [matDatepicker]="dpbill" [formControl]="billDate" (change)="showMonth()">
-            <mat-datepicker-toggle matIconSuffix [for]="dpbill"></mat-datepicker-toggle>
-            <mat-datepicker #dpbill (monthSelected)="setMonthAndYear($event, dpbill)" startView="multi-year"></mat-datepicker>
-        </mat-form-field>
-    </div>
+<!-- Cabecera -->
+<div class="pure-g row">
+  <div class="pure-u-1-8 execute head"><span>Ejecutar</span></div>
+  <div class="pure-u-1-4 name head"><span>Informe</span></div>
+  <div class="pure-u-1-2 head"><span>Filtros</span></div>
 </div>
-<div class="row">
-    <div class="cell" style="width:200px;">
-        <a [href]="link('pagos')">Pagos</a>
-    </div>
-    <div style="margin-bottom: -22px;">
-        <mat-form-field>
-            <mat-label>Impagados desde</mat-label>
-            <input matInput [matDatepicker]="dppay" [formControl]="paymentDate">
-            <mat-datepicker-toggle matIconSuffix [for]="dppay"></mat-datepicker-toggle>
-            <mat-datepicker #dppay></mat-datepicker>
-        </mat-form-field>
-    </div>
+
+<!-- Propietarios -->
+<div class="pure-g row">
+  <div class="pure-u-1-8 execute">
+    <button mat-raised-button color="primary" (click)="execute('propietarios')">Ejecutar</button>
+  </div>
+  <div class="pure-u-7-8 name"><span>Propietarios</span></div>
+</div>
+
+<!-- Edificios -->
+<div class="pure-g row">
+  <div class="pure-u-1-8 execute">
+    <button mat-raised-button color="primary" (click)="execute('edificios')">Ejecutar</button>
+  </div>
+  <div class="pure-u-7-8 name"><span>Edificios</span></div>
+</div>
+
+<!-- Recursos -->
+<div class="pure-g row">
+  <div class="pure-u-1-8 execute">
+    <button mat-raised-button color="primary" (click)="execute('recursos')">Ejecutar</button>
+  </div>
+  <div class="pure-u-7-8 name"><span>Recursos, precios y tarifas</span></div>
+</div>
+
+<!-- Precios -->
+<div class="pure-g row">
+  <div class="pure-u-1-8 execute">
+    <button mat-raised-button color="primary" (click)="execute('precios')">Ejecutar</button>
+  </div>
+  <div class="pure-u-7-8 name"><span>Precios</span></div>
+</div>
+
+<!-- Reservas -->
+<div class="pure-g row">
+  <div class="pure-u-1-8 execute">
+    <button mat-raised-button color="primary" (click)="execute('reservas')">Ejecutar</button>
+  </div>
+  <div class="pure-u-7-8 name"><span>Reservas</span></div>
+</div>
+
+<!-- Facturas -->
+<div class="pure-g row">
+  <div class="pure-u-1-8 execute">
+    <button mat-raised-button color="primary" 
+            (click)="execute('facturas')">Ejecutar</button>
+  </div>
+  <div class="pure-u-1-4 name"><span>Facturas</span></div>
+  <div class="pure-u-6-24">
+    <mat-form-field>
+      <mat-label>Mes y año</mat-label>
+      <input matInput 
+              MonthYearPickerFormat="MM/YYYY" 
+              [matDatepicker]="dpbill" 
+              [formControl]="billDateControl" 
+              (change)="showMonth()">
+      <mat-datepicker-toggle matIconSuffix [for]="dpbill"></mat-datepicker-toggle>
+      <mat-datepicker #dpbill (monthSelected)="setMonthAndYear($event, dpbill)" startView="multi-year"></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="pure-u-10-24">
+    <mat-form-field>
+      <mat-label>Emisor</mat-label>
+      <mat-select [formControl]="providerControl">
+        <mat-option [value]="0">Todos</mat-option>
+        <mat-option *ngFor="let c of providers" [value]="c.id">{{ c.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
+<!-- Pagos -->
+<div class="pure-g row">
+  <div class="pure-u-1-8 execute">
+    <button mat-raised-button color="primary" 
+            (click)="execute('pagos')">Ejecutar</button>
+  </div>
+  <div class="pure-u-1-4 name"><span>Pagos</span></div>
+  <div class="pure-u-6-24">
+    <mat-form-field>
+      <mat-label>Rango de fechas</mat-label>
+      <mat-date-range-input [rangePicker]="picker" [formGroup]="paymentDateControl">
+      <input matStartDate formControlName="start" placeholder="Desde">
+      <input matEndDate formControlName="end" placeholder="Hasta">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+  </div>
+  <div class="pure-u-10-24">
+    <mat-form-field>
+      <mat-label>Emisor</mat-label>
+      <mat-select [formControl]="providerControl">
+        <mat-option [value]="0">Todos</mat-option>
+        <mat-option *ngFor="let c of providers" [value]="c.id">{{ c.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 </div>

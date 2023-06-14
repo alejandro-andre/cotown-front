@@ -97,7 +97,7 @@ export class DashboardComponent implements OnInit {
       return environment.backURL + '/export/dashboard?status=firmacontrato,contrato,checkinconfirmado&access_token=' + this.apolloApi.token;
 
     // Rest of status
-    return environment.backURL + '/export/dashboard?status=' + this.status + '&access_token=' + this.apolloApi.token;
+    return environment.backURL + '/export/dashboard?status=' + this.status + ',' + this.status + '&access_token=' + this.apolloApi.token;
   }
 
   goBooking(id: string) { 

@@ -90,14 +90,14 @@ export class DashboardComponent implements OnInit {
 
     // Next checkins
     if (this.status == 'next') 
-      return environment.backURL + '/dashboard/export/dashboardnext&access_token=' + this.apolloApi.token;
+      return environment.backURL + '/export/dashboardnext&access_token=' + this.apolloApi.token;
 
     // Confirmed bookings
     if (this.status == 'ok') 
-      return environment.backURL + '/dashboard/export/dashboard?status=firmacontrato,contrato,checkinconfirmado&access_token=' + this.apolloApi.token;
+      return environment.backURL + '/export/dashboard?status=firmacontrato,contrato,checkinconfirmado&access_token=' + this.apolloApi.token;
 
     // Rest of status
-    return environment.backURL + '/dashboard/export/dashboard?status=' + this.status + '&access_token=' + this.apolloApi.token;
+    return environment.backURL + '/export/dashboard?status=' + this.status + '&access_token=' + this.apolloApi.token;
   }
 
   goBooking(id: string) { 

@@ -77,6 +77,8 @@ export class PlanningComponent {
   public selectedResourceFlatTypeId=  Constants.allStaticNumericValue;
   public initialResourcePlaceTypeId = Constants.allStaticNumericValue;
   public initialResourceFlatTypeId=  Constants.allStaticNumericValue;
+  public initialResourcePlaceType: string = '';
+  public initialResourceFlatType: string =  '';
 
   public selectedBuilding: Building = {} as Building;
   public selectedResourceType: ResourceType = {} as ResourceType;
@@ -260,6 +262,8 @@ export class PlanningComponent {
           this.selectedResourcePlaceTypeId = parseInt(data.place_type_id);
         this.initialResourceFlatTypeId = this.selectedResourceFlatTypeId;
         this.initialResourcePlaceTypeId = this.selectedResourcePlaceTypeId;
+        this.initialResourceFlatType = this.resourceFlatTypes.find((e) => e.id === this.initialResourceFlatTypeId)?.code || '';
+        this.initialResourcePlaceType = this.resourcePlaceTypes.find((e) => e.id === this.initialResourcePlaceTypeId)?.code || '';
         this.range.setValue({ start: new Date(data.date_from), end: new Date(data.date_to) });
         const finded = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
         if (finded) {

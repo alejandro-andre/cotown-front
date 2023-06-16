@@ -75,8 +75,8 @@ export class PlanningComponent {
   public selectedBuildingId: number = -99; // Selected building
   public selectedResourcePlaceTypeId = Constants.allStaticNumericValue;
   public selectedResourceFlatTypeId=  Constants.allStaticNumericValue;
-  public initialResourcePlaceTypeId = Constants.allStaticNumericValue;
-  public initialResourceFlatTypeId=  Constants.allStaticNumericValue;
+  public initialPlaceTypeId = Constants.allStaticNumericValue;
+  public initialFlatTypeId=  Constants.allStaticNumericValue;
   public initialResourcePlaceType: string = '';
   public initialResourceFlatType: string =  '';
 
@@ -123,7 +123,7 @@ export class PlanningComponent {
       if (entityId) {
         const entityIdParsed = parseInt(entityId);
         this.params.entityId = entityIdParsed;
-        this.initData(entity, entityIdParsed);
+        await this.initData(entity, entityIdParsed);
       }
     });
 
@@ -148,10 +148,13 @@ export class PlanningComponent {
 
   closeWindow() {
 
+    let resource = null;
+
     // Radio
     if (this.sel == '1') {
       for (const elemento of this.rows) {
         if (elemento.checked) {
+          resource = this.resources.find((e) => e.Resource_id === elemento.id);
           this.params.value = {id: elemento.id, Code: elemento.code};
           break;
         }
@@ -168,7 +171,7 @@ export class PlanningComponent {
     }
 
     // Check if change
-    if (this.selectedResourceFlatTypeId != this.initialResourceFlatTypeId || this.selectedResourcePlaceTypeId != this.initialResourcePlaceTypeId) {
+    if (resource && (resource.Resource_flat_type != this.initialFlatTypeId || resource.Resource_place_type!= this.initialPlaceTypeId)) {
 
       // Type changed
       const dialogRef = this.dialog.open(ConfirmationComponent, {
@@ -256,14 +259,14 @@ export class PlanningComponent {
 
         // Set filters
         this.selectedBuildingId = parseInt(data.building_id);
-        if (data.flat_type_id != undefined)
-          this.selectedResourceFlatTypeId = parseInt(data.flat_type_id);
-        if (data.place_type_id != undefined)
-          this.selectedResourcePlaceTypeId = parseInt(data.place_type_id);
-        this.initialResourceFlatTypeId = this.selectedResourceFlatTypeId;
-        this.initialResourcePlaceTypeId = this.selectedResourcePlaceTypeId;
-        this.initialResourceFlatType = this.resourceFlatTypes.find((e) => e.id === this.initialResourceFlatTypeId)?.code || '';
-        this.initialResourcePlaceType = this.resourcePlaceTypes.find((e) => e.id === this.initialResourcePlaceTypeId)?.code || '';
+        if (data.flat_type_id != undefined) {
+          this.initialFlatTypeId = data.flat_type_id;
+        }
+        if (data.place_type_id != undefined) {
+          this.initialPlaceTypeId = data.place_type_id;
+        }
+        this.initialResourceFlatType = this.resourceFlatTypes.find((e) => e.id == this.initialFlatTypeId)?.code || 'x';
+        this.initialResourcePlaceType = this.resourcePlaceTypes.find((e) => e.id == this.initialPlaceTypeId)?.code || 'x';
         this.range.setValue({ start: new Date(data.date_from), end: new Date(data.date_to) });
         const finded = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
         if (finded) {
@@ -318,19 +321,25 @@ export class PlanningComponent {
   }
 
   // Get all flat types
-  getResourceFlatTypes(): void {
+  async getResourceFlatTypes(): Promise<void> {
 
-    this.apolloApi.getData(ResourceFlatTypeQuery).subscribe(res => {
-      this.resourceFlatTypes = res.data.data;
-    });
+    return new Promise<void>((resolve) => {
+      this.apolloApi.getData(ResourceFlatTypeQuery).subscribe(res => {
+        this.resourceFlatTypes = res.data.data;
+        resolve();
+      });
+    })
 
   }
 
   // Get all place types
-  getResourcePlaceTypes() :void {
+  async getResourcePlaceTypes(): Promise<void> {
 
-    this.apolloApi.getData(ResourcePlaceTypeQuery).subscribe(res => {
-      this.resourcePlaceTypes = res.data.data;
+    return new Promise<void>((resolve) => {
+      this.apolloApi.getData(ResourcePlaceTypeQuery).subscribe(res => {
+        this.resourcePlaceTypes = res.data.data;
+        resolve();
+      });
     })
 
   }
@@ -434,6 +443,8 @@ export class PlanningComponent {
             Resource_id: elem.id,
             Resource_code: elem.code,
             Resource_type: elem.resource_type,
+            Resource_flat_type: elem.flat_type.id,
+            Resource_place_type: elem.place_type?.id || -1,
             Resource_info: type || ''
           });
         }

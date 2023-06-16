@@ -1,151 +1,133 @@
 <div class="container">
 
-	<h1>Planning</h1>
+	<div class="header">
 
-	<div class="nav_container">
+		<div class="pure-g">
+			<div class="pure-u-18-24">
+				<div class="pure-u-9-24"><h1>Planning</h1></div>
+				<div class="pure-u-3-24 label"><span class="label">[{{initialResourceFlatType}}]</span></div>
+				<div class="pure-u-3-24 label"><span class="label">[{{initialResourcePlaceType}}]</span></div>
+			</div>
+		</div>
+	
+		<div class="pure-g">
 
-		<form class="selectors_container airflows_container_selectors ">
+			<div class="pure-u-18-24 pure-g">
+			<form>
+				
+				<div class="pure-u-4-24">
+					<mat-form-field class="field" appearance="fill" >
+						<mat-label>{{ 'city' | translate }}</mat-label>
+						<mat-select name="cities" 
+							[(ngModel)]="selectedCityId"
+							[placeholder]="'nothing' | translate" 
+							(selectionChange)="onSelectCity()">
+							<mat-option *ngFor="let citie of cities" [value]="citie.id">
+								{{ citie.name }}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
 
-			<mat-form-field appearance="fill" style="margin-right: 10px;width: 15%;">
-				<mat-label class="cotown_label">{{ 'city' | translate }}</mat-label>
-				<mat-select
-          			[(ngModel)]="selectedCityId"
-          			name="cities"
-          			(selectionChange)="onSelectCity()"
-					[placeholder]="'nothing' | translate">
-					<mat-option
-						*ngFor="let citie of cities"
-						[value]="citie.id">
-						{{ citie.name }}
-					</mat-option>
-				</mat-select>
-			</mat-form-field>
+				<div class="pure-u-5-24">
+					<mat-form-field class="field" appearance="fill" >
+						<mat-label>{{ 'building' | translate}}</mat-label>
+						<mat-select
+						name="buildings"
+							[(ngModel)]="selectedBuildingId"
+							[placeholder]="'nothing' | translate"
+							[disabled]="selectedCityId === -1"
+							(selectionChange)="onChangeFilter()">
+							<mat-option  [value]=-1>{{ 'allM' | translate }}</mat-option>
+							<mat-option *ngFor="let building of buildings" [value]="building.id">
+								{{ building.name }}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
 
-			<mat-form-field appearance="fill" style="margin-right: 10px; width: 25%;">
-				<mat-label>{{ 'building' | translate}}</mat-label>
-				<mat-select
-          			[(ngModel)]="selectedBuildingId"
-          			name="buildings"
-          			(selectionChange)="onChangeFilter()"
-					[placeholder]="'nothing' | translate"
-					[disabled]="selectedCityId === -1">
-					<mat-option  [value]=-1>{{ 'allM' | translate }}</mat-option>
-					<mat-option
-						*ngFor="let building of buildings"
-						[value]="building.id">
-						{{ building.name }}
-					</mat-option>
-				</mat-select>
-			</mat-form-field>
+				<div class="pure-u-3-24">
+					<mat-form-field class="field" appearance="fill" >
+						<mat-label>{{ 'flat-type' | translate }}</mat-label>
+						<mat-select
+							name="resourcesFlatTypes"
+							[(ngModel)]="selectedResourceFlatTypeId"
+							[disabled]="!selectedBuildingId || selectedBuildingId === -99"
+							(selectionChange)="onChangeFilter()">
+						<mat-option  [value]="-1">{{ 'allM' | translate }}</mat-option>
+							<mat-option *ngFor="let resourceType of resourceFlatTypes" [value]="resourceType.id">
+								{{ resourceType.code }}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
 
-			<mat-form-field appearance="fill" style="margin-right: 10px; width: 15%;">
-				<mat-label>{{ 'flat-type' | translate }}</mat-label>
-				<mat-select
-          			[(ngModel)]="selectedResourceFlatTypeId"
-          			name="resourcesFlatTypes"
-          			(selectionChange)="onChangeFilter()"
-					[disabled]="!selectedBuildingId || selectedBuildingId === -99">
-				<mat-option  [value]="-1">{{ 'allM' | translate }}</mat-option>
-					<mat-option
-						*ngFor="let resourceType of resourceFlatTypes"
-						[value]="resourceType.id">
-						{{ resourceType.code }}
-					</mat-option>
-				</mat-select>
-			</mat-form-field>
+				<div class="pure-u-3-24">
+					<mat-form-field class="field" appearance="fill" >
+						<mat-label>{{ 'types' | translate }}</mat-label>
+						<mat-select
+							name="resourcesPlaceTypes"
+							[(ngModel)]="selectedResourcePlaceTypeId"
+							[disabled]="!selectedBuildingId || selectedBuildingId === -99"
+							(selectionChange)="onChangeFilter()">
+						<mat-option  [value]="-1">{{ 'allM' | translate }}</mat-option>
+							<mat-option *ngFor="let resourceType of resourcePlaceTypes" [value]="resourceType.id">
+								{{ resourceType.code }}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
 
-      		<mat-form-field appearance="fill" style="margin-right: 10px; width: 15%;">
-				<mat-label>{{ 'types' | translate }}</mat-label>
-				<mat-select
-          			[(ngModel)]="selectedResourcePlaceTypeId"
-          			name="resourcesPlaceTypes"
-          			(selectionChange)="onChangeFilter()"
-					[disabled]="!selectedBuildingId || selectedBuildingId === -99">
-				<mat-option  [value]="-1">{{ 'allM' | translate }}</mat-option>
-					<mat-option
-						*ngFor="let resourceType of resourcePlaceTypes"
-						[value]="resourceType.id">
-						{{ resourceType.code }}
-					</mat-option>
-				</mat-select>
-			</mat-form-field>
+				<div class="pure-u-6-24">
+					<mat-form-field class="field" appearance="fill" >
+						<mat-label>{{ 'date range' | translate }}</mat-label>
+						<mat-date-range-input [rangePicker]="picker" [disabled]="!rows.length" [formGroup]="range">
+							<input matStartDate formControlName="start" [placeholder]="'from' | translate">
+							<input matEndDate formControlName="end" [placeholder]="'to' | translate" (dateChange)="onDateChange()">
+						</mat-date-range-input>
+						<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+						<mat-date-range-picker #picker></mat-date-range-picker>
+					</mat-form-field>
+				</div>
 
-			<mat-form-field appearance="fill" style="margin-right: 10px; width: 20%;">
-				<mat-label>{{ 'date range' | translate }}</mat-label>
-				<mat-date-range-input
-					[rangePicker]="picker"
-					[disabled]="!rows.length"
-					[formGroup]="range">
-					<input
-						matStartDate
-						formControlName="start"
-						[placeholder]="'from' | translate">
-					<input
-						matEndDate
-						formControlName="end"
-						[placeholder]="'to' | translate"
-						(dateChange)="onDateChange()">
-				</mat-date-range-input>
-				<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-				<mat-date-range-picker #picker></mat-date-range-picker>
-			</mat-form-field>
+				<div class="pure-u-3-24">
+					<button mat-raised-button *ngIf="isSelectButtonVisible" [disabled]="!isSelectButtonActive" color="primary" (click)="closeWindow()">
+						{{ 'select' | translate }}
+					</button>
+				</div>
 
-			<button
-				*ngIf="isSelectButtonVisible"
-				[disabled]="!isSelectButtonActive"
-				mat-raised-button
-				color="primary"
-				style="color: white;"
-				(click)="closeWindow()">
-				{{ 'select' | translate }}
-			</button>
+			</form>
+			</div>
 
-		</form>
+			<div class="pure-u-6-24">
+				<div class="pure-u-6-24">
+					<button mat-raised-button class="prev-button" [disabled]="!rows.length" color="secondary" (click)="goBackward('month')">
+						<mat-icon class="arrow" aria-hidden="false" color="black" fontIcon="fast_rewind"></mat-icon>
+						{{'month'|translate}}
+					</button>
+				</div>
+				<div class="pure-u-6-24">
+					<button mat-raised-button class="prev-button" [disabled]="!rows.length" color="basic" (click)="goBackward('week')">
+						<mat-icon class="arrow back" aria-hidden="false" color="black" fontIcon="play_arrow"></mat-icon>
+						{{'week'|translate}}
+					</button>
+				</div>
+				<div class="pure-u-6-24">
+					<button mat-raised-button class="next-button" [disabled]="!rows.length" color="basic" (click)="goForward('week')">
+						<mat-icon class="arrow" aria-hidden="false" fontIcon="play_arrow"></mat-icon>
+						{{'week'|translate}}
+					</button>
+				</div>
+				<div class="pure-u-6-24">
+					<button mat-raised-button class="next-button" [disabled]="!rows.length" color="basic" (click)="goForward('month')">
+						<mat-icon class="arrow" aria-hidden="false" fontIcon="fast_forward"></mat-icon>
+						{{'month'|translate}}
+					</button>
+				</div>
+			</div>
 
-		<div class="time_line_buttons">
-			<button
-				[disabled]="!rows.length"
-				mat-raised-button
-				color="basic"
-				(click)="goBackward('month')">
-				<mat-icon aria-hidden="false" color="black" fontIcon="arrow_back"></mat-icon>
-				{{ 'month' | translate }}
-			</button>
-			&nbsp;
-			<button
-				mat-raised-button
-				[disabled]="!rows.length"
-				color="basic"
-				(click)="goBackward('week')">
-				<mat-icon aria-hidden="false" color="black" fontIcon="arrow_back"></mat-icon>
-				{{ 'week' | translate }}
-			</button>
-			&nbsp;
-			<button
-				class="next-button "
-				[disabled]="!rows.length"
-				mat-raised-button
-				color="basic"
-				(click)="goForward('week')">
-				{{ 'week' | translate }}
-				<mat-icon class="next-arrow" aria-hidden="false" fontIcon="arrow_forward"></mat-icon>
-			</button>
-			&nbsp;
-			<button
-				class="next-button "
-				[disabled]="!rows.length"
-				mat-raised-button
-				color="basic"
-				(click)="goForward('month')">
-				{{ 'month' | translate }}
-				<mat-icon class="next-arow" aria-hidden="false" fontIcon="arrow_forward"></mat-icon>
-			</button>
 		</div>
 
-	</div>
-
-	<div class="spinner-box" *ngIf="spinnerActive">
-		<app-spinner-control></app-spinner-control>
 	</div>
 
 	<div *ngIf="rows.length">
@@ -157,6 +139,10 @@
 			[sel]="sel"
 			[max]="max">
 		</app-time-chart-control>
+	</div>
+
+	<div class="spinner-box" *ngIf="spinnerActive">
+		<app-spinner-control></app-spinner-control>
 	</div>
 
 </div>

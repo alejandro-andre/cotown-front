@@ -1,0 +1,43 @@
+<style>
+    .gantt {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 5px;
+      
+        /* Estilos adicionales para el gantt */
+        /* ... */
+      }
+      
+      .gantt li {
+        position: relative;
+        background-color: blue;
+        height: 20px;
+      
+        /* Estilos adicionales para las barras */
+        /* ... */
+      }
+      
+      .gantt li.special-cell {
+        position: relative;
+      }
+      
+      .gantt li.special-cell::before {
+        content: '';
+        position: absolute;
+        top: -5px;
+        left: 0;
+        width: 10px;
+        height: 10px;
+        background-color: red;
+      
+        /* Estilos adicionales para el cuadrado */
+        /* ... */
+      }
+</style>
+<div class="gantt">
+    <ul>
+      <li style="grid-column: 2 / span 3;"></li>
+      <li style="grid-column: 5 / span 2;"></li>
+      <li class="special-cell" style="grid-column: 8 / span 4;"></li>
+    </ul>
+</div>

@@ -458,9 +458,9 @@ export class PlanningComponent {
     this.bookings = [];
     this.apolloApi.getData(query, variables).subscribe((response: any) => {
       for (const booking of response.data.data) {
-        let age, email, phone, name, code;
 
         // Bookings
+        let age, email, phone, name, code;
         if (booking.booking && booking.booking.customer) {
           age = getAge(booking.booking.customer.birth_date);
           name = booking.booking?.customer.name;
@@ -488,6 +488,8 @@ export class PlanningComponent {
           Booking_status: booking.status,
           Booking_date_from: booking.date_from,
           Booking_date_to: booking.date_to,
+          Booking_check_in: booking.booking?.check_in,
+          Booking_check_out: booking.booking?.check_out,
           Resource_id: booking.resource?.id || 0,
           Resource_code: booking.resource?.code || '',
           Customer_name: name || '',
@@ -538,6 +540,11 @@ export class PlanningComponent {
       let bar: TimeChartBar = new TimeChartBar();
       bar.datefrom = new Date(b.Booking_date_from);
       bar.dateto = new Date(b.Booking_date_to);
+      if (b.Booking_check_in) {
+        bar.checkIn = new Date(b.Booking_check_in);
+      }
+      if (b.Booking_check_out != null)
+        bar.checkOut = new Date(b.Booking_check_out);
 
       if (b.Booking_status === Constants.availableStatus) { // Resource is available
         bar.lock = true;
@@ -570,6 +577,7 @@ export class PlanningComponent {
           <div><span class="tiphead">${b.Booking_code}</span></div>
           <div><span class="tipfield">${b.Booking_status}</span></div>
           <div><span class="tipfield">${b.Booking_date_from} a ${b.Booking_date_to}</span></div>
+          <div><span class="tipfield">${b.Booking_check_in} a ${b.Booking_check_out}</span></div>
           <div><span class="tipfield">Nombre: </span><span>${b.Customer_name}</span></div>
           <div><span class="tipfield">Género: </span><span>${b.Customer_gender}</span></div>
           <div><span class="tipfield">Edad: </span><span>${b.Customer_age}</span></div>

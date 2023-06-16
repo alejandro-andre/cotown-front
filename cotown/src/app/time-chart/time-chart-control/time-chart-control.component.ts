@@ -87,16 +87,23 @@ export class TimeChartControlComponent implements OnChanges {
 
       // Move each bar
       for (let bar of row.bars) {
+
         // Dates
         const dfrom = Math.ceil((bar.datefrom.getTime() - this.now.getTime()) / (1000*60*60*24));
         const dto = 1 + Math.ceil((bar.dateto.getTime() - this.now.getTime()) / (1000*60*60*24));
+
+        if (bar.code == '997') {
+          console.log(bar.dateto);
+          console.log('dfrom ' + dfrom);  
+          console.log('dto   ' + dto);  
+        }
 
         // Show bar
         bar.styles = bar.type + ' show';
 
         // Set start
-        if (dfrom  < 0) {
-          bar.from = 0;
+        if (dfrom < 1) {
+          bar.from = 1;
           bar.styles += ' continue-left';
         } else if (dfrom > 70) {
           bar.from = 70;
@@ -105,8 +112,8 @@ export class TimeChartControlComponent implements OnChanges {
         }
 
         // Set end
-        if (dto < 0) {
-          bar.to = 0;
+        if (dto < 1) {
+          bar.to = 1;
         } else if (dto > 70) {
           bar.to = 70;
           bar.styles += ' continue-right';
@@ -114,6 +121,16 @@ export class TimeChartControlComponent implements OnChanges {
           bar.to = dto;
         }
 
+        // Set checkin/out dates
+        if (bar.checkIn) {
+          let din = Math.ceil((bar.checkIn.getTime() - this.now.getTime()) / (1000*60*60*24));
+          bar.in = 0;
+          if (dfrom > 0 && dfrom <= 70 && din > 70)
+            bar.in = 70;
+          if (din > 0 && din <= 70)
+            bar.in = din;
+        }
+        
         // Hide bar
         if ((bar.to - bar.from) < 1)
           bar.styles = 'hide';

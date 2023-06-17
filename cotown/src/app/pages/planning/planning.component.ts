@@ -63,6 +63,7 @@ export class PlanningComponent {
   // Planning
   public now: Date = new Date(); // Current date
   public rows: TimeChartRow[] = []; // Rows
+  public labels: any = null;
 
   // Filters
   public initDate!: Date;
@@ -108,6 +109,12 @@ export class PlanningComponent {
     await this.getResourceFlatTypes();
     await this.getResourcePlaceTypes();
 
+    // Get labels
+    axiosApi.getLabels(7, "es_ES", this.apolloApi.token).then((res) => { 
+      this.labels = res.data;
+      this.spinnerActive  = false;
+    }); 
+
     // Get params
     this.route.queryParams.subscribe(async (params) => {
       const { sel, entityId, entity, attribute } = params;
@@ -127,6 +134,14 @@ export class PlanningComponent {
       }
     });
 
+  }
+
+  getLabel(code: string) { 
+    const index = this.labels[0].indexOf(code);
+    if (index === -1) { 
+        return "";
+    }
+    return this.labels[1][index];
   }
 
   // ??
@@ -578,10 +593,11 @@ export class PlanningComponent {
         const dto   = formatDate(new Date(b.Booking_date_to), 'DMY');
         const din   = b.Booking_check_in ? formatDate(new Date(b.Booking_check_in), 'DMY') : '--/--/----';
         const dout  = b.Booking_check_out ? formatDate(new Date(b.Booking_check_out), 'DMY') : '--/--/----';
+        const tip = this.getLabel(b.Booking_status)
         bar.tooltip = `
           <table>
-          <tr><th><b>${b.Booking_code}</b></th></tr>
-          <tr><td><b>Status</b></td><td><span>${b.Booking_status}</span></td></tr>
+          <tr><td></td><td><span style="font-size: 1.1em;font-weight: 600;">${b.Booking_code}</span></td></tr>
+          <tr><td><b>Status</b></td><td><span>${tip}</span></td></tr>
           <tr><td><b>Desde/Hasta</b></td><td>${dfrom} a ${dto}</td></tr>
           <tr><td><b>Check-in/out</b></td><td>${din} a ${dout}</td></tr>
           <tr><td><b>Nombre</b></td><td>${b.Customer_name}</td></tr>

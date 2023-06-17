@@ -42,15 +42,27 @@
 <!-- Reservas -->
 <div class="pure-g row">
   <div class="pure-u-1-8 execute">
-    <button mat-raised-button color="primary" (click)="execute('reservas')">Ejecutar</button>
+    <button mat-raised-button color="primary" [disabled]="check('reservas')"
+            (click)="execute('reservas')">Ejecutar</button>
   </div>
   <div class="pure-u-7-8 name"><span>Reservas</span></div>
+  <div class="pure-u-6-24">
+    <mat-form-field>
+      <mat-label>Rango de fechas</mat-label>
+      <mat-date-range-input [rangePicker]="picker" [formGroup]="bookingDateControl">
+      <input matStartDate formControlName="start" placeholder="Desde">
+      <input matEndDate formControlName="end" placeholder="Hasta">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+  </div>
 </div>
 
 <!-- Facturas -->
 <div class="pure-g row">
   <div class="pure-u-1-8 execute">
-    <button mat-raised-button color="primary" 
+    <button mat-raised-button color="primary" [disabled]="check('facturas')"
             (click)="execute('facturas')">Ejecutar</button>
   </div>
   <div class="pure-u-1-4 name"><span>Facturas</span></div>
@@ -80,7 +92,7 @@
 <!-- Pagos -->
 <div class="pure-g row">
   <div class="pure-u-1-8 execute">
-    <button mat-raised-button color="primary" 
+    <button mat-raised-button color="primary" [disabled]="check('pagos')"
             (click)="execute('pagos')">Ejecutar</button>
   </div>
   <div class="pure-u-1-4 name"><span>Pagos</span></div>

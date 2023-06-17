@@ -21,8 +21,12 @@ const moment = _rollupMoment;
 export class DownloadComponent {
 
   // Form controls
+  public providerControl    = new FormControl(0);
   public billDateControl    = new FormControl<any>('', [ Validators.required ]);
-  public providerControl    = new FormControl();
+  public bookingDateControl = new FormGroup({
+    start: new FormControl<Date | null>(null, [ Validators.required ]),
+    end: new FormControl<Date | null>(null, [ Validators.required ]),
+  });
   public paymentDateControl = new FormGroup({
     start: new FormControl<Date | null>(null, [ Validators.required ]),
     end: new FormControl<Date | null>(null, [ Validators.required ]),
@@ -44,6 +48,23 @@ export class DownloadComponent {
     });
   }    
 
+  // Check if report can be executed
+  check (data: string) {
+
+    if (data == "reservas") {
+      if (!this.bookingDateControl.value.start || !this.bookingDateControl.value.end)
+      return true;
+    } else if (data == "facturas") {
+      if (this.billDateControl.value === '')
+        return true;
+    } else if (data == "pagos") {
+        if (!this.paymentDateControl.value.start || !this.paymentDateControl.value.end)
+          return true
+    }
+    
+    return false;
+  }
+
   // Execute report
   execute (data: string) {
 
@@ -54,9 +75,7 @@ export class DownloadComponent {
     if (data == "facturas") {
       const from = moment(this.billDateControl.value);
       const prov_from = this.providerControl.value;
-      let prov_to = 99;
-      if (prov_from != 0)
-        prov_to = prov_from; 
+      const prov_to = prov_from || 99; 
       const to = moment(from).add(1, 'M');
       l = environment.backURL + '/export/facturas' 
         + '?fdesde=' + from.format('YYYY-MM-DD') 
@@ -70,9 +89,7 @@ export class DownloadComponent {
       const from = moment(this.paymentDateControl.value.start);
       const to = moment(this.paymentDateControl.value.end).add(1,'d');
       const prov_from = this.providerControl.value;
-      let prov_to = 99;
-      if (prov_from != 0)
-        prov_to = prov_from; 
+      const prov_to = prov_from || 99; 
       l = environment.backURL + '/export/pagos' 
         + '?fdesde=' + from.format('YYYY-MM-DD') 
         + '&fhasta=' + to.format('YYYY-MM-DD') 

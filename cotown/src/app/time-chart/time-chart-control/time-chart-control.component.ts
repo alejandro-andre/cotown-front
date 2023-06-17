@@ -122,15 +122,21 @@ export class TimeChartControlComponent implements OnChanges {
         }
 
         // Set checkin/out dates
+        bar.in = 0;
+        bar.out = 0;
         if (bar.checkIn) {
           let din = Math.ceil((bar.checkIn.getTime() - this.now.getTime()) / (1000*60*60*24));
-          bar.in = 0;
           if (dfrom > 0 && dfrom <= 70 && din > 70)
-            bar.in = 70;
-          if (din > 0 && din <= 70)
+            din = 70;
+          if (bar.from <= din && bar.from < 70 && din > 0 && din < 71)
             bar.in = din;
         }
-        
+        if (bar.checkOut) {
+          let dout = Math.ceil((bar.checkOut.getTime() - this.now.getTime()) / (1000*60*60*24));
+          if (bar.from < dout && bar.from < 70 && dout > 0 && dout < 71)
+            bar.out = dout;
+        }
+
         // Hide bar
         if ((bar.to - bar.from) < 1)
           bar.styles = 'hide';

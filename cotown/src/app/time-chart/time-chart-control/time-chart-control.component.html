@@ -65,7 +65,7 @@
 				<ng-container *ngFor="let bar of row.bars">
 				<li class="tooltip {{bar.styles}}"
 					style.background-color="{{bar.color}}"
-					style.grid-column="{{1+bar.from}}/{{bar.to}}"
+					style.grid-column="{{1+bar.from}}/{{1+bar.to}}"
 					(click)="go_booking(bar.link);">
 					<div *ngIf="bar.code != '' && (bar.to - bar.from) > 1 " class="bar">
 						<span class="tag">{{bar.code}}</span>
@@ -73,9 +73,13 @@
 						<div class="tiptext" [innerHtml]="bar.tooltip|safeHtml"></div>
 					</div>
 				</li>
-				<span *ngIf="bar.from < bar.in && bar.from < 70 && bar.in > 0 && bar.in < 71"
-					style="background-color:rgb(255,255,255,0.8);position:relative;height:10px;left:-10%;margin-top:-10px;border:1px solid black;"
-					style.grid-column="{{1+bar.in}}/{{2+bar.in}}">
+				<span *ngIf="bar.in > 0"
+					style="position:relative;height:26px;left:-10%;margin-top:-30px;border:2px dotted black;"
+					style.grid-area="2/{{1+bar.in}}/2/{{1+bar.in}}">
+				</span>
+				<span *ngIf="bar.out > 0"
+					style="position:relative;height:26px;left:-10%;margin-top:-30px;border:2px dotted red;"
+					style.grid-area="2/{{1+bar.out}}/2/{{1+bar.out}}">
 				</span>
 				</ng-container>
 			</ul>

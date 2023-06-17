@@ -1,43 +1,36 @@
-<style>
-    .gantt {
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .grid-container {
         display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        gap: 5px;
-      
-        /* Estilos adicionales para el gantt */
-        /* ... */
+        grid-template-columns: auto auto auto;
+        grid-template-rows: auto auto auto;
       }
-      
-      .gantt li {
-        position: relative;
-        background-color: blue;
-        height: 20px;
-      
-        /* Estilos adicionales para las barras */
-        /* ... */
+
+      .grid-item1,
+      .grid-item2 {
+        grid-area: 1 / 1 / 3 / 3; /* Esto indica que el elemento comenzará en la primera fila y columna y terminará en la tercera fila y columna. */
+        width: 100%;
+        height: 100%;
       }
-      
-      .gantt li.special-cell {
-        position: relative;
+
+      .grid-item1 {
+        background-color: lightblue;
+        opacity: 0.5;
       }
-      
-      .gantt li.special-cell::before {
-        content: '';
-        position: absolute;
-        top: -5px;
-        left: 0;
-        width: 10px;
-        height: 10px;
-        background-color: red;
-      
-        /* Estilos adicionales para el cuadrado */
-        /* ... */
+
+      .grid-item2 {
+        background-color: lightgreen;
+        opacity: 0.5;
       }
-</style>
-<div class="gantt">
-    <ul>
-      <li style="grid-column: 2 / span 3;"></li>
-      <li style="grid-column: 5 / span 2;"></li>
-      <li class="special-cell" style="grid-column: 8 / span 4;"></li>
-    </ul>
-</div>
+    </style>
+  </head>
+  <body>
+    <div class="grid-container">
+      <div class="grid-item1">Item 1</div>
+      <div class="grid-item2">Item 2</div>
+      <!-- Otros items de grid si existen -->
+    </div>
+  </body>
+</html>

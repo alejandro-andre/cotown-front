@@ -401,35 +401,38 @@ export class PlanningComponent {
   // Get filtered bookings
   queryBookings(): void {
 
-    let params = '$cityId: Int';
-    let where = ''
+    // One month ago
+    const date = new Date();
+    date.setTime(date.getTime() - 30 * 24 * 60 * 60 * 1000);
 
+    // GraphQL params
+    let params = '$date: String $cityId: Int';
+    let where = 'Date_to: { GE: $date }'
     if (this.selectedBuildingId > 0) {
       params += ' $buildingId: Int'
       where += ' Building_id: { EQ: $buildingId }'
     }
-
     if (this.selectedResourceFlatTypeId != Constants.allStaticNumericValue) {
       params += ' $resourceFlatTypeId: Int'
       where += ' Flat_type_id: { EQ: $resourceFlatTypeId }'
     }
-
     if (this.selectedResourcePlaceTypeId != Constants.allStaticNumericValue) {
       params += ' $resourcePlaceTypeId: Int'
       where += ' Place_type_id: { EQ: $resourcePlaceTypeId }'
     }
-
     if (where != '')
       where = '(where:{' + where + '})';
-
     if (params != '')  {
       const q = 'query BookingList(' + params + ') {data:Booking_Booking_detailList' + where + BookingListQuery + '}';
-      this.getBookings(q, {
+      const v = {
+        date: formatDate(date, 'YMD'),
         cityId: this.selectedCityId,
         buildingId: this.selectedBuildingId,
         resourceFlatTypeId: this.selectedResourceFlatTypeId,
         resourcePlaceTypeId: this.selectedResourcePlaceTypeId
-      });
+      };
+      console.log(v);
+      this.getBookings(q, v);
     }
   }
 
@@ -470,13 +473,13 @@ export class PlanningComponent {
         }
 
         // Group bookings
-        if (!booking.booking_id && booking.rooming && booking.group) {
+        if (!booking.booking_id && booking.rooms && booking.group) {
           email = booking.group.customer.email;
           phone = booking.group.customer.phones;
           name = booking.group.customer.name
-          code = `G${booking.group_id}`
-          if (booking.room_user && booking.room_user.name !== null) {
-            const aux = `${name} (${booking.room_user.name})`;
+          code = `G${booking.group.id}`
+          if (booking.rooms && booking.rooms.name !== null) {
+            const aux = `${name} (${booking.rooms.name})`;
             name = aux;
           }
         }
@@ -540,12 +543,6 @@ export class PlanningComponent {
       let bar: TimeChartBar = new TimeChartBar();
       bar.datefrom = new Date(b.Booking_date_from);
       bar.dateto = new Date(b.Booking_date_to);
-      if (b.Booking_check_in) {
-        bar.checkIn = new Date(b.Booking_check_in);
-      }
-      if (b.Booking_check_out != null)
-        bar.checkOut = new Date(b.Booking_check_out);
-
       if (b.Booking_status === Constants.availableStatus) { // Resource is available
         bar.lock = true;
         bar.color = "rgba(100, 255, 100, 0.3)";
@@ -563,6 +560,10 @@ export class PlanningComponent {
         bar.lock = false;
         bar.code = b.Booking_code;
         bar.color = Constants.colors[b.Booking_status];
+        if (b.Booking_check_in)
+          bar.checkIn = new Date(b.Booking_check_in);
+        if (b.Booking_check_out != null)
+          bar.checkOut = new Date(b.Booking_check_out);
         if (!this.isSelectButtonVisible) {
           if (typeof bar.code != 'number')
             bar.link = "/admin/Booking.Booking_group/" + bar.code.substring(1) + "/view";
@@ -573,17 +574,23 @@ export class PlanningComponent {
           + ' - ' + b.Customer_age
           + ' - ' + b.Customer_gender
           + ' - ' + b.Customer_country
+        const dfrom = formatDate(new Date(b.Booking_date_from), 'DMY');
+        const dto   = formatDate(new Date(b.Booking_date_to), 'DMY');
+        const din   = b.Booking_check_in ? formatDate(new Date(b.Booking_check_in), 'DMY') : '--/--/----';
+        const dout  = b.Booking_check_out ? formatDate(new Date(b.Booking_check_out), 'DMY') : '--/--/----';
         bar.tooltip = `
-          <div><span class="tiphead">${b.Booking_code}</span></div>
-          <div><span class="tipfield">${b.Booking_status}</span></div>
-          <div><span class="tipfield">${b.Booking_date_from} a ${b.Booking_date_to}</span></div>
-          <div><span class="tipfield">${b.Booking_check_in} a ${b.Booking_check_out}</span></div>
-          <div><span class="tipfield">Nombre: </span><span>${b.Customer_name}</span></div>
-          <div><span class="tipfield">Género: </span><span>${b.Customer_gender}</span></div>
-          <div><span class="tipfield">Edad: </span><span>${b.Customer_age}</span></div>
-          <div><span class="tipfield">País: </span><span>${b.Customer_country}</span></div>
-          <div><span class="tipfield">Teléfono: </span><span>${b.Customer_phone}</span></div>
-          <div><span class="tipfield">Email: </span><span>${b.Customer_email}</span></div>`
+          <table>
+          <tr><th><b>${b.Booking_code}</b></th></tr>
+          <tr><td><b>Status</b></td><td><span>${b.Booking_status}</span></td></tr>
+          <tr><td><b>Desde/Hasta</b></td><td>${dfrom} a ${dto}</td></tr>
+          <tr><td><b>Check-in/out</b></td><td>${din} a ${dout}</td></tr>
+          <tr><td><b>Nombre</b></td><td>${b.Customer_name}</td></tr>
+          <tr><td><b>Género</b></td><td>${b.Customer_gender}</td></tr>
+          <tr><td><b>Edad</b></td><td>${b.Customer_age}</td></tr>
+          <tr><td><b>País</b></td><td>${b.Customer_country}</td></tr>
+          <tr><td><b>Teléfono</b></td><td>${b.Customer_phone}</td></tr>
+          <tr><td><b>Email</b></td><td>${b.Customer_email}</td></tr>
+          </table>`
       }
 
       // Add bar to proper row
@@ -621,7 +628,7 @@ export class PlanningComponent {
     for (let i = 1; i < intervals.length; i++) {
 
       // Next interval overlaps current one
-      if (intervals[i].datefrom <= currentInterval.dateto) {
+      if (intervals[i].datefrom <= new Date(currentInterval.dateto.getTime() + (1000 * 60 * 60 * 24))) {
 
         // Extend current interval
         if (currentInterval.dateto < intervals[i].dateto) {
@@ -683,8 +690,8 @@ export class PlanningComponent {
 
       // Availability payload
       const data: AvailabilityPayload = {
-        date_from: formatDate(this.initDate),
-        date_to: formatDate(this.endDate),
+        date_from: formatDate(this.initDate, 'YMD'),
+        date_to: formatDate(this.endDate, 'YMD'),
         building: this.selectedBuildingId,
         flat_type: 0,
         place_type: 0

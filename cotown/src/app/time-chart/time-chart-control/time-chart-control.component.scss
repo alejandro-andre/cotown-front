@@ -227,6 +227,9 @@
 	left: 20px;
 	z-index: 1;
 }
+.tooltip .tiptext .head {
+	font-weight: 600;
+}
 .tooltip:hover .tiptext {
 	visibility: visible;
 }

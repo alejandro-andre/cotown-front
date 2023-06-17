@@ -1,7 +1,11 @@
-export const formatDate = (date: Date) : string => {
-  const day = date.getDate();
+export const formatDate = (date: Date, format: string) : string => {
+  const day = ("00" + date.getDate()).slice(-2);
+  const month = ("00" + (date.getMonth() + 1)).slice(-2)
   const year = date.getFullYear();
-  const month = date.getMonth() + 1;
+  if (format === 'DMY')
+    return `${day}/${month}/${year}`;
+  if (format === 'MDY')
+    return `${month}/${day}/${year}`;
   return `${year}-${month}-${day}`;
 }
 

@@ -47,7 +47,7 @@ export const BookingListQuery = `{
       phones: Phones
     }
   }
-  room_user: Booking_roomingViaBooking_rooming_id {
+  rooms: Booking_roomingViaBooking_rooming_id {
     id
     email: Email
     name: Name,
@@ -71,6 +71,7 @@ export const BuildingDataViaBooking = `query bookingQuery($id: Int)
 export const BuildingDataViaBookingGroup = `query bookingQuery($id: Int)
 {
   data: Booking_Booking_groupList(where:{ id: { EQ: $id } }) {
+    id
     building_id: Building_id
     booking_id: id
     date_from: Date_from

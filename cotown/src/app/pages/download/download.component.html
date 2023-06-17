@@ -49,12 +49,12 @@
   <div class="pure-u-6-24">
     <mat-form-field>
       <mat-label>Rango de fechas</mat-label>
-      <mat-date-range-input [rangePicker]="picker" [formGroup]="bookingDateControl">
+      <mat-date-range-input [rangePicker]="bookingpicker" [formGroup]="bookingDateControl">
       <input matStartDate formControlName="start" placeholder="Desde">
       <input matEndDate formControlName="end" placeholder="Hasta">
       </mat-date-range-input>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
+      <mat-datepicker-toggle matIconSuffix [for]="bookingpicker"></mat-datepicker-toggle>
+      <mat-date-range-picker #bookingpicker></mat-date-range-picker>
   </mat-form-field>
   </div>
 </div>
@@ -99,12 +99,12 @@
   <div class="pure-u-6-24">
     <mat-form-field>
       <mat-label>Rango de fechas</mat-label>
-      <mat-date-range-input [rangePicker]="picker" [formGroup]="paymentDateControl">
+      <mat-date-range-input [rangePicker]="paymentpicker" [formGroup]="paymentDateControl">
       <input matStartDate formControlName="start" placeholder="Desde">
       <input matEndDate formControlName="end" placeholder="Hasta">
       </mat-date-range-input>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
+      <mat-datepicker-toggle matIconSuffix [for]="paymentpicker"></mat-datepicker-toggle>
+      <mat-date-range-picker #paymentpicker></mat-date-range-picker>
   </mat-form-field>
   </div>
   <div class="pure-u-10-24">

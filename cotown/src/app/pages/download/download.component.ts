@@ -71,12 +71,21 @@ export class DownloadComponent {
     // Default
     let l = 'javascript:void(0)';
 
+    // Pagos
+    if (data == "reservas") {
+    const from = moment(this.bookingDateControl.value.start);
+    const to = moment(this.bookingDateControl.value.end).add(1,'d');
+    l = environment.backURL + '/export/reservas' 
+      + '?fdesde=' + from.format('YYYY-MM-DD') 
+      + '&fhasta=' + to.format('YYYY-MM-DD') 
+      + '&access_token=' + this.apolloApi.token;
+
     // Facturas
-    if (data == "facturas") {
+    } else if (data == "facturas") {
       const from = moment(this.billDateControl.value);
+      const to = moment(from).add(1, 'M');
       const prov_from = this.providerControl.value;
       const prov_to = prov_from || 99; 
-      const to = moment(from).add(1, 'M');
       l = environment.backURL + '/export/facturas' 
         + '?fdesde=' + from.format('YYYY-MM-DD') 
         + '&fhasta=' + to.format('YYYY-MM-DD') 

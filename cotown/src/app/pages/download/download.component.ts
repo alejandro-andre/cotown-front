@@ -71,8 +71,12 @@ export class DownloadComponent {
     // Default
     let l = 'javascript:void(0)';
 
-    // Pagos
-    if (data == "reservas") {
+    // Weekly report
+    if (data == "weekly") {
+      l = environment.backURL + '/export/weekly?fdesde=2020-01-01&fhasta=2099-12-31' + '&access_token=' + this.apolloApi.token;
+  
+    // Reservas
+    } else if (data == "reservas") {
     const from = moment(this.bookingDateControl.value.start);
     const to = moment(this.bookingDateControl.value.end).add(1,'d');
     l = environment.backURL + '/export/reservas' 

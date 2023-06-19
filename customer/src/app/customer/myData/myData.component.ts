@@ -200,6 +200,7 @@ export class MyDataComponent implements OnInit {
     this.tutor_nameControl.markAllAsTouched();
     this.tutor_emailControl.markAllAsTouched();
     this.tutor_phonesControl.markAllAsTouched();
+    /*
     console.log(this.customer.id_type_id);
     console.log(this.customer.document);
     console.log(this.customer.address);
@@ -214,6 +215,7 @@ export class MyDataComponent implements OnInit {
     console.log(this.customer.tutor_name);
     console.log(this.customer.tutor_email);
     console.log(this.customer.tutor_phones);
+    */
     if (
       !this.customer.id_type_id ||
       !this.customer.document ||

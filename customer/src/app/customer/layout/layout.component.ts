@@ -17,8 +17,7 @@ import { Constants } from 'src/app/constants/Constants';
 // Queries
 import { CUSTOMER_ID_QUERY, CUSTOMER_QUERY } from 'src/app/schemas/query-definitions/customer.query';
 import { Customer } from 'src/app/models/Customer.model';
-import { CustomDateAdapter } from 'src/app/utils/date-adapter';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS } from '@angular/material/core';
+import { DateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-layout',

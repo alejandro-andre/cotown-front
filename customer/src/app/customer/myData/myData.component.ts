@@ -167,7 +167,6 @@ export class MyDataComponent implements OnInit {
    */
 
   enableSave() {
-    console.log(this.customerService.age);
     this.isSaveEnabled = true;
   }
 
@@ -201,20 +200,35 @@ export class MyDataComponent implements OnInit {
     this.tutor_nameControl.markAllAsTouched();
     this.tutor_emailControl.markAllAsTouched();
     this.tutor_phonesControl.markAllAsTouched();
-    if (this.id_type_idControl.errors ||
-      this.documentControl.errors ||
-      this.addressControl.errors ||
-      this.zipControl.errors ||
-      this.cityControl.errors ||
-      this.provinceControl.errors ||
-      this.country_idControl.errors ||
-      this.birth_dateControl.errors || 
+    console.log(this.customer.id_type_id);
+    console.log(this.customer.document);
+    console.log(this.customer.address);
+    console.log(this.customer.zip);
+    console.log(this.customer.city);
+    console.log(this.customer.province);
+    console.log(this.customer.country_id);
+    console.log(this.customer.birth_date );
+    console.log(this.customerService.age < 18);
+    console.log(this.customer.tutor_id_type_id);
+    console.log(this.customer.tutor_document);
+    console.log(this.customer.tutor_name);
+    console.log(this.customer.tutor_email);
+    console.log(this.customer.tutor_phones);
+    if (
+      !this.customer.id_type_id ||
+      !this.customer.document ||
+      !this.customer.address ||
+      !this.customer.zip ||
+      !this.customer.city ||
+      !this.customer.province ||
+      !this.customer.country_id ||
+      !this.customer.birth_date || 
       this.customerService.age < 18 && (
-        this.tutor_id_type_idControl.errors ||
-        this.tutor_documentControl.errors ||
-        this.tutor_nameControl.errors ||
-        this.tutor_emailControl.errors ||
-        this.tutor_phonesControl.errors
+        !this.customer.tutor_id_type_id ||
+        !this.customer.tutor_document ||
+        !this.customer.tutor_name ||
+        !this.customer.tutor_email ||
+        !this.customer.tutor_phones
       )
     ) {
       this.modalService.openModal({title: 'Error', message: 'missing_fields'});

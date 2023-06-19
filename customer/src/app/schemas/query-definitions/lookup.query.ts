@@ -92,3 +92,16 @@ query get {
   }
 }`;
 
+export const PDFS_QUERY = `query get {
+  data: Booking_Booking_docList (
+    orderBy: [{attribute: id}]    
+  ) {
+    id
+    name: Name
+    name_en: Name_en
+    description: Description
+    description_en: Description_en
+    document: Document { oid }
+    document_en: Document_en { oid }
+  }
+}`;

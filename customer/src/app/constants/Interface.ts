@@ -177,3 +177,12 @@ export interface IPayloadFile {
   type: string,
   data: any 
 }
+
+export interface IPdf {
+  id: number,
+  name: string,
+  name_en: string,
+  description: string,
+  description_en: string
+}
+

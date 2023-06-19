@@ -1,0 +1,23 @@
+<app-spinner-control *ngIf="isLoading"></app-spinner-control>
+
+<h1>{{ 'pdfs' | translate }}</h1>
+
+<div *ngIf="lookupService.pdfs.length; then thenBlock else elseBlock"></div>
+
+<ng-template #thenBlock>
+  <div class="pure-g">
+    <div *ngFor="let pdf of lookupService.pdfs" class="pure-u-1-2">
+      <h2>{{ getPdfName(pdf) }}</h2>
+      <h3>
+        <img class="download" src="assets/pdf.png" (click)="download(pdf)">
+      </h3>
+      <p>{{ getPdfDescription(pdf) }}</p>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #elseBlock>
+  <div>
+    {{ 'errors.no_results' | translate }}
+  </div>
+</ng-template>

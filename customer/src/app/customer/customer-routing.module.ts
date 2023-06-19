@@ -15,6 +15,7 @@ import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBooking
 import { InvoicePayComponent } from './myInvoices/invoicePay/invoicePay.component';
 import { PaymentOkComponent } from './paymentOk/paymentOk.component';
 import { PaymentkOComponent } from './paymentKO/paymentkO.component';
+import { PdfsComponent } from './pdfs/pdfs.component';
 
 const routes: Routes = [
   {
@@ -35,10 +36,6 @@ const routes: Routes = [
         component: MyContactsComponent,
       },
       {
-        path: 'cantacts/new',
-        component: NewContactComponent,
-      },
-      {
         path: Constants.NAV_DOCUMENTS.url,
         component: MyDocumentsComponent,
       },
@@ -47,12 +44,20 @@ const routes: Routes = [
         component: MyBookingsComponent,
       },
       {
-        path: 'booking-detail/:id',
-        component: MyBookingDetailComponent,
-      },
-      {
         path: Constants.NAV_INVOICES.url,
         component: MyInvoicesComponent,
+      },
+      {
+        path: Constants.NAV_PDFS.url,
+        component: PdfsComponent,
+      },
+      {
+        path: 'cantacts/new',
+        component: NewContactComponent,
+      },
+      {
+        path: 'booking-detail/:id',
+        component: MyBookingDetailComponent,
       },
       {
         path: 'invoices/payment/:id',

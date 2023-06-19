@@ -16,7 +16,8 @@
     "my_contacts": "My contacts",
     "my_documents": "My documents",
     "my_bookings": "My bookings",
-    "my_invoices": "My invoices"
+    "my_invoices": "My invoices",
+    "pdfs": "Documentation"
   },
   "accept": "Accept",
   "addContact": "Add contact",
@@ -84,6 +85,7 @@
   "payment_date": "Payment date",
   "payment_order": "Payment order",
   "payments": "My payments",
+  "pdfs": "Documents and rules",
   "personal_data": "Personal info",
   "phone": "Phone",
   "phones": "Phones",

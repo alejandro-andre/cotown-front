@@ -31,7 +31,7 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
     language_id: Language_id
     nationality_id: Nationality_id
     country_id: Country_id
-    photo: Photo { name oid type size }
+    photo: Photo { name oid type size thumbnail }
     contacts: Customer_contactListViaCustomer_id {
       id
       name: Name

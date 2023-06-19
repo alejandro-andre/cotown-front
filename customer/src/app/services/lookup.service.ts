@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ILookup, ILookupInt } from '../constants/Interface';
+import { ILookup, ILookupInt, IPdf } from '../constants/Interface';
 import { ApolloQueryApi } from './apollo-api.service';
 
-import { CONTACT_TYPE_QUERY, COUNTRY_QUERY, REASONS_QUERY, GENDER_QUERY, ID_TYPE_QUERY, LANGUAGE_QUERY, SCHOOL_QUERY, STATUS_QUERY, RESOURCE_TYPE_QUERY, CHECKIN_OPTIONS_QUERY } from 'src/app/schemas/query-definitions/lookup.query';
+import { CONTACT_TYPE_QUERY, COUNTRY_QUERY, REASONS_QUERY, GENDER_QUERY, ID_TYPE_QUERY, LANGUAGE_QUERY, SCHOOL_QUERY, STATUS_QUERY, RESOURCE_TYPE_QUERY, CHECKIN_OPTIONS_QUERY, PDFS_QUERY } from 'src/app/schemas/query-definitions/lookup.query';
 import { Constants } from '../constants/Constants';
 
 @Injectable({
@@ -21,6 +21,7 @@ export class LookupService {
   public checkinOptions: ILookupInt[] = [];
   public resourceTypes: {code:string, name:string, name_en: string}[] = [];
   public status: {code:string, name:string, name_en: string}[] = [];
+  public pdfs: IPdf[] = [];
   
   public appLangs = Constants.LANGUAGES;
   
@@ -38,6 +39,7 @@ export class LookupService {
     this.loadCheckinOptions();
     this.loadStatus();
     this.loadResourceTypes();
+    this.loadPDFs()
   }
   
   // Languages
@@ -163,4 +165,15 @@ export class LookupService {
       }
     });
   }
+
+  // PDFs
+  loadPDFs() {
+    this.apolloApi.getData(PDFS_QUERY).subscribe((res) => {
+      const value = res.data;
+      if (value && value.data) {
+        this.pdfs = value.data;
+      }
+    });
+  }
+
 }

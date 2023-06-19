@@ -16,7 +16,8 @@
     "my_contacts": "Mis contactos",
     "my_documents": "Mis documentos",
     "my_bookings": "Mis reservas",
-    "my_invoices": "Mis facturas"
+    "my_invoices": "Mis facturas",
+    "pdfs": "Documentación"
   },
   "accept": "Aceptar",
   "addContact": "Añadir contacto",
@@ -84,6 +85,7 @@
   "payment_date": "Fecha de pago",
   "payment_order": "Orden de pago",
   "payments": "Mis pagos",
+  "pdfs": "Documentación y Normas",
   "personal_data": "Datos personales",
   "phone": "Teléfono",
   "phones": "Teléfonos",

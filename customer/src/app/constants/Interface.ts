@@ -18,6 +18,11 @@ export interface ILookupInt extends IBase {
   name_en?: string,
 };
 
+// Countries
+export interface ICountry extends ILookupInt {
+  prefix?: string
+}
+
 // Customer contact type
 export interface IContactType extends IBase {}
 

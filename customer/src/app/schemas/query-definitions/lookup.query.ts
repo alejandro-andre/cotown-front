@@ -25,6 +25,7 @@ export const COUNTRY_QUERY = `query get {
     id
     name: Name
     name_en: Name_en
+    prefix: Prefix
   }
 }`;
 

@@ -76,17 +76,34 @@
       </div>
   
       <!-- Phones -->
-      <div class="pure-u-1 pure-u-lg-1-2">
+      <div class="pure-u-1 pure-u-lg-1-2" *ngIf="!visibility['phones']">
+        <mat-form-field>
+          <mat-label>{{ 'phone' | translate }}</mat-label>
+          <input matInput readonly [ngModel]="customer.phones">
+        </mat-form-field>
+      </div>
+      <div class="pure-u-1 pure-u-lg-1-4" *ngIf="visibility['phones']">
+        <mat-form-field>
+          <mat-label>{{ 'prefix' | translate }}</mat-label>
+          <mat-select [(ngModel)]="phone.prefix">
+            <mat-option 
+              *ngFor="let c of lookupService.countries" 
+              [value]="c.prefix">{{ c.prefix }} {{ c.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="pure-u-1 pure-u-lg-1-4" *ngIf="visibility['phones']">
         <mat-form-field>
           <mat-label>{{ 'phone' | translate }}</mat-label>
           <input matInput 
                  placeholder="{{'phones' | translate}}" 
                  [readonly]="!visibility['phones']" 
-                 [(ngModel)]="customer.phones" 
+                 [(ngModel)]="phone.number" 
                  (change)="enableSave()">
         </mat-form-field>
       </div>
-  
+
       <!-- Gender -->
       <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
         <mat-form-field *ngIf="!visibility['gender_id']">

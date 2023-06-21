@@ -50,7 +50,6 @@ export class PdfsComponent {
 
     // Get file
     this.axiosApi.getPdf(pdf.id, type).then((response: any) => {
-      console.log(response);
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(response.data);;
       link.download = name;

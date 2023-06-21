@@ -11,7 +11,7 @@ import { ModalService } from 'src/app/services/modal.service';
 
 // Constants and interfaces
 import { Constants } from 'src/app/constants/Constants';
-import { ICustomer, IPayloadFile } from 'src/app/constants/Interface';
+import { ICustomer, IPayloadFile, IPhone } from 'src/app/constants/Interface';
 import { UPDATE_CUSTOMER, UPLOAD_CUSTOMER_PHOTO } from 'src/app/schemas/query-definitions/customer.query';
 import { formatErrorBody } from 'src/app/utils/error.util';
 import { LookupService } from 'src/app/services/lookup.service';
@@ -36,6 +36,9 @@ export class MyDataComponent implements OnInit {
 
   // Image file
   public image!: File;
+
+  // Phone
+  public phone: IPhone = { prefix: '', number: '' };
 
   // Form fields
   public id_type_idControl = new FormControl('', [ Validators.required ]);
@@ -70,8 +73,21 @@ export class MyDataComponent implements OnInit {
   ngOnInit() {
     this.changeLang();
     if (this.customerService.customer.birth_date) {
+
+      // Birth date
       const date = new Date(this.customerService.customer.birth_date)
       this.birth_dateControl.setValue(date);
+
+      // Phone
+      const regex = /(\+\w+)\s(.+)/; 
+      const matches = this.customerService.customer.phones.match(regex);
+      if (matches && matches.length === 3) {
+        this.phone.prefix = matches[1];
+        this.phone.number = matches[2];
+      } else {
+        this.phone.number = this.customerService.customer.phones;
+      }
+      
     }
   }
 
@@ -260,6 +276,9 @@ export class MyDataComponent implements OnInit {
     
     // Set age
     this.customerService.customer.birth_date = this.datePipe.transform(this.birth_dateControl.value, 'yyyy-MM-dd');
+
+    // Set phone
+    this.customerService.customer.phones= this.phone.prefix + ' ' + this.phone.number;
 
     // Validate
     if (!this.validate()) {

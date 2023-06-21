@@ -80,7 +80,6 @@ export class LookupService {
       const value = res.data;
       if (value && value.data) {
         this.countries = value.data;
-        console.log(this.countries);
       }
     });
   }

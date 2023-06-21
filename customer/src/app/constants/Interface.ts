@@ -6,6 +6,12 @@ export interface INav {
   url: string
 };
 
+// Phone number
+export interface IPhone {
+  prefix: string,
+  number: string
+}
+
 // Interfaces
 export interface IBase  {
   id: number,

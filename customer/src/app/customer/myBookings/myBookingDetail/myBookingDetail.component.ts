@@ -160,7 +160,6 @@ export class MyBookingDetailComponent {
   }
 
   get resourceAddress(): string {
-    console.log(this.booking  )
     return (this.booking?.resource?.building?.address || '') + ' - '
          + (this.booking?.resource?.address || ''); 
   }

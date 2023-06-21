@@ -69,7 +69,7 @@ export function createTranslateLoader(http: HttpClient) {
     InvoicePayComponent,
     PaymentOkComponent,
     PaymentkOComponent,
-    SpinnerControlComponent,
+    SpinnerControlComponent
   ],
   imports: [
     CommonModule,

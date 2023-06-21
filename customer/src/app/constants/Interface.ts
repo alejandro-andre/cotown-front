@@ -58,6 +58,7 @@ export interface ICustomer extends IBase {
   invoices?: IInvoice[],
   payments?: IPayment[],
   bookings?: IBooking[],
+  changed: boolean
 };
 
 // Customer document
@@ -134,7 +135,7 @@ export interface IBooking {
   resource_type: string,
   flat_type: IFlatType,
   place_type: IPlaceType,
-  resource: ICode,
+  resource: any,
   rent: number,
   services: number,
   limit: number,

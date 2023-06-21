@@ -4,352 +4,385 @@
 
 <ng-template #thenBlock>
 
-  <h1>{{ 'booking_detail' | translate }} #{{ booking.id }}</h1>
+  <h1>{{ 'booking' | translate }} #{{ booking.id }}</h1>
 
-  <div class="group">
-    <div class="pure-g">
+  <mat-tab-group>
 
-      <div class="pure-u-1 pure-u-lg-1-2">
-        <mat-form-field>
-          <mat-label>{{ 'status' | translate }}</mat-label>
-          <input matInput placeholder="{{ 'status' | translate }}" [ngModel]="status">
-        </mat-form-field>
-      </div>
+    <mat-tab label="{{ 'booking_detail' | translate }}">
 
-      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-        <mat-form-field>
-          <mat-label>{{ 'request_date' | translate }}</mat-label>
-          <input matInput readonly placeholder="{{'request_date' | translate}}" [value]="formatDate(booking.request_date)">
-        </mat-form-field>
+      <h2>{{ 'booking_dates' | translate }}</h2>
+
+      <!-- Details -->
+      <div class="group">
+        <div class="pure-g">
+    
+          <div class="pure-u-1 pure-u-lg-1-2">
+            <mat-form-field>
+              <mat-label>{{ 'status' | translate }}</mat-label>
+              <input matInput placeholder="{{ 'status' | translate }}" [ngModel]="status">
+            </mat-form-field>
+          </div>
+    
+          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+            <mat-form-field>
+              <mat-label>{{ 'request_date' | translate }}</mat-label>
+              <input matInput readonly placeholder="{{'request_date' | translate}}" [value]="formatDate(booking.request_date)">
+            </mat-form-field>
+            </div>
+    
+          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+            <mat-form-field *ngIf="booking.expiry_date">
+              <mat-label>{{ 'valid_until' | translate }}</mat-label>
+              <input matInput readonly placeholder="{{'valid_until' | translate}}" [value]="formatDate(booking.expiry_date)">
+            </mat-form-field>
+            <mat-form-field *ngIf="booking.confirmation_date">
+              <mat-label>{{ 'confirmation_date' | translate }}</mat-label>
+              <input matInput readonly placeholder="dd/mm/yyyy" [value]="formatDate(booking.confirmation_date)">
+            </mat-form-field>
+          </div>
+    
+          <div class="pure-u-1 pure-u-lg-1-2">
+            <mat-form-field>
+              <mat-label>{{ 'payer' | translate }}</mat-label>
+              <input matInput placeholder="{{'payer' | translate}}" [(ngModel)]="booking.payer.name" >
+            </mat-form-field>
+          </div>
+    
+          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+            <mat-form-field>
+              <mat-label>{{ 'date_from' | translate }}</mat-label>
+              <input matInput readonly placeholder="{{'date_from' | translate}}" [value]="formatDate(booking.date_from)">
+            </mat-form-field>
+          </div>
+    
+          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+            <mat-form-field>
+              <mat-label>{{ 'date_to' | translate }}</mat-label>
+              <input matInput readonly placeholder="{{'date_to' | translate}}" [value]="formatDate(booking.date_to)">
+            </mat-form-field>
+          </div>
+    
+          <div class="pure-u-1" style="text-align: right;">
+            <button *ngIf="isDiscardable()" mat-raised-button (click)="discard()" color="secondary" style="margin: 0 20px 20px 0;">
+              {{ 'discard' | translate }}
+            </button>
+          </div>
+    
         </div>
-
-      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-        <mat-form-field>
-          <mat-label>{{ 'valid_until' | translate }}</mat-label>
-          <input matInput readonly placeholder="{{'valid_until' | translate}}" [value]="formatDate(booking.expiry_date)">
-        </mat-form-field>
       </div>
 
-      <div class="pure-u-1 pure-u-lg-1-2">
-        <mat-form-field>
-          <mat-label>{{ 'payer' | translate }}</mat-label>
-          <input matInput placeholder="{{'payer' | translate}}" [(ngModel)]="booking.payer.name" >
-        </mat-form-field>
-      </div>
-
-      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-        <mat-form-field>
-          <mat-label>{{ 'date_from' | translate }}</mat-label>
-          <input matInput readonly placeholder="{{'date_from' | translate}}" [value]="formatDate(booking.date_from)">
-        </mat-form-field>
-      </div>
-
-      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-        <mat-form-field>
-          <mat-label>{{ 'date_to' | translate }}</mat-label>
-          <input matInput readonly placeholder="{{'date_to' | translate}}" [value]="formatDate(booking.date_to)">
-        </mat-form-field>
-      </div>
-
-      <div class="pure-u-1" style="text-align: right;">
-        <button *ngIf="isDiscardable()" mat-raised-button (click)="discard()" color="secondary" style="margin: 0 20px 20px 0;">
-          {{ 'discard' | translate }}
-        </button>
-      </div>
-
-    </div>
-  </div>
-  
-  <div *ngIf="booking.status.includes('solicitud') || booking.status.includes('alternativas')">
-    <h2>{{ 'request' | translate }}</h2>
-    <div class="group">
-      <div class="pure-g">
-
-        <div class="pure-u-1 pure-u-lg-1-2">
-          <mat-form-field>
-            <mat-label>{{ 'building' | translate }}: </mat-label>
-            <input matInput placeholder="{{'building' | translate}}" readonly [value]="building">
-          </mat-form-field>
+      <!-- Request -->
+      <div *ngIf="booking.status.includes('solicitud') || booking.status.includes('alternativas')">
+        <h2>{{ 'request' | translate }}</h2>
+        <div class="group">
+          <div class="pure-g">
+    
+            <div class="pure-u-1 pure-u-lg-1-2">
+              <mat-form-field>
+                <mat-label>{{ 'building' | translate }}: </mat-label>
+                <input matInput placeholder="{{'building' | translate}}" readonly [value]="building">
+              </mat-form-field>
+            </div>
+    
+            <div class="pure-u-1 pure-u-lg-1-2">
+              <mat-form-field>
+                <mat-label>{{ 'resource_type' | translate }}</mat-label>
+                <input matInput placeholder="{{'resource_type' | translate}}" [ngModel]="resourceType" readonly>
+              </mat-form-field>
+            </div>
+    
+            <div class="pure-u-1 pure-u-lg-1-2">
+              <mat-form-field>
+                <mat-label>{{ 'flat_type' | translate }}</mat-label>
+                <input matInput placeholder="{{'flat_type' | translate}}" [ngModel]="flatType" readonly>
+              </mat-form-field>
+            </div>
+    
+            <div class="pure-u-1 pure-u-lg-1-2">
+              <mat-form-field>
+                <mat-label>{{ 'place_type' | translate }}</mat-label>
+                <input matInput placeholder="{{'place_type' | translate}}" [ngModel]="placeType" readonly>
+              </mat-form-field>
+            </div>
+    
+            <div class="pure-u-1 pure-u-lg-1-2">
+              <mat-form-field *ngIf="!isEditableReason">
+                <mat-label>{{ 'reason' | translate }}</mat-label>
+                <input matInput placeholder="{{'reason' | translate}}" [ngModel]="reasonName" readonly>
+              </mat-form-field>
+              <mat-form-field *ngIf="isEditableReason">
+                <mat-label>{{ 'reason' | translate }}</mat-label>
+                <mat-select [(ngModel)]="selectedReason" (selectionChange)="enableSave()">
+                  <mat-option *ngFor="let c of lookupService.reasons" [value]="c.id">
+                  {{ isSpanish ? c.name : c.name_en  }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+    
+            <div class="pure-u-1 pure-u-lg-1-2">
+              <mat-form-field *ngIf="!isEditableSchool">
+                <mat-label>{{ 'school' | translate }}</mat-label>
+                <input matInput placeholder="{{ 'school' | translate}}" [ngModel]="schoolName" readonly>
+              </mat-form-field>
+              <mat-form-field *ngIf="isEditableSchool">
+                <mat-label>{{ 'school' | translate }}</mat-label>
+                <mat-select [(ngModel)]="selectedSchool" (selectionChange)="enableSave()">
+                  <mat-option *ngFor="let school of lookupService.schools" [value]="school.id">
+                  {{ school.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>      
+            </div>
+    
+          </div>
         </div>
-
-        <div class="pure-u-1 pure-u-lg-1-2">
-          <mat-form-field>
-            <mat-label>{{ 'resource_type' | translate }}</mat-label>
-            <input matInput placeholder="{{'resource_type' | translate}}" [ngModel]="resourceType" readonly>
-          </mat-form-field>
+      </div>
+    
+      <!-- Options -->
+      <div *ngIf="booking.status.includes('alternativas')">
+        <h2>{{ 'alternatives' | translate }}</h2>
+        <div style="border: 1px solid lightgray; overflow-x: auto;">
+          <table mat-table *ngIf="options && options.length" [dataSource]="options" class="table">
+            <ng-container matColumnDef="building">
+              <th mat-header-cell *matHeaderCellDef>{{ 'building' | translate }}</th>
+              <td mat-cell *matCellDef="let element">
+                  <span>{{ element.building }}</span>
+            </ng-container>
+            <ng-container matColumnDef="resource_type">
+              <th mat-header-cell *matHeaderCellDef>{{ 'resource_type' | translate }}</th>
+              <td mat-cell *matCellDef="let element">
+                  <span>{{ element.resource_type }}</span>
+            </ng-container>
+            <ng-container matColumnDef="flat_type">
+              <th mat-header-cell *matHeaderCellDef>{{ 'flat_type' | translate }}</th>
+              <td mat-cell *matCellDef="let element">
+                  <span>{{ element.flat_type }}</span>
+            </ng-container>
+            <ng-container matColumnDef="place_type">
+              <th mat-header-cell *matHeaderCellDef>{{ 'place_type' | translate }}</th>
+              <td mat-cell *matCellDef="let element">
+                  <span>{{ element.place_type }}</span>
+            </ng-container>
+            <ng-container matColumnDef="accept">
+              <th mat-header-cell *matHeaderCellDef>{{ 'accept' | translate }}</th>
+              <td mat-cell *matCellDef="let element">
+                  <button mat-raised-button (click)="accept(element)">
+                    {{ 'accept' | translate }}
+                  </button>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsOptions"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsOptions;"></tr>
+          </table>
         </div>
-
-        <div class="pure-u-1 pure-u-lg-1-2">
-          <mat-form-field>
-            <mat-label>{{ 'flat_type' | translate }}</mat-label>
-            <input matInput placeholder="{{'flat_type' | translate}}" [ngModel]="flatType" readonly>
-          </mat-form-field>
+      </div>
+    
+      <!-- Resource & prices -->
+      <div *ngIf="booking.resource">
+        <h2>{{ 'booking_detail' | translate }}</h2>
+        <div class="group">
+          <div class="pure-g">
+      
+            <div class="pure-u-1 pure-u-lg-1-2">
+              <mat-form-field>
+                <mat-label>{{ 'resource' | translate }}</mat-label>
+                <input matInput placeholder="{{ 'resource' | translate }}" [ngModel]="resourceCode" readonly>         
+              </mat-form-field>
+            </div>
+      
+            <div class="pure-u-1 pure-u-lg-1-2">
+              <mat-form-field>
+                <mat-label>{{ 'address' | translate }}</mat-label>
+                <input matInput placeholder="{{ 'address' | translate }}" [ngModel]="resourceAddress" readonly>         
+              </mat-form-field>
+            </div>
+      
+            <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+              <mat-form-field>
+                <mat-label>{{ 'rent' | translate }}</mat-label>
+                <input matInput placeholder="{{ 'rent' | translate }}" [ngModel]="booking.rent" readonly>
+              </mat-form-field>
+            </div>
+      
+            <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+              <mat-form-field>
+                <mat-label>{{ 'services' | translate }}</mat-label>
+                <input matInput placeholder="{{ 'services' | translate }}" [ngModel]="booking.services" readonly>
+              </mat-form-field>
+            </div>
+      
+            <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+              <mat-form-field>
+                <mat-label>{{ 'limit' | translate }}</mat-label>
+                <input matInput placeholder="{{ 'limit' | translate }}" [ngModel]="booking.limit" readonly>
+              </mat-form-field>
+            </div>
+      
+            <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+              <mat-form-field>
+                <mat-label>{{ 'deposit' | translate }}</mat-label>
+                <input matInput placeholder="{{ 'deposit' | translate }}" [ngModel]="booking.deposit" readonly>
+              </mat-form-field>
+            </div>
+      
+          </div>
         </div>
-
-        <div class="pure-u-1 pure-u-lg-1-2">
-          <mat-form-field>
-            <mat-label>{{ 'place_type' | translate }}</mat-label>
-            <input matInput placeholder="{{'place_type' | translate}}" [ngModel]="placeType" readonly>
-          </mat-form-field>
+        <div style="border: 1px solid lightgray; overflow-x: auto;">
+          <table mat-table *ngIf="booking.price_list && booking.price_list.length" 
+                  [dataSource]="booking.price_list" class="table">
+            <ng-container matColumnDef="rent_date">
+              <th mat-header-cell *matHeaderCellDef>{{ 'rent_date' | translate }}</th>
+              <td mat-cell *matCellDef="let element"> {{ formatDate(element.rent_date) }} </td>
+            </ng-container>
+            <ng-container matColumnDef="rent">
+              <th mat-header-cell *matHeaderCellDef>{{ 'rent' | translate }}</th>
+              <td mat-cell *matCellDef="let element"> {{ element.rent }} € </td>
+            </ng-container>
+            <ng-container matColumnDef="services">
+              <th mat-header-cell *matHeaderCellDef>{{ 'services' | translate }}</th>
+              <td mat-cell *matCellDef="let element"> {{ element.services }} € </td>
+            </ng-container>
+            <ng-container matColumnDef="rent_discount">
+              <th mat-header-cell *matHeaderCellDef>{{ 'rent_discount' | translate }}</th>
+              <td mat-cell *matCellDef="let element"> {{ element.rent_discount }} € </td>
+            </ng-container>
+            <ng-container matColumnDef="services_discount">
+              <th mat-header-cell *matHeaderCellDef>{{ 'services_discount' | translate }}</th>
+              <td mat-cell *matCellDef="let element"> {{ element.services_discount }} € </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsPrices"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsPrices;"></tr>
+          </table>
         </div>
-
-        <div class="pure-u-1 pure-u-lg-1-2">
-          <mat-form-field *ngIf="!isEditableReason">
-            <mat-label>{{ 'reason' | translate }}</mat-label>
-            <input matInput placeholder="{{'reason' | translate}}" [ngModel]="reasonName" readonly>
-          </mat-form-field>
-          <mat-form-field *ngIf="isEditableReason">
-            <mat-label>{{ 'reason' | translate }}</mat-label>
-            <mat-select [(ngModel)]="selectedReason" (selectionChange)="enableSave()">
-              <mat-option *ngFor="let c of lookupService.reasons" [value]="c.id">
-              {{ isSpanish ? c.name : c.name_en  }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div class="pure-u-1 pure-u-lg-1-2">
-          <mat-form-field *ngIf="!isEditableSchool">
-            <mat-label>{{ 'school' | translate }}</mat-label>
-            <input matInput placeholder="{{ 'school' | translate}}" [ngModel]="schoolName" readonly>
-          </mat-form-field>
-          <mat-form-field *ngIf="isEditableSchool">
-            <mat-label>{{ 'school' | translate }}</mat-label>
-            <mat-select [(ngModel)]="selectedSchool" (selectionChange)="enableSave()">
-              <mat-option *ngFor="let school of lookupService.schools" [value]="school.id">
-              {{ school.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>      
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <div *ngIf="booking.status.includes('alternativas')">
-    <h2>{{ 'alternatives' | translate }}</h2>
-    <div style="border: 1px solid lightgray; overflow-x: auto;">
-      <table mat-table *ngIf="options && options.length" [dataSource]="options" class="table">
-        <ng-container matColumnDef="building">
-          <th mat-header-cell *matHeaderCellDef>{{ 'building' | translate }}</th>
-          <td mat-cell *matCellDef="let element">
-              <span>{{ element.building }}</span>
-        </ng-container>
-        <ng-container matColumnDef="resource_type">
-          <th mat-header-cell *matHeaderCellDef>{{ 'resource_type' | translate }}</th>
-          <td mat-cell *matCellDef="let element">
-              <span>{{ element.resource_type }}</span>
-        </ng-container>
-        <ng-container matColumnDef="flat_type">
-          <th mat-header-cell *matHeaderCellDef>{{ 'flat_type' | translate }}</th>
-          <td mat-cell *matCellDef="let element">
-              <span>{{ element.flat_type }}</span>
-        </ng-container>
-        <ng-container matColumnDef="place_type">
-          <th mat-header-cell *matHeaderCellDef>{{ 'place_type' | translate }}</th>
-          <td mat-cell *matCellDef="let element">
-              <span>{{ element.place_type }}</span>
-        </ng-container>
-        <ng-container matColumnDef="accept">
-          <th mat-header-cell *matHeaderCellDef>{{ 'accept' | translate }}</th>
-          <td mat-cell *matCellDef="let element">
-              <button mat-raised-button (click)="accept(element)">
-                {{ 'accept' | translate }}
-              </button>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumnsOptions"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumnsOptions;"></tr>
-      </table>
-    </div>
-  </div>
-
-  <h2>{{ 'prices' | translate }}</h2>
-  <div class="group">
-    <div class="pure-g">
-
-      <div class="pure-u-1 pure-u-lg-3-4">
-        <mat-form-field>
-          <mat-label>{{ 'resource' | translate }}</mat-label>
-          <input matInput placeholder="{{ 'resource' | translate }}" [ngModel]="resourceCode" readonly>         
-        </mat-form-field>
-      </div>
-
-      <div class="pure-u-1 pure-u-lg-1-4">
-        <mat-form-field>
-          <mat-label>{{ 'confirmation_date' | translate }}</mat-label>
-          <input matInput readonly placeholder="dd/mm/yyyy" [value]="formatDate(booking.confirmation_date)">
-        </mat-form-field>
-      </div>
-
-      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-        <mat-form-field>
-          <mat-label>{{ 'rent' | translate }}</mat-label>
-          <input matInput placeholder="{{ 'rent' | translate }}" [ngModel]="booking.rent" readonly>
-        </mat-form-field>
-      </div>
-
-      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-        <mat-form-field>
-          <mat-label>{{ 'services' | translate }}</mat-label>
-          <input matInput placeholder="{{ 'services' | translate }}" [ngModel]="booking.services" readonly>
-        </mat-form-field>
-      </div>
-
-      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-        <mat-form-field>
-          <mat-label>{{ 'limit' | translate }}</mat-label>
-          <input matInput placeholder="{{ 'limit' | translate }}" [ngModel]="booking.limit" readonly>
-        </mat-form-field>
-      </div>
-
-      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-        <mat-form-field>
-          <mat-label>{{ 'deposit' | translate }}</mat-label>
-          <input matInput placeholder="{{ 'deposit' | translate }}" [ngModel]="booking.deposit" readonly>
-        </mat-form-field>
-      </div>
-
-    </div>
-  </div>
-
-  <div style="border: 1px solid lightgray; overflow-x: auto;">
-    <table mat-table *ngIf="booking.price_list && booking.price_list.length" 
-            [dataSource]="booking.price_list" class="table">
-      <ng-container matColumnDef="rent_date">
-        <th mat-header-cell *matHeaderCellDef>{{ 'rent_date' | translate }}</th>
-        <td mat-cell *matCellDef="let element"> {{ formatDate(element.rent_date) }} </td>
-      </ng-container>
-      <ng-container matColumnDef="rent">
-        <th mat-header-cell *matHeaderCellDef>{{ 'rent' | translate }}</th>
-        <td mat-cell *matCellDef="let element"> {{ element.rent }} € </td>
-      </ng-container>
-      <ng-container matColumnDef="services">
-        <th mat-header-cell *matHeaderCellDef>{{ 'services' | translate }}</th>
-        <td mat-cell *matCellDef="let element"> {{ element.services }} € </td>
-      </ng-container>
-      <ng-container matColumnDef="rent_discount">
-        <th mat-header-cell *matHeaderCellDef>{{ 'rent_discount' | translate }}</th>
-        <td mat-cell *matCellDef="let element"> {{ element.rent_discount }} € </td>
-      </ng-container>
-      <ng-container matColumnDef="services_discount">
-        <th mat-header-cell *matHeaderCellDef>{{ 'services_discount' | translate }}</th>
-        <td mat-cell *matCellDef="let element"> {{ element.services_discount }} € </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumnsPrices"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumnsPrices;"></tr>
-    </table>
-  </div>
-
-  <h2>{{ 'dates' | translate }}</h2>
-  <div class="group">
-    <div class="pure-g">
-
-      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-        <mat-form-field>
-          <mat-label>{{ 'check_in' | translate }}</mat-label>
-          <input matInput [matDatepicker]="pickerFrom" [formControl]="checkinFormControl" (dateInput)="enableSave()">
-          <mat-datepicker-toggle matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
-          <mat-datepicker #pickerFrom></mat-datepicker>
-        </mat-form-field>
-       </div>
-
-      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-        <mat-form-field>
-          <mat-label>{{ 'check_out' | translate }}</mat-label>
-          <input matInput [matDatepicker]="pickerTo" [formControl]="checkoutFormControl" (dateInput)="enableSave()" >
-          <mat-datepicker-toggle matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
-          <mat-datepicker #pickerTo></mat-datepicker>
-        </mat-form-field>
-      </div>
-
-      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-        <mat-form-field>
-          <mat-label>{{ 'flight' | translate }}</mat-label>
-          <input matInput placeholder="{{ 'flight' | translate }}" [(ngModel)]="flight" (change)="enableSave()">
-        </mat-form-field>
-      </div>
-
-      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-        <mat-form-field>
-          <mat-label>{{ 'arrival' | translate }}</mat-label>
-          <input matInput type="time" [(ngModel)]="arrival" (change)="enableSave()">
-      </mat-form-field>
-  
-      </div>
-
-      <div class="pure-u-1">
-        <mat-form-field>
-          <mat-label>{{ 'check_in_option' | translate }}</mat-label>
-          <mat-select [(ngModel)]="selectedOption" (selectionChange)="enableSave()" >
-            <mat-option *ngFor="let op of lookupService.checkinOptions" [value]="op.id">
-            {{ isSpanish ? op.name : op.name_en  }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-    </div>
-  </div>
-
-  <button mat-raised-button color="primary" (click)="save()" [disabled]="!enabledSave" class="action">
-    {{ 'save' | translate }}
-  </button>
-
-  <div *ngIf="contractsRendered">
-
-    <h1>{{ 'contracts' | translate }}</h1>
-    <h3 *ngIf="contractsSigned === null">{{ contractMessage | translate }}</h3>
-    <h3 *ngIf="contractsSigned !== null">{{ contractMessage | translate: { value: formatedDate } }}</h3>
-    <div class="group">
-      <div class="pure-g">
-
-        <div class="pure-u-1 pure-u-xl-1-2">
-          <div class="box-pdf" *ngIf="contractRentInfo.contract.length > 0">
-            <h3>
-              <img class="download" src="assets/pdf.png" (click)="downloadRent()">
-              {{ 'rent_contract' | translate }}
-            </h3>
-            <pdf-viewer
-              #pdfRent class="pdf-viewer" [src]="contractRentInfo.contract"
-              [(page)]="contractRentInfo.current_page" 
-              [show-all]="true" [show-borders]="false"
-              (after-load-complete)="afterLoadRent($event)"
-            ></pdf-viewer>
-            <div class="sign"*ngIf="booking.contract_signed === null">
-              <button mat-raised-button color="primary" (click)="sign(RENT_CONTRACT_TYPE)" 
-                      [disabled]="contractRentInfo.current_page < contractRentInfo.total_pages || contractRentInfo.signed">
-                {{ 'sign' | translate }}
-              </button>
+      </div>     
+    
+      <!-- Contracts -->
+      <div *ngIf="contractsRendered">
+    
+        <h1>{{ 'contracts' | translate }}</h1>
+        <h3 *ngIf="contractsSigned === null">{{ contractMessage | translate }}</h3>
+        <h3 *ngIf="contractsSigned !== null">{{ contractMessage | translate: { value: formatedDate } }}</h3>
+        <div class="group">
+          <div class="pure-g">
+            <div class="pure-u-1 pure-u-xl-1-2">
+              <div class="box-pdf" *ngIf="contractRentInfo.contract.length > 0">
+                <h3>
+                  <img class="download" src="assets/pdf.png" (click)="downloadRent()">
+                  {{ 'rent_contract' | translate }}
+                </h3>
+                <pdf-viewer
+                  #pdfRent class="pdf-viewer" [src]="contractRentInfo.contract"
+                  [(page)]="contractRentInfo.current_page" 
+                  [show-all]="true" [show-borders]="false"
+                  (after-load-complete)="afterLoadRent($event)"
+                ></pdf-viewer>
+                <div class="sign"*ngIf="booking.contract_signed === null">
+                  <button mat-raised-button color="primary" (click)="sign(RENT_CONTRACT_TYPE)" 
+                          [disabled]="contractRentInfo.current_page < contractRentInfo.total_pages || contractRentInfo.signed">
+                    {{ 'sign' | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="pure-u-1 pure-u-xl-1-2">
+              <div class="box-pdf" *ngIf="contractServicesInfo.contract.length > 0">
+                <h3>
+                  <img class="download" src="assets/pdf.png" (click)="downloadServices()">
+                  {{ 'services_contract' | translate }}
+                </h3>
+                <pdf-viewer
+                  #pdfServices class="pdf-viewer" [src]="contractServicesInfo.contract"
+                  [(page)]="contractServicesInfo.current_page" 
+                  [show-all]="true" [show-borders]="false"
+                  (after-load-complete)="afterLoadServices($event)"
+                ></pdf-viewer>
+                <div class="sign" *ngIf="booking.contract_signed === null">
+                  <button mat-raised-button color="primary" (click)="sign(SERVICE_CONTRACT_TYPE)" 
+                          [disabled]="contractServicesInfo.current_page < contractServicesInfo.total_pages || contractServicesInfo.signed">
+                    {{ 'sign' | translate }}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="pure-u-1 pure-u-xl-1-2">
-          <div class="box-pdf" *ngIf="contractServicesInfo.contract.length > 0">
-            <h3>
-              <img class="download" src="assets/pdf.png" (click)="downloadServices()">
-              {{ 'services_contract' | translate }}
-            </h3>
-            <pdf-viewer
-              #pdfServices class="pdf-viewer" [src]="contractServicesInfo.contract"
-              [(page)]="contractServicesInfo.current_page" 
-              [show-all]="true" [show-borders]="false"
-              (after-load-complete)="afterLoadServices($event)"
-            ></pdf-viewer>
-            <div class="sign" *ngIf="booking.contract_signed === null">
-              <button mat-raised-button color="primary" (click)="sign(SERVICE_CONTRACT_TYPE)" 
-                      [disabled]="contractServicesInfo.current_page < contractServicesInfo.total_pages || contractServicesInfo.signed">
-                {{ 'sign' | translate }}
-              </button>
-            </div>
-          </div>
-        </div>
-
+    
       </div>
-    </div>
+    
+    </mat-tab>
 
-  </div>
+    <mat-tab label="{{ 'dates' | translate }}">
+
+      <!-- Checkin -->
+      <h2>{{ 'check_in_title' | translate }}</h2>
+      <p>{{ 'check_in_text' | translate }}</p>
+      <div class="group">
+        <div class="pure-g">
+    
+          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+            <mat-form-field>
+              <mat-label>{{ 'check_in' | translate }}</mat-label>
+              <input matInput [matDatepicker]="pickerFrom" [formControl]="checkinFormControl" (dateInput)="enableSave()">
+              <mat-datepicker-toggle matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+              <mat-datepicker #pickerFrom></mat-datepicker>
+            </mat-form-field>
+            </div>
+    
+          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+            <mat-form-field>
+              <mat-label>{{ 'flight' | translate }}</mat-label>
+              <input matInput placeholder="{{ 'flight' | translate }}" [(ngModel)]="flight" (change)="enableSave()">
+            </mat-form-field>
+          </div>
+    
+          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+            <mat-form-field>
+              <mat-label>{{ 'arrival' | translate }}</mat-label>
+              <input matInput type="time" [(ngModel)]="arrival" (change)="enableSave()">
+          </mat-form-field>
+      
+          </div>
+    
+          <div class="pure-u-1">
+            <mat-form-field>
+              <mat-label>{{ 'check_in_option' | translate }}</mat-label>
+              <mat-select [(ngModel)]="selectedOption" (selectionChange)="enableSave()" >
+                <mat-option *ngFor="let op of lookupService.checkinOptions" [value]="op.id">
+                {{ isSpanish ? op.name : op.name_en  }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+    
+        </div>
+      </div>      
+
+      <!-- Checkout -->
+      <h2>{{ 'check_out_title' | translate }}</h2>
+      <p>{{ 'check_out_text' | translate }}</p>
+      <div class="group">
+        <div class="pure-g">
+   
+          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+            <mat-form-field>
+              <mat-label>{{ 'check_out' | translate }}</mat-label>
+              <input matInput [matDatepicker]="pickerTo" [formControl]="checkoutFormControl" (dateInput)="enableSave()" >
+              <mat-datepicker-toggle matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
+              <mat-datepicker #pickerTo></mat-datepicker>
+            </mat-form-field>
+          </div>
+    
+        </div>
+      </div>
+
+      <button mat-raised-button color="primary" (click)="save()" [disabled]="!enabledSave" class="action">
+        {{ 'save' | translate }}
+      </button>   
+     
+    </mat-tab>
+
+  </mat-tab-group>
+
 
   <br><br><br><br><br><br><br>
 

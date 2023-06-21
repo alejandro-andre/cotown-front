@@ -2,12 +2,13 @@
 
 <h1>{{ 'data' | translate }}</h1>
 
+<!-- Personal data -->
 <h2>{{ 'personal_data' | translate }}</h2>
 <div class="group">
   <div class="pure-g" >
 
     <!-- Photo -->
-    <div class="pure-u-1">
+    <div class="pure-u-1 pure-u-lg-1-5">
       <div class="label">{{ 'photo' | translate }}</div>
       <div class="image-container">
         <img *ngIf="customer.photo !== null" [src]="customer.photo?.thumbnail" [alt]="customer.photo?.name">
@@ -16,7 +17,8 @@
       </div>
     </div>      
 
-    <div class="pure-u-1">
+    <!-- Data -->
+    <div class="pure-u-1 pure-u-lg-4-5">
 
       <!-- Name -->
       <div class="pure-u-1 pure-u-lg-1-2">
@@ -85,10 +87,74 @@
         </mat-form-field>
       </div>
   
+      <!-- Gender -->
+      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+        <mat-form-field *ngIf="!visibility['gender_id']">
+          <mat-label>{{ 'gender' | translate }}</mat-label>
+          <input matInput readonly placeholder="{{ 'gender' | translate }}" [ngModel]="gender">
+        </mat-form-field>
+        <mat-form-field *ngIf="visibility['gender_id']">
+          <mat-label>{{ 'gender' | translate }}</mat-label>
+          <mat-select [(ngModel)]="customer.gender_id" (selectionChange)="enableSave()">
+            <mat-option *ngFor="let c of lookupService.genders" [value]="c.id">
+              {{ isSpanish ? c.name : c.name_en  }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Language -->
+      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+        <mat-form-field *ngIf="!visibility['language_id']">
+          <mat-label>{{ 'language' | translate }}</mat-label>
+          <input matInput readonly placeholder="{{ 'language' | translate }}" [ngModel]="language">
+        </mat-form-field>
+        <mat-form-field *ngIf="visibility['language_id']">
+          <mat-label>{{ 'language' | translate }}</mat-label>
+          <mat-select [(ngModel)]="customer.language_id" (selectionChange)="enableSave()">
+            <mat-option *ngFor="let c of lookupService.languages" [value]="c.id">
+              {{ isSpanish ? c.name : c.name_en }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Nationality -->
+      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+        <mat-form-field *ngIf="!visibility['nationality_id']">
+          <mat-label>{{ 'nationality' | translate }}</mat-label>
+          <input matInput readonly placeholder="{{ 'nationality' | translate }}" [ngModel]="nationality">
+        </mat-form-field>
+        <mat-form-field *ngIf="visibility['nationality_id']">
+          <mat-label>{{ 'nationality' | translate}}</mat-label>
+          <mat-select [(ngModel)]="customer.nationality_id" (selectionChange)="enableSave()">
+            <mat-option *ngFor="let c of lookupService.countries" [value]="c.id">
+              {{ isSpanish ? c.name : c.name_en }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Origin -->
+      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+        <mat-form-field *ngIf="!visibility['country_origin_id']">
+          <mat-label>{{ 'country_origin' | translate }}</mat-label>
+          <input matInput readonly placeholder="{{ 'country_origin' | translate }}" [ngModel]="origin">
+        </mat-form-field>
+        <mat-form-field *ngIf="visibility['country_origin_id']">
+          <mat-label>{{ 'country_origin' | translate }}</mat-label>
+          <mat-select [(ngModel)]="customer.country_origin_id" (selectionChange)="enableSave()">
+            <mat-option *ngFor="let c of lookupService.countries" [value]="c.id">
+              {{ isSpanish ? c.name : c.name_en }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
       <!-- Lang -->
       <div class="pure-u-1 pure-u-lg-1-4">
         <mat-form-field>
-          <mat-label>{{ 'language' | translate }}</mat-label>
+          <mat-label>{{ 'lang' | translate }}</mat-label>
           <mat-select [(ngModel)]="customer.appLang" (selectionChange)="changeLang()">
             <mat-option *ngFor="let c of lookupService.appLangs" [value]="c.id">
               {{ c.name }}
@@ -102,7 +168,8 @@
   </div>
 </div>
 
-<h2>{{ 'address' | translate }}</h2>
+<!-- Address -->
+<h2>{{ 'address_details' | translate }}</h2>
 <div class="group">
   <div class="pure-g">
 
@@ -192,6 +259,7 @@
   </div>
 </div>
 
+<!-- Age & tutor -->
 <h2>{{ 'age' | translate }}</h2>
 <div class="group">
 
@@ -207,19 +275,22 @@
                  (dateInput)="enableSave()">
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
-          <mat-error class="mat-error" *ngIf="birth_dateControl.errors">
+          <mat-error class="mat-error" *ngIf="birth_dateControl.hasError('under16')">
+            {{ 'errors.under_16' | translate }}
+          </mat-error>
+          <mat-error class="mat-error" *ngIf="birth_dateControl.hasError('required')">
             {{ 'errors.field_required' | translate }}
           </mat-error>
         </mat-form-field>
         <mat-form-field *ngIf="!visibility['birth_date']">
-          <mat-label>{{ 'birth_date' | translate }}</mat-label>
+          <mat-label>{{ 'birth_date' | translate }}</mat-label> 
           <input matInput readonly placeholder="{{ 'birth_date' | translate }}" [ngModel]="birthDate">
         </mat-form-field>
       </div>
     </div>
 
-    <h3 *ngIf="age < 18">Tutor</h3>
-    <div class="pure-g" *ngIf="age < 18">  
+    <h3 *ngIf="age < 18 && age > 15">Tutor</h3>
+    <div class="pure-g" *ngIf="age < 18 && age > 15">  
 
       <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
         <mat-form-field *ngIf="visibility['tutor_id_type_id']">
@@ -296,71 +367,13 @@
   </div>
 </div>
 
+<!-- Other -->
 <h2>{{ 'other' | translate }}</h2>
 <div class="group">
   <div class="pure-g">
 
-    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-      <mat-form-field *ngIf="!visibility['gender_id']">
-        <mat-label>{{ 'gender' | translate }}</mat-label>
-        <input matInput readonly placeholder="{{ 'gender' | translate }}" [ngModel]="gender">
-      </mat-form-field>
-      <mat-form-field *ngIf="visibility['gender_id']">
-        <mat-label>{{ 'gender' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customer.gender_id" (selectionChange)="enableSave()">
-          <mat-option *ngFor="let c of lookupService.genders" [value]="c.id">
-            {{ isSpanish ? c.name : c.name_en  }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-      <mat-form-field *ngIf="!visibility['language_id']">
-        <mat-label>{{ 'language' | translate }}</mat-label>
-        <input matInput readonly placeholder="{{ 'language' | translate }}" [ngModel]="language">
-      </mat-form-field>
-      <mat-form-field *ngIf="visibility['language_id']">
-        <mat-label>{{ 'language' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customer.language_id" (selectionChange)="enableSave()">
-          <mat-option *ngFor="let c of lookupService.languages" [value]="c.id">
-            {{ isSpanish ? c.name : c.name_en }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-      <mat-form-field *ngIf="!visibility['nationality_id']">
-        <mat-label>{{ 'nationality' | translate }}</mat-label>
-        <input matInput readonly placeholder="{{ 'nationality' | translate }}" [ngModel]="nationality">
-      </mat-form-field>
-      <mat-form-field *ngIf="visibility['nationality_id']">
-        <mat-label>{{ 'nationality' | translate}}</mat-label>
-        <mat-select [(ngModel)]="customer.nationality_id" (selectionChange)="enableSave()">
-          <mat-option *ngFor="let c of lookupService.countries" [value]="c.id">
-            {{ isSpanish ? c.name : c.name_en }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-      <mat-form-field *ngIf="!visibility['country_origin_id']">
-        <mat-label>{{ 'country_origin' | translate }}</mat-label>
-        <input matInput readonly placeholder="{{ 'country_origin' | translate }}" [ngModel]="origin">
-      </mat-form-field>
-      <mat-form-field *ngIf="visibility['country_origin_id']">
-        <mat-label>{{ 'country_origin' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customer.country_origin_id" (selectionChange)="enableSave()">
-          <mat-option *ngFor="let c of lookupService.countries" [value]="c.id">
-            {{ isSpanish ? c.name : c.name_en }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div class="pure-u-1 pure-u-lg-1-2">     
+    <!-- School -->
+    <div class="pure-u-1">     
       <mat-form-field *ngIf="!visibility['school_id']">
         <mat-label>{{ 'school' | translate }}</mat-label>
         <input matInput readonly placeholder="{{ 'school' | translate }}" [ngModel]="school">
@@ -375,10 +388,11 @@
       </mat-form-field>
     </div>
 
-    <div class="pure-u-1 pure-u-lg-1-2">     
+    <!-- Bank account -->
+    <div class="pure-u-1">     
       <mat-form-field>
         <mat-label>{{ 'bank_account' | translate }}</mat-label>
-        <input matInput [readonly]="!visibility['bank_account']" placeholder="{{'bank_account' | translate}}"
+        <input matInput placeholder="{{'bank_account' | translate}}"
                [(ngModel)]="customer.bank_account" (change)="enableSave()">
       </mat-form-field>
     </div>

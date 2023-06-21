@@ -159,6 +159,12 @@ export class MyBookingDetailComponent {
     return this.booking?.resource?.code || '';
   }
 
+  get resourceAddress(): string {
+    console.log(this.booking  )
+    return (this.booking?.resource?.building?.address || '') + ' - '
+         + (this.booking?.resource?.address || ''); 
+  }
+
   get reasonName(): string {
     return this.booking?.reason?.name || '';
   }

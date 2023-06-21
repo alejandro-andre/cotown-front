@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ILookup, ILookupInt, IPdf } from '../constants/Interface';
 import { ApolloQueryApi } from './apollo-api.service';
 
-import { CONTACT_TYPE_QUERY, COUNTRY_QUERY, REASONS_QUERY, GENDER_QUERY, ID_TYPE_QUERY, LANGUAGE_QUERY, SCHOOL_QUERY, STATUS_QUERY, RESOURCE_TYPE_QUERY, CHECKIN_OPTIONS_QUERY, PDFS_QUERY } from 'src/app/schemas/query-definitions/lookup.query';
+import { CONTACT_TYPE_QUERY, COUNTRY_QUERY, REASONS_QUERY, GENDER_QUERY, ID_TYPE_QUERY, LANGUAGE_QUERY, SCHOOL_QUERY, STATUS_QUERY, RESOURCE_TYPE_QUERY, CHECKIN_OPTIONS_QUERY, PDFS_QUERY, PAYMENT_METHOD_QUERY } from 'src/app/schemas/query-definitions/lookup.query';
 import { Constants } from '../constants/Constants';
 
 @Injectable({
@@ -12,12 +12,13 @@ import { Constants } from '../constants/Constants';
 export class LookupService {
 
   public schools: ILookup[] = [];
-  public contactTypes: ILookup[] = [];
+  public contactTypes: ILookupInt[] = [];
   public countries: ILookupInt[] = [];
   public languages: ILookupInt[] = [];
   public idTypes: ILookupInt[] = [];
   public genders: ILookupInt[] = [];
   public reasons: ILookupInt[] = [];
+  public paymentMethods: ILookupInt[] = [];
   public checkinOptions: ILookupInt[] = [];
   public resourceTypes: {code:string, name:string, name_en: string}[] = [];
   public status: {code:string, name:string, name_en: string}[] = [];
@@ -35,6 +36,7 @@ export class LookupService {
     this.loadIdTypes();
     this.loadLanguages();
     this.loadReasons();
+    this.loadPaymentMethods();
     this.loadSchools();
     this.loadCheckinOptions();
     this.loadStatus();
@@ -108,6 +110,16 @@ export class LookupService {
       const value = res.data;
       if(value && value.data && value.data.length) {
         this.reasons = value.data;
+      }
+    });
+  }
+
+  // Load payment methods
+  loadPaymentMethods() {
+    this.apolloApi.getData(PAYMENT_METHOD_QUERY).subscribe((res) => {
+      const value = res.data;
+      if(value && value.data && value.data.length) {
+        this.paymentMethods = value.data;
       }
     });
   }

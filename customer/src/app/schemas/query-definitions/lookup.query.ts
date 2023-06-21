@@ -1,9 +1,20 @@
+export const PAYMENT_METHOD_QUERY = `query get {
+  data: Billing_Payment_methodList (
+    orderBy: [{attribute: Name, direction: ASC, nullsGo: FIRST}]
+  ) {
+    id
+    name: Name
+    name_en: Name_en
+  }
+}`;
+
 export const CONTACT_TYPE_QUERY = `query get {
   data: Customer_Customer_contact_typeList (
     orderBy: [{attribute: Name, direction: ASC, nullsGo: FIRST}]
   ) {
     id
     name: Name
+    name_en: Name_en
   }
 }`;
 

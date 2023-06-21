@@ -49,6 +49,8 @@
 
 <ng-template #thenPaymentsBlock>
 
+  <p *ngIf="!this.customerService.enoughData">{{ 'not_enough_data' | translate }}</p>
+
   <div style="border: 1px solid lightgray; overflow-x: auto;">
     <table mat-table [dataSource]="payments" class="table">
       <ng-container matColumnDef="issued_date">
@@ -82,7 +84,9 @@
       <ng-container matColumnDef="pay">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">
-          <span *ngIf="showPayButton(element)"><button mat-raised-button (click)="pay(element.id)">{{ 'pay' | translate }}</button></span>
+          <span *ngIf="showPayButton(element)">
+            <button mat-raised-button [disabled]="!this.customerService.enoughData" (click)="pay(element.id)">{{ 'pay' | translate }}</button>
+          </span>
       </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedPaymentColumns"></tr>
@@ -90,6 +94,8 @@
     </table>
   </div>
 
+  <br><br><br><br>
+  
 </ng-template>
 
 <ng-template #elsePaymentsBlock>

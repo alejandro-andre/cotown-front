@@ -18,7 +18,9 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
     flight: Flight
     check_in_id: Check_in_option_id
     contract_rent: Contract_rent { name oid type size }
-    contract_services: Contract_services { name oid type size }    contract_signed:Contract_signed
+    contract_services: Contract_services { name oid type size }
+    contract_signed:Contract_signed
+    payment_method_id: Payment_method_id
     reason: Customer_reasonViaReason_id{
       id
       name: Name
@@ -49,6 +51,13 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
     resource: ResourceViaResource_id {
       id
       code: Code
+      address: Address
+      flat: ResourceViaFlat_id {
+        address: Address
+      }
+      building: BuildingViaBuilding_id {
+        address: Address
+      }
     }
     price_list: Booking_priceListViaBooking_id {
       id

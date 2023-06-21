@@ -23,6 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
 
 // Components
 import { LayoutComponent } from './layout/layout.component';
@@ -89,6 +90,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatButtonModule,
     MatProgressSpinnerModule,
     MatDialogModule,
+    MatTabsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -111,8 +113,9 @@ export function createTranslateLoader(http: HttpClient) {
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
-    TranslateModule,
-    MatDialogModule
+    MatTabsModule,
+    MatDialogModule,
+    TranslateModule
   ],
   providers: [
     DatePipe,

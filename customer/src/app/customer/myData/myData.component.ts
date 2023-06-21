@@ -18,6 +18,7 @@ import { LookupService } from 'src/app/services/lookup.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FileService } from 'src/app/services/file.service';
 import { DateAdapter } from '@angular/material/core';
+import { getAge } from 'src/app/utils/date.util';
 
 @Component({
   selector: 'app-my-data',
@@ -44,7 +45,7 @@ export class MyDataComponent implements OnInit {
   public cityControl = new FormControl('', [ Validators.required ]);
   public provinceControl = new FormControl('', [ Validators.required ]);
   public country_idControl = new FormControl('', [ Validators.required ]);
-  public birth_dateControl = new FormControl<any>('', [ Validators.required ]);
+  public birth_dateControl = new FormControl<any>('', [ Validators.required, this.validateAge ]);
   public tutor_id_type_idControl = new FormControl('', [ Validators.required ]);
   public tutor_documentControl = new FormControl('', [ Validators.required ]);
   public tutor_nameControl = new FormControl('', [ Validators.required ]);
@@ -159,15 +160,24 @@ export class MyDataComponent implements OnInit {
   }
 
   get age() {
-    return this.customerService.age;
+    return getAge(this.customer.birth_date);
   }
-  
+
+  validateAge(control: FormControl): { [key: string]: any } | null {
+    const age = getAge(control.value)
+    if (age < 16) {
+      return { 'under16': true };
+    }
+    return null;
+  }
+
   /**
    * Methods
    */
 
   enableSave() {
-    this.isSaveEnabled = true;
+    this.customer.changed = true;
+    this.isSaveEnabled = this.validate();
   }
 
   changeLang() {
@@ -181,10 +191,8 @@ export class MyDataComponent implements OnInit {
     this.enableSave();
   }
 
-  // Update customer
-  save() {
-
-    this.customerService.customer.birth_date = this.datePipe.transform(this.birth_dateControl.value, 'yyyy-MM-dd');
+  // Validate
+  validate() {
 
     // Check and show errors
     this.id_type_idControl.markAsTouched();
@@ -200,6 +208,7 @@ export class MyDataComponent implements OnInit {
     this.tutor_nameControl.markAllAsTouched();
     this.tutor_emailControl.markAllAsTouched();
     this.tutor_phonesControl.markAllAsTouched();
+
     /*
     console.log(this.customer.id_type_id);
     console.log(this.customer.document);
@@ -216,31 +225,50 @@ export class MyDataComponent implements OnInit {
     console.log(this.customer.tutor_email);
     console.log(this.customer.tutor_phones);
     */
-    if (
-      !this.customer.id_type_id ||
-      !this.customer.document ||
-      !this.customer.address ||
-      !this.customer.zip ||
-      !this.customer.city ||
-      !this.customer.province ||
-      !this.customer.country_id ||
-      !this.customer.birth_date || 
-      this.customerService.age < 18 && (
+
+    // Under 16
+    if (this.birth_dateControl.errors)
+      return false;
+
+    // Mandatory fields
+    if (!this.customer.id_type_id ||
+        !this.customer.document ||
+        !this.customer.address ||
+        !this.customer.zip ||
+        !this.customer.city ||
+        !this.customer.province ||
+        !this.customer.country_id ||
+        !this.customer.birth_date)
+      return false;
+
+    // Minor
+    if (getAge(this.customer.birth_date) < 18 && (
         !this.customer.tutor_id_type_id ||
         !this.customer.tutor_document ||
         !this.customer.tutor_name ||
         !this.customer.tutor_email ||
         !this.customer.tutor_phones
-      )
-    ) {
-      this.modalService.openModal({title: 'Error', message: 'missing_fields'});
+      ))
+      return false;
+
+    // Ok
+    return true;
+  }
+
+  // Update customer
+  save() {
+    
+    // Set age
+    this.customerService.customer.birth_date = this.datePipe.transform(this.birth_dateControl.value, 'yyyy-MM-dd');
+
+    // Validate
+    if (!this.validate()) {
+      this.modalService.openModal({title: 'Error', message: 'errors.missing_fields'});
       return;
     }
 
     // Variables to update
-    const variables: any = {
-      ...this.customerService.customer,
-    };  
+    const variables: any = { ...this.customerService.customer, };  
     delete variables.formControl
 
     // Call Graphql API

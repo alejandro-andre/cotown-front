@@ -35,6 +35,8 @@ export class Customer implements ICustomer {
   bookings: IBooking[] = [] as IBooking[];
   invoices: IInvoice[] = [] as IInvoice[];
   payments: IPayment[] = [] as IPayment[];
+
+  changed: boolean = false;
   
   formControl = new FormControl<Date | null>(null);
 
@@ -70,6 +72,8 @@ export class Customer implements ICustomer {
     this.bookings = data.bookings || [];
     this.invoices = data.invoices || [];
     this.payments = data.payments || [];
+
+    this.changed = false;
   }
   
 };

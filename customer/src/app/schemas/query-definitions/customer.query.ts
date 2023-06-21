@@ -75,6 +75,7 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       contract_rent: Contract_rent { name oid type size }
       contract_services: Contract_services { name oid type size }
       contract_signed: Contract_signed
+      payment_method_id: Payment_method_id
       reason: Customer_reasonViaReason_id {
         id
         name: Name
@@ -105,6 +106,10 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       resource: ResourceViaResource_id {
         id
         code: Code
+        address: Address
+        building: BuildingViaBuilding_id {
+          address: Address
+        }
       }
       options: Booking_optionListViaBooking_id {
         id

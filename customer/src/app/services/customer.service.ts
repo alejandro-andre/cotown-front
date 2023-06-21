@@ -15,17 +15,25 @@ export class CustomerService {
   
   constructor() {}
 
-  setCustomerData(customer: Customer): void {
-    this.customer = customer;
-    this.setvisibility();
-  }
-
   get visibility(): { [key: string]: boolean } {
     return this.readOnly;
   }
 
-  get age(): number {
-    return getAge(this.customer.birth_date);
+  get enoughData(): boolean {
+    if (!this.customer.id_type_id ||
+        !this.customer.document ||
+        !this.customer.address ||
+        !this.customer.zip ||
+        !this.customer.city ||
+        !this.customer.province ||
+        !this.customer.country_id)
+      return false;
+    return true;
+  }
+
+  setCustomerData(customer: Customer): void {
+    this.customer = customer;
+    this.setvisibility();
   }
 
   setContacts(contacts: IContact[]): void{

@@ -4,6 +4,16 @@
 .mat-column-rent_discount { width: 20%; text-align: right; }
 .mat-column-services_discount { width: 20%; text-align: right; }
 
+::ng-deep .mdc-tab__text-label {
+    font-size: 1.1em;
+    font-weight: 600;
+}
+@media (min-width: 1024px) {
+    ::ng-deep .mdc-tab__text-label {
+        font-size: 1.3em;
+    }
+}
+
 .pdf-viewer {
     height: 800px;
     width: 100%;

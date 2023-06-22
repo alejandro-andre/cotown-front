@@ -190,6 +190,7 @@ export class MyDocumentsComponent implements OnInit {
         this.isLoading = false;
         const value = response.data;
         if (value && value.data && value.data.length && value.data[0].id) {
+          document.frontFile = undefined;
         } else {
           this.modalService.openModal({title: 'Error', message: 'unknown_error'});
         }

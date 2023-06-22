@@ -80,6 +80,7 @@ export class MyInvoicesComponent {
   }
 
   viewInvoice(id: number) {
+    console.log('view');
     this.axiosApi.getInvoice(id).then((res) => {
       const fileURL = URL.createObjectURL(res.data);
       window.open(fileURL, '_blank');

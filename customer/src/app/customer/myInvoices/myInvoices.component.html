@@ -34,7 +34,7 @@
         <td mat-cell *matCellDef="let element"><span>{{ element.code }}</span></td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedInvoiceColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedInvoiceColumns;" class="clickable" (click)="viewInvoice(row.id)"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedInvoiceColumns;"></tr>
     </table>
   </div>
 

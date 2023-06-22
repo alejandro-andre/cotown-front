@@ -61,7 +61,7 @@ export class MyBookingsComponent {
   }
 
   getName(item: any): string {
-    return item.name;
+    return (this.customerService.customer.appLang === Constants.SPANISH.id) ? item?.name || '' : item?.name_en || '';;
   }
 
   getStatus(code: string): string {

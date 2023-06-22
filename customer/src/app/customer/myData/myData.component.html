@@ -98,7 +98,6 @@
           <mat-label>{{ 'phone' | translate }}</mat-label>
           <input matInput 
                  placeholder="{{'phones' | translate}}" 
-                 [readonly]="!visibility['phones']" 
                  [(ngModel)]="phone.number" 
                  (change)="enableSave()">
         </mat-form-field>

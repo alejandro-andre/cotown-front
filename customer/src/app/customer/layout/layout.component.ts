@@ -51,12 +51,17 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.getAirflowsToken().then(async() => {
-      await this.loadUserId();
-      if (this.userId !== undefined && this.userId !== null) {
-        this.lookupService.load();
-        this.loadCustomer();
-      }
+      this.lookupService.load();
+      await this.load();
     })
+  }
+
+  // Load customer
+  async load() {
+    await this.loadUserId();
+    if (this.userId !== undefined && this.userId !== null) {
+      await this.loadCustomer();
+    }
   }
 
   // Set app lang
@@ -73,7 +78,11 @@ export class LayoutComponent implements OnInit {
 
   // Get ID of logged user
   loadUserId(): Promise<void> {
+
+    // Spinner
     this.isLoading = true;
+
+    // Get data
     return new Promise((resolve) => {
       this.apolloApi.getData(CUSTOMER_ID_QUERY).subscribe((res) => {
         this.isLoading = false;
@@ -91,13 +100,11 @@ export class LayoutComponent implements OnInit {
 
   loadCustomer(): void {
 
-    // GraphQL call variables
-    const variables = {
-      id: this.userId
-    }
+    // Spinner
+    this.isLoading = true;
 
     // Get data
-    this.isLoading = true;
+    const variables = { id: this.userId }
     this.apolloApi.getData(CUSTOMER_QUERY, variables).subscribe({
 
       next: (res) => {
@@ -115,57 +122,6 @@ export class LayoutComponent implements OnInit {
       } 
       
     });
-  }
-
-  loadDocuments (documents: IDocument[]): IDocument[] {
-    if (documents === null) {
-      return [] as IDocument[];
-    }
-
-    const returnData: IDocument[] = [] ;
-    documents.forEach((doc: IDocument) => {
-      const numOfImages = doc.doc_type?.images || 1;
-      const images: IDocFile[]= [];
-
-      for (let i = 0; i < numOfImages; i++) {
-        const IDocFile: IDocFile = {
-          id: doc.id,
-          oid: -1,
-          name: '',
-          type: '',
-          size: 0,
-          content: '',
-          thumbnail: ''
-        }
-        images.push(IDocFile)
-      }
-
-      if (doc.front && doc.front !== null && doc.front.oid !== null) {
-        images[0].name = doc.front.name;
-        images[0].oid = doc.front.oid
-      }
-
-      if (doc.back && doc.back !== null && doc.back.oid !== null) {
-        images[1].name = doc.back.name;
-        images[1].oid = doc.back.oid;
-      }
-
-      const docObject = {
-        expiry_date: doc.expiry_date,
-        id: doc.id,
-        formDateControl: new FormControl(doc.expiry_date),
-        doc_type: {
-          id: doc.doc_type?.id || 0,
-          name: doc.doc_type?.name,
-          images: doc.doc_type?.images || 1,
-          arrayOfImages: images
-        }
-      };
-
-      //returnData.push(docObject);
-    });
-
-    return returnData;
   }
 
 }

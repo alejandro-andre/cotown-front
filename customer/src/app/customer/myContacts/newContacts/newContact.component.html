@@ -10,7 +10,7 @@
         <mat-label>{{ 'contact_type' | translate }}</mat-label>
         <mat-select [(ngModel)]="contact_type" [formControl]="contactTypeFormControl">
           <mat-option *ngFor="let contact of lookupService.contactTypes" [value]="contact.id">
-            {{ contact.name }}
+            {{ getName(contact) }}
           </mat-option>
         </mat-select>
         <mat-error class="mat-error" *ngIf="contactTypeFormControl.hasError('required')">

@@ -15,6 +15,7 @@ import { IContact, IContactType } from 'src/app/constants/Interface';
 
 // Queries
 import { GET_CONTACTS_BY_CUSTOMERID, INSERT_CONTACT } from 'src/app/schemas/query-definitions/contact.query';
+import { Constants } from 'src/app/constants/Constants';
 
 @Component({
   selector: 'app-contact-new',
@@ -29,7 +30,8 @@ export class NewContactComponent {
 
   public contact_type: IContactType = {
     id: 0,
-    name: ''
+    name: '',
+    name_en: ''
   };
   public name: string = '';
   public email: string = '';
@@ -63,6 +65,12 @@ export class NewContactComponent {
       !this.nameFormControl.valid ||
       !this.contactTypeFormControl.valid
     );
+  }
+
+  getName(type:IContactType): string {
+    if (this.customerService.customer.appLang !== Constants.SPANISH.id)
+      return type.name_en || type.name;
+    return type.name;
   }
 
   save() {

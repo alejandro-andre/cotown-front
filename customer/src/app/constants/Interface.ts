@@ -30,7 +30,7 @@ export interface ICountry extends ILookupInt {
 }
 
 // Customer contact type
-export interface IContactType extends IBase {}
+export interface IContactType extends ILookupInt {}
 
 // Customer contact
 export interface IContact extends IBase {

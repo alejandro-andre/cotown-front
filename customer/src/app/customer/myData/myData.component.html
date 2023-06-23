@@ -423,7 +423,8 @@
       <mat-form-field>
         <mat-label>{{ 'bank_account' | translate }}</mat-label>
         <input matInput placeholder="{{'bank_account' | translate}}"
-               [(ngModel)]="customer.bank_account" (change)="enableSave()">
+               [(ngModel)]="customer.bank_account" 
+               (change)="enableSave()">
       </mat-form-field>
     </div>
 

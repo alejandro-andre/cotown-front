@@ -81,8 +81,7 @@
       <input matInput 
               MonthYearPickerFormat="MM/YYYY" 
               [matDatepicker]="dpbill" 
-              [formControl]="billDateControl" 
-              (change)="showMonth()">
+              [formControl]="billDateControl">
       <mat-datepicker-toggle matIconSuffix [for]="dpbill"></mat-datepicker-toggle>
       <mat-datepicker #dpbill (monthSelected)="setMonthAndYear($event, dpbill)" startView="multi-year"></mat-datepicker>
     </mat-form-field>

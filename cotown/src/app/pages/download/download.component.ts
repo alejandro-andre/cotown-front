@@ -126,9 +126,5 @@ export class DownloadComponent {
     this.billDateControl.setValue(m);
     datepicker.close();
   }
-
-  showMonth() {
-    console.log(this.billDateControl.value!);
-  }
   
 }

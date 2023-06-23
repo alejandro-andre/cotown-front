@@ -92,12 +92,6 @@ export class TimeChartControlComponent implements OnChanges {
         const dfrom = Math.ceil((bar.datefrom.getTime() - this.now.getTime()) / (1000*60*60*24));
         const dto = 1 + Math.ceil((bar.dateto.getTime() - this.now.getTime()) / (1000*60*60*24));
 
-        if (bar.code == '997') {
-          console.log(bar.dateto);
-          console.log('dfrom ' + dfrom);  
-          console.log('dto   ' + dto);  
-        }
-
         // Show bar
         bar.styles = bar.type + ' show';
 

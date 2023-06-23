@@ -56,7 +56,7 @@ export class MyContactsComponent {
         if (value && value.data && value.data.length && value.data[0].id === event.id) {
           this.customerService.removeContactById(event.id);
         } else {
-          this.modalService.openModal({title: 'Error',message: 'unknown_error'});
+          this.modalService.openModal({title: 'Error',message: 'unknown_error', type: 'ok'});
         }
       }, 
 

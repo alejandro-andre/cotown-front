@@ -281,7 +281,7 @@ export class MyDataComponent implements OnInit {
 
     // Validate
     if (!this.validate()) {
-      this.modalService.openModal({title: 'Error', message: 'errors.missing_fields'});
+      this.modalService.openModal({title: 'Error', message: 'errors.missing_fields', type: 'ok' });
       return;
     }
 
@@ -300,7 +300,7 @@ export class MyDataComponent implements OnInit {
           this.customerService.setvisibility();
           this.isSaveEnabled = false;
         } else {
-          this.modalService.openModal({title: 'Error', message: 'unknown_error'});
+          this.modalService.openModal({title: 'Error', message: 'unknown_error', type: 'ok' });
         }
       }, 
 
@@ -356,7 +356,7 @@ export class MyDataComponent implements OnInit {
               const photo = val.data[0].photo;
               this.customer.photo = photo;
             } else {
-              this.modalService.openModal({title: 'Error', message: 'unknown_error'});
+              this.modalService.openModal({title: 'Error', message: 'unknown_error', type: 'ok' });
             }
           }, 
 

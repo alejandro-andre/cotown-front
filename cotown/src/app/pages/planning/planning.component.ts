@@ -446,7 +446,6 @@ export class PlanningComponent {
         resourceFlatTypeId: this.selectedResourceFlatTypeId,
         resourcePlaceTypeId: this.selectedResourcePlaceTypeId
       };
-      console.log(v);
       this.getBookings(q, v);
     }
   }

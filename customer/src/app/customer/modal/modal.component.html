@@ -1,11 +1,11 @@
-<div id="modal-content-wrapper">
-  <header id="modal-header">
-    <h1 id="modal-title">{{ title | translate }}</h1>
-  </header>
-  <section id="modal-body">
-    <p>{{ message | translate }}</p>
-  </section>
-  <footer id="modal-footer">
-      <button mat-raised-button id="modal-button" (click)="closeModal()">{{ 'ok' | translate }}</button>
-  </footer>
-</div>
+<h2 mat-dialog-title>{{ title | translate }}</h2>
+
+<mat-dialog-content>
+  <p>{{ message | translate }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button class="ok"    *ngIf="type=='ok'" [mat-dialog-close]="true">Ok</button>
+  <button mat-button class="yesno" *ngIf="type!='ok'" [mat-dialog-close]="false">No</button>
+  <button mat-button class="yesno" *ngIf="type!='ok'" [mat-dialog-close]="true">Sí</button>
+</mat-dialog-actions>

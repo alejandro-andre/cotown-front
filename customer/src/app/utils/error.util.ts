@@ -2,7 +2,7 @@ import { Constants } from "../constants/Constants";
 
 export const formatErrorBody = (error: Error, lang: string) => {
 
-  const bodyToSend = {title: 'Error', message: error.message };
+  const bodyToSend = {title: 'Error', message: error.message, type: 'ok' };
   const message = error.message.split('!!!');
 
   if (message && message.length && message.length >= 3) {

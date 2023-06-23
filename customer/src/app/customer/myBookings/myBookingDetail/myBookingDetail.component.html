@@ -44,7 +44,7 @@
           <div class="pure-u-1 pure-u-lg-1-2">
             <mat-form-field>
               <mat-label>{{ 'payer' | translate }}</mat-label>
-              <input matInput placeholder="{{'payer' | translate}}" [(ngModel)]="booking.payer.name" >
+              <input matInput placeholder="{{'payer' | translate}}" [value]="payer" >
             </mat-form-field>
           </div>
     
@@ -311,7 +311,7 @@
     
     </mat-tab>
 
-    <mat-tab label="{{ 'dates' | translate }}">
+    <mat-tab *ngIf="canCheckIn(booking.status)" label="{{ 'dates' | translate }}">
 
       <!-- Checkin -->
       <h2>{{ 'check_in_title' | translate }}</h2>

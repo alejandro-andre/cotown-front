@@ -172,6 +172,10 @@ export class MyBookingDetailComponent {
     return this.booking.school?.name || '';
   }
 
+  get payer(): string {
+    return this.booking.payer?.name || '---';
+  }
+
   get options(): any {
 
     const options =  [];
@@ -199,6 +203,16 @@ export class MyBookingDetailComponent {
    * Methods
    */
 
+  canCheckIn(status: string): boolean {
+    return (
+      status === 'checkinconfirmado' ||
+      status === 'contrato' ||
+      status === 'checkin' ||
+      status === 'inhouse' ||
+      status === 'checkout'
+    )
+  }
+  
   getResourceType(code: string): string {
     const status = this.lookupService.resourceTypes.find((elem) => elem.code === code)
     return (this.customerService.customer.appLang === Constants.SPANISH.id) ? status?.name || '' : status?.name_en || '';
@@ -276,7 +290,7 @@ export class MyBookingDetailComponent {
           this.enabledSave = false;
           this.setBooking(data.booking[0]);
         } else {
-          this.modalService.openModal({ title: 'Error', message: 'unknown_error' });
+          this.modalService.openModal({ title: 'Error', message: 'unknown_error', type: 'ok' });
         }
 
       }, 
@@ -317,7 +331,7 @@ export class MyBookingDetailComponent {
         if (value && value.data && value.data.length) {
           this.getBookingById();
         } else {
-          this.modalService.openModal({title: 'Error',message: 'unknown_error'});
+          this.modalService.openModal({title: 'Error', message: 'unknown_error', type: 'ok'});
         }
       }, 
 
@@ -347,7 +361,7 @@ export class MyBookingDetailComponent {
         if (value && value.updated && value.updated.length) {
           this.getBookingById();
         } else {
-          this.modalService.openModal({title: 'Error', message: 'unknown_error'});
+          this.modalService.openModal({title: 'Error', message: 'unknown_error', type: 'ok'});
         }
       },
 
@@ -360,26 +374,44 @@ export class MyBookingDetailComponent {
   }
 
   isDiscardable() {
-    return ['solicitud','solicitudpagada','alternativas','alternativaspagada','pendientepago'].includes(this.booking.status)
+    //return ['solicitud','solicitudpagada','alternativas','alternativaspagada','pendientepago'].includes(this.booking.status)
+    return ['solicitud','alternativas','pendientepago'].includes(this.booking.status)
   }
   
   // Cancel booking
   discard () {
 
-    // API REST
-    this.isLoading = true;
-    this.axiosApi.discardBooking(this.booking.id).then((respose) =>{
-      this.isLoading = false;
-      if (respose && respose.data === 'ok') {
-        this.getBookingById();
-      } else {
-        this.modalService.openModal({ title: 'Error', message: 'unknown_error'});
+    // Confirm
+    const modal = this.modalService.confirmModal({ title: 'confirm', message: 'discard_confirmation', type: 'yesno' });
+    modal.afterClosed().subscribe((sure) => {
+
+      // Not sure
+      if (!sure) {
+        return;
       }
-    }).catch((err) => {
-      this.isLoading = false;
-      const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
-      this.modalService.openModal(bodyToSend);
-    })
+
+      // Sure: discard
+      let status = 'descartada';
+      if (this.booking.status.includes('pagada'))
+        status = 'descartadapagada';
+
+      // Call API
+      this.isLoading = true;
+      this.axiosApi.discardBooking(this.booking.id, status).then((respose) =>{
+        this.isLoading = false;
+        if (respose && respose.data === 'ok') {
+          this.getBookingById();
+        } else {
+          this.modalService.openModal({ title: 'Error', message: 'unknown_error', type: 'ok' });
+        }
+      }).catch((err) => {
+        this.isLoading = false;
+        const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
+        this.modalService.openModal(bodyToSend);
+      })
+    });
+    return;
+
   }
 
   /* PDFs */

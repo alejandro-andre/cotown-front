@@ -1,0 +1,17 @@
+.mat-mdc-row.clickable .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+}
+.mat-mdc-row.clickable:hover .mat-mdc-cell {
+    border-color: currentColor;
+}
+  
+.mat-column-view        { width: 5%; }
+.mat-column-pay         { width: 5%; }
+.mat-column-issued_date { width: 10%; }
+.mat-column-concept     { width: 20%; }
+.mat-column-method      { width: 10%; }
+.mat-column-amount      { width: 10%; text-align: right; }
+.mat-column-booking     { width: 10%; }
+.mat-column-code        { width: 10%; }

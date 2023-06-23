@@ -1,0 +1,63 @@
+<h1>{{ 'payments' | translate }}</h1>
+
+<div *ngIf="payments.length; then thenPaymentsBlock else elsePaymentsBlock"></div>
+
+<ng-template #thenPaymentsBlock>
+
+  <p *ngIf="!this.customerService.enoughData">{{ 'not_enough_data' | translate }}</p>
+
+  <div style="border: 1px solid lightgray; overflow-x: auto;">
+    <table mat-table [dataSource]="payments" class="table">
+      <ng-container matColumnDef="issued_date">
+        <th mat-header-cell *matHeaderCellDef>{{ 'issued_date' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ formatOnlyDate(element.issued_date) }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="concept">
+        <th mat-header-cell *matHeaderCellDef>{{ 'concept' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ element.concept }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>{{ 'amount' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ element.amount }} €</span></td>
+      </ng-container>
+      <ng-container matColumnDef="method">
+        <th mat-header-cell *matHeaderCellDef>{{ 'method' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ getPaymentMethod(element) }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="resource">
+        <th mat-header-cell *matHeaderCellDef>{{ 'resource' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ getResource(element.booking) }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="payment_date">
+        <th mat-header-cell *matHeaderCellDef>{{ 'payment_date' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ formatPropertyDate(element.payment_date) }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="payment_auth">
+        <th mat-header-cell *matHeaderCellDef>{{ 'payment_auth' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span>{{ element.payment_auth }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="payment_order">
+        <th mat-header-cell *matHeaderCellDef>{{ 'payment_order' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span *ngIf="element.payment_auth">{{ element.payment_order }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="pay">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="showPayButton(element)">
+            <button mat-raised-button [disabled]="!this.customerService.enoughData" (click)="pay(element.id)">{{ 'pay' | translate }}</button>
+          </span>
+      </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedPaymentColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedPaymentColumns;"></tr>
+    </table>
+  </div>
+
+  <br><br><br><br>
+  
+</ng-template>
+
+<ng-template #elsePaymentsBlock>
+  <div>{{ 'errors.no_results' | translate }}</div>
+</ng-template>
+

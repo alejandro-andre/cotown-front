@@ -26,6 +26,7 @@ export class Customer implements ICustomer {
   tutor_phones: string | null = null;
   id_type_id: number | null = null;
   school_id: number | null = null;
+  payment_method_id: number | null = null;
   bank_account: string = '';
   appLang: string = 'es';
   photo: IPhoto | null = null;

@@ -19,6 +19,7 @@
     "my_documents": "My documents",
     "my_bookings": "My bookings",
     "my_invoices": "My invoices",
+    "my_payments": "My payments",
     "pdfs": "Documentation"
   },
   "accept": "Accept",
@@ -77,6 +78,7 @@
   "lang": "Communications language",
   "language": "Native language",
   "limit": "Consumption limit",
+  "method": "Payment method",
   "month": "Month",
   "name": "Name",
   "nationality": "Nationality",

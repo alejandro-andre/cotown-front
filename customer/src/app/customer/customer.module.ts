@@ -35,8 +35,9 @@ import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
 import { MyBookingsComponent } from './myBookings/myBookings.component';
 import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBookingDetail.component';
 import { MyInvoicesComponent } from './myInvoices/myInvoices.component';
+import { MyPaymentsComponent } from './myPayments/myPayments.component';
+import { InvoicePayComponent } from './myPayments/invoicePay/invoicePay.component';
 import { PdfsComponent } from './pdfs/pdfs.component';
-import { InvoicePayComponent } from './myInvoices/invoicePay/invoicePay.component';
 import { PaymentOkComponent } from './paymentOk/paymentOk.component';
 import { PaymentkOComponent } from './paymentKO/paymentkO.component'
 
@@ -65,8 +66,9 @@ export function createTranslateLoader(http: HttpClient) {
     MyBookingsComponent,
     MyBookingDetailComponent,
     MyInvoicesComponent,
-    PdfsComponent,
+    MyPaymentsComponent,
     InvoicePayComponent,
+    PdfsComponent,
     PaymentOkComponent,
     PaymentkOComponent,
     SpinnerControlComponent

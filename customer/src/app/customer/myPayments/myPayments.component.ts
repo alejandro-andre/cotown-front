@@ -1,33 +1,38 @@
 import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { IBookingResource, IInvoice } from 'src/app/constants/Interface';
+import { IBase, IBookingResource, IInvoice, ICode, IPayment, ILookupInt } from 'src/app/constants/Interface';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { Constants } from 'src/app/constants/Constants';
+import { LookupService } from 'src/app/services/lookup.service';
 
 @Component({
-  selector: 'app-my-invoices',
-  templateUrl: './myInvoices.component.html',
-  styleUrls: ['./myInvoices.component.scss']
+  selector: 'app-my-payments',
+  templateUrl: './myPayments.component.html',
+  styleUrls: ['./myPayments.component.scss']
 })
 
-export class MyInvoicesComponent {
+export class MyPaymentsComponent {
 
   constructor(
     public customerService: CustomerService,
+    private lookupService: LookupService,
     private datePipe: DatePipe,
     private axiosApi: AxiosApi,
     private router: Router,
   ) {}
 
-  public displayedInvoiceColumns: string[] = [
-    'view',
+  public displayedPaymentColumns: string[] = [
+    'pay',
     'issued_date',
+    'method',
     'concept',
     'amount',
     'resource',
-    'code',
+    'payment_date',
+    'payment_auth',
+    'payment_order',
   ];
 
   getResource(resource: IBookingResource): string {
@@ -52,16 +57,31 @@ export class MyInvoicesComponent {
     return '';
   }
 
-  get invoices(): IInvoice[] {
-    return this.customerService.customer?.invoices || [];
+  showPayButton(elem: any): boolean {
+    if (elem.payment_date !== null || elem.payment_date === '') 
+      return false;
+    if (elem.payment_method_id !== 1)
+      return false;
+    return true;
   }
 
-  viewInvoice(id: number) {
-    console.log('view');
-    this.axiosApi.getInvoice(id).then((res) => {
-      const fileURL = URL.createObjectURL(res.data);
-      window.open(fileURL, '_blank');
-    });
+  get payments(): IPayment[] {
+    return this.customerService.customer?.payments || [];
+  }
+
+  getPaymentMethod(payment: IPayment):string {
+    const method = this.lookupService.paymentMethods.find((elem) => elem.id === payment.payment_method_id);
+    if (this.customerService.customer.appLang === Constants.SPANISH.id)
+      return method?.name || '';
+    return method?.name_en || '';
+  }
+
+  getPaymentResource(resource: ICode):string {
+    return resource?.code || '';
+  }
+
+  pay(id: number) {
+    this.router.navigate(['/invoices/payment/', id])
   }
 
 }

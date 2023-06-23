@@ -47,6 +47,7 @@ export interface ICustomer extends IBase {
   zip: string,
   province: string,
   address: string,
+  payment_method_id: number | null,
   bank_account?: string,
   birth_date: string | null,
   tutor_id_type_id: number | null,
@@ -181,6 +182,7 @@ export interface IPayment {
   concept: string,
   issued_date: string,
   pay: string,
+  payment_method_id: number | null,
   booking: IBookingResource
 }
 

@@ -14,6 +14,7 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
     zip: Zip
     province: Province
     address: Address
+    payment_method_id: Payment_method_id
     bank_account: Bank_account
     birth_date: Birth_date
     tutor_id_type_id: Tutor_id_type_id
@@ -75,7 +76,6 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       contract_rent: Contract_rent { name oid type size }
       contract_services: Contract_services { name oid type size }
       contract_signed: Contract_signed
-      payment_method_id: Payment_method_id
       reason: Customer_reasonViaReason_id {
         id
         name: Name
@@ -159,6 +159,7 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       payment_date: Payment_date
       payment_order: Payment_order
       payment_auth: Payment_auth
+      payment_method_id: Payment_method_id
       amount: Amount
       concept: Concept
       issued_date: Issued_date

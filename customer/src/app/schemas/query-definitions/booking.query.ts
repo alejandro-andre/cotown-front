@@ -20,7 +20,6 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
     contract_rent: Contract_rent { name oid type size }
     contract_services: Contract_services { name oid type size }
     contract_signed:Contract_signed
-    payment_method_id: Payment_method_id
     reason: Customer_reasonViaReason_id{
       id
       name: Name

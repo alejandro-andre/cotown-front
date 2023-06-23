@@ -48,6 +48,7 @@ export class MyDataComponent implements OnInit {
   public cityControl = new FormControl('', [ Validators.required ]);
   public provinceControl = new FormControl('', [ Validators.required ]);
   public country_idControl = new FormControl('', [ Validators.required ]);
+  public payment_method_idControl = new FormControl();
   public birth_dateControl = new FormControl<any>('', [ Validators.required, this.validateAge ]);
   public tutor_id_type_idControl = new FormControl('', [ Validators.required ]);
   public tutor_documentControl = new FormControl('', [ Validators.required ]);
@@ -219,28 +220,26 @@ export class MyDataComponent implements OnInit {
     this.provinceControl.markAsTouched();
     this.country_idControl.markAsTouched();
     this.birth_dateControl.markAsTouched();
+    this.payment_method_idControl.markAsTouched();
     this.tutor_id_type_idControl.markAllAsTouched();
     this.tutor_documentControl.markAllAsTouched();
     this.tutor_nameControl.markAllAsTouched();
     this.tutor_emailControl.markAllAsTouched();
     this.tutor_phonesControl.markAllAsTouched();
 
-    /*
-    console.log(this.customer.id_type_id);
-    console.log(this.customer.document);
-    console.log(this.customer.address);
-    console.log(this.customer.zip);
-    console.log(this.customer.city);
-    console.log(this.customer.province);
-    console.log(this.customer.country_id);
-    console.log(this.customer.birth_date );
-    console.log(this.customerService.age < 18);
-    console.log(this.customer.tutor_id_type_id);
-    console.log(this.customer.tutor_document);
-    console.log(this.customer.tutor_name);
-    console.log(this.customer.tutor_email);
-    console.log(this.customer.tutor_phones);
-    */
+    // console.log(this.customer.id_type_id);
+    // console.log(this.customer.document);
+    // console.log(this.customer.address);
+    // console.log(this.customer.zip);
+    // console.log(this.customer.city);
+    // console.log(this.customer.province);
+    // console.log(this.customer.country_id);
+    // console.log(this.customer.birth_date );
+    // console.log(this.customer.tutor_id_type_id);
+    // console.log(this.customer.tutor_document);
+    // console.log(this.customer.tutor_name);
+    // console.log(this.customer.tutor_email);
+    // console.log(this.customer.tutor_phones);
 
     // Under 16
     if (this.birth_dateControl.errors)

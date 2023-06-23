@@ -64,6 +64,7 @@ export class Customer implements ICustomer {
     this.tutor_email = data.tutor_email;
     this.tutor_phones = data.tutor_phones;
     this.school_id = data.school_id || null;
+    this.payment_method_id = data.payment_method_id || null;
     this.bank_account = data.bank_account || '';
     this.appLang = data.appLang || 'es';
     this.photo = data.photo || null;

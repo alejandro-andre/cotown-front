@@ -167,6 +167,22 @@
         </mat-form-field>
       </div>
 
+      <!-- School -->
+      <div class="pure-u-1">     
+        <mat-form-field *ngIf="!visibility['school_id']">
+          <mat-label>{{ 'school' | translate }}</mat-label>
+          <input matInput readonly placeholder="{{ 'school' | translate }}" [ngModel]="school">
+        </mat-form-field>
+        <mat-form-field *ngIf="visibility['school_id']">
+          <mat-label>{{ 'school' | translate }}</mat-label>
+          <mat-select [(ngModel)]="customer.school_id" (selectionChange)="enableSave()">
+            <mat-option *ngFor="let c of lookupService.schools" [value]="c.id">
+              {{ c.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
       <!-- Lang -->
       <div class="pure-u-1 pure-u-lg-1-4">
         <mat-form-field>
@@ -384,28 +400,26 @@
 </div>
 
 <!-- Other -->
-<h2>{{ 'other' | translate }}</h2>
+<h2>{{ 'bank' | translate }}</h2>
 <div class="group">
   <div class="pure-g">
 
-    <!-- School -->
-    <div class="pure-u-1">     
-      <mat-form-field *ngIf="!visibility['school_id']">
-        <mat-label>{{ 'school' | translate }}</mat-label>
-        <input matInput readonly placeholder="{{ 'school' | translate }}" [ngModel]="school">
-      </mat-form-field>
-      <mat-form-field *ngIf="visibility['school_id']">
-        <mat-label>{{ 'school' | translate }}</mat-label>
-        <mat-select [(ngModel)]="customer.school_id" (selectionChange)="enableSave()">
-          <mat-option *ngFor="let c of lookupService.schools" [value]="c.id">
-            {{ c.name }}
+    <!-- Payment method -->
+    <div class="pure-u-1 pure-u-lg-1-4">
+      <mat-form-field>
+        <mat-label>{{ 'method' | translate }}</mat-label>
+        <mat-select [formControl]="payment_method_idControl"
+                [(ngModel)]="customer.payment_method_id" 
+                (selectionChange)="enableSave()">
+          <mat-option *ngFor="let c of lookupService.paymentMethods" [value]="c.id">
+            {{ isSpanish ? c.name : c.name_en  }}
           </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-
+  
     <!-- Bank account -->
-    <div class="pure-u-1">     
+    <div class="pure-u-1 pure-u-lg-3-4">     
       <mat-form-field>
         <mat-label>{{ 'bank_account' | translate }}</mat-label>
         <input matInput placeholder="{{'bank_account' | translate}}"

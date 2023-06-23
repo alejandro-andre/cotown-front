@@ -194,6 +194,7 @@ export const UPDATE_CUSTOMER = `
     $tutor_email: String
     $tutor_phones: String
     $school_id: Int
+    $payment_method_id: Int
     $bank_account: String
     $appLang: Auxiliar_LangEnumType) {
   update: Customer_CustomerUpdate(
@@ -217,6 +218,7 @@ export const UPDATE_CUSTOMER = `
       Language_id: $language_id
       Nationality_id:$nationality_id
       Country_id: $country_id
+      Payment_method_id: $payment_method_id
       Bank_account: $bank_account
       Lang: $appLang
     }) {id}

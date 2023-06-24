@@ -139,8 +139,9 @@ export class DownloadComponent {
 
     // Facturas PDF
     } else if (data == "downloadfacturas") {
-      const from = moment(this.billDownloadDateControl.value.start);
-      const to = moment(this.billDownloadDateControl.value.end).add(1,'d');
+      console.log(this.billDownloadDateControl.value);
+      const from = moment(this.billDownloadDateControl.value);
+      const to = moment(from).add(1, 'M');
       const prov_from = this.providerDownloadControl.value;
       const prov_to = prov_from || 99999; 
       l = environment.backURL + '/download/facturas' 
@@ -172,6 +173,7 @@ export class DownloadComponent {
   }
   
   setMonthAndYear(value: Moment, datepicker: MatDatepicker<Moment>, control: FormControl) {
+    console.log(value, datepicker, control);
     const m = moment(value);
     control.setValue(m);
     datepicker.close();

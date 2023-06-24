@@ -10,7 +10,7 @@
   border: 1px dotted gray;
   width: 180px;
   height: 180px;
-  margin: 10px 0 20px 0;
+  margin: 10px 0;
 }
 .image-container img {
   width: 100%;
@@ -20,7 +20,14 @@
 .image-container input {
   display: none;
 }
-.image-container label{
+.button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 180px;
+}
+.button-container label{
   cursor: pointer;
   border: 1px solid gray;
   border-radius: 5px;

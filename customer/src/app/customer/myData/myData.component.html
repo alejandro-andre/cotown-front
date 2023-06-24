@@ -8,17 +8,19 @@
   <div class="pure-g" >
 
     <!-- Photo -->
-    <div class="pure-u-1 pure-u-lg-1-5">
+    <div class="pure-u-1 pure-u-xl-1-5">
       <div class="label">{{ 'photo' | translate }}</div>
       <div class="image-container">
         <img *ngIf="customer.photo !== null" [src]="customer.photo?.thumbnail" [alt]="customer.photo?.name">
         <input id="photo" [(ngModel)]="image" type="file" (change)="upload($event)">
-        <label *ngIf="!customer.photo || customer.photo === null" for="photo">{{ 'upload_image' | translate }}</label>
+      </div>
+      <div class="button-container">
+        <label for="photo">{{ 'upload_image' | translate }}</label>
       </div>
     </div>      
 
     <!-- Data -->
-    <div class="pure-u-1 pure-u-lg-4-5">
+    <div class="pure-u-1 pure-u-xl-4-5">
 
       <!-- Name -->
       <div class="pure-u-1 pure-u-lg-1-2">

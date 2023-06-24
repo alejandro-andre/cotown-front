@@ -325,8 +325,8 @@ export class MyDataComponent implements OnInit {
     const imageSrc = `data:${file.type};base64,${base64String}`;
 
     // Show file on screen
-    if (this.customer && this.customer.photo)
-      this.customer.photo.thumbnail = data;
+    //if (this.customer && this.customer.photo)
+    //  this.customer.photo.thumbnail = data;
 
     // Call API
     const payload: IPayloadFile = {

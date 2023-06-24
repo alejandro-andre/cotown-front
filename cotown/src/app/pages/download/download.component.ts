@@ -150,7 +150,7 @@ export class DownloadComponent {
         + '&phasta=' + prov_to
         + '&access_token=' + this.apolloApi.token;
 
-  // Resto
+    // Resto
     } else {
       l = environment.backURL + '/export/' + data + '?access_token=' + this.apolloApi.token;
     }

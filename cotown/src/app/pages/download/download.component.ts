@@ -24,17 +24,27 @@ export class DownloadComponent {
   public spinnerActive: boolean = false;
 
   // Form controls
-  public providerControl    = new FormControl(0);
-  public billDateControl    = new FormControl<any>('', [ Validators.required ]);
-  public bookingDateControl = new FormGroup({
-    start: new FormControl<Date | null>(null, [ Validators.required ]),
-    end: new FormControl<Date | null>(null, [ Validators.required ]),
-  });
+  public providerControl         = new FormControl(0);
+  public billDateControl         = new FormControl<any>('', [ Validators.required ]);
+
+  public providerDownloadControl = new FormControl(0);
+  public billDownloadDateControl = new FormControl<any>('', [ Validators.required ]);
+
   public paymentDateControl = new FormGroup({
     start: new FormControl<Date | null>(null, [ Validators.required ]),
     end: new FormControl<Date | null>(null, [ Validators.required ]),
   });
 
+  public contractDateControl      = new FormGroup({
+    start: new FormControl<Date | null>(null, [ Validators.required ]),
+    end: new FormControl<Date | null>(null, [ Validators.required ]),
+  });
+
+  public bookingDateControl      = new FormGroup({
+    start: new FormControl<Date | null>(null, [ Validators.required ]),
+    end: new FormControl<Date | null>(null, [ Validators.required ]),
+  });
+  
   // Providers
   public providers: {id:number, name:string}[] = [];
 
@@ -63,9 +73,14 @@ export class DownloadComponent {
     } else if (data == "pagos") {
         if (!this.paymentDateControl.value.start || !this.paymentDateControl.value.end)
           return true
+    } else if (data == "downloadcontratos") {
+      if (!this.contractDateControl.value.start || !this.contractDateControl.value.end)
+        return true
+    } else if (data == "downloadfacturas") {
+      if (this.billDownloadDateControl.value === '')
+        return true
     }
-    
-    return false;
+  return false;
   }
 
   // Execute report
@@ -92,7 +107,7 @@ export class DownloadComponent {
       const from = moment(this.billDateControl.value);
       const to = moment(from).add(1, 'M');
       const prov_from = this.providerControl.value;
-      const prov_to = prov_from || 99; 
+      const prov_to = prov_from || 99999; 
       l = environment.backURL + '/export/facturas' 
         + '?fdesde=' + from.format('YYYY-MM-DD') 
         + '&fhasta=' + to.format('YYYY-MM-DD') 
@@ -105,7 +120,7 @@ export class DownloadComponent {
       const from = moment(this.paymentDateControl.value.start);
       const to = moment(this.paymentDateControl.value.end).add(1,'d');
       const prov_from = this.providerControl.value;
-      const prov_to = prov_from || 99; 
+      const prov_to = prov_from || 99999; 
       l = environment.backURL + '/export/pagos' 
         + '?fdesde=' + from.format('YYYY-MM-DD') 
         + '&fhasta=' + to.format('YYYY-MM-DD') 
@@ -113,7 +128,29 @@ export class DownloadComponent {
         + '&phasta=' + prov_to
         + '&access_token=' + this.apolloApi.token;
 
-    // Resto
+    // Contratos PDF
+    } else if (data == "downloadcontratos") {
+      const from = moment(this.contractDateControl.value.start);
+      const to = moment(this.contractDateControl.value.end).add(1,'d');
+      l = environment.backURL + '/download/contratos' 
+        + '?fdesde=' + from.format('YYYY-MM-DD') 
+        + '&fhasta=' + to.format('YYYY-MM-DD') 
+        + '&access_token=' + this.apolloApi.token;
+
+    // Facturas PDF
+    } else if (data == "downloadfacturas") {
+      const from = moment(this.billDownloadDateControl.value.start);
+      const to = moment(this.billDownloadDateControl.value.end).add(1,'d');
+      const prov_from = this.providerDownloadControl.value;
+      const prov_to = prov_from || 99999; 
+      l = environment.backURL + '/download/facturas' 
+        + '?fdesde=' + from.format('YYYY-MM-DD') 
+        + '&fhasta=' + to.format('YYYY-MM-DD') 
+        + '&pdesde=' + prov_from
+        + '&phasta=' + prov_to
+        + '&access_token=' + this.apolloApi.token;
+
+  // Resto
     } else {
       l = environment.backURL + '/export/' + data + '?access_token=' + this.apolloApi.token;
     }
@@ -134,9 +171,9 @@ export class DownloadComponent {
       });
   }
   
-  setMonthAndYear(value: Moment, datepicker: MatDatepicker<Moment>) {
+  setMonthAndYear(value: Moment, datepicker: MatDatepicker<Moment>, control: FormControl) {
     const m = moment(value);
-    this.billDateControl.setValue(m);
+    control.setValue(m);
     datepicker.close();
   }
   

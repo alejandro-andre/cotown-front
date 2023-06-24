@@ -1,6 +1,6 @@
-<h1>Informes</h1>
-
 <app-spinner-control *ngIf="spinnerActive"></app-spinner-control>
+
+<h1>Informes</h1>
 
 <!-- Cabecera -->
 <div class="pure-g row">
@@ -70,35 +70,6 @@
   </div>
 </div>
 
-<!-- Facturas -->
-<div class="pure-g row">
-  <div class="pure-u-1-8 execute">
-    <button mat-raised-button color="primary" [disabled]="check('facturas')"
-            (click)="execute('facturas')">Ejecutar</button>
-  </div>
-  <div class="pure-u-1-4 name"><span>Facturas</span></div>
-  <div class="pure-u-6-24">
-    <mat-form-field>
-      <mat-label>Mes y año</mat-label>
-      <input matInput 
-              MonthYearPickerFormat="MM/YYYY" 
-              [matDatepicker]="dpbill" 
-              [formControl]="billDateControl">
-      <mat-datepicker-toggle matIconSuffix [for]="dpbill"></mat-datepicker-toggle>
-      <mat-datepicker #dpbill (monthSelected)="setMonthAndYear($event, dpbill)" startView="multi-year"></mat-datepicker>
-    </mat-form-field>
-  </div>
-  <div class="pure-u-10-24">
-    <mat-form-field>
-      <mat-label>Emisor</mat-label>
-      <mat-select [formControl]="providerControl">
-        <mat-option [value]="0">Todos</mat-option>
-        <mat-option *ngFor="let c of providers" [value]="c.id">{{ c.name}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-</div>
-
 <!-- Pagos -->
 <div class="pure-g row">
   <div class="pure-u-1-8 execute">
@@ -127,3 +98,91 @@
     </mat-form-field>
   </div>
 </div>
+
+<!-- Facturas -->
+<div class="pure-g row">
+  <div class="pure-u-1-8 execute">
+    <button mat-raised-button color="primary" [disabled]="check('facturas')"
+            (click)="execute('facturas')">Ejecutar</button>
+  </div>
+  <div class="pure-u-1-4 name"><span>Facturas (SAP)</span></div>
+  <div class="pure-u-6-24">
+    <mat-form-field>
+      <mat-label>Mes y año</mat-label>
+      <input matInput 
+              MonthYearPickerFormat="MM/YYYY" 
+              [matDatepicker]="dpbill" 
+              [formControl]="billDateControl">
+      <mat-datepicker-toggle matIconSuffix [for]="dpbill"></mat-datepicker-toggle>
+      <mat-datepicker #dpbill (monthSelected)="setMonthAndYear($event, dpbill, billDateControl)" startView="multi-year"></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="pure-u-10-24">
+    <mat-form-field>
+      <mat-label>Emisor</mat-label>
+      <mat-select [formControl]="providerControl">
+        <mat-option [value]="0">Todos</mat-option>
+        <mat-option *ngFor="let c of providers" [value]="c.id">{{ c.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
+<h1>Descargas (zip)</h1>
+
+<!-- Cabecera -->
+<div class="pure-g row">
+  <div class="pure-u-1-8 execute head"><span>Ejecutar</span></div>
+  <div class="pure-u-1-4 name head"><span>Ficheros</span></div>
+  <div class="pure-u-1-2 head"><span>Filtros</span></div>
+</div>
+
+<!-- Contratos -->
+<div class="pure-g row">
+  <div class="pure-u-1-8 execute">
+    <button mat-raised-button color="primary" [disabled]="check('downloadcontratos')"
+            (click)="execute('downloadcontratos')">Descargar</button>
+  </div>
+  <div class="pure-u-7-8 name"><span>Contratos (PDFs)</span></div>
+  <div class="pure-u-6-24">
+    <mat-form-field>
+      <mat-label>Rango de fechas</mat-label>
+      <mat-date-range-input [rangePicker]="contractpicker" [formGroup]="contractDateControl">
+      <input matStartDate formControlName="start" placeholder="Desde">
+      <input matEndDate formControlName="end" placeholder="Hasta">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="contractpicker"></mat-datepicker-toggle>
+      <mat-date-range-picker #contractpicker></mat-date-range-picker>
+  </mat-form-field>
+  </div>
+</div>
+
+<!-- Facturas -->
+<div class="pure-g row">
+  <div class="pure-u-1-8 execute">
+    <button mat-raised-button color="primary" [disabled]="check('downloadfacturas')"
+            (click)="execute('downloadfacturas')">Descargar</button>
+  </div>
+  <div class="pure-u-1-4 name"><span>Facturas (PDFs)</span></div>
+  <div class="pure-u-6-24">
+    <mat-form-field>
+      <mat-label>Mes y año</mat-label>
+      <input matInput 
+              MonthYearPickerFormat="MM/YYYY" 
+              [matDatepicker]="dpbilldownload" 
+              [formControl]="billDownloadDateControl">
+      <mat-datepicker-toggle matIconSuffix [for]="dpbilldownload"></mat-datepicker-toggle>
+      <mat-datepicker #dpbilldownload (monthSelected)="setMonthAndYear($event, dpbilldownload, billDownloadDateControl)" startView="multi-year"></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="pure-u-10-24">
+    <mat-form-field>
+      <mat-label>Emisor</mat-label>
+      <mat-select [formControl]="providerDownloadControl">
+        <mat-option [value]="0">Todos</mat-option>
+        <mat-option *ngFor="let c of providers" [value]="c.id">{{ c.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+

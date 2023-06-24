@@ -22,7 +22,6 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
     tutor_name: Tutor_name
     tutor_email: Tutor_email
     tutor_phones: Tutor_phones
-    comments: Comments
     phones: Phones
     document: Document
     country_origin_id: Country_origin_id

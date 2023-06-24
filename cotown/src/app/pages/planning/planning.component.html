@@ -1,3 +1,5 @@
+<app-spinner-control *ngIf="spinnerActive"></app-spinner-control>
+
 <div class="container">
 
 	<div class="header">
@@ -139,10 +141,6 @@
 			[sel]="sel"
 			[max]="max">
 		</app-time-chart-control>
-	</div>
-
-	<div class="spinner-box" *ngIf="spinnerActive">
-		<app-spinner-control></app-spinner-control>
 	</div>
 
 </div>

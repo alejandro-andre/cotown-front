@@ -20,6 +20,9 @@ const moment = _rollupMoment;
 
 export class DownloadComponent {
 
+  // Spinner
+  public spinnerActive: boolean = false;
+
   // Form controls
   public providerControl    = new FormControl(0);
   public billDateControl    = new FormControl<any>('', [ Validators.required ]);
@@ -115,10 +118,20 @@ export class DownloadComponent {
       l = environment.backURL + '/export/' + data + '?access_token=' + this.apolloApi.token;
     }
 
-    // Link
-    const link = document.createElement('a');
-    link.href = l;
-    link.click();
+    // Fetch link
+    this.spinnerActive = true;
+    fetch(l)
+      .then(response => response.blob())
+      .then(blob => {
+        const fileUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.download = 'archivo.xlsx';
+        this.spinnerActive = false;
+        link.click();
+      })
+      .catch(error => {
+        this.spinnerActive = false;
+      });
   }
   
   setMonthAndYear(value: Moment, datepicker: MatDatepicker<Moment>) {

@@ -163,7 +163,7 @@ export class DownloadComponent {
       .then(blob => {
         const fileUrl = URL.createObjectURL(blob);
         const link = document.createElement('a');
-        link.download = 'archivo.xlsx';
+        link.href = fileUrl;
         this.spinnerActive = false;
         link.click();
       })

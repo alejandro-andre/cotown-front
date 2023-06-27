@@ -1,20 +1,21 @@
-.turquoise {
-  color: var(--turquoise-light);
+.accent {
+  color: var(--primary);
 }
 .main {
   margin: 0;
   padding: 0;
 }
+.logo {
+  height: 40px;
+}
 .mat-toolbar {
-  background-color: black;
-  color: white;
+  background-color: e0e0e0;
+  color: black;
   position: sticky;
   z-index: 99999;
   height: 60px;
   top: 0;
-}
-.mat-toolbar button {
-  padding: 0 7px 0 0;
+  border-bottom: 1px solid black;
 }
 .mat-toolbar .mat-icon {
   font-size: 32px;
@@ -22,9 +23,9 @@
   height: auto;
 }
 .mat-toolbar h1 { 
-  font-family: "Bebas Neue", sans-serif; 
+  font-family: "rift", sans-serif; 
   font-size: 50px;   
-  padding: 14px 0px 10px 10px;
+  padding: 10px 0px;
 }
 .mat-sidenav-container {
   flex-direction: row;

@@ -5,8 +5,8 @@ li {
 }
 li:hover {
   cursor: pointer;
-  background-color: var(--turquoise)
+  background-color: var(--accent)
 }
 .active {
-  background-color: var(--turquoise-light) !important;
+  background-color: var(--primary) !important;
 }

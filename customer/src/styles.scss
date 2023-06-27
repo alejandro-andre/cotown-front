@@ -1,45 +1,14 @@
+@font-face {
+  font-family: "rift";
+  src: url("assets/rift-regular.eot");
+  src: url("assets/rift-regular.woff") format("woff"),
+       url("assets/rift-regular.woff2") format("woff2"),
+}
+  
 :root {
   /* // Main color */
-  --turquoise-light: #00bfb2;
-  --turquoise: #00998b;
-  --turquoise-dark: #00736B;
-  
-  /* // Secondary color */
-  --grey-light: #3c434a;
-  --grey-dark: #30363b;
-  --grey-light: #d1d1d1;
-  --grey-light-dark: #a7a7a7;
-  --blue: #384289;
-  --blue-dark: #2d356e;
-  --purple: #ab92e1;
-  --purple-dark: #8975b4;
-  --yellow: #ecf166;
-  --yellow-dark: #bdc152;
-      
-  /* // Background color */
-  --white-background: #f4f4f4;
-  --black: #000000;
-  --grey-background: #D9D9D9;
-  --light-grey-background: #FAFAFA;
-  --grey-light-background: #FCFCFC;
-  
-  /* // Text color */
-  --white: #ffffff;
-  
-  /* // Feedback color */
-  --green-success-light: #e3f2e0;
-  --green-success: #8dc881;
-  --green-success-dark: #459a33;
-  --yellow-warning-light: #f8f3d8; 
-  --yellow-warning: #e2ca64; 
-  --yellow-warning-dark: #c9a81c;
-  --red-error-light: #FF5555;
-  --red-error: #FF0000;
-  --red-error-dark: #CC0000;
-  
-  --shadow-soft: rgba(2, 0, 2, 15%);
-  --shadow-medium: rgba(8, 0, 4, 15%);
-  --shadow-strong: rgba(16, 0, 8, 20%);
+  --primary: #08bdbd;
+  --accent: #ff5870;
 }
 
 body, html {
@@ -50,8 +19,9 @@ body, html {
   padding: 0;
 }
 h1 {
-  font-family: "Bebas Neue", "Helvetica Neue", sans-serif;
-  font-size: 50px;
+  font-family: "rift", sans-serif;
+  font-weight: 400;
+  font-size: 48px;
   margin: 0;
 }
 h2 {

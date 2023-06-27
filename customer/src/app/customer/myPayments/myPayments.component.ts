@@ -81,7 +81,7 @@ export class MyPaymentsComponent {
   }
 
   pay(id: number) {
-    this.router.navigate(['/invoices/payment/', id])
+    this.router.navigate(['/payments/payment/', id])
   }
 
 }

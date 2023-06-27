@@ -22,6 +22,8 @@
     "my_payments": "Mis pagos",
     "pdfs": "Documentación"
   },
+  "text_contacts": "Si formas parte del 0,0001% de la población que apenas mira el teléfono, deja los datos de una o más personas de contacto por si no podemos contactar contigo.",
+  "text_documents": "Por favor carga una foto donde se te vea bien (no vale un selfie en el baño) de tu documento (frente y dorso u hoja de la foto si es pasaporte)",
   "accept": "Aceptar",
   "add_contact": "Añadir contacto",
   "address": "Dirección",
@@ -63,7 +65,7 @@
   "deposit": "Garantía",
   "discard": "Descartar",
   "discard_confirmation": "¿Estás seguro de anular esta solicitud de reserva?",
-  "document": "Documento",
+  "document": "Nº documento",
   "documents": "Mis documentos",
   "email": "Email",
   "expiry_date": "Fecha de caducidad",

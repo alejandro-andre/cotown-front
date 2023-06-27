@@ -22,6 +22,8 @@
     "my_payments": "My payments",
     "pdfs": "Documentation"
   },
+  "text_contacts": "If you are part of the 0.0001% of the population that barely looks at the phone, please leave the details of one or more contact persons in case we can't reach you.",
+  "text_documents": "Please upload a photo where you can be seen well (not a selfie in the bathroom) of your document (front and back or photo page if it is a passport).",
   "accept": "Accept",
   "add_contact": "Add contact",
   "address": "Address",
@@ -63,7 +65,7 @@
   "deposit": "Deposit",
   "discard": "Discard",
   "discard_confirmation": "Are you sure to cancel this booking request?",
-  "document": "Document",
+  "document": "Document #",
   "documents": "My documents",
   "email": "Email",
   "expiry_date": "Expiry date",

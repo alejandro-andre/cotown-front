@@ -60,7 +60,7 @@ export class CustomerService {
     this.readOnly['id_type_id'] = (this.customer.id_type_id === null);
     this.readOnly['document'] = (this.customer.document === '' || this.customer.document === null);
     this.readOnly['email'] = (this.customer.email === '' || this.customer.email === null);
-    this.readOnly['phones'] = (this.customer.phones === '' || this.customer.phones === null);
+    this.readOnly['phones'] = true;
     this.readOnly['address'] = (this.customer.address === '' || this.customer.address === null);
     this.readOnly['zip'] = (this.customer.zip === '' || this.customer.zip === null);
     this.readOnly['province'] = (this.customer.province === '' || this.customer.province === null);

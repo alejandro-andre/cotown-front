@@ -2,6 +2,8 @@
 
 <h1>{{ 'contacts' | translate }}</h1>
 
+<p><strong>{{ 'text_contacts' | translate }}</strong></p>
+
 <div *ngIf="contacts.length; then thenBlock else elseBlock"></div>
 
 <ng-template #thenBlock>
@@ -40,9 +42,6 @@
 </ng-template>
 
 <ng-template #elseBlock>
-  <div>
-    {{ 'errors.no_results' | translate }}
-  </div>
 </ng-template>
 
 <button mat-raised-button class="action" color="primary" (click)="goToAdd()">

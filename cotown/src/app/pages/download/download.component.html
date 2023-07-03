@@ -6,7 +6,7 @@
 <div class="pure-g row">
   <div class="pure-u-1-8 execute head"><span>Ejecutar</span></div>
   <div class="pure-u-1-4 name head"><span>Informe</span></div>
-  <div class="pure-u-1-2 head"><span>Filtros</span></div>
+  <div class="pure-u-1-2 name head"><span>Filtros</span></div>
 </div>
 
 <!-- Propietarios -->
@@ -34,7 +34,7 @@
 </div>
 
 <!-- Precios -->
-<div class="pure-g row">
+<div class="pure-g row" *ngIf="providers && providers.length > 1">
   <div class="pure-u-1-8 execute">
     <button mat-raised-button color="primary" (click)="execute('precios')">Ejecutar</button>
   </div>
@@ -42,7 +42,7 @@
 </div>
 
 <!-- Weekly report -->
-<div class="pure-g row">
+<div class="pure-g row" *ngIf="providers && providers.length > 1">
   <div class="pure-u-1-8 execute">
     <button mat-raised-button color="primary" [disabled]="check('weekly')"
             (click)="execute('weekly')">Ejecutar</button>
@@ -51,7 +51,7 @@
 </div>
 
 <!-- Occupancy report -->
-<div class="pure-g row">
+<div class="pure-g row" *ngIf="providers && providers.length > 1">
   <div class="pure-u-1-8 execute">
     <button mat-raised-button color="primary" [disabled]="check('occupancy')"
             (click)="execute('occupancy')">Ejecutar</button>
@@ -110,7 +110,7 @@
 </div>
 
 <!-- Facturas -->
-<div class="pure-g row">
+<div class="pure-g row" *ngIf="providers && providers.length > 1">
   <div class="pure-u-1-8 execute">
     <button mat-raised-button color="primary" [disabled]="check('facturas')"
             (click)="execute('facturas')">Ejecutar</button>
@@ -137,6 +137,8 @@
     </mat-form-field>
   </div>
 </div>
+
+<div *ngIf="providers && providers.length > 1">
 
 <h1>Descargas (zip)</h1>
 
@@ -196,3 +198,4 @@
   </div>
 </div>
 
+</div>

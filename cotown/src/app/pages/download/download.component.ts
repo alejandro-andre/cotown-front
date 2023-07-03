@@ -89,8 +89,12 @@ export class DownloadComponent {
     // Default
     let l = 'javascript:void(0)';
 
+    // occupancy
+    if (data == "occupancy") {
+      l = environment.backURL + '/occupancy?fdesde=2023-01-01&fhasta=2024-12-31' + '&access_token=' + this.apolloApi.token;
+    
     // Weekly report
-    if (data == "weekly") {
+    } else if (data == "weekly") {
       l = environment.backURL + '/export/weekly?fdesde=2020-01-01&fhasta=2099-12-31' + '&access_token=' + this.apolloApi.token;
   
     // Reservas

@@ -1,6 +1,7 @@
 export const PAYMENT_METHOD_QUERY = `query get {
   data: Billing_Payment_methodList (
     orderBy: [{attribute: Name, direction: ASC, nullsGo: FIRST}]
+    where: { Customer: { EQ: true } }
   ) {
     id
     name: Name

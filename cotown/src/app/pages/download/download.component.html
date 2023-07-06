@@ -167,6 +167,15 @@
       <mat-date-range-picker #contractpicker></mat-date-range-picker>
   </mat-form-field>
   </div>
+  <div class="pure-u-10-24">
+    <mat-form-field>
+      <mat-label>Emisor</mat-label>
+      <mat-select [formControl]="providerControl">
+        <mat-option [value]="0">Todos</mat-option>
+        <mat-option *ngFor="let c of providers" [value]="c.id">{{ c.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 </div>
 
 <!-- Facturas -->
@@ -190,7 +199,7 @@
   <div class="pure-u-10-24">
     <mat-form-field>
       <mat-label>Emisor</mat-label>
-      <mat-select [formControl]="providerDownloadControl">
+      <mat-select [formControl]="providerControl">
         <mat-option [value]="0">Todos</mat-option>
         <mat-option *ngFor="let c of providers" [value]="c.id">{{ c.name}}</mat-option>
       </mat-select>

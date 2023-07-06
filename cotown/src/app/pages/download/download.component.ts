@@ -136,16 +136,20 @@ export class DownloadComponent {
     } else if (data == "downloadcontratos") {
       const from = moment(this.contractDateControl.value.start);
       const to = moment(this.contractDateControl.value.end).add(1,'d');
+      const prov_from = this.providerControl.value; 
+      const prov_to = prov_from || 99999; 
       l = environment.backURL + '/download/contratos' 
         + '?fdesde=' + from.format('YYYY-MM-DD') 
         + '&fhasta=' + to.format('YYYY-MM-DD') 
+        + '&pdesde=' + prov_from
+        + '&phasta=' + prov_to
         + '&access_token=' + this.apolloApi.token;
 
     // Facturas PDF
     } else if (data == "downloadfacturas") {
       const from = moment(this.billDownloadDateControl.value);
       const to = moment(from).add(1, 'M');
-      const prov_from = this.providerDownloadControl.value;
+      const prov_from = this.providerControl.value; 
       const prov_to = prov_from || 99999; 
       l = environment.backURL + '/download/facturas' 
         + '?fdesde=' + from.format('YYYY-MM-DD') 

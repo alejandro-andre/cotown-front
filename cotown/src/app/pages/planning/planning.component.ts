@@ -280,8 +280,8 @@ export class PlanningComponent {
         if (data.place_type_id != undefined) {
           this.initialPlaceTypeId = data.place_type_id;
         }
-        this.initialResourceFlatType = this.resourceFlatTypes.find((e) => e.id == this.initialFlatTypeId)?.code || 'x';
-        this.initialResourcePlaceType = this.resourcePlaceTypes.find((e) => e.id == this.initialPlaceTypeId)?.code || 'x';
+        this.initialResourceFlatType = this.resourceFlatTypes.find((e) => e.id == this.initialFlatTypeId)?.code || '';
+        this.initialResourcePlaceType = this.resourcePlaceTypes.find((e) => e.id == this.initialPlaceTypeId)?.code || '';
         this.range.setValue({ start: new Date(data.date_from), end: new Date(data.date_to) });
         const finded = this.buildings.find((elem) => elem.id === this.selectedBuildingId);
         if (finded) {

@@ -160,7 +160,7 @@ export class MyBookingDetailComponent {
   }
 
   get resourceAddress(): string {
-    return (this.booking?.resource?.building?.address || '') + ' - '
+    return (this.booking?.resource?.building?.address || '') + (this.booking?.resource?.flat?.address || '') + ' - '
          + (this.booking?.resource?.address || ''); 
   }
 
@@ -455,7 +455,7 @@ export class MyBookingDetailComponent {
     return this.booking.contract_signed;
   }
 
-  sign (type: String):void {
+  sign(type: String):void {
 
     // Signed contract
     if (type === this.SERVICE_CONTRACT_TYPE) {
@@ -465,7 +465,7 @@ export class MyBookingDetailComponent {
     }
 
     // Both signed
-    if (this.contractRentInfo.signed && this.contractServicesInfo.signed) {
+    if (this.contractRentInfo.signed && (this.contractServicesInfo.signed || this.contractServicesInfo.contract == '')) {
       const variables = {
         id: this.booking.id,
         time: this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss')

@@ -160,7 +160,7 @@ export class MyBookingDetailComponent {
   }
 
   get resourceAddress(): string {
-    return (this.booking?.resource?.building?.address || '') + (this.booking?.resource?.flat?.address || '') + ' - '
+    return (this.booking?.resource?.building?.address || '') + (this.booking?.resource?.flat?.street || '') + ' - '
          + (this.booking?.resource?.address || ''); 
   }
 
@@ -285,6 +285,7 @@ export class MyBookingDetailComponent {
 
       next: (res) => {
         const data = res.data;
+        console.log(data);
         this.isLoading = false;
         if (data && data.booking && data.booking.length) {
           this.enabledSave = false;

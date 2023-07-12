@@ -52,6 +52,7 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
       code: Code
       address: Address
       flat: ResourceViaFlat_id {
+        street: Street
         address: Address
       }
       building: BuildingViaBuilding_id {

@@ -4,7 +4,10 @@ export const BookingListQuery = `{
   date_from: Date_from
   date_to: Date_to
   lock: Lock
-  building: BuildingViaBuilding_id (joinType: INNER) {
+  building: BuildingViaBuilding_id (
+    joinType: INNER
+    where: { Active: { EQ: true } }
+  ) {
     id
     code: Code
     DistrictViaDistrict_id (joinType: INNER where: { Location_id: { EQ: $cityId } } ) { id }
@@ -57,7 +60,9 @@ export const BookingListQuery = `{
 
 export const BuildingDataViaBooking = `query bookingQuery($id: Int)
 {
-  data: Booking_BookingList(where:{ id: { EQ: $id } }) {
+  data: Booking_BookingList(
+    where:{ id: { EQ: $id } }
+  ) {
     building_id: Building_id
     booking_id: id
     date_from: Date_from
@@ -70,7 +75,9 @@ export const BuildingDataViaBooking = `query bookingQuery($id: Int)
 
 export const BuildingDataViaBookingGroup = `query bookingQuery($id: Int)
 {
-  data: Booking_Booking_groupList(where:{ id: { EQ: $id } }) {
+  data: Booking_Booking_groupList(
+    where:{ id: { EQ: $id } }
+  ) {
     id
     building_id: Building_id
     booking_id: id

@@ -3,7 +3,10 @@ export const ResourceListQuery = `{
   code: Code
   address: Address
   resource_type: Resource_type
-  building: BuildingViaBuilding_id (joinType: INNER ) {
+  building: BuildingViaBuilding_id (
+    joinType: INNER 
+    where: { Active: { EQ: true } }
+  ) {
     id
     name: Name
     code: Code

@@ -1,6 +1,7 @@
 export const BuildingListQuery = `
 query BuildingList{
   data: Building_BuildingList(
+    where: { Active: { EQ: true } }
     orderBy: [{attribute: Name, direction:ASC, nullsGo: FIRST}]
   ) {
     name: Name
@@ -18,6 +19,7 @@ query BuildingList{
 export const BuildingListByCityNameQuery = ` query BuildingListByCityName($cityName: String)
   {
     data: Building_BuildingList (
+      where: { Active: { EQ: true } }
       orderBy: [{attribute: Name, direction:ASC, nullsGo: FIRST}]
     ) {
       name: Name

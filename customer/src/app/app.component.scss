@@ -1,3 +1,8 @@
 html , body {
   height: 100% !important;
 }
+
+mat-sidenav-container {
+  height: calc(100vh - 64px);
+  margin-top: 64px;
+}

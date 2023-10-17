@@ -76,7 +76,8 @@ export interface ICustomer extends IBase {
 // Customer document
 export interface IDocType extends IBase {
   name_en: string,
-  images: number
+  images: number,
+  expires: boolean
 }
 export interface IDocument {
   id: number,

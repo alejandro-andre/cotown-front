@@ -105,7 +105,7 @@ export class DownloadComponent {
     // Rooming
     } else if (data == "rooming") {
     const id = this.bookingIdControl.value;
-    l = environment.backURL + '/export/booking?id=' + id + '&access_token=' + this.apolloApi.token;
+    l = environment.backURL + '/export/rooming?id=' + id + '&access_token=' + this.apolloApi.token;
 
     // Reservas
     } else if (data == "reservas") {

@@ -50,6 +50,16 @@
   <div class="pure-u-7-8 name"><span>Reservas Power BI</span></div>
 </div>
 
+<!-- Occupancy report -->
+<div class="pure-g row" *ngIf="providers && providers.length > 1">
+  <div class="pure-u-1-8 execute">
+    <button mat-raised-button color="primary" [disabled]="check('occupancy')"
+            (click)="execute('occupancy')">Ejecutar</button>
+  </div>
+  <div class="pure-u-7-8 name"><span>Monthly</span></div>
+  <div class="pure-u-16-24 name"><span>Beds / Occupancy / Income</span></div>
+</div>
+
 <!-- Rooming lists -->
 <div class="pure-g row">
   <div class="pure-u-1-8 execute">
@@ -63,17 +73,6 @@
       <input matInput [formControl]="bookingIdControl" placeholder="Id">
     </mat-form-field>
   </div>
-</div>
-
-<!-- Occupancy report -->
-<div class="pure-g row" *ngIf="providers && providers.length > 1">
-  <div class="pure-u-1-8 execute">
-    <button mat-raised-button color="primary" [disabled]="check('occupancy')"
-            (click)="execute('occupancy')">Ejecutar</button>
-  </div>
-  <div class="pure-u-7-8 name"><span>Monthly</span></div>
-  <div class="pure-u-16-24 name"><span>Beds / Occupancy / Income</span></div>
-
 </div>
 
 <!-- Reservas -->

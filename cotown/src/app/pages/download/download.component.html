@@ -50,6 +50,21 @@
   <div class="pure-u-7-8 name"><span>Reservas Power BI</span></div>
 </div>
 
+<!-- Rooming lists -->
+<div class="pure-g row">
+  <div class="pure-u-1-8 execute">
+    <button mat-raised-button color="primary" [disabled]="check('rooming')" 
+            (click)="execute('rooming')">Ejecutar</button>
+  </div>
+  <div class="pure-u-7-8 name"><span>Rooming list</span></div>
+  <div class="pure-u-6-24">
+    <mat-form-field>
+      <mat-label>Reserva</mat-label>
+      <input matInput [formControl]="bookingIdControl" placeholder="Id">
+    </mat-form-field>
+  </div>
+</div>
+
 <!-- Occupancy report -->
 <div class="pure-g row" *ngIf="providers && providers.length > 1">
   <div class="pure-u-1-8 execute">

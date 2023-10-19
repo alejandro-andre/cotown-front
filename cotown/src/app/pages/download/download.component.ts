@@ -24,6 +24,8 @@ export class DownloadComponent {
   public spinnerActive: boolean = false;
 
   // Form controls
+  public bookingIdControl        = new FormControl<any>('', [ Validators.required ]);
+
   public providerControl         = new FormControl(0);
   public billDateControl         = new FormControl<any>('', [ Validators.required ]);
 
@@ -64,7 +66,10 @@ export class DownloadComponent {
   // Check if report can be executed
   check (data: string) {
 
-    if (data == "reservas") {
+    if (data == "rooming") {
+      if (!this.bookingIdControl.value)
+      return true;
+    } else if (data == "reservas") {
       if (!this.bookingDateControl.value.start || !this.bookingDateControl.value.end)
       return true;
     } else if (data == "facturas") {
@@ -97,6 +102,11 @@ export class DownloadComponent {
     } else if (data == "weekly") {
       l = environment.backURL + '/export/weekly?fdesde=2020-01-01&fhasta=2099-12-31' + '&access_token=' + this.apolloApi.token;
   
+    // Rooming
+    } else if (data == "rooming") {
+    const id = this.bookingIdControl.value;
+    l = environment.backURL + '/export/booking?id=' + id + '&access_token=' + this.apolloApi.token;
+
     // Reservas
     } else if (data == "reservas") {
     const from = moment(this.bookingDateControl.value.start);

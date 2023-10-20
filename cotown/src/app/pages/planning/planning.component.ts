@@ -234,20 +234,20 @@ export class PlanningComponent {
 
   goBackward(type: string) {
     if (type === 'week'){
-      const date = new Date(this.now.getTime() - (1000*60*60*24*7));
+      let date = new Date(this.now.getTime() - (1000*60*60*24*7));
       this.now = date;
     } else if (type === 'month'){
-      const date= prevMonth(this.now);
+      let date= prevMonth(this.now);
       this.now = date;
     }
   }
 
   goForward(type: string) {
     if (type === 'week') {
-      const date = new Date(this.now.getTime() + (1000*60*60*24*7));
+      let date = new Date(this.now.getTime() + (1000*60*60*24*7));
       this.now = date;
     } else if (type === 'month') {
-      const date = nextMonth(this.now);
+      let date = nextMonth(this.now);
       this.now = date;
     }
   }
@@ -617,6 +617,8 @@ export class PlanningComponent {
       }
     }
 
+    console.log(this.rows);
+    
     // Consolidate bars
     for (const row of this.rows) {
       if (row.bars.length > 1 && row.bars[0].lock) {

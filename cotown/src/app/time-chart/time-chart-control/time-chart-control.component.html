@@ -34,7 +34,7 @@
 	<div class="timechart-row timechart-row-lines">
 		<span></span><span></span><span></span>
 		<span 
-			*ngFor="let day 	of days; let i = index;" 
+			*ngFor="let day of days; let i = index;" 
 			[class.marker]="i >= markerFrom && i <= markerTo">
 		</span>
 	</div>

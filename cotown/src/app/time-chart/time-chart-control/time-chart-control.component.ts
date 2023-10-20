@@ -25,12 +25,14 @@ export class TimeChartControlComponent implements OnChanges {
   public markerFrom: number = -1;
   public markerTo: number = -1;
 
+  ONEDAY: number = (1000*60*60*24);
+
   // Constructor
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
     // Start on mondays
-    this.now.setTime(this.now.getTime() - (1000*60*60*24*this.getDay(this.now)))
+    this.now.setTime(this.now.getTime() - (this.ONEDAY * this.getDay(this.now)))
 
     // Set headers
     this.setHeader(this.now);
@@ -44,8 +46,8 @@ export class TimeChartControlComponent implements OnChanges {
 
     // Marker
     if (this.from != null && this.to != null) {
-      this.markerFrom = Math.ceil((this.from.getTime() - this.now.getTime()) / (1000*60*60*24));
-      this.markerTo = Math.ceil((this.to.getTime() - this.now.getTime()) / (1000*60*60*24));
+      this.markerFrom = 1 + Math.floor((this.from.getTime() - this.now.getTime()) / (this.ONEDAY));
+      this.markerTo = 1 + Math.floor((this.to.getTime() - this.now.getTime()) / (this.ONEDAY));
     }
 
     // Dates
@@ -53,7 +55,7 @@ export class TimeChartControlComponent implements OnChanges {
     this.days = [];
     let month = -1;
     for (var i = 0; i < 70; i++ ) {
-      const fecha = new Date(date.getTime() + (1000*60*60*24*i));
+      const fecha = new Date(date.getTime() + (this.ONEDAY*i));
       if (month != fecha.getMonth()) {
         const dmin = fecha.getDate();
         const dmax = new Date(fecha.getFullYear(), fecha.getMonth() + 1, 0).getDate();
@@ -89,8 +91,17 @@ export class TimeChartControlComponent implements OnChanges {
       for (let bar of row.bars) {
 
         // Dates
-        const dfrom = Math.ceil((bar.datefrom.getTime() - this.now.getTime()) / (1000*60*60*24));
-        const dto = 1 + Math.ceil((bar.dateto.getTime() - this.now.getTime()) / (1000*60*60*24));
+        const now   = Math.floor(this.now.getTime() / (this.ONEDAY));
+        const dfrom = 1 + Math.floor(bar.datefrom.getTime() / (this.ONEDAY)) - now;
+        const dto   = 2 + Math.floor(bar.dateto.getTime() / (this.ONEDAY)) - now;
+
+        if (dfrom > 0) {
+          console.log(this.now)
+          console.log(bar.datefrom)
+          console.log(now)
+          console.log(Math.floor(bar.datefrom.getTime() / (this.ONEDAY)))
+          console.log(dfrom)
+        }
 
         // Show bar
         bar.styles = bar.type + ' show';
@@ -119,14 +130,14 @@ export class TimeChartControlComponent implements OnChanges {
         bar.in = 0;
         bar.out = 0;
         if (bar.checkIn) {
-          let din = Math.ceil((bar.checkIn.getTime() - this.now.getTime()) / (1000*60*60*24));
+          let din = 1 + Math.floor(bar.checkIn.getTime() / (this.ONEDAY) - now);
           if (dfrom > 0 && dfrom <= 70 && din > 70)
             din = 70;
           if (bar.from <= din && bar.from < 70 && din > 0 && din < 71)
             bar.in = din;
         }
         if (bar.checkOut) {
-          let dout = Math.ceil((bar.checkOut.getTime() - this.now.getTime()) / (1000*60*60*24));
+          let dout = 1 + Math.floor(bar.checkOut.getTime() / (this.ONEDAY) - now);
           if (bar.from < dout && bar.from < 70 && dout > 0 && dout < 71)
             bar.out = dout;
         }

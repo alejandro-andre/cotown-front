@@ -17,7 +17,7 @@ export const prevMonth = (date: Date): Date => {
     month = 11;
     year -= 1;
   }
-  return new Date(year, month, 1);
+  return new Date(year, month, 1, 12);
 }
 
 export const nextMonth = (date: Date): Date => {
@@ -28,7 +28,7 @@ export const nextMonth = (date: Date): Date => {
     month = 0;
     year += 1;
   }
-  return new Date(year, month, 1);
+  return new Date(year, month, 1, 12);
 }
 
 export const getAge = (birth_date: string) => {

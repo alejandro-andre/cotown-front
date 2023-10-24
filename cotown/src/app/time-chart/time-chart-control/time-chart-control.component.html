@@ -56,9 +56,9 @@
 					[disabled]="!isCheckable(row)"
 					(change)="emitCheck($event, row)">
 				</mat-checkbox>
-			</div>
+			</div>			
 			<div class="timechart-row-first {{row.style}}">{{row.code}}</div>
-			<div class="timechart-row-first">{{row.info}}</div>
+			<div class="timechart-row-first" [class.note]="row.notes">{{row.info}}<div class="tiptext">{{row.notes}}</div></div>
 
 			<!-- Bars -->
 			<ul class="timechart-row-bars">
@@ -68,9 +68,8 @@
 					style.grid-column="{{bar.from}}/{{bar.to}}"
 					(click)="go_booking(bar.link);">
 					<div *ngIf="bar.code != '' && (bar.to - bar.from) > 1 " class="bar">
-						<span class="tag">{{bar.code}}</span>
+						<span class="tag">{{bar.code}}<div class="tiptext" [innerHtml]="bar.tooltip|safeHtml"></div></span>
 						<span>{{bar.text}}</span>
-						<div class="tiptext" [innerHtml]="bar.tooltip|safeHtml"></div>
 					</div>
 				</li>
 				<span *ngIf="bar.in > 0"
@@ -83,6 +82,7 @@
 				</span>
 				</ng-container>
 			</ul>
+
 		</div>
 	</mat-radio-group>
 

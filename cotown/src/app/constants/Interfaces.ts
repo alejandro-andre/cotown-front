@@ -33,6 +33,7 @@ export interface Resource {
   Resource_info: string
   Resource_flat_type: number,
   Resource_place_type: number,
+  Resource_notes: string
 }
 
 export interface Booking {
@@ -42,6 +43,7 @@ export interface Booking {
   Booking_status: string,
   Booking_date_from: string,
   Booking_date_to: string,
+  Booking_comments: string,
   Resource_id: number,
   Resource_code: string
   Customer_name?: string,

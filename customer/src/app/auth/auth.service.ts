@@ -27,7 +27,7 @@ export class AuthService {
   public login() : void {
     this.keycloakService.login().then(() => {
       this.loggedIn = true;
-      console.log("Logged in");
+      // console.log("Logged in");
     })
     .catch(error => {
       this.loggedIn = false;
@@ -38,7 +38,7 @@ export class AuthService {
   public logout() : void {
     this.loggedIn = false;
     this.keycloakService.logout(window.location.origin + '/customer').then(() => {
-      console.log("Logged out");
+      // console.log("Logged out");
     })
     .catch(error => {
       console.error(error);

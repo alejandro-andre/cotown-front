@@ -285,7 +285,6 @@ export class MyBookingDetailComponent {
 
       next: (res) => {
         const data = res.data;
-        console.log(data);
         this.isLoading = false;
         if (data && data.booking && data.booking.length) {
           this.enabledSave = false;

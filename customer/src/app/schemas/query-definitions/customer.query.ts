@@ -107,6 +107,7 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
         id
         code: Code
         address: Address
+        notes: Notes
         flat: ResourceViaFlat_id {
           street: Street
           address: Address

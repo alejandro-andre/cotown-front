@@ -28,6 +28,7 @@ export const BookingListQuery = `{
   booking: BookingViaBooking_id {
     check_in: Check_in
     check_out: Check_out
+    comments: Comments
     customer: CustomerViaCustomer_id {
       name: Name
       birth_date: Birth_date

@@ -95,14 +95,6 @@ export class TimeChartControlComponent implements OnChanges {
         const dfrom = 1 + Math.floor(bar.datefrom.getTime() / (this.ONEDAY)) - now;
         const dto   = 2 + Math.floor(bar.dateto.getTime() / (this.ONEDAY)) - now;
 
-        if (dfrom > 0) {
-          console.log(this.now)
-          console.log(bar.datefrom)
-          console.log(now)
-          console.log(Math.floor(bar.datefrom.getTime() / (this.ONEDAY)))
-          console.log(dfrom)
-        }
-
         // Show bar
         bar.styles = bar.type + ' show';
 

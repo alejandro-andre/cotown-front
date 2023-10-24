@@ -217,7 +217,7 @@
 	display: inline-block;
 	border-bottom: 1px dotted black;
 }
-.tooltip .tiptext {
+.tag .tiptext {
 	visibility: hidden;
 	color: black;
 	background-color: #ffa;
@@ -227,8 +227,16 @@
 	left: 20px;
 	z-index: 1;
 }
-.tooltip:hover .tiptext {
-	visibility: visible;
+.note .tiptext {
+	visibility: hidden;
+	color: black;
+	background-color: #aff;
+	padding: 5px;
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	min-width: 200px;
+	z-index: 1;
 }
 
 /* Custom styles */
@@ -240,6 +248,16 @@
 	margin-right: 5px;
 	border-radius: 5px;
 	background-color: rgba(0, 0, 0, 0.4);
+}
+.tag:hover .tiptext {
+	visibility: visible;
+}
+.note {
+	position: relative;
+	border-left: 4px solid #00BFB2;
+}
+.note:hover .tiptext {
+	visibility: visible;
 }
 .title_h1 {
 	font-size: .95em;

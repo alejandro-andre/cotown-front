@@ -462,7 +462,8 @@ export class PlanningComponent {
             Resource_type: elem.resource_type,
             Resource_flat_type: elem.flat_type.id,
             Resource_place_type: elem.place_type?.id || -1,
-            Resource_info: type || ''
+            Resource_info: type || '',
+            Resource_notes: elem.notes || ''
           });
         }
         resolve();
@@ -507,6 +508,7 @@ export class PlanningComponent {
           Booking_date_to: booking.date_to,
           Booking_check_in: booking.booking?.check_in,
           Booking_check_out: booking.booking?.check_out,
+          Booking_comments: booking.booking?.comments || '',
           Resource_id: booking.resource?.id || 0,
           Resource_code: booking.resource?.code || '',
           Customer_name: name || '',
@@ -540,7 +542,8 @@ export class PlanningComponent {
       auxRow = new TimeChartRow();
       auxRow.id = r.Resource_id;
       auxRow.code = r.Resource_code;
-      auxRow.info = r.Resource_info
+      auxRow.info = r.Resource_info;
+      auxRow.notes = r.Resource_notes;
       auxRow.style = Constants.types[r.Resource_type];
       if (this.rooms.includes(r.Resource_code)) {
         auxRow.selected = true;
@@ -588,6 +591,7 @@ export class PlanningComponent {
           + ' - ' + b.Customer_age
           + ' - ' + b.Customer_gender
           + ' - ' + b.Customer_country
+          + ' - ' + b.Booking_comments
         const dfrom = formatDate(new Date(b.Booking_date_from), 'DMY');
         const dto   = formatDate(new Date(b.Booking_date_to), 'DMY');
         const din   = b.Booking_check_in ? formatDate(new Date(b.Booking_check_in), 'DMY') : '--/--/----';
@@ -617,8 +621,6 @@ export class PlanningComponent {
       }
     }
 
-    console.log(this.rows);
-    
     // Consolidate bars
     for (const row of this.rows) {
       if (row.bars.length > 1 && row.bars[0].lock) {

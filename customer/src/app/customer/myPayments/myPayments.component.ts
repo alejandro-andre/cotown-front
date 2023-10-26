@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { IBase, IBookingResource, IInvoice, ICode, IPayment, ILookupInt } from 'src/app/constants/Interface';
+import { IBookingResource, ICode, IPayment } from 'src/app/constants/Interface';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { Constants } from 'src/app/constants/Constants';
@@ -19,7 +19,6 @@ export class MyPaymentsComponent {
     public customerService: CustomerService,
     private lookupService: LookupService,
     private datePipe: DatePipe,
-    private axiosApi: AxiosApi,
     private router: Router,
   ) {}
 
@@ -66,7 +65,9 @@ export class MyPaymentsComponent {
   }
 
   get payments(): IPayment[] {
-    return this.customerService.customer?.payments || [];
+    let payments = this.customerService.customer?.payments || [];
+    payments = payments.filter(e => !['solicitud', 'solicitudpagada', 'alternativas', 'alternativaspagada'].includes(e.booking.status));
+    return payments;
   }
 
   getPaymentMethod(payment: IPayment):string {

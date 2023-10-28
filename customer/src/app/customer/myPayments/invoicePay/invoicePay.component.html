@@ -4,7 +4,7 @@
 
 <h2>{{ 'pay_info' | translate }}</h2>
 
-<form ngNoForm name="form" *ngIf="loaded" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST" target="_top">
+<form ngNoForm name="form" *ngIf="loaded" [action]="url" method="POST" target="_top">
 
 <div class="group">
   <div class="pure-g grid-container" >

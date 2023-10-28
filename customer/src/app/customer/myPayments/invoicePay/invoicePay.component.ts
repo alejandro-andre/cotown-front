@@ -11,6 +11,9 @@ import { environment } from 'src/environments/environment';
 
 export class InvoicePayComponent {
 
+  // Redsys url
+  public url  = '';
+
   // Form fields
   public identifier = '';
   public order = '';
@@ -37,6 +40,7 @@ export class InvoicePayComponent {
       this.axiosApi.get(url).then((res) => {
         const { data } = res;
         if (data) {
+          this.url = data.url;
           this.amount = data.Amount;
           this.identifier = data.id;
           this.concept = data.Concept;

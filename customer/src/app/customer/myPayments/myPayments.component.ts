@@ -59,14 +59,18 @@ export class MyPaymentsComponent {
   showPayButton(elem: any): boolean {
     if (elem.payment_date !== null || elem.payment_date === '') 
       return false;
-    if (elem.payment_method_id !== 1)
+    const method = this.lookupService.paymentMethods.find((e) => e.id === elem.payment_method_id);
+    if (!method?.gateway )
       return false;
     return true;
   }
 
   get payments(): IPayment[] {
     let payments = this.customerService.customer?.payments || [];
-    payments = payments.filter(e => !['solicitud', 'solicitudpagada', 'alternativas', 'alternativaspagada'].includes(e.booking.status));
+    payments = payments.filter(e => (
+      !['solicitud', 'solicitudpagada', 'alternativas', 'alternativaspagada'].includes(e.booking?.status || '')
+      || e.booking == null
+    ));
     return payments;
   }
 

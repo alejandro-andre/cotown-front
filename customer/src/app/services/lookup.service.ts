@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ICountry, ILookup, ILookupInt, IPdf } from '../constants/Interface';
+import { ICountry, ILookup, ILookupInt, IPaymentMethod as IPaymentMethod, IPdf } from '../constants/Interface';
 import { ApolloQueryApi } from './apollo-api.service';
 
 import { CONTACT_TYPE_QUERY, COUNTRY_QUERY, REASONS_QUERY, GENDER_QUERY, ID_TYPE_QUERY, LANGUAGE_QUERY, SCHOOL_QUERY, STATUS_QUERY, RESOURCE_TYPE_QUERY, CHECKIN_OPTIONS_QUERY, PDFS_QUERY, PAYMENT_METHOD_QUERY } from 'src/app/schemas/query-definitions/lookup.query';
@@ -18,7 +18,7 @@ export class LookupService {
   public idTypes: ILookupInt[] = [];
   public genders: ILookupInt[] = [];
   public reasons: ILookupInt[] = [];
-  public paymentMethods: ILookupInt[] = [];
+  public paymentMethods: IPaymentMethod[] = [];
   public checkinOptions: ILookupInt[] = [];
   public resourceTypes: {code:string, name:string, name_en: string}[] = [];
   public status: {code:string, name:string, name_en: string}[] = [];

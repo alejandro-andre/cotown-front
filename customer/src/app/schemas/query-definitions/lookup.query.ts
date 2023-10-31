@@ -4,6 +4,7 @@ export const PAYMENT_METHOD_QUERY = `query get {
     where: { Customer: { EQ: true } }
   ) {
     id
+    gateway: Gateway
     name: Name
     name_en: Name_en
   }

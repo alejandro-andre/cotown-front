@@ -24,6 +24,11 @@ export interface ILookupInt extends IBase {
   name_en?: string,
 };
 
+// Payment methods
+export interface IPaymentMethod extends ILookupInt {
+  gateway?: boolean
+}
+
 // Countries
 export interface ICountry extends ILookupInt {
   prefix?: string

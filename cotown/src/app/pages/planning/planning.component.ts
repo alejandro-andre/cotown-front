@@ -514,6 +514,7 @@ export class PlanningComponent {
           Customer_name: name || '',
           Customer_gender: booking.booking?.customer.gender?.code || '',
           Customer_country: booking.booking?.customer.country?.name || '',
+          Customer_nationality: booking.booking?.customer.nationality?.name || '',
           Customer_email: email || '',
           Customer_phone: phone || '',
           Customer_age: age || '',
@@ -590,7 +591,7 @@ export class PlanningComponent {
         bar.text = b.Customer_name
           + ' - ' + b.Customer_age
           + ' - ' + b.Customer_gender
-          + ' - ' + b.Customer_country
+          + ' - ' + b.Customer_nationality
           + ' - ' + b.Booking_comments
         const dfrom = formatDate(new Date(b.Booking_date_from), 'DMY');
         const dto   = formatDate(new Date(b.Booking_date_to), 'DMY');
@@ -606,7 +607,7 @@ export class PlanningComponent {
           <tr><td><b>Nombre</b></td><td>${b.Customer_name}</td></tr>
           <tr><td><b>Género</b></td><td>${b.Customer_gender}</td></tr>
           <tr><td><b>Edad</b></td><td>${b.Customer_age}</td></tr>
-          <tr><td><b>País</b></td><td>${b.Customer_country}</td></tr>
+          <tr><td><b>País</b></td><td>${b.Customer_nationality}</td></tr>
           <tr><td><b>Teléfono</b></td><td>${b.Customer_phone}</td></tr>
           <tr><td><b>Email</b></td><td>${b.Customer_email}</td></tr>
           </table>`

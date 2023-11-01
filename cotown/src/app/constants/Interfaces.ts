@@ -49,6 +49,7 @@ export interface Booking {
   Customer_name?: string,
   Customer_gender?: string,
   Customer_country?: string,
+  Customer_nationality?: string,
   Customer_email?: string,
   Customer_phone?: string,
   Customer_age?: number,

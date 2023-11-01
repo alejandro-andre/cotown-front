@@ -41,6 +41,9 @@ export const BookingListQuery = `{
       country: CountryViaCountry_id {
         name: Name
       }
+      nationality: CountryViaNationality_id {
+        name: Name
+      }
     }
   }
   group: Booking_groupViaBooking_group_id {

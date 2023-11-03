@@ -34,7 +34,7 @@ export class Constants {
   }
 
   public static blockedResource = {
-    color: 'rgba(64, 64, 64, 0.7)',
+    color: 'rgba(0, 64, 0, 0.7)',
     type: 'stripes'
   }
 

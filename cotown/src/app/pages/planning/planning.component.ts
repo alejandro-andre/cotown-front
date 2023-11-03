@@ -489,9 +489,9 @@ export class PlanningComponent {
 
         // Group bookings
         if (!booking.booking_id && booking.rooms && booking.group) {
-          email = booking.group.customer.email;
-          phone = booking.group.customer.phones;
-          name = booking.group.customer.name
+          email = booking.group.customer?.email;
+          phone = booking.group.customer?.phones;
+          name = booking.group.customer?.name
           code = `G${booking.group.id}`
           if (booking.rooms && booking.rooms.name !== null) {
             const aux = `${name} (${booking.rooms.name})`;

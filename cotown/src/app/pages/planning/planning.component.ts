@@ -624,11 +624,13 @@ export class PlanningComponent {
 
     // Consolidate bars
     for (const row of this.rows) {
-      if (row.bars.length > 1 && row.bars[0].lock) {
-        row.bars = this.consolidateIntervals(row.bars);
+      if (row.bars.length > 1) {
+        const locks: TimeChartBar[] = row.bars.filter(bar => bar.lock);
+        const bookings: TimeChartBar[] = row.bars.filter(bar => !bar.lock);
+        row.bars = this.consolidateIntervals(locks);
+        row.bars.push(...bookings);
       }
     }
-
     this.spinnerActive = false;
   }
 

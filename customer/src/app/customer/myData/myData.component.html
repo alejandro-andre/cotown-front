@@ -227,7 +227,6 @@
       <mat-form-field>
         <mat-label>{{ 'zip' | translate }}</mat-label>
         <input matInput [formControl]="zipControl" 
-               maxlength="5" 
                placeholder="{{'zip' | translate}}" 
                [readonly]="!visibility['zip']" 
                [(ngModel)]="customer.zip"

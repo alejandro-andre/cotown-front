@@ -77,6 +77,7 @@
   "id_type": "Tipo de documento",
   "identifier": "Identificador",
   "image": "Imágen",
+  "info": "Información",
   "invoice_code": "Nº Factura",
   "invoices": "Mis facturas",
   "issued_date": "Fecha de emisión",

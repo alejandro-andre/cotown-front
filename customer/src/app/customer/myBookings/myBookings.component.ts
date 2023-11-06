@@ -17,10 +17,11 @@ export class MyBookingsComponent {
     public customerService: CustomerService,
     public lookupService: LookupService,
     private datePipe: DatePipe,
-    private router: Router,
+    private router: Router
   ) {}
 
   public displayedColumns: string[] = [
+    'info',
     'building',
     'resource_type',
     'date_from',

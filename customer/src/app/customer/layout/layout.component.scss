@@ -3,16 +3,20 @@ a {
   text-decoration: none;
   color: black;
 }
+
 .accent {
   color: var(--primary);
 }
+
 .main {
   margin: 0;
   padding: 0;
 }
+
 .logo {
   height: 40px;
 }
+
 .mat-toolbar {
   background-color: e0e0e0;
   color: black;
@@ -27,11 +31,13 @@ a {
   width: auto;
   height: auto;
 }
+
 .mat-toolbar h1 { 
   font-family: "rift", sans-serif; 
   font-size: 50px;   
   padding: 10px 0px;
 }
+
 .mat-sidenav-container {
   flex-direction: row;
   position: absolute;
@@ -40,9 +46,19 @@ a {
   left: 0;
   right: 0;
 }
+
 .mat-sidenav { 
   width: 240px;
 }
+
 .mat-sidenav-content {
   padding: 20px;
+}
+
+@media screen and (min-width: 768px) {
+  .desktop { display: block; }
+}
+
+@media screen and (max-width: 767px) {
+  .desktop { display: none; }
 }

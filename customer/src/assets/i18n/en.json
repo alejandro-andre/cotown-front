@@ -77,6 +77,7 @@
   "id_type": "Document type",
   "identifier": "Identifier",
   "image": "Image",
+  "info": "Information",
   "invoice_code": "Invoice #",
   "invoices": "My invoices",
   "issued_date": "Issued date",

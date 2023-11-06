@@ -1,13 +1,19 @@
 <div class="main">
 
 <mat-toolbar>
-  <h1><img class="logo" src="assets/isologo.png" (click)="snav.toggle()"></h1>
+  <h1>
+    <img class="logo" src="assets/isologo.png" (click)="snav.toggle()">
+  </h1>
   <span style="flex: 1 1 auto;"></span>
-  <span><a href="https://api.whatsapp.com/send?phone=+34663041433&text=Hola!..."><img style="margin-top:10px;width:24px;" src="assets/whatsapp.svg"></a></span>
-  <span style="width:30px;"></span>
-  <span><a href="tel:+34663041433">+34 663 04 14 33</a></span>
-  <span style="width:30px;"></span>
-  <span><a href="mailto:hola@cotown.com">hola@cotown.com</a></span>
+  <span>
+    <a href="https://api.whatsapp.com/send?phone=+34663041433&text=Hola!...">
+      <img style="margin-top:10px;width:24px;" src="assets/whatsapp.svg">
+    </a>
+  </span>
+  <div class="desktop">
+    <span style="margin-left:20px;"><a href="tel:+34663041433">+34 663 04 14 33</a></span>
+    <span style="margin-left:20px;"><a href="mailto:hola@cotown.com">hola@cotown.com</a></span>
+  </div>
 </mat-toolbar>
 
 <mat-sidenav-container>

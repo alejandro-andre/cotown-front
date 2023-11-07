@@ -6,8 +6,28 @@
 
   <p *ngIf="!this.customerService.enoughData">{{ 'not_enough_data' | translate }}</p>
 
-  <div style="border: 1px solid lightgray; overflow-x: auto;">
+  <div style="border: 1px solid lightgray; overflow-x: auto; margin-bottom: 40px;">
     <table mat-table [dataSource]="payments" class="table">
+      <ng-container matColumnDef="info">
+        <th mat-header-cell *matHeaderCellDef>{{ 'info' | translate }}</th>
+        <td mat-cell *matCellDef="let element">
+          <tr class="info"><th>{{ 'issued_date' | translate }}</th><td>{{ element.issued_date }}</td></tr>
+          <tr class="info"><th>{{ 'concept' | translate }}</th><td>{{ element.concept || '-' }}</td></tr>
+          <tr class="info"><th>{{ 'amount' | translate }}</th><td>{{ element.amount }} €</td></tr>
+          <tr class="info"><th>{{ 'method' | translate }}</th><td>{{ getPaymentMethod(element) || '-' }}</td></tr>
+          <tr class="info"><th>{{ 'resource' | translate }}</th><td>{{ getResource(element.booking) || '-' }}</td></tr>
+          <tr class="info"><th>{{ 'payment_date' | translate }}</th><td>{{ formatPropertyDate(element.payment_date) || '-' }}</td></tr>
+          <tr class="info"><th>{{ 'payment_auth' | translate }}</th><td>{{ element.payment_auth || '-' }}</td></tr>
+          <tr class="info"><th>{{ 'payment_order' | translate }}</th><td>{{ element.payment_order || '-' }}</td></tr>
+          <tr class="info">
+            <th>
+            <span *ngIf="showPayButton(element)">
+              <button mat-raised-button [disabled]="!this.customerService.enoughData" (click)="pay(element.id)">{{ 'pay' | translate }}</button>
+            </span>
+            </th>
+          </tr>
+        </td>
+      </ng-container>
       <ng-container matColumnDef="issued_date">
         <th mat-header-cell *matHeaderCellDef>{{ 'issued_date' | translate }}</th>
         <td mat-cell *matCellDef="let element"><span>{{ formatOnlyDate(element.issued_date) }}</span></td>

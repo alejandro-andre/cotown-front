@@ -22,6 +22,7 @@ export class MyInvoicesComponent {
   ) {}
 
   public displayedInvoiceColumns: string[] = [
+    'info',
     'view',
     'issued_date',
     'concept',

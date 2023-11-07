@@ -1,15 +1,14 @@
 .mat-mdc-row.clickable .mat-mdc-cell {
-    border-bottom: 1px solid transparent;
-    border-top: 1px solid transparent;
     cursor: pointer;
 }
 
 .mat-mdc-row.clickable:hover .mat-mdc-cell {
-    border-color: currentColor;
+    background-color: lightgray;
 }
 
+.info th,
 .info td {
-    padding: 10px 20px 10px 20px;
+    padding: 10px 20px 10px 0px;
 }
 
 @media screen and (min-width: 768px) {

@@ -23,6 +23,7 @@ export class MyPaymentsComponent {
   ) {}
 
   public displayedPaymentColumns: string[] = [
+    'info',
     'pay',
     'issued_date',
     'method',
@@ -31,7 +32,7 @@ export class MyPaymentsComponent {
     'resource',
     'payment_date',
     'payment_auth',
-    'payment_order',
+    'payment_order'
   ];
 
   getResource(resource: IBookingResource): string {

@@ -1,17 +1,49 @@
 .mat-mdc-row.clickable .mat-mdc-cell {
-    border-bottom: 1px solid transparent;
-    border-top: 1px solid transparent;
     cursor: pointer;
 }
+
 .mat-mdc-row.clickable:hover .mat-mdc-cell {
     border-color: currentColor;
 }
-  
-.mat-column-view        { width: 5%; }
-.mat-column-pay         { width: 5%; }
-.mat-column-issued_date { width: 10%; }
-.mat-column-concept     { width: 20%; }
-.mat-column-method      { width: 10%; }
-.mat-column-amount      { width: 10%; text-align: right; }
-.mat-column-booking     { width: 10%; }
-.mat-column-code        { width: 10%; }
+
+.info th,
+.info td {
+    padding: 10px 20px 10px 0px;
+}
+
+.mat-column-info          { width: 100%; }
+.mat-column-pay           { width: 5%; }
+.mat-column-issued_date   { width: 10%; }
+.mat-column-concept       { width: 20%; }
+.mat-column-amount        { width: 10%; ; text-align: right; }
+.mat-column-method        { width: 10%; }
+.mat-column-resource      { width: 15%; }
+.mat-column-payment_date  { width: 10%; }
+.mat-column-payment_auth  { width: 10%; }
+.mat-column-payment_order { width: 10%; }
+
+@media screen and (min-width: 768px) {
+    .mat-column-info          { display: none; }
+    .mat-column-pay           { display: table-cell; }
+    .mat-column-issued_date   { display: table-cell; }
+    .mat-column-concept       { display: table-cell; }
+    .mat-column-amount        { display: table-cell; }
+    .mat-column-method        { display: table-cell; }
+    .mat-column-resource      { display: table-cell; }
+    .mat-column-payment_date  { display: table-cell; }
+    .mat-column-payment_auth  { display: table-cell; }
+    .mat-column-payment_order { display: table-cell; }
+}
+
+@media screen and (max-width: 767px) {
+    .mat-column-info          { display: table-cell; }
+    .mat-column-pay           { display: none; }
+    .mat-column-issued_date   { display: none; }
+    .mat-column-concept       { display: none; }
+    .mat-column-amount        { display: none; }
+    .mat-column-method        { display: none; }
+    .mat-column-resource      { display: none; }
+    .mat-column-payment_date  { display: none; }
+    .mat-column-payment_auth  { display: none; }
+    .mat-column-payment_order { display: none; }
+}

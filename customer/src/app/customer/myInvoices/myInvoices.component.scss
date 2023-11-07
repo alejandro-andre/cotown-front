@@ -1,16 +1,40 @@
 .mat-mdc-row.clickable .mat-mdc-cell {
-    border-bottom: 1px solid transparent;
-    border-top: 1px solid transparent;
     cursor: pointer;
 }
+
 .mat-mdc-row.clickable:hover .mat-mdc-cell {
     border-color: currentColor;
 }
-  
-.mat-column-view       { width: 5%; }
-.mat-column-pay        { width: 5%; }
-.mat-column-issued_date { width: 15%; }
-.mat-column-concept    { width: 25%; }
-.mat-column-amount     { width: 10%; text-align: right; }
-.mat-column-booking    { width: 10%; }
-.mat-column-code       { width: 10%; }
+
+.info th,
+.info td {
+    padding: 10px 20px 10px 0px;
+}
+
+.mat-column-info          { width: 100%; }
+.mat-column-view          { width: 5%; }
+.mat-column-issued_date   { width: 15%; }
+.mat-column-concept       { width: 25%; }
+.mat-column-amount        { width: 10%; ; text-align: right; }
+.mat-column-resource      { width: 10%; }
+.mat-column-code          { width: 10%; }
+
+@media screen and (min-width: 768px) {
+    .mat-column-info          { display: none; }
+    .mat-column-view          { display: table-cell; }
+    .mat-column-issued_date   { display: table-cell; }
+    .mat-column-concept       { display: table-cell; }
+    .mat-column-amount        { display: table-cell; }
+    .mat-column-resource      { display: table-cell; }
+    .mat-column-code          { display: table-cell; }
+}
+
+@media screen and (max-width: 767px) {
+    .mat-column-info          { display: table-cell; }
+    .mat-column-view          { display: none; }
+    .mat-column-issued_date   { display: none; }
+    .mat-column-concept       { display: none; }
+    .mat-column-amount        { display: none; }
+    .mat-column-resource      { display: none; }
+    .mat-column-code          { display: none; }
+}

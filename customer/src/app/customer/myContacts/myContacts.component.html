@@ -9,7 +9,23 @@
 <ng-template #thenBlock>
 
   <div style="border: 1px solid lightgray; overflow-x: auto;">
-      <table mat-table [dataSource]="contacts" class="table">
+    <table mat-table [dataSource]="contacts" class="table">
+      <ng-container matColumnDef="info">
+        <th mat-header-cell *matHeaderCellDef>{{ 'info' | translate }}</th>
+        <td mat-cell *matCellDef="let element">
+          <tr class="info"><th colspan="2">{{ element.contact_type.name }}</th></tr>
+          <tr class="info"><th>{{ 'name' | translate }}</th><td>{{ element.name || '-' }}</td></tr>
+          <tr class="info"><th>{{ 'email' | translate }}</th><td>{{ element.email || '-' }}</td></tr>
+          <tr class="info"><th>{{ 'phones' | translate }}</th><td>{{ element.phones || '-' }}</td></tr>
+          <tr class="info">
+            <th>
+            <span>
+              <button mat-raised-button (click)="deleteContact(element)">{{ 'delete' | translate }}</button>
+            </span>
+            </th>
+          </tr>
+        </td>
+      </ng-container>
       <ng-container matColumnDef="contact_type">
         <th mat-header-cell *matHeaderCellDef>{{ 'contact_type' | translate }}</th>
         <td mat-cell *matCellDef="let element"><span>{{ element.contact_type.name }}</span></td>

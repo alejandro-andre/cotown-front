@@ -3,3 +3,26 @@
 .mat-column-email        { width: 25%; }
 .mat-column-phones       { width: 25%; }
 .mat-column-delete       { width: 5%; }
+
+.info th,
+.info td {
+    padding: 10px 20px 10px 0px;
+}
+
+@media screen and (min-width: 768px) {
+    .mat-column-info         { display: none; }
+    .mat-column-contact_type { display: table-cell; }
+    .mat-column-name         { display: table-cell; }
+    .mat-column-email        { display: table-cell; }
+    .mat-column-phones       { display: table-cell; }
+    .mat-column-delete       { display: table-cell; }
+}
+
+@media screen and (max-width: 767px) {
+    .mat-column-info         { display: table-cell; }
+    .mat-column-contact_type { display: none; }
+    .mat-column-name         { display: none; }
+    .mat-column-email        { display: none; }
+    .mat-column-phones       { display: none; }
+    .mat-column-delete       { display: none; }
+}

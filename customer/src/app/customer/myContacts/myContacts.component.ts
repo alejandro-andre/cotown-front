@@ -18,6 +18,7 @@ export class MyContactsComponent {
   public isLoading = false;
 
   public displayedColumns: string[] = [
+    "info",
     "contact_type",
     "name",
     "email",

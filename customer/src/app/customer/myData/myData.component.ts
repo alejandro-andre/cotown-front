@@ -156,8 +156,8 @@ export class MyDataComponent implements OnInit {
   // Return origin country of current customer
   get origin(): string {
     if (this.isSpanish)
-      return this.lookupService.languages.find((elem) => elem.id === this.customer.country_origin_id)?.name || '';
-    return this.lookupService.languages.find((elem) => elem.id === this.customer.country_origin_id)?.name_en || '';
+      return this.lookupService.countries.find((elem) => elem.id === this.customer.country_origin_id)?.name || '';
+    return this.lookupService.countries.find((elem) => elem.id === this.customer.country_origin_id)?.name_en || '';
   }
 
   // Return school name of current customer

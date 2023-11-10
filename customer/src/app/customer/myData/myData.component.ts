@@ -46,7 +46,7 @@ export class MyDataComponent implements OnInit {
   public addressControl = new FormControl('', [ Validators.required ]);
   public zipControl = new FormControl('', [ Validators.required ]);
   public cityControl = new FormControl('', [ Validators.required ]);
-  public provinceControl = new FormControl('', [ Validators.required ]);
+  public provinceControl = new FormControl();
   public country_idControl = new FormControl('', [ Validators.required ]);
   public payment_method_idControl = new FormControl();
   public birth_dateControl = new FormControl<any>('', [ Validators.required, this.validateAge ]);
@@ -251,7 +251,6 @@ export class MyDataComponent implements OnInit {
         !this.customer.address ||
         !this.customer.zip ||
         !this.customer.city ||
-        !this.customer.province ||
         !this.customer.country_id ||
         !this.customer.birth_date)
       return false;

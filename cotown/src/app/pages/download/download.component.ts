@@ -26,10 +26,10 @@ export class DownloadComponent {
   // Form controls
   public bookingIdControl        = new FormControl<any>('', [ Validators.required ]);
 
-  public providerControl         = new FormControl(0);
+  public providerControl         = new FormControl(-1);
   public billDateControl         = new FormControl<any>('', [ Validators.required ]);
 
-  public providerDownloadControl = new FormControl(0);
+  public providerDownloadControl = new FormControl(-1);
   public billDownloadDateControl = new FormControl<any>('', [ Validators.required ]);
 
   public paymentDateControl = new FormGroup({
@@ -76,7 +76,8 @@ export class DownloadComponent {
       if (this.billDateControl.value === '')
         return true;
     } else if (data == "pagos") {
-        if (!this.paymentDateControl.value.start || !this.paymentDateControl.value.end)
+        if (!this.paymentDateControl.value.start || !this.paymentDateControl.value.end || 
+            this.providerControl.value == null || this.providerControl.value < 0)
           return true
     } else if (data == "downloadcontratos") {
       if (!this.contractDateControl.value.start || !this.contractDateControl.value.end)

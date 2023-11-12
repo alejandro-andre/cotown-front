@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IBooking, IContact } from '../constants/Interface';
 import { Customer } from '../models/Customer.model';
-import { getAge } from '../utils/date.util';
 
 @Injectable({
   providedIn: 'root'

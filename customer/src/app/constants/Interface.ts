@@ -189,6 +189,9 @@ export interface IPayment {
   concept: string,
   issued_date: string,
   pay: string,
+  payment_auth: string,
+  payment_date: string,
+  payment_type: string,
   payment_method_id: number | null,
   booking: IBookingResource
 }

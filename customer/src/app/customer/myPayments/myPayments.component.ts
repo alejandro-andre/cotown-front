@@ -58,11 +58,20 @@ export class MyPaymentsComponent {
   }
 
   showPayButton(elem: any): boolean {
+    // Already paid
     if (elem.payment_date !== null || elem.payment_date === '') 
       return false;
+
+    // No Card/POS
     const method = this.lookupService.paymentMethods.find((e) => e.id === elem.payment_method_id);
     if (!method?.gateway )
       return false;
+
+    // Is there a booking fee payment pending?
+    if (this.customerService.customer?.payments.find((e) => { e.id != elem.id && e.payment_type == 'booking' && e.payment_date == null }))
+      return false;
+
+    // Show pay button
     return true;
   }
 

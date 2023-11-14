@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 
 
 @Component({
-  selector: 'app-contacts',
-  templateUrl: './paymentOk.component.html',
-  styleUrls: ['./paymentOk.component.scss']
+  selector: 'app-payment-ok',
+  templateUrl: './paymentOK.component.html',
+  styleUrls: ['./paymentOK.component.scss']
 })
 
-export class PaymentOkComponent {
+export class PaymentOKComponent {
   constructor(
   ) {}
 

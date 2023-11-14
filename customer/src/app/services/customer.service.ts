@@ -24,7 +24,6 @@ export class CustomerService {
         !this.customer.address ||
         !this.customer.zip ||
         !this.customer.city ||
-        !this.customer.province ||
         !this.customer.country_id)
       return false;
     return true;

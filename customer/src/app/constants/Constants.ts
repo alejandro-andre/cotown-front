@@ -22,6 +22,7 @@ export class Constants {
   ];
 
   // Navigation
+  public static NAV_HOME:      INav = { name: 'home',         url: 'home' };
   public static NAV_DATA:      INav = { name: 'my_data',      url: 'data' };
   public static NAV_CONTACTS:  INav = { name: 'my_contacts',  url: 'contact' };
   public static NAV_DOCUMENTS: INav = { name: 'my_documents', url: 'documents' };

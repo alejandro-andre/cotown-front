@@ -27,6 +27,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 
 // Components
 import { LayoutComponent } from './layout/layout.component';
+import { BaseComponent } from './base/base.component';
 import { NavComponent } from './nav/nav.component';
 import { MyDataComponent } from './myData/myData.component';
 import { MyContactsComponent } from './myContacts/myContacts.component';
@@ -38,11 +39,14 @@ import { MyInvoicesComponent } from './myInvoices/myInvoices.component';
 import { MyPaymentsComponent } from './myPayments/myPayments.component';
 import { InvoicePayComponent } from './myPayments/invoicePay/invoicePay.component';
 import { PdfsComponent } from './pdfs/pdfs.component';
-import { PaymentOkComponent } from './paymentOk/paymentOk.component';
-import { PaymentkOComponent } from './paymentKO/paymentkO.component'
+import { HomeComponent } from './home/home.component';
+import { PaymentOKComponent } from './paymentOK/paymentOK.component';
+import { PaymentKOComponent } from './paymentKO/paymentKO.component';
 
 // Routing
 import { CustomerRoutingModule } from './customer-routing.module';
+
+// Other
 import { SpinnerControlComponent } from './spinner/spinner-control.component';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, MatNativeDateModule } from '@angular/material/core';
 import { CustomDateAdapter } from '../utils/date-adapter';
@@ -59,6 +63,8 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     NavComponent,
     LayoutComponent,
+    BaseComponent,
+    HomeComponent,
     MyDataComponent,
     MyContactsComponent,
     NewContactComponent,
@@ -69,8 +75,8 @@ export function createTranslateLoader(http: HttpClient) {
     MyPaymentsComponent,
     InvoicePayComponent,
     PdfsComponent,
-    PaymentOkComponent,
-    PaymentkOComponent,
+    PaymentOKComponent,
+    PaymentKOComponent,
     SpinnerControlComponent
   ],
   imports: [

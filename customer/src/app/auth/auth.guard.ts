@@ -11,12 +11,12 @@ export class AuthGuard extends KeycloakAuthGuard {
     super(router, keycloakAngular);
   }
 
-  public async isAccessAllowed(route: ActivatedRouteSnapshot,state: RouterStateSnapshot): Promise<boolean | UrlTree> {
+  public async isAccessAllowed(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean | UrlTree> {
 
     // Force the user to log in if currently unauthenticated.
     if (!this.authenticated) {
       await this.keycloakAngular.login({
-        redirectUri: window.location.origin + state.url,
+        redirectUri: window.location.origin + '/customer/#' + state.url,
       });
     }
 

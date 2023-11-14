@@ -1,8 +1,10 @@
 <div>
+
   <ng-container *ngFor="let path of navUrls">
   <hr *ngIf="path.name=='pdfs'">
   <li (click)="onSelect(path.url)" [ngClass]="{'active': selected === path.url }">
     {{ 'nav.' + path.name | translate }}
   </li>
   </ng-container>
+
 </div>

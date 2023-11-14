@@ -10,7 +10,7 @@ import { CustomerService } from 'src/app/services/customer.service';
 import { LookupService } from 'src/app/services/lookup.service';
 
 // Models
-import { ICustomer, IDocFile, IDocument } from 'src/app/constants/Interface';
+import { ICustomer } from 'src/app/constants/Interface';
 import { Constants } from 'src/app/constants/Constants';
 
 // Queries

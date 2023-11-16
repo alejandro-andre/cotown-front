@@ -561,21 +561,33 @@ export class PlanningComponent {
       let bar: TimeChartBar = new TimeChartBar();
       bar.datefrom = new Date(b.Booking_date_from);
       bar.dateto = new Date(b.Booking_date_to);
-      if (b.Booking_status === Constants.availableStatus) { // Resource is available
+
+      // Initial status
+      bar.lock = false;
+      bar.available = true;
+
+      // Resource is available (selecting candidates)
+      if (b.Booking_status === Constants.availableStatus) { 
         bar.lock = true;
         bar.color = "rgba(100, 255, 100, 0.3)";
         bar.type = Constants.availableStatus;
-      } else if (b.Booking_lock && !b.Booking_code) { // Resource lock
+
+      // Resource not available (Capex, Out...)
+      } else if (b.Booking_lock && !b.Booking_code) { 
         bar.lock = true;
+        bar.available = false;
         bar.code = b.Booking_status;
         bar.color = Constants.resourceNotAvailable.color
         bar.type = Constants.resourceNotAvailable.type;
-      } else if (b.Booking_lock) { // Locking booking
+      
+      // Resource locked by a booking
+      } else if (b.Booking_lock) {
         bar.lock = true;
         bar.color = Constants.blockedResource.color;
         bar.type = Constants.blockedResource.type;
-      } else { // Real booking
-        bar.lock = false;
+
+      // Real booking        
+      } else { 
         bar.code = b.Booking_code;
         bar.color = Constants.colors[b.Booking_status];
         if (b.Booking_check_in)
@@ -630,16 +642,17 @@ export class PlanningComponent {
 
         // Split bookings and locks
         const bookings: TimeChartBar[] = row.bars.filter(bar => !bar.lock);
-        const locks: TimeChartBar[] = row.bars.filter(bar => bar.lock);
+        const locks: TimeChartBar[] = row.bars.filter(bar => (bar.lock && bar.available));
+        const noavails: TimeChartBar[] = row.bars.filter(bar => (bar.lock && !bar.available));
 
         // Consolidte locks and add bookings
         row.bars = [];
-        if (locks.length > 1)
-          row.bars = this.consolidateIntervals(locks);
-        else if (locks.length > 0)
-          row.bars = locks;
         if (bookings.length > 0)
           row.bars.push(...bookings);
+        if (locks.length > 0)
+          row.bars.push(...this.consolidateIntervals(locks));
+        if (noavails.length > 0)
+          row.bars.push(...this.consolidateIntervals(noavails));
       }
     }
     this.spinnerActive = false;

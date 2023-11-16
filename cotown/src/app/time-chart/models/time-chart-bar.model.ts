@@ -4,6 +4,7 @@ export class TimeChartBar {
     code: string = '';
     color: string = '';
     lock: boolean = false;
+    available: boolean = true;
     datefrom: Date = new Date();
     dateto: Date = new Date();
     checkIn: Date | null = null;

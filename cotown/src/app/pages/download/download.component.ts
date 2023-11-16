@@ -25,12 +25,15 @@ export class DownloadComponent {
 
   // Form controls
   public bookingIdControl        = new FormControl<any>('', [ Validators.required ]);
-
   public providerControl         = new FormControl(-1);
   public billDateControl         = new FormControl<any>('', [ Validators.required ]);
-
   public providerDownloadControl = new FormControl(-1);
   public billDownloadDateControl = new FormControl<any>('', [ Validators.required ]);
+
+  public incomeDateControl = new FormGroup({
+    start: new FormControl<Date | null>(null, [ Validators.required ]),
+    end: new FormControl<Date | null>(null, [ Validators.required ]),
+  });
 
   public paymentDateControl = new FormGroup({
     start: new FormControl<Date | null>(null, [ Validators.required ]),
@@ -75,6 +78,10 @@ export class DownloadComponent {
     } else if (data == "facturas") {
       if (this.billDateControl.value === '')
         return true;
+    } else if (data == "ingresos") {
+        if (!this.incomeDateControl.value.start || !this.incomeDateControl.value.end || 
+            this.providerControl.value == null || this.providerControl.value < 0)
+          return true
     } else if (data == "pagos") {
         if (!this.paymentDateControl.value.start || !this.paymentDateControl.value.end || 
             this.providerControl.value == null || this.providerControl.value < 0)
@@ -137,6 +144,19 @@ export class DownloadComponent {
       const prov_from = this.providerControl.value;
       const prov_to = prov_from || 99999; 
       l = environment.backURL + '/export/pagos' 
+        + '?fdesde=' + from.format('YYYY-MM-DD') 
+        + '&fhasta=' + to.format('YYYY-MM-DD') 
+        + '&pdesde=' + prov_from
+        + '&phasta=' + prov_to
+        + '&access_token=' + this.apolloApi.token;
+
+    // Pagos
+    } else if (data == "ingresos") {
+      const from = moment(this.paymentDateControl.value.start);
+      const to = moment(this.paymentDateControl.value.end).add(1,'d');
+      const prov_from = this.providerControl.value;
+      const prov_to = prov_from || 99999; 
+      l = environment.backURL + '/export/ingresos' 
         + '?fdesde=' + from.format('YYYY-MM-DD') 
         + '&fhasta=' + to.format('YYYY-MM-DD') 
         + '&pdesde=' + prov_from

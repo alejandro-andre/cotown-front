@@ -11,7 +11,7 @@
 
 <!-- Propietarios -->
 <div class="pure-g row">
-  <div class="pure-u-1-8 execute">
+  <div class="pure-u-1-8 execute" *ngIf="providers">
     <button mat-raised-button color="primary" (click)="execute('propietarios')">Ejecutar</button>
   </div>
   <div class="pure-u-7-8 name"><span>Propietarios</span></div>
@@ -19,7 +19,7 @@
 
 <!-- Edificios -->
 <div class="pure-g row">
-  <div class="pure-u-1-8 execute">
+  <div class="pure-u-1-8 execute" *ngIf="providers">
     <button mat-raised-button color="primary" (click)="execute('edificios')">Ejecutar</button>
   </div>
   <div class="pure-u-7-8 name"><span>Edificios</span></div>
@@ -27,7 +27,7 @@
 
 <!-- Recursos -->
 <div class="pure-g row">
-  <div class="pure-u-1-8 execute">
+  <div class="pure-u-1-8 execute" *ngIf="providers">
     <button mat-raised-button color="primary" (click)="execute('recursos')">Ejecutar</button>
   </div>
   <div class="pure-u-7-8 name"><span>Recursos, precios y tarifas</span></div>
@@ -76,7 +76,7 @@
 </div>
 
 <!-- Reservas -->
-<div class="pure-g row">
+<div class="pure-g row" *ngIf="providers">
   <div class="pure-u-1-8 execute">
     <button mat-raised-button color="primary" [disabled]="check('reservas')"
             (click)="execute('reservas')">Ejecutar</button>
@@ -96,12 +96,12 @@
 </div>
 
 <!-- Pagos -->
-<div class="pure-g row">
+<div class="pure-g row" *ngIf="providers">
   <div class="pure-u-1-8 execute">
     <button mat-raised-button color="primary" [disabled]="check('pagos')"
             (click)="execute('pagos')">Ejecutar</button>
   </div>
-  <div class="pure-u-1-4 name"><span>Ingresos</span></div>
+  <div class="pure-u-1-4 name"><span>Pagos</span></div>
   <div class="pure-u-6-24">
     <mat-form-field>
       <mat-label>Rango de fechas</mat-label>
@@ -111,6 +111,35 @@
       </mat-date-range-input>
       <mat-datepicker-toggle matIconSuffix [for]="paymentpicker"></mat-datepicker-toggle>
       <mat-date-range-picker #paymentpicker></mat-date-range-picker>
+  </mat-form-field>
+  </div>
+  <div class="pure-u-10-24">
+    <mat-form-field>
+      <mat-label>Emisor</mat-label>
+      <mat-select [formControl]="providerControl">
+        <mat-option *ngIf="providers && providers.length > 1" [value]="0">Todos</mat-option>
+        <mat-option *ngFor="let c of providers" [value]="c.id">{{ c.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
+<!-- Ingresos -->
+<div class="pure-g row" *ngIf="providers && providers.length > 1">
+  <div class="pure-u-1-8 execute">
+    <button mat-raised-button color="primary" [disabled]="check('ingresos')"
+            (click)="execute('ingresos')">Ejecutar</button>
+  </div>
+  <div class="pure-u-1-4 name"><span>Ingresos</span></div>
+  <div class="pure-u-6-24">
+    <mat-form-field>
+      <mat-label>Rango de fechas</mat-label>
+      <mat-date-range-input [rangePicker]="incomepicker" [formGroup]="incomeDateControl">
+      <input matStartDate formControlName="start" placeholder="Desde">
+      <input matEndDate formControlName="end" placeholder="Hasta">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="incomepicker"></mat-datepicker-toggle>
+      <mat-date-range-picker #incomepicker></mat-date-range-picker>
   </mat-form-field>
   </div>
   <div class="pure-u-10-24">

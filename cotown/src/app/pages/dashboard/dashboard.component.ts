@@ -33,6 +33,7 @@ export class DashboardComponent implements OnInit {
     { key:"ok",                 value: "Confirmadas" },
     { key:"next",               value: "Próximas" },
     { key:"checkin",            value: "Llegada" },
+    { key:"nextout",            value: "Próximas" },
     { key:"checkout",           value: "Salida" },
     { key:"devolvergarantia",   value: "Devolver garantía" },
   ];
@@ -90,6 +91,10 @@ export class DashboardComponent implements OnInit {
     // Next checkins
     if (this.status == 'next') 
       return environment.backURL + '/export/dashboardnext?access_token=' + this.apolloApi.token;
+
+    // Next checkouts
+    if (this.status == 'nextout') 
+      return environment.backURL + '/export/dashboardnextout?access_token=' + this.apolloApi.token;
 
     // Confirmed bookings
     if (this.status == 'ok') 

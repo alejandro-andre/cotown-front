@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit {
   ];
 
   public headerFields: { key: string, value: string, sort: string }[] = [
+    { key:"id",        value:"#",           sort:"" },
     { key:"Name",      value:"Residente",   sort:"" },
     { key:"Status",    value:"Estado",      sort:"" },
     { key:"Date_from", value:"Fecha desde", sort:"" }, 

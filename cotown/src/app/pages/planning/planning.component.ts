@@ -112,7 +112,12 @@ export class PlanningComponent {
     // Get labels
     axiosApi.getLabels(7, "es_ES", this.apolloApi.token).then((res) => { 
       this.labels = res.data;
-      this.spinnerActive  = false;
+      axiosApi.getLabels(13, "es_ES", this.apolloApi.token).then((res) => { 
+        this.labels[0].push(...res.data[0])
+        this.labels[1].push(...res.data[1])
+        console.log(this.labels);
+        this.spinnerActive  = false;
+      }); 
     }); 
 
     // Get params

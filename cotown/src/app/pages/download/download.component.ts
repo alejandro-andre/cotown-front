@@ -104,7 +104,7 @@ export class DownloadComponent {
 
     // occupancy
     if (data == "occupancy") {
-      l = environment.backURL + '/occupancy?fdesde=2023-01-01&fhasta=2024-12-31' + '&access_token=' + this.apolloApi.token;
+      l = environment.backURL + '/occupancy?fdesde=2023-10-01&fhasta=2024-12-31' + '&access_token=' + this.apolloApi.token;
     
     // Weekly report
     } else if (data == "weekly") {
@@ -150,10 +150,10 @@ export class DownloadComponent {
         + '&phasta=' + prov_to
         + '&access_token=' + this.apolloApi.token;
 
-    // Pagos
+    // Ingresos
     } else if (data == "ingresos") {
-      const from = moment(this.paymentDateControl.value.start);
-      const to = moment(this.paymentDateControl.value.end).add(1,'d');
+      const from = moment(this.incomeDateControl.value.start);
+      const to = moment(this.incomeDateControl.value.end).add(1,'d');
       const prov_from = this.providerControl.value;
       const prov_to = prov_from || 99999; 
       l = environment.backURL + '/export/ingresos' 

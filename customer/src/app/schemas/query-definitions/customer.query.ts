@@ -159,7 +159,12 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
         }
       }
     }
-    payments: PaymentListViaCustomer_id {
+    payments: PaymentListViaCustomer_id (
+      orderBy: [
+        {attribute: Payment_date, direction:ASC}
+        {attribute: Payment_type, direction:ASC}
+      ]
+    ) {
       id
       payment_type: Payment_type
       payment_date: Payment_date

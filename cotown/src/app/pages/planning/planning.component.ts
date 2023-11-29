@@ -141,7 +141,9 @@ export class PlanningComponent {
 
   }
 
-  getLabel(code: string) { 
+  getLabel(code: string) {
+    if (!this.labels)
+      return "";
     const index = this.labels[0].indexOf(code);
     if (index === -1) { 
         return "";
@@ -647,11 +649,11 @@ export class PlanningComponent {
 
         // Split bookings and locks
         const bookings: TimeChartBar[] = row.bars.filter(bar => !bar.lock);
-        const locks: TimeChartBar[] = row.bars.filter(bar => (bar.lock && bar.available));
+        const locks: TimeChartBar[] = row.bars.filter(bar => (bar.lock && bar.available && bar.type != Constants.availableStatus));
         const noavails: TimeChartBar[] = row.bars.filter(bar => (bar.lock && !bar.available));
 
         // Consolidte locks and add bookings
-        row.bars = [];
+        row.bars = row.bars.filter(bar => bar.type == Constants.availableStatus);
         if (bookings.length > 0)
           row.bars.push(...bookings);
         if (locks.length > 0)

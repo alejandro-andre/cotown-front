@@ -115,12 +115,14 @@ export class DashboardComponent implements OnInit {
     parent.history.go(1);
   }
 
-  getLabel(code: string) { 
-      const index = this.labels[0].indexOf(code);
-      if (index === -1) { 
-          return "";
-      }
-      return this.labels[1][index];
+  getLabel(code: string) {
+    if (!this.labels)
+      return "";
+    const index = this.labels[0].indexOf(code);
+    if (index === -1) { 
+        return "";
+    }
+    return this.labels[1][index];
   }
 
   sort(key: string) { 

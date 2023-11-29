@@ -46,8 +46,9 @@ export class TimeChartControlComponent implements OnChanges {
 
     // Marker
     if (this.from != null && this.to != null) {
-      this.markerFrom = Math.floor((this.from.getTime() - this.now.getTime()) / (this.ONEDAY));
-      this.markerTo = Math.floor((this.to.getTime() - this.now.getTime()) / (this.ONEDAY));
+      const now       = Math.floor(this.now.getTime() / (this.ONEDAY));
+      this.markerFrom = Math.floor(this.from.getTime() / (this.ONEDAY)) - now;
+      this.markerTo   = 1 + Math.floor(this.to.getTime() / (this.ONEDAY)) - now;
     }
 
     // Dates

@@ -27,7 +27,7 @@
 
 <!-- Recursos -->
 <div class="pure-g row">
-  <div class="pure-u-1-8 execute" *ngIf="providers">
+  <div class="pure-u-1-8 execute"  *ngIf="providers && providers.length > 1">
     <button mat-raised-button color="primary" (click)="execute('recursos')">Ejecutar</button>
   </div>
   <div class="pure-u-7-8 name"><span>Recursos, precios y tarifas</span></div>

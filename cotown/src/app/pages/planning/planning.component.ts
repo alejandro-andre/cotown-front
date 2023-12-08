@@ -430,22 +430,28 @@ export class PlanningComponent {
     // GraphQL params
     let params = '$date: String $cityId: Int';
     let where = 'Date_to: { GE: $date }'
+    let whereplace = ''
     if (this.selectedBuildingId > 0) {
       params += ' $buildingId: Int'
       where += ' Building_id: { EQ: $buildingId }'
     }
     if (this.selectedResourceFlatTypeId != Constants.allStaticNumericValue) {
       params += ' $resourceFlatTypeId: Int'
-      where += ' Flat_type_id: { EQ: $resourceFlatTypeId }'
+      whereplace += 'Flat_type_id: { EQ: $resourceFlatTypeId }'
     }
     if (this.selectedResourcePlaceTypeId != Constants.allStaticNumericValue) {
       params += ' $resourcePlaceTypeId: Int'
-      where += ' Place_type_id: { EQ: $resourcePlaceTypeId }'
+      whereplace += 'Place_type_id: { EQ: $resourcePlaceTypeId }'
     }
     if (where != '')
-      where = '(where:{' + where + '})';
+      where = '(where: { ' + where + ' })';
+    if (whereplace != '')
+      whereplace = 'where: { ' + whereplace + ' }';
     if (params != '')  {
-      const q = 'query BookingList(' + params + ') {data:Booking_Booking_detailList' + where + BookingListQuery + '}';
+      const q = BookingListQuery
+        .replace('[[params]]', params)
+        .replace('[[where]]', where)
+        .replace('[[whereplace]]', whereplace);
       const v = {
         date: formatDate(date, 'YMD'),
         cityId: this.selectedCityId,
@@ -453,6 +459,8 @@ export class PlanningComponent {
         resourceFlatTypeId: this.selectedResourceFlatTypeId,
         resourcePlaceTypeId: this.selectedResourcePlaceTypeId
       };
+      console.log(q);
+      console.log(v);
       this.getBookings(q, v);
     }
   }

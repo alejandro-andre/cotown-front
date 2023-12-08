@@ -1,64 +1,77 @@
-export const BookingListQuery = `{
-  booking_id: Booking_id
-  status: Status
-  date_from: Date_from
-  date_to: Date_to
-  lock: Lock
-  building: BuildingViaBuilding_id (
-    joinType: INNER
-    where: { Active: { EQ: true } }
-  ) {
-    id
-    code: Code
-    DistrictViaDistrict_id (joinType: INNER where: { Location_id: { EQ: $cityId } } ) { id }
-  }
-  flat_type: Resource_flat_typeViaFlat_type_id {
-      code: Code
-      name: Name,
+export const BookingListQuery = `
+query BookingList([[params]]) {
+  data: Booking_Booking_detailList[[where]] {
+    booking_id: Booking_id
+    booking_group_id: Booking_group_id
+    availability_id: Availability_id
+    status: Status
+    date_from: Date_from
+    date_to: Date_to
+    lock: Lock
+    building: BuildingViaBuilding_id (
+      joinType: INNER
+      where: { Active: { EQ: true } }
+    ) {
       id
-  }
-  place_type: Resource_place_typeViaPlace_type_id {
       code: Code
-      name: Name
-  }
-  resource: ResourceViaResource_id{
-    id
-    code: Code
-  }
-  booking: BookingViaBooking_id {
-    check_in: Check_in
-    check_out: Check_out
-    comments: Comments
-    customer: CustomerViaCustomer_id {
-      name: Name
-      birth_date: Birth_date
-      gender: GenderViaGender_id {
+      DistrictViaDistrict_id (
+        joinType: INNER 
+        where: { Location_id: { EQ: $cityId } } 
+      ) { 
+        id 
+      }
+    }
+    resource: ResourceViaResource_id(
+      joinType: INNER 
+      [[whereplace]] 
+    ) {
+      id
+      code: Code
+      flat_type: Resource_flat_typeViaFlat_type_id {
         code: Code
-        name: Name
+        name: Name,
+        id
       }
-      email: Email
-      phones: Phones
-      country: CountryViaCountry_id {
-        name: Name
-      }
-      nationality: CountryViaNationality_id {
-        name: Name
+      place_type: Resource_place_typeViaPlace_type_id {
+          code: Code
+          name: Name
       }
     }
-  }
-  group: Booking_groupViaBooking_group_id {
-    id
-    customer: CustomerViaPayer_id {
-      name: Name
+    booking: BookingViaBooking_id {
+      check_in: Check_in
+      check_out: Check_out
+      comments: Comments
+      customer: CustomerViaCustomer_id {
+        name: Name
+        birth_date: Birth_date
+        gender: GenderViaGender_id {
+          code: Code
+          name: Name
+        }
+        email: Email
+        phones: Phones
+        country: CountryViaCountry_id {
+          name: Name
+        }
+        nationality: CountryViaNationality_id {
+          name: Name
+        }
+      }
+    }
+    group: Booking_groupViaBooking_group_id {
+      id
+      customer: CustomerViaPayer_id {
+        name: Name
+        email: Email
+        phones: Phones
+      }
+    }
+    rooms: Booking_roomingViaBooking_rooming_id {
+      id
       email: Email
+      name: Name,
       phones: Phones
     }
-  }
-  rooms: Booking_roomingViaBooking_rooming_id {
-    id
-    email: Email
-    name: Name,
-    phones: Phones
   }
 }`;
 

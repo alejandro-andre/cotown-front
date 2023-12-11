@@ -64,11 +64,11 @@ export class MyBookingDetailComponent {
   
   // Tables
   public displayedColumnsOptions: string[] = [
-      'accept',
-      'building',
-      'resource_type',
-      'flat_type',
-      'place_type',
+    'accept',
+    'building',
+    'resource_type',
+    'flat_type',
+    'place_type',
   ];
   public displayedColumnsPrices: string[] = [
     'rent_date',
@@ -96,9 +96,8 @@ export class MyBookingDetailComponent {
     private apollo: ApolloQueryApi,
     private modalService: ModalService
   ) {
-
-    this.enableSave();
     // Look for booking
+    this.enableSave();
     this.isLoading = true;
     this.activeRoute.params.subscribe((res) => {
       this.isLoading = false;
@@ -176,6 +175,12 @@ export class MyBookingDetailComponent {
     return this.booking.payer?.name || '---';
   }
 
+  get check_in_option(): string {
+    if (this.isSpanish)
+      return this.lookupService.checkinOptions.find((elem) => elem.id === this.booking.check_in_option_id)?.name || '';
+    return this.lookupService.checkinOptions.find((elem) => elem.id === this.booking.check_in_option_id)?.name_en || '';
+  }
+
   get options(): any {
 
     const options =  [];
@@ -199,6 +204,11 @@ export class MyBookingDetailComponent {
     return this.customerService.customer.appLang === Constants.SPANISH.id
   }
   
+  // Return array of sections with true or false value to set as readOnly or not
+  get visibility():{ [key: string]: boolean } {
+    return this.customerService.visibility;
+  }
+
   /*
    * Methods
    */
@@ -237,7 +247,7 @@ export class MyBookingDetailComponent {
     this.booking = booking;
 
     // Fill form fields
-    this.selectedOption = this.booking.check_in_id;
+    this.selectedOption = this.booking.check_in_option_id;
     this.flight = this.booking.flight !== null ? this.booking.flight : '';
     this.arrival = this.booking.arrival !== null ? this.booking.arrival : '';
 
@@ -276,6 +286,8 @@ export class MyBookingDetailComponent {
       this.contractMessage = 'sign_message';
     }
 
+    // Visibility
+    this.customerService.setBookingVisibility(this.booking);
   }
 
   // Refresh booking

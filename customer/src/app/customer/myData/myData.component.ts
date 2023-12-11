@@ -296,7 +296,7 @@ export class MyDataComponent implements OnInit {
         const val = res.data;
         this.isLoading = false;
         if (val && val.update && val.update.length) {
-          this.customerService.setvisibility();
+          this.customerService.setCustomerVisibility();
           this.isSaveEnabled = false;
         } else {
           this.modalService.openModal({title: 'Error', message: 'unknown_error', type: 'ok' });

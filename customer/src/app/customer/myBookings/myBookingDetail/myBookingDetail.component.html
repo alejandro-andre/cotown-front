@@ -324,8 +324,8 @@
           <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
             <mat-form-field>
               <mat-label>{{ 'check_in' | translate }}</mat-label>
-              <input matInput [matDatepicker]="pickerFrom" [formControl]="checkinFormControl" (dateInput)="enableSave()">
-              <mat-datepicker-toggle matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+              <input matInput [readonly]="!visibility['check_in']" [matDatepicker]="pickerFrom" [formControl]="checkinFormControl" (dateInput)="enableSave()">
+              <mat-datepicker-toggle *ngIf="visibility['check_in']" matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
               <mat-datepicker #pickerFrom></mat-datepicker>
             </mat-form-field>
             </div>
@@ -333,21 +333,25 @@
           <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
             <mat-form-field>
               <mat-label>{{ 'flight' | translate }}</mat-label>
-              <input matInput placeholder="{{ 'flight' | translate }}" [(ngModel)]="flight" (change)="enableSave()">
+              <input matInput [readonly]="!visibility['flight']" placeholder="{{ 'flight' | translate }}" [(ngModel)]="flight" (change)="enableSave()">
             </mat-form-field>
           </div>
     
           <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
             <mat-form-field>
               <mat-label>{{ 'arrival' | translate }}</mat-label>
-              <input matInput type="time" [(ngModel)]="arrival" (change)="enableSave()">
+              <input matInput type="time" [readonly]="!visibility['arrival']" [(ngModel)]="arrival" (change)="enableSave()">
           </mat-form-field>
       
           </div>
     
           <div class="pure-u-1">
-            <mat-form-field>
-              <mat-label>{{ 'check_in_option' | translate }}</mat-label>
+            <mat-form-field *ngIf="!visibility['check_in_option_id']">
+              <mat-label>{{ 'check_in_option_id' | translate }}</mat-label>
+              <input matInput readonly placeholder="{{ 'check_in_option_id' | translate }}" [ngModel]="check_in_option">
+            </mat-form-field>
+            <mat-form-field *ngIf="visibility['check_in_option_id']">
+              <mat-label>{{ 'check_in_option_id' | translate }}</mat-label>
               <mat-select [(ngModel)]="selectedOption" (selectionChange)="enableSave()" >
                 <mat-option *ngFor="let op of lookupService.checkinOptions" [value]="op.id">
                 {{ isSpanish ? op.name : op.name_en  }}

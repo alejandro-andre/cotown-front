@@ -40,6 +40,7 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       contact_type: Customer_contact_typeViaCustomer_contact_type_id {
         id
         name: Name
+        name_en: Name_en
       }
     }
     documents: Customer_docListViaCustomer_id {
@@ -79,6 +80,7 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       reason: Customer_reasonViaReason_id {
         id
         name: Name
+        name_en: Name_en
       }
       school: SchoolViaSchool_id {
         id
@@ -95,13 +97,15 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       }
       flat_type: Resource_flat_typeViaFlat_type_id {
         id
-        name: Name
         code: Code
+        name: Name
+        name_en: Name_en
       }
       place_type: Resource_place_typeViaPlace_type_id {
         id
         code: Code
         name: Name
+        name_en: Name_en
       }
       resource: ResourceViaResource_id {
         id
@@ -129,11 +133,13 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
           id
           code: Code
           name: Name
+          name_en: Name_en
         }
         place_type: Resource_place_typeViaPlace_type_id {
           id
           code: Code
           name: Name
+          name_en: Name_en
         }
       }
       price_list: Booking_priceListViaBooking_id {

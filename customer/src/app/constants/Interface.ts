@@ -163,7 +163,7 @@ export interface IBooking {
   contract_rent: IDocFile | null,
   contract_services: IDocFile | null,
   contract_signed: string | null,
-  check_in_id: number | null,
+  check_in_option_id: number | null,
   flight: string | null,
   arrival: string | null,
   price_list?: IRent[],

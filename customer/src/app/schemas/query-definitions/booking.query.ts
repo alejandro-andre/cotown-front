@@ -16,13 +16,14 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
     limit: Limit
     arrival: Arrival
     flight: Flight
-    check_in_id: Check_in_option_id
+    check_in_option_id: Check_in_option_id
     contract_rent: Contract_rent { name oid type size }
     contract_services: Contract_services { name oid type size }
     contract_signed:Contract_signed
     reason: Customer_reasonViaReason_id{
       id
       name: Name
+      name_en: Name_en
     }
     school: SchoolViaSchool_id {
       id
@@ -39,13 +40,15 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
     }
     flat_type: Resource_flat_typeViaFlat_type_id{
       id
-      name: Name
       code: Code
+      name: Name
+      name_en: Name_en
     }
     place_type: Resource_place_typeViaPlace_type_id {
       id
       code: Code
       name: Name
+      name_en: Name_en
     }
     resource: ResourceViaResource_id {
       id
@@ -81,11 +84,13 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
         id
         code: Code
         name: Name
+        name_en: Name_en
       }
       building: BuildingViaBuilding_id {
         id
         code: Code
         name: Name
+        name_en: Name_en
       }
     }
   }

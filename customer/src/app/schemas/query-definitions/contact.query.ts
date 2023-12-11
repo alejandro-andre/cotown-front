@@ -9,6 +9,7 @@ export const GET_CONTACTS_BY_CUSTOMERID =`query get($customerId: Int) {
     contact_type: Customer_contact_typeViaCustomer_contact_type_id {
       id
       name: Name
+      name_en: Name_en
     }
   }
 }`;

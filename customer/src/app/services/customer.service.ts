@@ -31,7 +31,7 @@ export class CustomerService {
 
   setCustomerData(customer: Customer): void {
     this.customer = customer;
-    this.setvisibility();
+    this.setCustomerVisibility();
   }
 
   setContacts(contacts: IContact[]): void{
@@ -52,7 +52,7 @@ export class CustomerService {
     }
   }
 
-  setvisibility(): void {
+  setCustomerVisibility(): void {
     this.readOnly = {}
     this.readOnly['name'] = (this.customer.name === '' || this.customer.name === null);
     this.readOnly['id_type_id'] = (this.customer.id_type_id === null);
@@ -76,6 +76,13 @@ export class CustomerService {
     this.readOnly['tutor_phones'] = (this.customer.tutor_phones === '' || this.customer.tutor_phones === null);
     this.readOnly['school_id'] = (this.customer.school_id === null);
     this.readOnly['bank_account'] = (this.customer.bank_account === '' || this.customer.bank_account === null);
+  }
+
+  setBookingVisibility(booking: IBooking): void {
+    this.readOnly['check_in'] = (booking.check_in === null);
+    this.readOnly['flight'] = (booking.flight === null);
+    this.readOnly['arrival'] = (booking.arrival === null);
+    this.readOnly['check_in_option_id'] = (booking.check_in_option_id === null);
   }
 
 }

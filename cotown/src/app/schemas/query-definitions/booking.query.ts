@@ -28,13 +28,16 @@ query BookingList([[params]]) {
       id
       code: Code
       flat_type: Resource_flat_typeViaFlat_type_id {
-        code: Code
-        name: Name,
         id
+        code: Code
+        name: Name
+        name_en: Name_en
       }
       place_type: Resource_place_typeViaPlace_type_id {
-          code: Code
-          name: Name
+        id
+        code: Code
+        name: Name
+        name_en: Name_en
       }
     }
     booking: BookingViaBooking_id {
@@ -47,14 +50,17 @@ query BookingList([[params]]) {
         gender: GenderViaGender_id {
           code: Code
           name: Name
+          name_en: Name_en
         }
         email: Email
         phones: Phones
         country: CountryViaCountry_id {
           name: Name
+          name_en: Name_en
         }
         nationality: CountryViaNationality_id {
           name: Name
+          name_en: Name_en
         }
       }
     }
@@ -68,8 +74,8 @@ query BookingList([[params]]) {
     }
     rooms: Booking_roomingViaBooking_rooming_id {
       id
-      email: Email
       name: Name,
+      email: Email
       phones: Phones
     }
   }

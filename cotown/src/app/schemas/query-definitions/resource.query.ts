@@ -19,13 +19,15 @@ export const ResourceListQuery = `{
   }
   place_type: Resource_place_typeViaPlace_type_id {
     id
-    name: Name
     code: Code
+    name: Name
+    name_en: Name_en
   }
   flat_type: Resource_flat_typeViaFlat_type_id {
-    id,
-    name: Name,
+    id
     code: Code
+    name: Name
+    name_en: Name_en
   }
 }
 `;
@@ -35,17 +37,19 @@ export const ResourcePlaceTypeQuery = `query ResourceType
     data: Resource_Resource_place_typeList (
       orderBy: [{attribute: Code, direction:ASC, nullsGo: FIRST}]
     ) {
-      code: Code
-      name: Name,
       id
+      code: Code
+      name: Name
+      name_en: Name_en
     }
   }`;
 
 export const ResourceFlatTypeQuery = `query ResourceFlatQuery{
   data: Resource_Resource_flat_typeList {
-    id,
-    code: Code,
+    id
+    code: Code
     name: Name
+    name_en: Name_en
   }
 
 }`;

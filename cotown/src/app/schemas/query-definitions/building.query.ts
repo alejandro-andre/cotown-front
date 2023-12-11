@@ -9,7 +9,7 @@ query BuildingList{
     id,
     location: DistrictViaDistrict_id{
         city: LocationViaLocation_id {
-            name: Name,
+            name: Name
             id
         }
     }

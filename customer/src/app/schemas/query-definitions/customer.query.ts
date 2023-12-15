@@ -159,6 +159,8 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       issued_date: Issued_date
       document: Document { name oid type size }
       booking: BookingViaBooking_id {
+        id
+        status: Status
         resource: ResourceViaResource_id {
           id
           code: Code
@@ -181,6 +183,7 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       concept: Concept
       issued_date: Issued_date
       booking: BookingViaBooking_id {
+        id
         status: Status
         resource: ResourceViaResource_id {
           id

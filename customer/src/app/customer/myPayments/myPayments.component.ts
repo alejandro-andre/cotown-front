@@ -67,9 +67,15 @@ export class MyPaymentsComponent {
     if (!method?.gateway )
       return false;
 
-    // Is there a booking fee payment pending?
-    if (this.customerService.customer?.payments.find((e) => ((e.id != elem.id) && (e.payment_type == 'booking') && (e.payment_date == null))))
+    // Is there a booking fee payment pending for the same booking?
+    if (this.customerService.customer?.payments.find((e) => (
+      (e.id != elem.id) && 
+      (e.booking.id == elem.booking.id) && 
+      (e.payment_type == 'booking') && 
+      (e.payment_date == null))
+    )) {
       return false;
+    }
 
     // Show pay button
     return true;

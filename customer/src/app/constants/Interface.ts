@@ -171,6 +171,7 @@ export interface IBooking {
 };
 
 export interface IBookingResource {
+  id: number,
   status: string,
   resource: ICode
 }

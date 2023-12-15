@@ -41,6 +41,7 @@ query BookingList([[params]]) {
       }
     }
     booking: BookingViaBooking_id {
+      id
       check_in: Check_in
       check_out: Check_out
       comments: Comments

@@ -90,7 +90,6 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
         id
         code: Code
         name: Name
-        name_en: Name_en
       }
     }
   }

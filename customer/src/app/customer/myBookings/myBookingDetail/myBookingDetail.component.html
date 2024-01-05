@@ -372,8 +372,10 @@
           <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
             <mat-form-field>
               <mat-label>{{ 'check_out' | translate }}</mat-label>
-              <input matInput [matDatepicker]="pickerTo" [formControl]="checkoutFormControl" (dateInput)="enableSave()" >
+              <input readonly matInput [matDatepicker]="pickerTo" [formControl]="checkoutFormControl" (dateInput)="enableSave()" >
+              <!--
               <mat-datepicker-toggle matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
+              -->
               <mat-datepicker #pickerTo></mat-datepicker>
             </mat-form-field>
           </div>

@@ -16,21 +16,21 @@
       <div class="group">
         <div class="pure-g">
     
-          <div class="pure-u-1 pure-u-lg-1-2">
+          <div class="pure-u-1 pure-u-lg-1-5">
             <mat-form-field>
               <mat-label>{{ 'status' | translate }}</mat-label>
               <input matInput placeholder="{{ 'status' | translate }}" [ngModel]="status">
             </mat-form-field>
           </div>
     
-          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-5">
             <mat-form-field>
               <mat-label>{{ 'request_date' | translate }}</mat-label>
               <input matInput readonly placeholder="{{'request_date' | translate}}" [value]="formatDate(booking.request_date)">
             </mat-form-field>
             </div>
     
-          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-5">
             <mat-form-field *ngIf="booking.expiry_date">
               <mat-label>{{ 'valid_until' | translate }}</mat-label>
               <input matInput readonly placeholder="{{'valid_until' | translate}}" [value]="formatDate(booking.expiry_date)">
@@ -41,21 +41,14 @@
             </mat-form-field>
           </div>
     
-          <div class="pure-u-1 pure-u-lg-1-2">
-            <mat-form-field>
-              <mat-label>{{ 'payer' | translate }}</mat-label>
-              <input matInput placeholder="{{'payer' | translate}}" [value]="payer" >
-            </mat-form-field>
-          </div>
-    
-          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-5">
             <mat-form-field>
               <mat-label>{{ 'date_from' | translate }}</mat-label>
               <input matInput readonly placeholder="{{'date_from' | translate}}" [value]="formatDate(booking.date_from)">
             </mat-form-field>
           </div>
     
-          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-5">
             <mat-form-field>
               <mat-label>{{ 'date_to' | translate }}</mat-label>
               <input matInput readonly placeholder="{{'date_to' | translate}}" [value]="formatDate(booking.date_to)">

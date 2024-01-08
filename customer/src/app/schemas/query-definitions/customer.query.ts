@@ -91,10 +91,6 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
         name: Name
         code: Code
       }
-      payer: CustomerViaPayer_id {
-        id
-        name: Name
-      }
       flat_type: Resource_flat_typeViaFlat_type_id {
         id
         code: Code

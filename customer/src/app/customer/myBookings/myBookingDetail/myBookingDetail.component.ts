@@ -171,10 +171,6 @@ export class MyBookingDetailComponent {
     return this.booking.school?.name || '';
   }
 
-  get payer(): string {
-    return this.booking.payer?.name || '---';
-  }
-
   get check_in_option(): string {
     if (this.isSpanish)
       return this.lookupService.checkinOptions.find((elem) => elem.id === this.booking.check_in_option_id)?.name || '';

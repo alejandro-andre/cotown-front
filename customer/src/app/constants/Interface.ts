@@ -141,7 +141,6 @@ export interface IRent extends IBase {
 export interface IBooking {
   id: number,
   status: string,
-  payer: IBase,
   date_from: string,
   date_to: string,
   request_date: string,

@@ -65,20 +65,6 @@ query BookingList([[params]]) {
         }
       }
     }
-    group: Booking_groupViaBooking_group_id {
-      id
-      customer: CustomerViaPayer_id {
-        name: Name
-        email: Email
-        phones: Phones
-      }
-    }
-    rooms: Booking_roomingViaBooking_rooming_id {
-      id
-      name: Name,
-      email: Email
-      phones: Phones
-    }
   }
 }`;
 

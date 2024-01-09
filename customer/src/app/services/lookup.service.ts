@@ -158,8 +158,13 @@ export class LookupService {
     this.apolloApi.getData(STATUS_QUERY).subscribe((res) => {
       const value = res.data;
       for (let i = 0; i < value.data[0].labels.length; i++) {
-        this.status[i].name = value.data[0].labels[i],
-        this.status[i].name_en = value.data[1].labels[i]
+        if (value.data[0].locale == "es_ES") {
+          this.status[i].name = value.data[0].labels[i],
+          this.status[i].name_en = value.data[1].labels[i]
+        } else {
+          this.status[i].name = value.data[1].labels[i],
+          this.status[i].name_en = value.data[0].labels[i]
+        }
       }
     });
   }
@@ -172,8 +177,13 @@ export class LookupService {
     this.apolloApi.getData(RESOURCE_TYPE_QUERY).subscribe((res) => {
       const value = res.data;
       for (let i = 0; i < value.data[0].labels.length; i++) {
-        this.resourceTypes[i].name = value.data[0].labels[i],
-        this.resourceTypes[i].name_en = value.data[1].labels[i]
+        if (value.data[0].locale == "es_ES") {
+          this.resourceTypes[i].name = value.data[0].labels[i],
+          this.resourceTypes[i].name_en = value.data[1].labels[i]
+        } else {
+          this.resourceTypes[i].name = value.data[1].labels[i],
+          this.resourceTypes[i].name_en = value.data[0].labels[i]
+        }
       }
     });
   }

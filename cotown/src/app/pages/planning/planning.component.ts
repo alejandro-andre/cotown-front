@@ -115,7 +115,6 @@ export class PlanningComponent {
       axiosApi.getLabels(13, "es_ES", this.apolloApi.token).then((res) => { 
         this.labels[0].push(...res.data[0])
         this.labels[1].push(...res.data[1])
-        console.log(this.labels);
         this.spinnerActive  = false;
       }); 
     }); 
@@ -459,8 +458,6 @@ export class PlanningComponent {
         resourceFlatTypeId: this.selectedResourceFlatTypeId,
         resourcePlaceTypeId: this.selectedResourcePlaceTypeId
       };
-      console.log(q);
-      console.log(v);
       this.getBookings(q, v);
     }
   }

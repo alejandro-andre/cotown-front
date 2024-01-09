@@ -385,7 +385,18 @@ export class MyBookingDetailComponent {
     //return ['solicitud','solicitudpagada','alternativas','alternativaspagada','pendientepago'].includes(this.booking.status)
     return ['solicitud','alternativas','pendientepago'].includes(this.booking.status)
   }
-  
+
+  // Stay certificate
+  certificate () {
+    this.isLoading = true;
+    const url = `cert/${this.booking.id}`;
+    this.axiosApi.getFileFromUrl(url).then((res) => {
+      const fileURL = URL.createObjectURL(res.data);
+      this.isLoading = false;
+      window.open(fileURL, '_blank');
+    });
+  }
+
   // Cancel booking
   discard () {
 

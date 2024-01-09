@@ -45,6 +45,12 @@ export class AxiosApi {
     return airflowsInstance.get(url, { responseType: 'blob' });
   }
 
+  getFileFromUrl(url: string) {
+    const token = this.apollo.token;
+    url += `?access_token=${token}`;
+    return backendInstance.get(url, { responseType: 'blob' });
+  }
+
   getPdf(id: number, type: string) {
     const token = this.apollo.token;
     const url = `wopi/files/Booking/Booking_doc/${id}/${type}/contents?access_token=${token}`;

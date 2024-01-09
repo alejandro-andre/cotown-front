@@ -218,8 +218,15 @@
               </mat-form-field>
             </div>
       
+            <div class="pure-u-1">
+              <button mat-raised-button (click)="certificate()" color="secondary" style="margin: 0 20px 20px 0;">
+                {{ 'certificate' | translate }}
+              </button>
+            </div>
+  
           </div>
         </div>
+
         <div style="border: 1px solid lightgray; overflow-x: auto;">
           <table mat-table *ngIf="booking.price_list && booking.price_list.length" 
                   [dataSource]="booking.price_list" class="table">
@@ -252,7 +259,7 @@
       <!-- Contracts -->
       <div *ngIf="contractsRendered">
     
-        <h1>{{ 'contracts' | translate }}</h1>
+        <h2>{{ 'contracts' | translate }}</h2>
         <h3 *ngIf="contractsSigned === null">{{ contractMessage | translate }}</h3>
         <h3 *ngIf="contractsSigned !== null">{{ contractMessage | translate: { value: formatedDate } }}</h3>
         <div class="group">

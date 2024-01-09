@@ -89,8 +89,8 @@
           <mat-label>{{ 'prefix' | translate }}</mat-label>
           <mat-select [(ngModel)]="phone.prefix">
             <mat-option 
-              *ngFor="let c of lookupService.countries" 
-              [value]="c.prefix">{{ c.prefix }} {{ c.name }}
+              *ngFor="let c of lookupService.prefixes" 
+              [value]="c">{{ c }}
             </mat-option>
           </mat-select>
         </mat-form-field>

@@ -73,23 +73,22 @@ export class MyDataComponent implements OnInit {
   // On init
   ngOnInit() {
     this.changeLang();
+    
+    // Birth date
     if (this.customerService.customer.birth_date) {
-
-      // Birth date
       const date = new Date(this.customerService.customer.birth_date)
       this.birth_dateControl.setValue(date);
-
-      // Phone
-      const regex = /(\+\w+)\s(.+)/; 
-      const matches = this.customerService.customer.phones.match(regex);
-      if (matches && matches.length === 3) {
-        this.phone.prefix = matches[1];
-        this.phone.number = matches[2];
-      } else {
-        this.phone.number = this.customerService.customer.phones;
-      }
-      
     }
+
+    // Phone
+    const regex = /(\+\w+)\s(.+)/; 
+    const matches = this.customerService.customer.phones.match(regex);
+    if (matches && matches.length === 3) {
+      this.phone.prefix = matches[1];
+      this.phone.number = matches[2];
+    } else {
+      this.phone.number = this.customerService.customer.phones;
+    }     
   }
 
   /**

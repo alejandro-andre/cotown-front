@@ -14,6 +14,7 @@ export class LookupService {
   public schools: ILookup[] = [];
   public contactTypes: ILookupInt[] = [];
   public countries: ICountry[] = [];
+  public prefixes: any[] = [];
   public languages: ILookupInt[] = [];
   public idTypes: ILookupInt[] = [];
   public genders: ILookupInt[] = [];
@@ -80,6 +81,7 @@ export class LookupService {
       const value = res.data;
       if (value && value.data) {
         this.countries = value.data;
+        this.prefixes = [...new Set(this.countries.map(c => c.prefix))].sort();
       }
     });
   }

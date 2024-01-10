@@ -12,8 +12,9 @@ export default {
     return axiosInstance.get('dashboard', { params: { 'access_token': token } } );
   },
 
-  getDashboardBookings(status: string, token: string): Promise<AxiosResponse> {
-    return axiosInstance.get('dashboard/' + status, { params: { 'access_token': token } } );
+  getDashboardBookings(status: string, token: string, params: any): Promise<AxiosResponse> {
+    params['access_token'] = token;
+    return axiosInstance.get('dashboard/' + status, { params: params });
   },
 
   getLabels(id: number, locale: string, token: string): Promise<AxiosResponse> {

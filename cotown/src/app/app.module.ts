@@ -1,4 +1,4 @@
-import { registerLocaleData } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,6 +18,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+import localeEN from '@angular/common/locales/en';
+import localeES from '@angular/common/locales/es';
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TimeChartModule } from './time-chart/time-chart.module';
@@ -25,14 +28,13 @@ import { GraphQLModule } from './graphql.module';
 import { SpinnerModule } from './spinner/spinner.module';
 import { CustomDateAdapter } from './plugins/custom-date-adapter';
 import { MonthYearPickerFormatDirective } from './plugins/month-year-picker-format-directive';
-import { PlanningComponent } from './pages/planning/planning.component';
-import { GeneralDashboardComponent } from './pages/dashboard/general/general.component';
-import { ConfirmationComponent } from './pages/confirmation/confirmation.component';
 
-import localeEN from '@angular/common/locales/en';
-import localeES from '@angular/common/locales/es';
+import { PlanningComponent } from './pages/planning/planning.component';
 import { DownloadComponent } from './pages/download/download.component';
+import { GeneralDashboardComponent } from './pages/dashboard/general/general.component';
 import { CheckinDashboardComponent } from './pages/dashboard/checkin/checkin.component';
+import { CheckoutDashboardComponent } from './pages/dashboard/checkout/checkout.component';
+import { ConfirmationComponent } from './pages/confirmation/confirmation.component';
 
 registerLocaleData(localeES, 'es-ES');
 registerLocaleData(localeEN, 'en-US');
@@ -47,6 +49,7 @@ export function createTranslateLoader(http: HttpClient) {
     PlanningComponent,
     GeneralDashboardComponent,
     CheckinDashboardComponent,
+    CheckoutDashboardComponent,
     DownloadComponent,
     ConfirmationComponent,
     MonthYearPickerFormatDirective
@@ -80,6 +83,7 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   bootstrap: [AppComponent],
   providers: [
+    DatePipe,
     { provide: DateAdapter, useClass: CustomDateAdapter }
   ]
 })

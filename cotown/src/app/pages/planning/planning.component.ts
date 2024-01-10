@@ -16,7 +16,7 @@ import { TimeChartRow } from 'src/app/time-chart/models/time-chart-row.model';
 import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
 
 import { CityListQuery } from 'src/app/schemas/query-definitions/city.query';
-import { BuildingListByCityNameQuery, BuildingListQuery } from 'src/app/schemas/query-definitions/building.query';
+import { BuildingListByLocationQuery, BuildingListQuery } from 'src/app/schemas/query-definitions/building.query';
 import { ResourceFlatTypeQuery, ResourceListQuery, ResourcePlaceTypeQuery } from 'src/app/schemas/query-definitions/resource.query';
 import { BookingListQuery, BuildingDataViaBooking, BuildingDataViaBookingGroup } from 'src/app/schemas/query-definitions/booking.query';
 
@@ -308,61 +308,38 @@ export class PlanningComponent {
   }
 
   // Load all cities
-  async getCities(): Promise<void> {
-
-    return new Promise<void>((resolve) => {
-      this.apolloApi.getData(CityListQuery).subscribe((result) => {
-        this.cities = result.data.data;
-        resolve();
-      });
-    })
-
+  async getCities() {
+    this.apolloApi.getData(CityListQuery).subscribe((result) => {
+      this.cities = result.data.data;
+    });
   }
 
   // Get all buildings
   async getBuildings(): Promise<void> {
-
-    return new Promise<void>((resolve) => {
+    if (this.selectedCityId == Constants.allStaticNumericValue) {
       this.apolloApi.getData(BuildingListQuery).subscribe(res => {
         this.buildings = res.data.data;
-        resolve();
       });
-    })
-
-  }
-
-  // Get city buildings
-  getBuildingsByCityName():void {
-
-    const variables = { cityName: this.cityName };
-    this.apolloApi.getData(BuildingListByCityNameQuery, variables).subscribe(res => {
-      this.buildings = res.data.data;
-    });
-
+    } else {
+      const variables = { id: this.selectedCityId };
+      this.apolloApi.getData(BuildingListByLocationQuery, variables).subscribe(res => {
+        this.buildings = res.data.data;
+      });
+    }
   }
 
   // Get all flat types
   async getResourceFlatTypes(): Promise<void> {
-
-    return new Promise<void>((resolve) => {
-      this.apolloApi.getData(ResourceFlatTypeQuery).subscribe(res => {
-        this.resourceFlatTypes = res.data.data;
-        resolve();
-      });
-    })
-
+    this.apolloApi.getData(ResourceFlatTypeQuery).subscribe(res => {
+      this.resourceFlatTypes = res.data.data;
+    });
   }
 
   // Get all place types
   async getResourcePlaceTypes(): Promise<void> {
-
-    return new Promise<void>((resolve) => {
-      this.apolloApi.getData(ResourcePlaceTypeQuery).subscribe(res => {
-        this.resourcePlaceTypes = res.data.data;
-        resolve();
-      });
-    })
-
+    this.apolloApi.getData(ResourcePlaceTypeQuery).subscribe(res => {
+      this.resourcePlaceTypes = res.data.data;
+    });
   }
 
   // Load all resources and bookings
@@ -464,22 +441,19 @@ export class PlanningComponent {
 
   // Get filtered resources
   async getResources(query: string, variables: ApolloVariables | undefined = undefined): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.apolloApi.getData(query, variables).subscribe((res: any) => {
-        for (const elem of res.data.data) {
-          const type = elem.resource_type === 'piso' ? elem.flat_type.code : elem.place_type?.code;
-          this.resources.push({
-            Resource_id: elem.id,
-            Resource_code: elem.code,
-            Resource_type: elem.resource_type,
-            Resource_flat_type: elem.flat_type.id,
-            Resource_place_type: elem.place_type?.id || -1,
-            Resource_info: type || '',
-            Resource_notes: elem.notes || ''
-          });
-        }
-        resolve();
-      });
+    this.apolloApi.getData(query, variables).subscribe((res: any) => {
+      for (const elem of res.data.data) {
+        const type = elem.resource_type === 'piso' ? elem.flat_type.code : elem.place_type?.code;
+        this.resources.push({
+          Resource_id: elem.id,
+          Resource_code: elem.code,
+          Resource_type: elem.resource_type,
+          Resource_flat_type: elem.flat_type.id,
+          Resource_place_type: elem.place_type?.id || -1,
+          Resource_info: type || '',
+          Resource_notes: elem.notes || ''
+        });
+      }
     });
   }
 
@@ -801,11 +775,7 @@ export class PlanningComponent {
     this.rows = [];
 
     // Filter
-    if (this.selectedCityId === Constants.allStaticNumericValue) {
-      this.getBuildings();
-    } else {
-      this.getBuildingsByCityName();
-    }
+    this.getBuildings();
   }
 
   // Building change

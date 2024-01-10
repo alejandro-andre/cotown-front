@@ -11,8 +11,8 @@ const routes: Routes = [
   { path: '', redirectTo: '/dashboard' ,  pathMatch: 'full' },
   { path: 'planning', component: PlanningComponent },
   { path: 'dashboard', component: GeneralDashboardComponent },
-  { path: 'checkindashboard', component: CheckinDashboardComponent },
-  { path: 'checkoutdashboard', component: CheckoutDashboardComponent },
+  { path: 'checkin', component: CheckinDashboardComponent },
+  { path: 'checkout', component: CheckoutDashboardComponent },
   { path: 'download', component: DownloadComponent },
 ];
 

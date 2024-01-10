@@ -80,7 +80,7 @@ export class GeneralDashboardComponent implements OnInit {
   getBookings(status: string): void { 
     this.status = status;
     this.rows = null;
-    axiosApi.getDashboardBookings(this.status, this.apolloApi.token).then((res) => { 
+    axiosApi.getDashboardBookings(this.status, this.apolloApi.token, {}).then((res) => { 
       this.rows = res.data;
       if (this.rows.length) { 
         const keys = Object.keys(this.rows[0]);

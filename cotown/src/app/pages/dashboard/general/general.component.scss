@@ -21,6 +21,7 @@ th {
 	font-size: 0.75em;
 	text-align: left;
 }
+
 th:hover{
 	color: black;
 }
@@ -30,6 +31,10 @@ td {
 	border-bottom: 1px solid #ddd; 
 	padding: 15px 15px 15px 30px; 
 	font-size: 0.85rem;
+}
+
+.container {
+	padding: 0 5px;
 }
 
 .grid-container {

@@ -5,13 +5,13 @@ import { ApolloQueryApi } from "src/app/services/apollo-api.service";
 import axiosApi from "src/app/services/api.service";
 
 @Component({ 
-  selector: "app-home",
-  templateUrl: "./dashboard.component.html",
-  styleUrls: ["./dashboard.component.scss"],
+  selector: "app-dashboard-general",
+  templateUrl: "./checkin.component.html",
+  styleUrls: ["./checkin.component.scss"],
   encapsulation: ViewEncapsulation.None
  })
 
-export class DashboardComponent implements OnInit { 
+export class CheckinDashboardComponent implements OnInit { 
 
   public spinnerActive: boolean = true;
 

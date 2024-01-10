@@ -26,12 +26,13 @@ import { SpinnerModule } from './spinner/spinner.module';
 import { CustomDateAdapter } from './plugins/custom-date-adapter';
 import { MonthYearPickerFormatDirective } from './plugins/month-year-picker-format-directive';
 import { PlanningComponent } from './pages/planning/planning.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { GeneralDashboardComponent } from './pages/dashboard/general/general.component';
 import { ConfirmationComponent } from './pages/confirmation/confirmation.component';
 
 import localeEN from '@angular/common/locales/en';
 import localeES from '@angular/common/locales/es';
 import { DownloadComponent } from './pages/download/download.component';
+import { CheckinDashboardComponent } from './pages/dashboard/checkin/checkin.component';
 
 registerLocaleData(localeES, 'es-ES');
 registerLocaleData(localeEN, 'en-US');
@@ -44,7 +45,8 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     AppComponent,
     PlanningComponent,
-    DashboardComponent,
+    GeneralDashboardComponent,
+    CheckinDashboardComponent,
     DownloadComponent,
     ConfirmationComponent,
     MonthYearPickerFormatDirective

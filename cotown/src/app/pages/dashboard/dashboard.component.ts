@@ -38,19 +38,25 @@ export class DashboardComponent implements OnInit {
     { key:"devolvergarantia",   value: "Devolver garantía" },
   ];
 
-  public headerFields: { key: string, value: string, sort: string }[] = [
-    { key:"id",        value:"#",           sort:"" },
-    { key:"Name",      value:"Residente",   sort:"" },
-    { key:"Status",    value:"Estado",      sort:"" },
-    { key:"Date_from", value:"Fecha desde", sort:"" }, 
-    { key:"Date_to",   value:"Fecha hasta", sort:"" },
-    { key:"Check_in",  value:"Check-in",    sort:"" },
-    { key:"Check_out", value:"Check-out",   sort:"" },
-    { key:"Building",  value:"Edificio",    sort:"" },
-    { key:"Resource",  value:"Recurso",     sort:"" },
-    { key:"Arrival",   value:"Llegada",     sort:"" },
-    { key:"Flight",    value:"Tren/Vuelo",  sort:"" },
-    { key:"Option",    value:"Opción",      sort:"" },
+  public headerFields: { key: string, value: string, sort: string, filter: string[] }[] = [
+    { key:"id",                   value:"#",           sort:"", filter:[] },
+    { key:"Name",                 value:"Residente",   sort:"", filter:[] },
+    { key:"Status",               value:"Estado",      sort:"", filter:["next", "nextout", "ok"] },
+    { key:"Date_from",            value:"Fecha desde", sort:"", filter:[] }, 
+    { key:"Date_to",              value:"Fecha hasta", sort:"", filter:[] },
+    { key:"Check_in",             value:"Check-in",    sort:"", filter:["next", "nextout", "ok", "checkin", "checkout", "devolvergarantia"] },
+    { key:"Check_out",            value:"Check-out",   sort:"", filter:["next", "nextout", "ok", "checkin", "checkout", "devolvergarantia"] },
+    { key:"Building",             value:"Edificio",    sort:"", filter:[] },
+    { key:"Resource",             value:"Recurso",     sort:"", filter:["next", "nextout", "ok", "pendientepago", "confirmada", "checkin", "checkout", "devolvergarantia", "caducada"] },
+    { key:"Arrival",              value:"Llegada",     sort:"", filter:["next"] },
+    { key:"Flight",               value:"Tren/Vuelo",  sort:"", filter:["next"] },
+    { key:"Option",               value:"Opción",      sort:"", filter:["next"] },
+    { key:"Check_in_room_ok",     value:"Lim",         sort:"", filter:["next", "checkin"] },
+    { key:"Check_in_notice_ok",   value:"Avi",         sort:"", filter:["next", "checkin"] },
+    { key:"Check_in_keys_ok",     value:"Lla",         sort:"", filter:["next", "checkin"] },
+    { key:"Check_in_keyless_ok",  value:"Kls",         sort:"", filter:["next", "checkin"] }, 
+    { key:"Check_out_keys_ok",    value:"Lla",         sort:"", filter:["nextout", "checkout"] },
+    { key:"Check_out_keyless_ok", value:"Kls",         sort:"", filter:["nextout", "checkout"] }
   ];
 
   public header: { key: string, value: string, sort: string } [] = [];
@@ -78,7 +84,7 @@ export class DashboardComponent implements OnInit {
       this.rows = res.data;
       if (this.rows.length) { 
         const keys = Object.keys(this.rows[0]);
-        this.header = this.headerFields.filter(d => keys.includes(d.key));
+        this.header = this.headerFields.filter(d => keys.includes(d.key) && (d.filter.length == 0 || d.filter.includes(this.status)));
       }
       this.spinnerActive  = false;
     });      

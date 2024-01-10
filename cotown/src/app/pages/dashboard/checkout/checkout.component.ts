@@ -14,7 +14,7 @@ import { LanguageService } from "src/app/services/language.service";
 @Component({ 
   selector: "app-dashboard-checkin",
   templateUrl: "./checkout.component.html",
-  styleUrls: ["./checkout.component.scss"],
+  styleUrls: ["../dashboard.component.scss"],
   encapsulation: ViewEncapsulation.None
  })
 

@@ -7,7 +7,7 @@ import axiosApi from "src/app/services/api.service";
 @Component({ 
   selector: "app-dashboard-general",
   templateUrl: "./general.component.html",
-  styleUrls: ["./general.component.scss"],
+  styleUrls: ["../dashboard.component.scss"],
   encapsulation: ViewEncapsulation.None
  })
 

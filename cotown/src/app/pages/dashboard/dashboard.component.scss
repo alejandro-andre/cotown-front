@@ -63,7 +63,7 @@ td {
 }
 
 .grid-container {
-	margin:0px 10px 0px 20px; 
+	margin:0px 5px 0px 5px; 
 	display: grid; 
 	grid-template-columns: 
 	repeat(7, 1fr); 
@@ -87,7 +87,7 @@ td {
 }
 
 .grid {
-	margin:0px 10px 0px 20px; 
+	margin:0px 5px 0px 5px; 
 	display: grid; 
 	grid-template-columns: repeat(14, 1fr); 
 	grid-gap: 5px;

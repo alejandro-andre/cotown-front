@@ -2,13 +2,18 @@
 
 <div class="container">
 
-  <div class="grid">
+  <div class="header">
 
-    <h1 style="grid-column:1/4;">Dashboard general</h1>
-
-    <div style="margin-top:30px">
-      <a [href]="link()"><mat-icon style="width:40px;cursor:pointer;" fontIcon="cloud_download"></mat-icon></a>
-      <mat-icon style="width:40px;cursor:pointer;" onclick="window.open(window.location.href, '_blank');" fontIcon="open_in_new"></mat-icon>
+    <div class="pure-g">
+      <div class="pure-u-22-24">
+        <span><h1>Dashboard General</h1></span>
+      </div>
+      <div class="pure-u-1-24" style="margin-top:20px;text-align:right;">
+        <a><mat-icon style="cursor:pointer;" fontIcon="cloud_download"></mat-icon></a>
+      </div>
+      <div class="pure-u-1-24" style="margin-top:20px;text-align:right;">
+        <mat-icon style="cursor:pointer;" onclick="window.open(window.location.href, '_blank');" fontIcon="open_in_new"></mat-icon>   
+      </div>
     </div>
 
   </div>

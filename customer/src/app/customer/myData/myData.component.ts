@@ -226,7 +226,7 @@ export class MyDataComponent implements OnInit {
           this.isSaveEnabled = false;
           return;
         } else {
-          this.isSaveEnabled = this.validate();
+          this.enableSave();
         }
       });
     } else {
@@ -237,11 +237,11 @@ export class MyDataComponent implements OnInit {
             this.isSaveEnabled = false;
             return;
           } else {
-            this.isSaveEnabled = this.validate();
+            this.enableSave();
           }
         });
       } else {
-        this.isSaveEnabled = this.validate();
+        this.enableSave();
       }
     }
   }
@@ -292,7 +292,7 @@ export class MyDataComponent implements OnInit {
         !this.customer.tutor_phones
       ))
       return false;
-
+      
     // Ok
     return true;
   }

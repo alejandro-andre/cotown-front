@@ -54,6 +54,7 @@ export interface ICustomer extends IBase {
   address: string,
   payment_method_id: number | null,
   bank_account?: string,
+  swift?: string,
   birth_date: string | null,
   tutor_id_type_id: number | null,
   tutor_document: string | null,

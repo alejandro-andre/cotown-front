@@ -69,6 +69,14 @@ export class AxiosApi {
     return airflowsInstance.get(url, { responseType: 'blob' });
   }
 
+  validateIBAN(code: string) {
+    return backendInstance.get(`/iban/${code}`);
+  }
+
+  validateSWIFT(code: string) {
+    return backendInstance.get(`/swift/${code}`);
+  }
+
   discardBooking(id: number, status: string) {
     const token = this.apollo.token;
     return backendInstance.get(`/booking/${id}/status/${status}?access_token=${token}`);

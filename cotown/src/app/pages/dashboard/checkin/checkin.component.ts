@@ -44,21 +44,21 @@ export class CheckinDashboardComponent implements OnInit {
   // Table info
   public rows: any[] = [];
   public header: { key: string, value: string, sort: string } [] = [
-    { key:"id",                   value:"#",             sort:"" },
-    { key:"Name",                 value:"Residente",     sort:"" },
-    { key:"Status",               value:"Estado",        sort:"" },
-    { key:"Date_in",              value:"Fecha entrada", sort:"" }, 
-    { key:"Date_in_wd",           value:"Día semana",    sort:"" }, 
-    { key:"Date_from",            value:"Fecha desde",   sort:"" }, 
-    { key:"Building",             value:"Edificio",      sort:"" },
-    { key:"Resource",             value:"Recurso",       sort:"" },
-    { key:"Arrival",              value:"Llegada",       sort:"" },
-    { key:"Flight",               value:"Tren/Vuelo",    sort:"" },
-    { key:"Option",               value:"Opción",        sort:"" },
-    { key:"Check_in_room_ok",     value:"Lim",           sort:"" },
-    { key:"Check_in_notice_ok",   value:"Avi",           sort:"" },
-    { key:"Check_in_keys_ok",     value:"Lla",           sort:"" },
-    { key:"Check_in_keyless_ok",  value:"Kls",           sort:"" }, 
+    { key:"id",                   value:"#",                sort:"" },
+    { key:"Name",                 value:"Residente",        sort:"" },
+    { key:"Status",               value:"Estado",           sort:"" },
+    { key:"Date_in",              value:"Fecha entrada",    sort:"" }, 
+    { key:"Date_in_wd",           value:"Día semana",       sort:"" }, 
+    { key:"Date_from",            value:"Fecha inicio",     sort:"" }, 
+    { key:"Resource",             value:"Recurso/Edificio", sort:"" },
+    { key:"Check_in_time",        value:"Hora check-in",    sort:"" },
+    { key:"Arrival",              value:"Hora llegada",     sort:"" },
+    { key:"Flight",               value:"Tren/Vuelo",       sort:"" },
+    { key:"Option",               value:"Opción",           sort:"" },
+    { key:"Check_in_room_ok",     value:"Lim",              sort:"" },
+    { key:"Check_in_notice_ok",   value:"Avi",              sort:"" },
+    { key:"Check_in_keys_ok",     value:"Lla",              sort:"" },
+    { key:"Check_in_keyless_ok",  value:"Kls",              sort:"" },
   ];
 
   // Constructor
@@ -140,15 +140,14 @@ export class CheckinDashboardComponent implements OnInit {
         "Date_in": this.formatDate(o.Date_in),
         "Date_in_wd": this.formatWeekday(o.Date_in),
         "Date_from": this.formatDate(o.Date_from),
-        "Building": o.Building,
-        "Resource": o.Resource,
+        "Resource": o.Resource + "<br>" + o.Building,
         "Arrival": o.Arrival,
         "Flight": o.Flight,
         "Option": o.Option,
         "Check_in_room_ok": o.Check_in_room_ok,
         "Check_in_notice_ok": o.Check_in_notice_ok,
         "Check_in_keys_ok": o.Check_in_keys_ok,
-        "Check_in_keyless_o": o.Check_in_keyless_ok
+        "Check_in_keyless_ok": o.Check_in_keyless_ok
       } });
       this.spinnerActive  = false;
     });      

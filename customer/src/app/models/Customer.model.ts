@@ -28,6 +28,7 @@ export class Customer implements ICustomer {
   school_id: number | null = null;
   payment_method_id: number | null = null;
   bank_account: string = '';
+  swift: string = '';
   appLang: string = 'es';
   photo: IPhoto | null = null;
 

@@ -9,7 +9,10 @@
     "invalid_email": "Invalid email",
     "no_booking": "No booking found with that id",
     "no_results": "No results found",
-    "unknown_error": "Unknown error, please refresh the page"
+    "unknown_error": "Unknown error, please refresh the page",
+    "iban_mandatory": "IBAN/Bank account mandatory",
+    "swift_wrong": "Invalid SWIFT/BIC code",
+    "swift_mandatory": "IBAN not valid, SWIFT/BIC code required"
   },
   "nav": {
     "log_out": "Log Out",
@@ -34,7 +37,7 @@
   "amount":  "Amount",
   "arrival": "Arrival time",
   "bank": "Payment information",
-  "bank_account": "Bank account",
+  "bank_account": "IBAN or Bank account",
   "birth_date": "Birthdate",
   "booking": "Booking",
   "booking_detail": "Booking details",
@@ -130,6 +133,7 @@
   "signed_message": "The contract was signed on: {{ value }}",
   "status": "Status",
   "surname": "Surname",
+  "swift": "SWIFT/BIC code",
   "to": "To",
   "total": "Total",
   "tutor_document": "Id document",

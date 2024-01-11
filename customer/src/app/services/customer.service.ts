@@ -75,7 +75,9 @@ export class CustomerService {
     this.readOnly['tutor_email'] = (this.customer.tutor_email === '' || this.customer.tutor_email === null);
     this.readOnly['tutor_phones'] = (this.customer.tutor_phones === '' || this.customer.tutor_phones === null);
     this.readOnly['school_id'] = (this.customer.school_id === null);
+    this.readOnly['payment_method_id'] = (this.customer.payment_method_id === null);
     this.readOnly['bank_account'] = (this.customer.bank_account === '' || this.customer.bank_account === null);
+    this.readOnly['swift'] = (this.customer.swift === '' || this.customer.swift === null);
   }
 
   setBookingVisibility(booking: IBooking): void {

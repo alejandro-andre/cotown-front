@@ -35,6 +35,7 @@ import { GeneralDashboardComponent } from './pages/dashboard/general/general.com
 import { CheckinDashboardComponent } from './pages/dashboard/checkin/checkin.component';
 import { CheckoutDashboardComponent } from './pages/dashboard/checkout/checkout.component';
 import { ConfirmationComponent } from './pages/confirmation/confirmation.component';
+import { SafePipe } from './services/safe.pipe';
 
 registerLocaleData(localeES, 'es-ES');
 registerLocaleData(localeEN, 'en-US');
@@ -52,7 +53,8 @@ export function createTranslateLoader(http: HttpClient) {
     CheckoutDashboardComponent,
     DownloadComponent,
     ConfirmationComponent,
-    MonthYearPickerFormatDirective
+    MonthYearPickerFormatDirective,
+    SafePipe
   ],
   imports: [
     BrowserModule,

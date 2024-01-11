@@ -15,7 +15,7 @@ import { ICustomer, IPayloadFile, IPhone } from 'src/app/constants/Interface';
 import { UPDATE_CUSTOMER, UPLOAD_CUSTOMER_PHOTO } from 'src/app/schemas/query-definitions/customer.query';
 import { formatErrorBody } from 'src/app/utils/error.util';
 import { LookupService } from 'src/app/services/lookup.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { FileService } from 'src/app/services/file.service';
 import { DateAdapter } from '@angular/material/core';
 import { getAge } from 'src/app/utils/date.util';
@@ -55,6 +55,8 @@ export class MyDataComponent implements OnInit {
   public tutor_nameControl = new FormControl('', [ Validators.required ]);
   public tutor_emailControl = new FormControl('', [ Validators.required ]);
   public tutor_phonesControl = new FormControl('', [ Validators.required ]);
+  public bank_accountControl = new FormControl('');
+  public swiftControl = new FormControl('');
 
   // Constructor
   constructor(
@@ -138,6 +140,13 @@ export class MyDataComponent implements OnInit {
     return this.lookupService.idTypes.find((elem) => elem.id === this.customer.id_type_id)?.name_en || '';
   }
 
+  // Return the payment method type name of current customer
+  get paymentMethod(): string {
+    if (this.isSpanish)
+      return this.lookupService.paymentMethods.find((elem) => elem.id === this.customer.payment_method_id)?.name || '';
+    return this.lookupService.paymentMethods.find((elem) => elem.id === this.customer.payment_method_id)?.name_en || '';
+  }
+
   // Return nationality of current customer
   get nationality(): string {
     if (this.isSpanish)
@@ -179,22 +188,9 @@ export class MyDataComponent implements OnInit {
     return getAge(this.customer.birth_date);
   }
 
-  validateAge(control: FormControl): { [key: string]: any } | null {
-    const age = getAge(control.value)
-    if (age < 16) {
-      return { 'under16': true };
-    }
-    return null;
-  }
-
   /**
    * Methods
    */
-
-  enableSave() {
-    this.customer.changed = true;
-    this.isSaveEnabled = this.validate();
-  }
 
   changeLang() {
     if (this.customer.appLang === 'es') {
@@ -207,9 +203,56 @@ export class MyDataComponent implements OnInit {
     this.enableSave();
   }
 
+  validateAge(control: FormControl): { [key: string]: any } | null {
+    const age = getAge(control.value)
+    if (age < 16) {
+      return { 'under16': true };
+    }
+    return null;
+  }
+
+  async validateCCC() {
+    this.bank_accountControl.setErrors(null);
+    this.swiftControl.setErrors(null);
+    if (this.customer.swift) {
+      if (!this.customer.bank_account) {
+        this.bank_accountControl.setErrors({ 'iban_mandatory': true });
+        this.isSaveEnabled = false;
+        return;
+      }
+      await this.axiosApi.validateSWIFT(this.customer.swift).then((res) => {
+        if (res.data == "ko") {
+          this.swiftControl.setErrors({ 'swift_wrong': true });
+          this.isSaveEnabled = false;
+          return;
+        } else {
+          this.isSaveEnabled = this.validate();
+        }
+      });
+    } else {
+      if (this.customer.bank_account) {
+        await this.axiosApi.validateIBAN(this.customer.bank_account).then((res) => {
+          if (res.data.startsWith("!!!")) {
+            this.bank_accountControl.setErrors({ 'swift_mandatory': true });
+            this.isSaveEnabled = false;
+            return;
+          } else {
+            this.isSaveEnabled = this.validate();
+          }
+        });
+      } else {
+        this.isSaveEnabled = this.validate();
+      }
+    }
+  }
+
+  enableSave() {
+    this.customer.changed = true;
+    this.isSaveEnabled = this.validate();
+  }
+
   // Validate
   validate() {
-
     // Check and show errors
     this.id_type_idControl.markAsTouched();
     this.documentControl.markAsTouched();
@@ -225,20 +268,6 @@ export class MyDataComponent implements OnInit {
     this.tutor_nameControl.markAllAsTouched();
     this.tutor_emailControl.markAllAsTouched();
     this.tutor_phonesControl.markAllAsTouched();
-
-    // console.log(this.customer.id_type_id);
-    // console.log(this.customer.document);
-    // console.log(this.customer.address);
-    // console.log(this.customer.zip);
-    // console.log(this.customer.city);
-    // console.log(this.customer.province);
-    // console.log(this.customer.country_id);
-    // console.log(this.customer.birth_date );
-    // console.log(this.customer.tutor_id_type_id);
-    // console.log(this.customer.tutor_document);
-    // console.log(this.customer.tutor_name);
-    // console.log(this.customer.tutor_email);
-    // console.log(this.customer.tutor_phones);
 
     // Under 16
     if (this.birth_dateControl.errors)
@@ -269,8 +298,12 @@ export class MyDataComponent implements OnInit {
   }
 
   // Update customer
-  save() {
-    
+  async save() {
+    // Enabled?
+    await this.validateCCC();
+    if (!this.isSaveEnabled)
+      return;
+
     // Set age
     this.customerService.customer.birth_date = this.datePipe.transform(this.birth_dateControl.value, 'yyyy-MM-dd');
 

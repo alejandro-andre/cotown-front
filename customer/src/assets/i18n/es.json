@@ -9,7 +9,10 @@
     "invalid_email" : "Email invalido",
     "no_booking": "No se ha encontrado ningún booking con ese id",
     "no_results": "No se han encontrado resultados",
-    "unknown_error": "Error desconocido, por favor refresque la página"
+    "unknown_error": "Error desconocido, por favor refresque la página",
+    "iban_mandatory": "IBAN/Cuenta bancaria obligatorio",
+    "swift_wrong": "Código SWIFT/BIC inválido",
+    "swift_mandatory": "IBAN no válido, se requiere indicar SWIFT/BIC"
   },
   "nav": {
     "log_out": "Cerrar sesión",
@@ -34,7 +37,7 @@
   "amount":  "Importe",
   "arrival": "Hora de llegada",
   "bank": "Información bancaria",
-  "bank_account": "Cuenta bancaria",
+  "bank_account": "IBAN o Cuenta bancaria",
   "birth_date": "Fecha de nacimiento",
   "booking": "Reserva",
   "booking_detail": "Detalles de la reserva",
@@ -130,6 +133,7 @@
   "signed_message": "El contrato fue firmado el: {{ value }}",
   "status": "Estado",
   "surname": "Apellido",
+  "swift": "Código SWIFT/BIC",
   "to": "Hasta",
   "total": "Total",
   "tutor_document": "Documento",

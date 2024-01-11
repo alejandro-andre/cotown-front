@@ -81,7 +81,7 @@
           <span *ngIf="h.key === 'Status'">{{ getLabel(r[h.key]) }}</span>
           <span *ngIf="h.key !== 'Status' && r[h.key] == true"><mat-icon fontIcon="done_all"></mat-icon></span>
           <span *ngIf="h.key !== 'Status' && r[h.key] == false"><mat-icon fontIcon="close"></mat-icon></span>
-          <span *ngIf="h.key !== 'Status' && r[h.key] != false && r[h.key] != true">{{ r[h.key] }}</span>
+          <span *ngIf="h.key !== 'Status' && r[h.key] != false && r[h.key] != true" [innerHtml]="r[h.key] | safe"></span>
         </td>
       </tr>
     </tbody>

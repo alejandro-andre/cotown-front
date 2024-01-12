@@ -399,9 +399,9 @@ export class PlanningComponent {
   // Get filtered bookings
   queryBookings(): void {
 
-    // One month ago
+    // Two months ago
     const date = new Date();
-    date.setTime(date.getTime() - 30 * 24 * 60 * 60 * 1000);
+    date.setTime(date.getTime() - 60 * 24 * 60 * 60 * 1000);
 
     // GraphQL params
     let params = '$date: String $cityId: Int';

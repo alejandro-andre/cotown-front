@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { IBookingResource, ICode, IPayment } from 'src/app/constants/Interface';
-import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { Constants } from 'src/app/constants/Constants';
 import { LookupService } from 'src/app/services/lookup.service';
@@ -60,6 +59,10 @@ export class MyPaymentsComponent {
   showPayButton(elem: any): boolean {
     // Already paid
     if (elem.payment_date !== null || elem.payment_date === '') 
+      return false;
+
+    // Discardes
+    if (elem.booking.status.includes('descartada'))
       return false;
 
     // No Card/POS

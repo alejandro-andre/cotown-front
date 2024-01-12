@@ -402,7 +402,7 @@ export class MyBookingDetailComponent {
 
     // Confirm
     const modal = this.modalService.confirmModal({ title: 'confirm', message: 'discard_confirmation', type: 'yesno' });
-    modal.afterClosed().subscribe((sure) => {
+    modal.afterClosed().subscribe((sure: any) => {
 
       // Not sure
       if (!sure) {

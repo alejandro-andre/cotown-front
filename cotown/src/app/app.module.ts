@@ -31,11 +31,13 @@ import { MonthYearPickerFormatDirective } from './plugins/month-year-picker-form
 
 import { PlanningComponent } from './pages/planning/planning.component';
 import { DownloadComponent } from './pages/download/download.component';
-import { GeneralDashboardComponent } from './pages/dashboard/general/general.component';
-import { CheckinDashboardComponent } from './pages/dashboard/checkin/checkin.component';
-import { CheckoutDashboardComponent } from './pages/dashboard/checkout/checkout.component';
 import { ConfirmationComponent } from './pages/confirmation/confirmation.component';
 import { SafePipe } from './services/safe.pipe';
+import { GeneralDashboardComponent } from './pages/dashboard/general/general.component';
+import { NextinDashboardComponent } from './pages/dashboard/nextin/nextin.component';
+import { NextoutDashboardComponent } from './pages/dashboard/nextout/nextout.component';
+import { CheckinDashboardComponent } from './pages/dashboard/checkin/checkin.component';
+import { IssuesDashboardComponent } from './pages/dashboard/issues/issues.component';
 
 registerLocaleData(localeES, 'es-ES');
 registerLocaleData(localeEN, 'en-US');
@@ -50,7 +52,9 @@ export function createTranslateLoader(http: HttpClient) {
     PlanningComponent,
     GeneralDashboardComponent,
     CheckinDashboardComponent,
-    CheckoutDashboardComponent,
+    NextinDashboardComponent,
+    NextoutDashboardComponent,
+    IssuesDashboardComponent,
     DownloadComponent,
     ConfirmationComponent,
     MonthYearPickerFormatDirective,

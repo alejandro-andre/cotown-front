@@ -13,12 +13,12 @@ import { LanguageService } from "src/app/services/language.service";
 
 @Component({ 
   selector: "app-dashboard-checkin",
-  templateUrl: "./checkout.component.html",
+  templateUrl: "./nextout.component.html",
   styleUrls: ["../dashboard.component.scss"],
   encapsulation: ViewEncapsulation.None
  })
 
-export class CheckoutDashboardComponent implements OnInit { 
+export class NextoutDashboardComponent implements OnInit { 
 
   // Cities
   public cities: City [] = [] as City[]; // Cities

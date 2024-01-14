@@ -13,7 +13,7 @@ import axiosApi from "src/app/services/api.service";
 
 export class GeneralDashboardComponent implements OnInit { 
 
-  public spinnerActive: boolean = true;
+  public isLoading: boolean = true;
 
   public dashboard: any = null;
   public rows: any = null;
@@ -67,12 +67,12 @@ export class GeneralDashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void { 
-    this.spinnerActive  = true;
+    this.isLoading  = true;
     axiosApi.getDashboard(this.apolloApi.token).then((res) => { 
       this.dashboard = res.data;
       axiosApi.getLabels(7, "es_ES", this.apolloApi.token).then((res) => { 
         this.labels = res.data;
-        this.spinnerActive  = false;
+        this.isLoading  = false;
       }); 
     })       
   }
@@ -86,7 +86,7 @@ export class GeneralDashboardComponent implements OnInit {
         const keys = Object.keys(this.rows[0]);
         this.header = this.headerFields.filter(d => keys.includes(d.key) && (d.filter.length == 0 || d.filter.includes(this.status)));
       }
-      this.spinnerActive  = false;
+      this.isLoading  = false;
     });      
   }
 

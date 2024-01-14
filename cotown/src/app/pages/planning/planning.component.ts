@@ -58,7 +58,7 @@ export class PlanningComponent {
   public max: number = 1;
 
   // Spinner
-  public spinnerActive: boolean = false;
+  public isLoading: boolean = false;
 
   // Planning
   public now: Date = new Date(); // Current date
@@ -115,7 +115,7 @@ export class PlanningComponent {
       axiosApi.getLabels(13, "es_ES", this.apolloApi.token).then((res) => { 
         this.labels[0].push(...res.data[0])
         this.labels[1].push(...res.data[1])
-        this.spinnerActive  = false;
+        this.isLoading  = false;
       }); 
     }); 
 
@@ -385,7 +385,7 @@ export class PlanningComponent {
       where = 'where:{' + where + '}';
 
     if (params != '')  {
-      this.spinnerActive = true;
+      this.isLoading = true;
       const q = 'query ResourceList(' + params + ') {data:Resource_ResourceList(orderBy: [{attribute: Code direction: ASC nullsGo: FIRST}] ' + where + ')' + ResourceListQuery + '}';
       await this.getResources(q, {
         cityId: this.selectedCityId,
@@ -641,7 +641,7 @@ export class PlanningComponent {
           row.bars.push(...this.consolidateIntervals(noavails));
       }
     }
-    this.spinnerActive = false;
+    this.isLoading = false;
   }
 
   // Consolidate bookings for lock types

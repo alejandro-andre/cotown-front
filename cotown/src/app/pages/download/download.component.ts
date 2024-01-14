@@ -21,7 +21,7 @@ const moment = _rollupMoment;
 export class DownloadComponent {
 
   // Spinner
-  public spinnerActive: boolean = false;
+  public isLoading: boolean = false;
 
   // Form controls
   public bookingIdControl        = new FormControl<any>('', [ Validators.required ]);
@@ -195,18 +195,18 @@ export class DownloadComponent {
     }
 
     // Fetch link
-    this.spinnerActive = true;
+    this.isLoading = true;
     fetch(l)
       .then(response => response.blob())
       .then(blob => {
         const fileUrl = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = fileUrl;
-        this.spinnerActive = false;
+        this.isLoading = false;
         link.click();
       })
       .catch(error => {
-        this.spinnerActive = false;
+        this.isLoading = false;
       });
   }
   

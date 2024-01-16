@@ -61,7 +61,7 @@ export class PlanningComponent {
   public isLoading: boolean = false;
 
   // Planning
-  public now: Date = new Date(); // Current date
+  public now!: Date;
   public rows: TimeChartRow[] = []; // Rows
   public labels: any = null;
 
@@ -95,9 +95,13 @@ export class PlanningComponent {
   ) {
     // Current date
     this.now = new Date();
+    this.now.setHours(23);
+    this.now.setMinutes(59);
+    this.now.setSeconds(59);
+    this.now.setMilliseconds(99);
 
     // Set locale
-    this.adapter.setLocale(this.language.lang.substring(0,2));
+    this.adapter.setLocale(this.language.lang.substring(0, 2));
   }
 
   // On Init

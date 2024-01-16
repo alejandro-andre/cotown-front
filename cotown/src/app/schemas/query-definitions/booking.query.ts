@@ -73,7 +73,7 @@ query BookingList([[params]]) {
         phones: Phones
       }
     }
-    rooms: Booking_roomingViaBooking_rooming_id {
+    rooms: Booking_group_roomingViaBooking_group_rooming_id {
       id
       name: Name,
       email: Email

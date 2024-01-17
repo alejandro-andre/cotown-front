@@ -26,6 +26,7 @@ export interface Price {
   long: number,
   medium: number,
   short: number,
+  services: number,
 };
 
 export interface City extends GraphQlResponse{}

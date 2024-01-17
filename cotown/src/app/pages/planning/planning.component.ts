@@ -342,9 +342,10 @@ export class PlanningComponent {
         this.prices.push({
           key: e.building + "-" + e.flat_type_id + "-" + (e.place_type_id || 0),
           year: e.year,
-          long: e.long + e.services,
-          medium: e.medium + e.services,
-          short: e.short + e.services
+          long: e.long,
+          medium: e.medium,
+          short: e.short,
+          services: e.services
         });
       }
     });
@@ -366,7 +367,8 @@ export class PlanningComponent {
           year: e.year,
           long: Math.round(e.long * multiplier),
           medium: Math.round(e.medium * multiplier),
-          short: Math.round(e.short * multiplier)
+          short: Math.round(e.short * multiplier),
+          services: e.services
         }
         result.push(p);
       });
@@ -588,13 +590,12 @@ export class PlanningComponent {
         auxRow.checked = true;
       }
       if (r.resource_prices.length) {
-        let text = "<table><thead><th></th><th>Long</th><th>Medium</th><th>Short</th></thead><tbody>"
+        let text = "<table><thead><th>" + r.resource_code + "</th><th>Long</th><th>Medium</th><th>Short</th></thead><tbody>"
         r.resource_prices.forEach(e => { 
-          text = text  + "<tr>" 
-            + "<th>" + e.year   + "</th>" 
-            + "<td>" + e.long   + "€</td>" 
-            + "<td>" + e.medium + "€</td>" 
-            + "<td>" + e.short  + "€</td>"
+          text = text  + "<tr><th>" + e.year   + "</th>" 
+            + "<td>" + (e.long   + e.services) + "€</td>" 
+            + "<td>" + (e.medium + e.services) + "€</td>" 
+            + "<td>" + (e.short  + e.services) + "€</td>"
             + "</tr>"
         })
         text += "</tbody></table>";

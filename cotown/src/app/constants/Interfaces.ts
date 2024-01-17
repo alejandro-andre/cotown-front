@@ -20,6 +20,14 @@ export interface Building extends GraphQlResponse{
   location?: any
 };
 
+export interface Price {
+  key: string,
+  year: number,
+  long: number,
+  medium: number,
+  short: number,
+};
+
 export interface City extends GraphQlResponse{}
 
 export interface ResourceType extends GraphQlResponse {
@@ -27,33 +35,36 @@ export interface ResourceType extends GraphQlResponse {
 }
 
 export interface Resource {
-  Resource_id: number,
-  Resource_code: string,
-  Resource_type: string,
-  Resource_info: string
-  Resource_flat_type: number,
-  Resource_place_type: number,
-  Resource_notes: string
+  resource_id: number,
+  resource_code: string,
+  resource_type: string,
+  resource_info: string
+  resource_building_id: number,
+  resource_flat_type: number,
+  resource_place_type: number,
+  resource_notes: string,
+  resource_rate: number,
+  resource_prices: any[]
 }
 
 export interface Booking {
-  Booking_id: number,
-  Booking_code: number,
-  Booking_lock: string,
-  Booking_status: string,
-  Booking_date_from: string,
-  Booking_date_to: string,
-  Booking_comments: string,
-  Resource_id: number,
-  Resource_code: string
-  Customer_name?: string,
-  Customer_gender?: string,
-  Customer_country?: string,
-  Customer_nationality?: string,
-  Customer_email?: string,
-  Customer_phone?: string,
-  Customer_age?: number,
-  Customer_last_name?: string,
+  booking_id: number,
+  booking_code: number,
+  booking_lock: string,
+  booking_status: string,
+  booking_date_from: string,
+  booking_date_to: string,
+  booking_comments: string,
+  resource_id: number,
+  resource_code: string
+  rustomer_name?: string,
+  customer_gender?: string,
+  customer_country?: string,
+  customer_nationality?: string,
+  customer_email?: string,
+  customer_phone?: string,
+  customer_age?: number,
+  customer_last_name?: string,
 }
 
 export interface Params {

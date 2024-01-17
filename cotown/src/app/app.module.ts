@@ -32,9 +32,9 @@ import { MonthYearPickerFormatDirective } from './plugins/month-year-picker-form
 import { PlanningComponent } from './pages/planning/planning.component';
 import { DownloadComponent } from './pages/download/download.component';
 import { ConfirmationComponent } from './pages/confirmation/confirmation.component';
-import { SafePipe } from './services/safe.pipe';
 import { GeneralDashboardComponent } from './pages/dashboard/general/general.component';
 import { OperationsDashboardComponent } from './pages/dashboard/operations/operations.component';
+import { SharedModule } from './shared/shared.module';
 
 registerLocaleData(localeES, 'es-ES');
 registerLocaleData(localeEN, 'en-US');
@@ -51,8 +51,7 @@ export function createTranslateLoader(http: HttpClient) {
     OperationsDashboardComponent,
     DownloadComponent,
     ConfirmationComponent,
-    MonthYearPickerFormatDirective,
-    SafePipe
+    MonthYearPickerFormatDirective
   ],
   imports: [
     BrowserModule,
@@ -72,6 +71,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatInputModule,
     GraphQLModule,
     TimeChartModule,
+    SharedModule,
     SpinnerModule,
     TranslateModule.forRoot({
       loader: {

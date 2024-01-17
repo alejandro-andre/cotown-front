@@ -57,8 +57,14 @@
 					(change)="emitCheck($event, row)">
 				</mat-checkbox>
 			</div>			
-			<div class="timechart-row-first {{row.style}}">{{row.code}}</div>
-			<div class="timechart-row-first" [class.note]="row.notes">{{row.info}}<div class="tiptext">{{row.notes}}</div></div>
+			<div class="timechart-row-first {{row.style}}" [class.details]="row.details">
+				{{row.code}}
+				<div class="tiptext" [innerHtml]="row.details | safe"></div>
+			</div>
+			<div class="timechart-row-first" [class.note]="row.notes">
+				{{row.info}}
+				<div class="tiptext">{{row.notes}}</div>
+			</div>
 
 			<!-- Bars -->
 			<ul class="timechart-row-bars">
@@ -68,7 +74,7 @@
 					style.grid-column="{{bar.from}}/{{bar.to}}"
 					(click)="go_booking(bar.link);">
 					<div *ngIf="bar.code != '' && (bar.to - bar.from) > 1 " class="bar">
-						<span class="tag">{{bar.code}}<div class="tiptext" [innerHtml]="bar.tooltip|safeHtml"></div></span>
+						<span class="tag">{{bar.code}}<div class="tiptext" [innerHtml]="bar.tooltip | safe"></div></span>
 						<span>{{bar.text}}</span>
 					</div>
 				</li>

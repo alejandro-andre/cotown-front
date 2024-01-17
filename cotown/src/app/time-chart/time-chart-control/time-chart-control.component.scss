@@ -217,29 +217,6 @@
 	display: inline-block;
 	border-bottom: 1px dotted black;
 }
-.tag .tiptext {
-	visibility: hidden;
-	color: black;
-	background-color: #ffa;
-	padding: 5px;
-	position: absolute;
-	top: 20px;
-	left: 20px;
-	z-index: 1;
-}
-.note .tiptext {
-	visibility: hidden;
-	color: black;
-	background-color: #aff;
-	padding: 5px;
-	position: absolute;
-	top: 20px;
-	left: 20px;
-	min-width: 200px;
-	z-index: 1;
-}
-
-/* Custom styles */
 .tag {
 	overflow: hidden;
 	color: white;
@@ -252,13 +229,74 @@
 .tag:hover .tiptext {
 	visibility: visible;
 }
+.tag .tiptext {
+	visibility: hidden;
+	color: black;
+	background-color: #ffb;
+	padding: 5px;
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	z-index: 1;
+}
 .note {
 	position: relative;
 	border-left: 4px solid #00BFB2;
 }
-.note:hover .tiptext {
+.details {
+	position: relative;
+}
+.note:hover .tiptext, 
+.details:hover .tiptext {
 	visibility: visible;
 }
+.note .tiptext {
+	position: absolute;
+	visibility: hidden;
+	color: black;
+	background-color: #bff;
+	padding: 5px;
+	top: 20px;
+	left: 20px;
+	min-width: 200px;
+	z-index: 1;
+}
+.details .tiptext {
+	position: absolute;
+	visibility: hidden;
+	color: black;
+	background-color: #ccf;
+	padding: 5px;
+	top: 30px;
+	left: 30px;
+	z-index: 1;
+}
+
+::ng-deep .tiptext table {
+	border-collapse: collapse;
+	margin: 0;
+}
+::ng-deep .tiptext th {
+	padding: 2px;
+	margin: 0px;
+	font-weight: 700;
+	font-size: 14px;
+	min-width: 30px;
+	border: 1px solid black;
+}
+::ng-deep .tiptext td {
+	padding: 2px;
+	margin: 0px;
+	font-weight: 300;
+	font-size: 14px;
+	min-width: 40px;
+	border: 1px solid black;
+}
+::ng-deep .details .tiptext td {
+	text-align: right;
+}
+
+/* Custom styles */
 .title_h1 {
 	font-size: .95em;
 	font-weight: 600;

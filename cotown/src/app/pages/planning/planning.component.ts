@@ -17,7 +17,7 @@ import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
 
 import { CityListQuery } from 'src/app/schemas/query-definitions/city.query';
 import { BuildingListByLocationQuery, BuildingListQuery } from 'src/app/schemas/query-definitions/building.query';
-import { ResourceFlatTypeQuery, ResourceListQuery, ResourcePlaceTypeQuery } from 'src/app/schemas/query-definitions/resource.query';
+import { PricingQuery, ResourceFlatTypeQuery, ResourceListQuery, ResourcePlaceTypeQuery } from 'src/app/schemas/query-definitions/resource.query';
 import { BookingListQuery, BuildingDataViaBooking, BuildingDataViaBookingGroup } from 'src/app/schemas/query-definitions/booking.query';
 
 import {
@@ -27,6 +27,7 @@ import {
   Building,
   City,
   Params,
+  Price,
   Resource,
   ResourceType
 } from 'src/app/constants/Interfaces';
@@ -45,6 +46,7 @@ export class PlanningComponent {
   // Lists
   public cities: City [] = [] as City[]; // Cities
   public buildings: Building[] = [] as Building[]; // Buildings
+  public prices: Price[] = [] as Price[]; // Prices
   public resourcePlaceTypes: ResourceType [] = [] as ResourceType []; // Type of resources
   public resourceFlatTypes: ResourceType [] = [] as ResourceType [];
   public availableResources: number[] = [];
@@ -107,9 +109,10 @@ export class PlanningComponent {
   // On Init
   async ngOnInit() {
 
-    // Get cities, buildings and types
+    // Get cities, buildings, prices and types
     await this.getCities();
     await this.getBuildings();
+    await this.getPrices();
     await this.getResourceFlatTypes();
     await this.getResourcePlaceTypes();
 
@@ -179,7 +182,7 @@ export class PlanningComponent {
     if (this.sel == '1') {
       for (const elemento of this.rows) {
         if (elemento.checked) {
-          resource = this.resources.find((e) => e.Resource_id === elemento.id);
+          resource = this.resources.find((e) => e.resource_id === elemento.id);
           this.params.value = {id: elemento.id, Code: elemento.code};
           break;
         }
@@ -196,7 +199,7 @@ export class PlanningComponent {
     }
 
     // Check if change
-    if (resource && (resource.Resource_flat_type != this.initialFlatTypeId || resource.Resource_place_type!= this.initialPlaceTypeId)) {
+    if (resource && (resource.resource_flat_type != this.initialFlatTypeId || resource.resource_place_type!= this.initialPlaceTypeId)) {
 
       // Type changed
       const dialogRef = this.dialog.open(ConfirmationComponent, {
@@ -332,6 +335,45 @@ export class PlanningComponent {
     }
   }
 
+  // Get all prices
+  async getPrices(): Promise<void> {
+    this.apolloApi.getData(PricingQuery).subscribe(res => {
+      for (const e of res.data.data) {
+        this.prices.push({
+          key: e.building + "-" + e.flat_type_id + "-" + (e.place_type_id || 0),
+          year: e.year,
+          long: e.long + e.services,
+          medium: e.medium + e.services,
+          short: e.short + e.services
+        });
+      }
+    });
+  }
+
+  // Get prices, updated with applied rate and amenities
+  private calcPrices(building: number, flat_type: number, place_type: number, multiplier: number, increments: number[]) {
+    const result: any = [];
+    const prices = this.prices
+      .filter(r => r.key == (building + "-" + flat_type + "-" + place_type))
+      .sort((a, b) => (a.year - b.year));
+    if (prices) { 
+      increments.forEach((e) => {
+        multiplier *= (e / 100.0);
+      });
+      prices.forEach((e) => {
+        const p: Price = {
+          key: e.key,
+          year: e.year,
+          long: Math.round(e.long * multiplier),
+          medium: Math.round(e.medium * multiplier),
+          short: Math.round(e.short * multiplier)
+        }
+        result.push(p);
+      });
+    }
+    return result;
+  }
+
   // Get all flat types
   async getResourceFlatTypes(): Promise<void> {
     this.apolloApi.getData(ResourceFlatTypeQuery).subscribe(res => {
@@ -446,16 +488,21 @@ export class PlanningComponent {
   // Get filtered resources
   async getResources(query: string, variables: ApolloVariables | undefined = undefined): Promise<void> {
     this.apolloApi.getData(query, variables).subscribe((res: any) => {
-      for (const elem of res.data.data) {
-        const type = elem.resource_type === 'piso' ? elem.flat_type.code : elem.place_type?.code;
+      for (const e of res.data.data) {
+        const type = e.resource_type === 'piso' ? e.flat_type.code : e.place_type?.code;
+        const amenities = e.amenities ? e.amenities.map((t: any) => t.amenity_type.increment) : [];
+        const prices = this.calcPrices(e.building.id, e.flat_type.id, e.place_type?.id || 0, e.pricing.multiplier, amenities)
         this.resources.push({
-          Resource_id: elem.id,
-          Resource_code: elem.code,
-          Resource_type: elem.resource_type,
-          Resource_flat_type: elem.flat_type.id,
-          Resource_place_type: elem.place_type?.id || -1,
-          Resource_info: type || '',
-          Resource_notes: elem.notes || ''
+          resource_id: e.id,
+          resource_code: e.code,
+          resource_type: e.resource_type,
+          resource_building_id: e.building.id,
+          resource_flat_type: e.flat_type.id,
+          resource_place_type: e.place_type?.id || -1,
+          resource_info: type || '',
+          resource_notes: e.notes || '',
+          resource_rate: e.pricing.multiplier,
+          resource_prices: prices
         });
       }
     });
@@ -531,14 +578,27 @@ export class PlanningComponent {
     // Generate rows
     for (const r of this.resources) {
       auxRow = new TimeChartRow();
-      auxRow.id = r.Resource_id;
-      auxRow.code = r.Resource_code;
-      auxRow.info = r.Resource_info;
-      auxRow.notes = r.Resource_notes;
-      auxRow.style = Constants.types[r.Resource_type];
-      if (this.rooms.includes(r.Resource_code)) {
+      auxRow.id = r.resource_id;
+      auxRow.code = r.resource_code;
+      auxRow.info = r.resource_info;
+      auxRow.notes = r.resource_notes;
+      auxRow.style = Constants.types[r.resource_type];
+      if (this.rooms.includes(r.resource_code)) {
         auxRow.selected = true;
         auxRow.checked = true;
+      }
+      if (r.resource_prices.length) {
+        let text = "<table><thead><th></th><th>Long</th><th>Medium</th><th>Short</th></thead><tbody>"
+        r.resource_prices.forEach(e => { 
+          text = text  + "<tr>" 
+            + "<th>" + e.year   + "</th>" 
+            + "<td>" + e.long   + "€</td>" 
+            + "<td>" + e.medium + "€</td>" 
+            + "<td>" + e.short  + "€</td>"
+            + "</tr>"
+        })
+        text += "</tbody></table>";
+        auxRow.details = text;
       }
       auxRows.push(auxRow);
     }
@@ -602,8 +662,8 @@ export class PlanningComponent {
         const tip = this.getLabel(b.Booking_status)
         bar.tooltip = `
           <table>
-          <tr><td></td><td><span style="font-size: 1.1em;font-weight: 600;">${b.Booking_code}</span></td></tr>
-          <tr><td><b>Status</b></td><td><span>${tip}</span></td></tr>
+          <tr><th colspan="2">${b.Booking_code}</td></tr>
+          <tr><td><b>Status</b></td><td>${tip}</td></tr>
           <tr><td><b>Desde/Hasta</b></td><td>${dfrom} a ${dto}</td></tr>
           <tr><td><b>Check-in/out</b></td><td>${din} a ${dout}</td></tr>
           <tr><td><b>Nombre</b></td><td>${b.Customer_name}</td></tr>
@@ -744,7 +804,7 @@ export class PlanningComponent {
         this.availableResources = res.data;
         this.rows = [];
         for (const available of this.availableResources) {
-          const finded: number = this.bookings.findIndex((elem: Booking) => elem.Resource_id === available);
+          const finded: number = this.bookings.findIndex((elem: Booking) => elem.resource_id === available);
           if (finded >= 0){
             this.bookings.push({
               ...this.bookings[finded],

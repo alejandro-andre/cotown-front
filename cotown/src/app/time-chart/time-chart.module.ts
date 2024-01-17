@@ -4,17 +4,17 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { TimeChartControlComponent } from './time-chart-control/time-chart-control.component';
-import { SafeHtmlPipe } from '../plugins/safe-html.pipe';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
-    TimeChartControlComponent,
-    SafeHtmlPipe
+    TimeChartControlComponent
   ],
   imports: [
     CommonModule,
     MatRadioModule,
     MatCheckboxModule,
+    SharedModule
   ],
   exports: [TimeChartControlComponent]
 })

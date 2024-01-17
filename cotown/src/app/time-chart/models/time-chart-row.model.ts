@@ -5,6 +5,7 @@ export class TimeChartRow {
     booking_id!: number;
     code: string = '';
     info: string = '';
+    details: string = '';
     notes: string = '';
     style: string = '';
     bars: TimeChartBar[] = [];

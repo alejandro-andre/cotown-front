@@ -83,7 +83,6 @@ export class OperationsDashboardComponent implements OnInit {
     });
 
     // Set locale
-    console.log(this.language.lang.substring(0, 2));
     this.adapter.setLocale(this.language.lang.substring(0, 2));
 
     // Columns
@@ -150,7 +149,6 @@ export class OperationsDashboardComponent implements OnInit {
     // Ger bookings
     this.isLoading = true;
     axiosApi.getDashboardBookings(this.op, this.apolloApi.token, params).then((res) => { 
-      console.log(res.data);
       this.rows = res.data.map((o: any) => { return {
         "id": o.id,
         "Name": o.Name + "<br>" + (o.Email || '') + "<br>" + (o.Phones || ''),

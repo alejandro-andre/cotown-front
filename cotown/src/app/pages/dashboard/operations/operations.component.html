@@ -7,9 +7,10 @@
     <div class="pure-g">
       <div class="pure-u-22-24">
         <span *ngIf="op=='nextin'"  ><h1>Próximas entradas</h1></span>
-        <span *ngIf="op=='nextout'" ><h1>Próximas salidas</h1></span>
+        <span *ngIf="op=='checkin'" ><h1>Entradas</h1></span>
         <span *ngIf="op=='issues'"  ><h1>Incidencias entradas</h1></span>
-        <span *ngIf="op=='checkout'"><h1>Check-outs</h1></span>
+        <span *ngIf="op=='nextout'" ><h1>Próximas salidas</h1></span>
+        <span *ngIf="op=='checkout'"><h1>Salidas</h1></span>
       </div>
       <div class="pure-u-1-24" style="margin-top:20px;text-align:right;">
         <a><mat-icon style="cursor:pointer;" fontIcon="cloud_download"></mat-icon></a>
@@ -26,7 +27,7 @@
           <mat-form-field class="field" appearance="fill" >
             <mat-label>{{ 'city' | translate }}</mat-label>
             <mat-select name="cities" 
-              [(ngModel)]="selectedCityId"
+              [(ngModel)]="cityId"
               [placeholder]="'nothing' | translate" 
               (selectionChange)="onCity()">
               <mat-option *ngFor="let citie of cities" [value]="citie.id">
@@ -41,7 +42,7 @@
             <mat-label>{{ 'building' | translate}}</mat-label>
             <mat-select
             name="buildings"
-              [(ngModel)]="selectedBuildingId"
+              [(ngModel)]="buildingId"
               [placeholder]="'nothing' | translate"
               (selectionChange)="onBuilding()">
               <mat-option  [value]=-1>{{ 'allM' | translate }}</mat-option>
@@ -52,7 +53,7 @@
           </mat-form-field>
         </div>
 
-        <div class="pure-u-5-24">
+        <div class="pure-u-5-24" *ngIf="['nextin','nextout','issues'].includes(op)">
           <mat-form-field class="field" appearance="fill" >
             <mat-label>{{ 'date range' | translate }}</mat-label>
             <mat-date-range-input [rangePicker]="picker" [formGroup]="range">
@@ -73,18 +74,31 @@
 
     <thead>
       <tr>
-        <th *ngFor="let h of header" (click)="sort(h.key);" class="link">{{h.value}}<svg class="arrow {{h.sort}}" focusable="false" viewBox="0 0 24 24"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"></path></svg>
+        <th *ngFor="let h of header" (click)="sort(h.key, null);" class="link">{{h.value}}<svg class="arrow {{h.sort}}" focusable="false" viewBox="0 0 24 24"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"></path></svg>
         </th>
+        <th></th>
       </tr>
     </thead>
 
     <tbody>
-      <tr *ngFor="let r of rows" (click)="goBooking(r.id)" class="link">
+      <tr *ngFor="let r of rows" class="link" [class.warning]="r['Warning']" [class.holiday]="isHoliday(r['Date'])">
         <td *ngFor="let h of header">
-          <span *ngIf="h.key === 'Status'">{{ getLabel(r[h.key]) }}</span>
-          <span *ngIf="h.key !== 'Status' && r[h.key] == true"><mat-icon fontIcon="done_all"></mat-icon></span>
-          <span *ngIf="h.key !== 'Status' && r[h.key] == false"><mat-icon fontIcon="close"></mat-icon></span>
-          <span *ngIf="h.key !== 'Status' && r[h.key] != false && r[h.key] != true" [innerHtml]="r[h.key] | safe"></span>
+          <!-- Status field -->
+          <span *ngIf="h.type === 'status'" (click)="goBooking(r.id)">{{ getLabel(r[h.key]) }}</span>
+          <!-- Text/Date/Input fields -->
+          <span *ngIf="h.type === 'text'"  [innerHtml]="r[h.key] | safe"></span>
+          <span *ngIf="h.type === 'date'"  [innerHtml]="r[h.key] | safe"></span>
+          <span *ngIf="h.type === 'input'" [innerHtml]="r[h.key] | safe"></span>
+          <!-- Boolean fields -->
+          <span *ngIf="h.type === 'bool'" >
+            <mat-checkbox 
+              [checked]="r[h.key][0]" 
+              (change)="emitCheck($event, h.key, r)">
+            </mat-checkbox>
+          </span>
+        </td>
+        <td>
+          <button mat-raised-button color="primary" [disabled]="!r['Changed']" (click)="save(r)">Guardar</button>
         </td>
       </tr>
     </tbody>

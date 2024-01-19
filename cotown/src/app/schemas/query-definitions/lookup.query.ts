@@ -6,3 +6,12 @@ export const ProviderListQuery = `query ProviderList {
         name: Name
     }
 }`;
+
+export const HolidayListQuery = `query HolidayList {
+    data: Auxiliar_HolidayList (
+        orderBy: [{attribute: Day, direction:ASC, nullsGo: FIRST}]
+    ) {
+        day: Day
+        location: Location_id
+    }
+}`;

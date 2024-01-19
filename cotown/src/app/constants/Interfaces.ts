@@ -29,6 +29,11 @@ export interface Price {
   services: number,
 };
 
+export interface Holiday {
+  day: string,
+  location: number
+}
+
 export interface City extends GraphQlResponse{}
 
 export interface ResourceType extends GraphQlResponse {

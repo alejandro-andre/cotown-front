@@ -12,9 +12,10 @@ const routes: Routes = [
   { path: 'download', component: DownloadComponent },
   { path: 'dashboard', component: GeneralDashboardComponent },
   { path: 'dashboard/nextin', component: OperationsDashboardComponent, data: { op: 'nextin'} },
+  { path: 'dashboard/checkin', component: OperationsDashboardComponent, data: { op: 'checkin'} },
+  { path: 'dashboard/issues', component: OperationsDashboardComponent, data: { op: 'issues'} },
   { path: 'dashboard/nextout', component: OperationsDashboardComponent, data: { op: 'nextout'} },
   { path: 'dashboard/checkout', component: OperationsDashboardComponent, data: { op: 'checkout'} },
-  { path: 'dashboard/issues', component: OperationsDashboardComponent, data: { op: 'issues'} },
 ];
 
 @NgModule({

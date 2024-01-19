@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation, LOCALE_ID, Inject } from "@angular/core";
 import { DateAdapter } from "@angular/material/core";
+import { environment } from 'src/environments/environment';
 
 import { ApolloQueryApi } from "src/app/services/apollo-api.service";
 import axiosApi from "src/app/services/api.service";
@@ -318,6 +319,19 @@ export class OperationsDashboardComponent implements OnInit {
   save(row: any) {
     console.log(row);
     row["Changed"] = false;
- }
+  }
+
+  link() { 
+    // Next checkins
+    if (this.op == 'nextin') 
+      return environment.backURL + '/export/dashboardnext?access_token=' + this.apolloApi.token;
+
+    // Next checkouts
+    if (this.status == 'nextout') 
+      return environment.backURL + '/export/dashboardnextout?access_token=' + this.apolloApi.token;
+
+    // Rest of status
+    return null;
+  }
 
 }

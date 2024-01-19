@@ -74,7 +74,9 @@
 
     <thead>
       <tr>
-        <th *ngFor="let h of header" (click)="sort(h.key, null);" class="link">{{h.value}}<svg class="arrow {{h.sort}}" focusable="false" viewBox="0 0 24 24"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"></path></svg>
+        <th *ngFor="let h of header" (click)="sort(h.key, null);" class="link">
+          <span [class.vertical]="h.type === 'bool'">{{h.value}}</span>
+          <svg class="arrow {{h.sort}}" focusable="false" viewBox="0 0 24 24"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"></path></svg>
         </th>
         <th></th>
       </tr>

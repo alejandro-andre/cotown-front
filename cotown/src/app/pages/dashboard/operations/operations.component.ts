@@ -65,14 +65,14 @@ export class OperationsDashboardComponent implements OnInit {
     { key:"Arrival",              value:"Hora llegada",       sort:"", type: "text",   filter: ["nextin","checkin"] },
     { key:"Flight",               value:"Tren/Vuelo",         sort:"", type: "text",   filter: ["nextin","checkin"] },
     { key:"Option",               value:"Opción",             sort:"", type: "text",   filter: ["nextin","checkin"] },
-    { key:"Check_in_room_ok",     value:"Limpieza",           sort:"", type: "bool",   filter: ["nextin","checkin"] },
-    { key:"Check_in_notice_ok",   value:"Aviso",              sort:"", type: "bool",   filter: ["nextin","checkin"] },
-    { key:"Check_in_keys_ok",     value:"Llaves",             sort:"", type: "bool",   filter: ["nextin","checkin"] },
-    { key:"Check_in_keyless_ok",  value:"Keyless",            sort:"", type: "bool",   filter: ["nextin","checkin"] },
-    { key:"Check_out_keys_ok",    value:"Llaves",             sort:"", type: "bool",   filter: ["nextout","checkout"] },
-    { key:"Check_out_keyless_ok", value:"Keyless",            sort:"", type: "bool",   filter: ["nextout","checkout"] },
     { key:"Issues",               value:"Incidencias",        sort:"", type: "text",   filter: ["issues"] },
     { key:"Damages",              value:"Daños",              sort:"", type: "input",  filter: ["checkout"] },
+    { key:"Check_in_room_ok",     value:"Limpieza ok",        sort:"", type: "bool",   filter: ["nextin","checkin"] },
+    { key:"Check_in_notice_ok",   value:"Aviso roomates",     sort:"", type: "bool",   filter: ["nextin","checkin"] },
+    { key:"Check_in_keys_ok",     value:"Llaves   ok",        sort:"", type: "bool",   filter: ["nextin","checkin"] },
+    { key:"Check_in_keyless_ok",  value:"Keyless ok",         sort:"", type: "bool",   filter: ["nextin","checkin"] },
+    { key:"Check_out_keys_ok",    value:"Llaves   ok",        sort:"", type: "bool",   filter: ["nextout","checkout"] },
+    { key:"Check_out_keyless_ok", value:"Keyless ok",         sort:"", type: "bool",   filter: ["nextout","checkout"] },
   ];
 
   // Constructor

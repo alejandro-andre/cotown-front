@@ -84,6 +84,7 @@ export class CustomerService {
     this.readOnly['check_in'] = (booking.check_in === null);
     this.readOnly['flight'] = (booking.flight === null);
     this.readOnly['arrival'] = (booking.arrival === null);
+    this.readOnly['check_in_time'] = (booking.check_in_time === null);
     this.readOnly['check_in_option_id'] = (booking.check_in_option_id === null);
   }
 

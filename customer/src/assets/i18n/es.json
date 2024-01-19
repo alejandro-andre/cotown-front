@@ -47,6 +47,7 @@
   "building": "Edificio",
   "certificate": "Certificado de residencia",
   "check_in": "Fecha de llegada",
+  "check_in_time": "Hora de check-in",
   "check_in_title": "Coordinación llegada",
   "check_in_text": "Coordinación llegada. Para cualquier cambio, por favor, contacta con nosotros.",
   "check_in_option_id": "¿Cómo quieres que te recibamos?",

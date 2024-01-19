@@ -86,6 +86,7 @@ export class MyBookingDetailComponent {
   public selectedOption: number | null = null;
   public flight:string = '';
   public arrival: string = '';
+  public checkintime: string | null = null;
 
   constructor(
     public customerService: CustomerService,
@@ -238,7 +239,6 @@ export class MyBookingDetailComponent {
   }
 
   setBooking(booking: any) {
-
     // Assign booking
     this.booking = booking;
 
@@ -246,6 +246,7 @@ export class MyBookingDetailComponent {
     this.selectedOption = this.booking.check_in_option_id;
     this.flight = this.booking.flight !== null ? this.booking.flight : '';
     this.arrival = this.booking.arrival !== null ? this.booking.arrival : '';
+    this.checkintime = this.booking.check_in_time;
 
     // Checkin date
     this.checkinFormControl = new FormControl(
@@ -326,11 +327,13 @@ export class MyBookingDetailComponent {
       checkout: checkout,
       arrival:  this.arrival,
       flight : this.flight,
+      checkintime: this.checkintime == '' ? null : this.checkintime,
       selectedSchool : this.selectedSchool,
       selectedReason : this.selectedReason,
       option: this.selectedOption,
     }
     this.isLoading = true;
+    console.log(variables);
     this.apollo.setData(UPDATE_BOOKING, variables).subscribe({
 
       next: (res) => {

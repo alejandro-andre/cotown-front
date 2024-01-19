@@ -328,7 +328,7 @@
               <mat-datepicker-toggle *ngIf="visibility['check_in']" matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
               <mat-datepicker #pickerFrom></mat-datepicker>
             </mat-form-field>
-            </div>
+          </div>
     
           <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
             <mat-form-field>
@@ -341,10 +341,16 @@
             <mat-form-field>
               <mat-label>{{ 'arrival' | translate }}</mat-label>
               <input matInput type="time" [readonly]="!visibility['arrival']" [(ngModel)]="arrival" (change)="enableSave()">
-          </mat-form-field>
-      
+            </mat-form-field>
           </div>
-    
+      
+          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+            <mat-form-field>
+              <mat-label>{{ 'check_in_time' | translate }}</mat-label>
+              <input matInput type="time" [readonly]="!visibility['check_in_time']" [(ngModel)]="checkintime" (change)="enableSave()">
+            </mat-form-field>
+          </div> 
+      
           <div class="pure-u-1">
             <mat-form-field *ngIf="!visibility['check_in_option_id']">
               <mat-label>{{ 'check_in_option_id' | translate }}</mat-label>

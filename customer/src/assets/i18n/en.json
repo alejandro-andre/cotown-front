@@ -47,6 +47,7 @@
   "building": "Building",
   "certificate": "Residence certificate",
   "check_in": "Date of arrival",
+  "check_in_time": "Hour of check-in",
   "check_in_title": "Arrival coordination",
   "check_in_text": "Arrival coordination. For any further change, please contact us.",
   "check_in_option_id": "Arrival option",

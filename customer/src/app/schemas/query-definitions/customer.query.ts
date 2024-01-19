@@ -72,6 +72,7 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       deposit: Deposit
       limit: Limit
       arrival: Arrival
+      check_in_time: Check_in_time
       flight: Flight
       check_in_option_id: Check_in_option_id
       contract_rent: Contract_rent { name oid type size }

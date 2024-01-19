@@ -15,6 +15,7 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
     deposit: Deposit
     limit: Limit
     arrival: Arrival
+    check_in_time: Check_in_time
     flight: Flight
     check_in_option_id: Check_in_option_id
     contract_rent: Contract_rent { name oid type size }
@@ -114,6 +115,7 @@ export const UPDATE_BOOKING = `mutation(
   $checkout: String,
   $arrival: String,
   $flight: String,
+  $checkintime: String,
   $option: Int,
   $selectedSchool: Int,
   $selectedReason: Int
@@ -123,6 +125,7 @@ export const UPDATE_BOOKING = `mutation(
       Check_in: $checkin
       Check_out: $checkout
       Arrival: $arrival
+      Check_in_time: $checkintime
       Flight: $flight
       Check_in_option_id: $option
       School_id: $selectedSchool,

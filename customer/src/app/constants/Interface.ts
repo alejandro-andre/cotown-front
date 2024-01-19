@@ -166,6 +166,7 @@ export interface IBooking {
   check_in_option_id: number | null,
   flight: string | null,
   arrival: string | null,
+  check_in_time: string | null,
   price_list?: IRent[],
   options: IOption[] | null
 };

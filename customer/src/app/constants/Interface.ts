@@ -212,3 +212,8 @@ export interface IPdf {
   description_en: string
 }
 
+export interface IHoliday {
+  day: string,
+  location: number
+}
+

@@ -115,6 +115,9 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
         }
         building: BuildingViaBuilding_id {
           address: Address
+          district: DistrictViaDistrict_id {
+            location: Location_id
+          }
         }
       }
       options: Booking_optionListViaBooking_id {

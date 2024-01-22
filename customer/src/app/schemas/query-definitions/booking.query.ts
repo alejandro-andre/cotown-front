@@ -58,6 +58,9 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
       }
       building: BuildingViaBuilding_id {
         address: Address
+        district: DistrictViaDistrict_id {
+          location: Location_id
+        }
       }
     }
     price_list: Booking_priceListViaBooking_id {

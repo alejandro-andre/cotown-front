@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ICountry, ILookup, ILookupInt, IPaymentMethod as IPaymentMethod, IPdf } from '../constants/Interface';
+import { ICountry, IHoliday, ILookup, ILookupInt, IPaymentMethod as IPaymentMethod, IPdf } from '../constants/Interface';
 import { ApolloQueryApi } from './apollo-api.service';
 
-import { CONTACT_TYPE_QUERY, COUNTRY_QUERY, REASONS_QUERY, GENDER_QUERY, ID_TYPE_QUERY, LANGUAGE_QUERY, SCHOOL_QUERY, STATUS_QUERY, RESOURCE_TYPE_QUERY, CHECKIN_OPTIONS_QUERY, PDFS_QUERY, PAYMENT_METHOD_QUERY } from 'src/app/schemas/query-definitions/lookup.query';
+import { CONTACT_TYPE_QUERY, COUNTRY_QUERY, REASONS_QUERY, GENDER_QUERY, ID_TYPE_QUERY, LANGUAGE_QUERY, SCHOOL_QUERY, STATUS_QUERY, RESOURCE_TYPE_QUERY, CHECKIN_OPTIONS_QUERY, PDFS_QUERY, PAYMENT_METHOD_QUERY, HOLIDAY_QUERY } from 'src/app/schemas/query-definitions/lookup.query';
 import { Constants } from '../constants/Constants';
 
 @Injectable({
@@ -20,10 +20,11 @@ export class LookupService {
   public genders: ILookupInt[] = [];
   public reasons: ILookupInt[] = [];
   public paymentMethods: IPaymentMethod[] = [];
-  public checkinOptions: ILookupInt[] = [];
+  public checkinOptions: any[] = [];
   public resourceTypes: {code:string, name:string, name_en: string}[] = [];
   public status: {code:string, name:string, name_en: string}[] = [];
   public pdfs: IPdf[] = [];
+  public holidays: IHoliday[] = [];
   
   public appLangs = Constants.LANGUAGES;
   
@@ -42,6 +43,7 @@ export class LookupService {
     this.loadCheckinOptions();
     this.loadStatus();
     this.loadResourceTypes();
+    this.loadHolidays();
     this.loadPDFs()
   }
   
@@ -55,6 +57,16 @@ export class LookupService {
     });
   }
 
+  // Load holidays
+  loadHolidays() {
+    this.apolloApi.getData(HOLIDAY_QUERY).subscribe((res) => {
+      const value = res.data;
+      if (value && value.data) {
+        this.holidays = value.data;
+      }
+    });
+  }
+  
   // Load ID types
   loadIdTypes() {
     this.apolloApi.getData(ID_TYPE_QUERY).subscribe((res) => {

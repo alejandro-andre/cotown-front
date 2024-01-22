@@ -81,12 +81,24 @@ export const REASONS_QUERY = `query get {
 }`;
 
 export const CHECKIN_OPTIONS_QUERY = `query checking_list {
-  data: Booking_Checkin_typeList (
-    orderBy: [{attribute: Name, direction: ASC, nullsGo: FIRST}]
-  ) {
+  data: Booking_Checkin_typeList {
     id
     name: Name
     name_en: Name_en
+    prices: Checkin_priceListViaCheckin_type_id {
+      location: Location_id
+      price: Price
+      timetable: TimetableViaTimetable_id {
+        Week_from
+        Week_to
+        Fri_from
+        Fri_to
+        Sat_from
+        Sat_to
+        Sun_from
+        Sun_to
+      }
+    }
   }
 }`;
 
@@ -105,6 +117,14 @@ query get {
       labels        
   }
 }`;
+
+export const HOLIDAY_QUERY = `
+query get {
+  data: Auxiliar_HolidayList {
+    day: Day
+    location: Location_id   
+  }
+}`
 
 export const PDFS_QUERY = `query get {
   data: Booking_Booking_docList (

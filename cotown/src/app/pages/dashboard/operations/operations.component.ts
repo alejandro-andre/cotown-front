@@ -179,7 +179,6 @@ export class OperationsDashboardComponent implements OnInit {
           warning = o.Date_in < this.today;
         }
         if (this.op == "checkout") {
-          console.log(this.lastmonth);
           warning = o.Date_out < this.lastmonth;
         }
         return {
@@ -317,7 +316,6 @@ export class OperationsDashboardComponent implements OnInit {
   }
 
   save(row: any) {
-    console.log(row);
     row["Changed"] = false;
   }
 

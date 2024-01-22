@@ -206,6 +206,43 @@ export class MyBookingDetailComponent {
     return this.customerService.visibility;
   }
 
+  // Return array of valid check in options for the check in date, hour and location
+  get checkinOptions() {
+    // Enough data?
+    const checkin = this.checkinFormControl.value !== null ? this.datePipe.transform(this.checkinFormControl.value, 'yyyy-MM-dd') : null;
+    if (checkin == null || this.checkintime == null)
+      return [];
+
+    // Check day of week or if it's holiday
+    let dow = this.checkinFormControl.value?.getDay();
+    this.lookupService.holidays.forEach((d: any) => {
+      if (d.day == checkin && (d.location == null || d.location == this.booking.resource.building.district.location))
+        dow = 0;
+    });
+
+    // Look up checkin options
+    const result: any = []
+    this.lookupService.checkinOptions.forEach(option => {
+      option.prices.forEach((price: any) =>{
+        if (price.location == this.booking.resource.building.district.location) {
+          let from = price.timetable.Week_from; 
+          let to   = price.timetable.Week_to;
+          if (dow == 0) { from = price.timetable.Sun_from; to = price.timetable.Sun_to; }
+          else if (dow == 6) { from = price.timetable.Sat_from; to = price.timetable.Sat_to; }
+          else if (dow == 5) { from = price.timetable.Fri_from; to = price.timetable.Fri_to; }
+          if (from != undefined) {
+            if ((this.checkintime || '00:00') >= from && (this.checkintime || '99:99') <= this.minusOneMinute(to)) {
+              result.push(option);
+            }
+          }
+        }
+      })
+    })
+
+    // Options
+    return result;
+  }
+
   /*
    * Methods
    */
@@ -527,5 +564,12 @@ export class MyBookingDetailComponent {
       link.download = name;
       link.click();
     });
+  }
+
+  minusOneMinute(d: string) {
+    let time = parseInt(d.split(':')[0]) * 60 + parseInt(d.split(':')[1]) - 1;
+    if (time < 0)
+      return "23:59";
+    return Math.trunc(time / 60).toString().padStart(2, '0') + ':' + (time % 60).toString().padStart(2, '0');
   }
 }

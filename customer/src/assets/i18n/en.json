@@ -51,6 +51,7 @@
   "check_in_title": "Arrival coordination",
   "check_in_text": "Arrival coordination. For any further change, please contact us.",
   "check_in_option_id": "Arrival option",
+  "check_in_no_options": "On your selected day and time, there are no check-in options available. Please contact hola@cotown.com to assess your situation",
   "check_out": "Date of leaving",
   "check_out_title": "Leaving coordination",
   "check_out_text": "Leaving coordination. For any further change, please contact us.",

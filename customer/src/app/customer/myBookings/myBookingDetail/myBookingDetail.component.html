@@ -359,11 +359,12 @@
             <mat-form-field *ngIf="visibility['check_in_option_id']">
               <mat-label>{{ 'check_in_option_id' | translate }}</mat-label>
               <mat-select [(ngModel)]="selectedOption" (selectionChange)="enableSave()" >
-                <mat-option *ngFor="let op of lookupService.checkinOptions" [value]="op.id">
+                <mat-option *ngFor="let op of checkinOptions" [value]="op.id">
                 {{ isSpanish ? op.name : op.name_en  }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
+            <p *ngIf="checkinFormControl.value && checkintime && checkinOptions.length == 0">{{ 'check_in_no_options' | translate }}</p>
           </div>
     
         </div>

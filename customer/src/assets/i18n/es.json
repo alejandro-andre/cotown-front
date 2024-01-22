@@ -51,6 +51,7 @@
   "check_in_title": "Coordinación llegada",
   "check_in_text": "Coordinación llegada. Para cualquier cambio, por favor, contacta con nosotros.",
   "check_in_option_id": "¿Cómo quieres que te recibamos?",
+  "check_in_no_options": "En tu día y hora seleccionados, no existen opciones de check in. Contacta con hola@cotown.com para valorar tu caso",
   "check_out": "Fecha de salida",
   "check_out_title": "Coordinación salida",
   "check_out_text": "Coordinación salida. Para cualquier cambio, por favor, contacta con nosotros.",

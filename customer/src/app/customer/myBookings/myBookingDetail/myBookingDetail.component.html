@@ -360,7 +360,7 @@
               <mat-label>{{ 'check_in_option_id' | translate }}</mat-label>
               <mat-select [(ngModel)]="selectedOption" (selectionChange)="enableSave()" >
                 <mat-option *ngFor="let op of checkinOptions" [value]="op.id">
-                {{ isSpanish ? op.name : op.name_en  }}
+                {{ isSpanish ? op.name : op.name_en }} - {{ op.price }} €
                 </mat-option>
               </mat-select>
             </mat-form-field>

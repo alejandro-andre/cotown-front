@@ -7,8 +7,12 @@ import { Observable } from 'rxjs';
 })
 
 export class ApolloQueryApi {
-  token = '';
-  constructor(private apollo: Apollo) {}
+
+  token: string = '';
+
+  constructor(
+    private apollo: Apollo
+  ) {}
 
   getData(query: string, variables: any = undefined): Observable<any> {
     return this.apollo.watchQuery({
@@ -25,4 +29,4 @@ export class ApolloQueryApi {
       variables: {...variables, authorization: `${this.token}`},
     })
   }
-};
+}

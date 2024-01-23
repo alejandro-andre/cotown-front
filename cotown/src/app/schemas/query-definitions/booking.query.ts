@@ -1,4 +1,4 @@
-export const BookingListQuery = `
+export const BOOKING_LIST_QUERY = `
 query BookingList([[params]]) {
   data: Booking_Booking_detailList[[where]] {
     booking_id: Booking_id
@@ -82,32 +82,28 @@ query BookingList([[params]]) {
   }
 }`;
 
-export const BuildingDataViaBooking = `query bookingQuery($id: Int)
-{
-  data: Booking_BookingList(
-    where:{ id: { EQ: $id } }
-  ) {
-    building_id: Building_id
-    booking_id: id
-    date_from: Date_from
-    date_to: Date_to
-    flat_type_id: Flat_type_id
-    place_type_id: Place_type_id
-    lock: Lock
- }
+export const BOOKING_UPDATE = `mutation(
+  $id: Int!
+  $status: String!
+  $checkinroomok: Boolean!
+  $checkinnoticeok: Boolean!
+  $checkinkeysok: Boolean!
+  $checkinkeylessok: Boolean!
+  $checkoutkeysok: Boolean!
+  $checkoutkeylessok: Boolean!
+) {
+  data: Booking_BookingUpdate( where: { id: { EQ: $id } }
+    entity:{
+      Status: $status
+      Check_in_room_ok: $checkinroomok
+      Check_in_notice_ok: $checkinnoticeok
+      Check_in_keys_ok: $checkinkeysok
+      Check_in_keyless_ok: $checkinkeylessok
+      Check_out_keys_ok: $checkoutkeysok
+      Check_out_keyless_ok: $checkoutkeylessok
+    }
+  ) { id }
 }`;
 
-export const BuildingDataViaBookingGroup = `query bookingQuery($id: Int)
-{
-  data: Booking_Booking_groupList(
-    where:{ id: { EQ: $id } }
-  ) {
-    id
-    building_id: Building_id
-    booking_id: id
-    date_from: Date_from
-    date_to: Date_to
-    max: Rooms
-    rooms: Room_ids
-  }
-}`;
+
+

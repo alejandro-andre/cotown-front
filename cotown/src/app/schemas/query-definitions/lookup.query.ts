@@ -1,4 +1,4 @@
-export const ProviderListQuery = `query ProviderList {
+export const PROVIDERS_QUERY = `query ProviderList {
     data: Provider_ProviderList (
         orderBy: [{attribute: Name, direction:ASC, nullsGo: FIRST}]
     ) {
@@ -7,7 +7,7 @@ export const ProviderListQuery = `query ProviderList {
     }
 }`;
 
-export const HolidayListQuery = `query HolidayList {
+export const HOLIDAYS_QUERY = `query HolidayList {
     data: Auxiliar_HolidayList (
         orderBy: [{attribute: Day, direction:ASC, nullsGo: FIRST}]
     ) {

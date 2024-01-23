@@ -5,15 +5,16 @@ import { environment } from 'src/environments/environment';
 import { ApolloQueryApi } from "src/app/services/apollo-api.service";
 import axiosApi from "src/app/services/api.service";
 import { Building, City, Holiday } from "src/app/constants/Interfaces";
-import { CityListQuery } from "src/app/schemas/query-definitions/city.query";
-import { BuildingListByLocationQuery, BuildingListQuery } from "src/app/schemas/query-definitions/building.query";
+import { CITIES_QUERY } from "src/app/schemas/query-definitions/city.query";
+import { BUILDINGS_BY_LOCATION_QUERY, BUILDINGS_QUERY } from "src/app/schemas/query-definitions/building.query";
 import { Constants } from "src/app/constants/Constants";
 import { FormControl, FormGroup } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { LanguageService } from "src/app/services/language.service";
 import { ActivatedRoute } from "@angular/router";
-import { HolidayListQuery } from "src/app/schemas/query-definitions/lookup.query";
+import { HOLIDAYS_QUERY } from "src/app/schemas/query-definitions/lookup.query";
 import { MatCheckboxChange } from "@angular/material/checkbox";
+import { BOOKING_UPDATE } from "src/app/schemas/query-definitions/booking.query";
 
 @Component({ 
   selector: "app-dashboard-checkin",
@@ -74,6 +75,8 @@ export class OperationsDashboardComponent implements OnInit {
     { key:"Check_in_keyless_ok",  value:"Keyless ok",         sort:"", type: "bool",   filter: ["nextin","checkin"] },
     { key:"Check_out_keys_ok",    value:"Llaves   ok",        sort:"", type: "bool",   filter: ["nextout","checkout"] },
     { key:"Check_out_keyless_ok", value:"Keyless ok",         sort:"", type: "bool",   filter: ["nextout","checkout"] },
+    { key:"Check_in",             value:"Check-in",           sort:"", type: "bool",   filter: ["checkin"] },
+    { key:"Check_out",            value:"Check-out",          sort:"", type: "bool",   filter: ["checkout"] },
   ];
 
   // Constructor
@@ -82,7 +85,7 @@ export class OperationsDashboardComponent implements OnInit {
     private language: LanguageService,
     private adapter: DateAdapter<any>,
     private datePipe: DatePipe,
-    private apolloApi: ApolloQueryApi
+    private apollo: ApolloQueryApi
   ) { 
     // Operation type
     this.route.data.subscribe((data: any) => {
@@ -118,7 +121,7 @@ export class OperationsDashboardComponent implements OnInit {
     await this.getHolidays();
     await this.getCities();
     await this.getBuildings();
-    await axiosApi.getLabels(7, "es_ES", this.apolloApi.token).then((res) => { 
+    await axiosApi.getLabels(7, "es_ES", this.apollo.token).then((res) => { 
       this.labels = res.data;
       this.isLoading  = false;
     });
@@ -126,14 +129,14 @@ export class OperationsDashboardComponent implements OnInit {
 
   // Load holidays
   async getHolidays() {
-    await this.apolloApi.getData(HolidayListQuery).subscribe((result) => {
+    await this.apollo.getData(HOLIDAYS_QUERY).subscribe((result) => {
       this.holidays = result.data.data;
     })
   }
 
   // Load cities
   async getCities() {
-    await this.apolloApi.getData(CityListQuery).subscribe((result) => {
+    await this.apollo.getData(CITIES_QUERY).subscribe((result) => {
       this.cities = result.data.data;
     })
   }
@@ -141,11 +144,11 @@ export class OperationsDashboardComponent implements OnInit {
   // Load buildings
   async getBuildings() {
     if (this.cityId == Constants.allStaticNumericValue) {
-      this.apolloApi.getData(BuildingListQuery).subscribe(res => {
+      this.apollo.getData(BUILDINGS_QUERY).subscribe(res => {
         this.buildings = res.data.data;
       });
     } else {
-      this.apolloApi.getData(BuildingListByLocationQuery, { id: this.cityId }).subscribe(res => {
+      this.apollo.getData(BUILDINGS_BY_LOCATION_QUERY, { id: this.cityId }).subscribe(res => {
         this.buildings = res.data.data;
       });
     }
@@ -171,7 +174,7 @@ export class OperationsDashboardComponent implements OnInit {
 
     // Ger bookings
     this.isLoading = true;
-    axiosApi.getDashboardBookings(this.op, this.apolloApi.token, params).then((res) => { 
+    axiosApi.getDashboardBookings(this.op, this.apollo.token, params).then((res) => { 
       // Get data
       this.rows = res.data.map((o: any) => { 
         let warning = false;
@@ -203,6 +206,8 @@ export class OperationsDashboardComponent implements OnInit {
           "Issues": o.Issues || "-",
           "Damages": o.Damages || "-",
           "Warning": warning,
+          "Check_in": [false, false],
+          "Check_out": [false, false],
           "Changed": false
         }
       });
@@ -312,21 +317,68 @@ export class OperationsDashboardComponent implements OnInit {
     if (row["Check_in_keyless_ok"][0]  != row["Check_in_keyless_ok"][1])  row["Changed"] = true;
     if (row["Check_out_keys_ok"][0]    != row["Check_out_keys_ok"][1])    row["Changed"] = true;
     if (row["Check_out_keyless_ok"][0] != row["Check_out_keyless_ok"][1]) row["Changed"] = true;
+    if (row["Check_in"][0]             != row["Check_in"][1])             row["Changed"] = true;
+    if (row["Check_out"][0]            != row["Check_out"][1])            row["Changed"] = true;
     return row["Changed"];
   }
 
   save(row: any) {
-    row["Changed"] = false;
+    // Check-in?
+    if (this.op == "checkin" && row.Status == "checkin" && row["Check_in"][0]) {
+      row.status = "inhouse";
+    }
+
+    // Check-out?
+    if (this.op == "checkout" && row.Status == "checkout" && row["Check_out"][0]) {
+      row.status = "devolvergarantia";
+    }
+
+    // GraphQL variables
+    const variables: any = {
+      id: row.id,
+      status: row.Status,
+      checkinroomok: row.Check_in_room_ok[0],
+      checkinnoticeok: row.Check_in_notice_ok[0],
+      checkinkeysok: row.Check_in_keys_ok[0],
+      checkinkeylessok: row.Check_in_keyless_ok[0],
+      checkoutkeysok: row.Check_out_keys_ok[0],
+      checkoutkeylessok: row.Check_out_keyless_ok[0]
+    }
+
+    // Update
+    this.isLoading = true;
+    this.apollo.setData(BOOKING_UPDATE, variables).subscribe({
+      next: (res) => {
+        this.isLoading = false;
+        row["Check_in_room_ok"][1]     = row["Check_in_room_ok"][0];
+        row["Check_in_notice_ok"][1]   = row["Check_in_notice_ok"][0];
+        row["Check_in_keys_ok"][1]     = row["Check_in_keys_ok"][0];
+        row["Check_in_keyless_ok"][1]  = row["Check_in_keyless_ok"][0];
+        row["Check_out_keys_ok"][1]    = row["Check_out_keys_ok"][0];
+        row["Check_out_keyless_ok"][1] = row["Check_out_keyless_ok"][0];
+        row["Changed"] = false;
+        if (this.op == "checkin" && row.status == "inhouse") {
+          this.rows = this.rows.filter(r => r.id != row.id)
+        }
+        if (this.op == "checkout" && row.status == "devolvergarantia") {
+          this.rows = this.rows.filter(r => r.id != row.id)
+        }
+      }, 
+      error: (err)  => {
+        console.log(err)
+        this.isLoading = false;
+      }
+    })
   }
 
   link() { 
     // Next checkins
     if (this.op == 'nextin') 
-      return environment.backURL + '/export/dashboardnext?access_token=' + this.apolloApi.token;
+      return environment.backURL + '/export/dashboardnext?access_token=' + this.apollo.token;
 
     // Next checkouts
     if (this.status == 'nextout') 
-      return environment.backURL + '/export/dashboardnextout?access_token=' + this.apolloApi.token;
+      return environment.backURL + '/export/dashboardnextout?access_token=' + this.apollo.token;
 
     // Rest of status
     return null;

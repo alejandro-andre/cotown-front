@@ -1,4 +1,4 @@
-export const ResourceListQuery = `{
+export const RESOURCES_QUERY = `{
   id
   code: Code
   address: Address
@@ -40,7 +40,7 @@ export const ResourceListQuery = `{
 }
 `;
 
-export const ResourcePlaceTypeQuery = `query ResourceType {
+export const RESOURCE_PLACE_TYPES_QUERY = `query ResourceType {
   data: Resource_Resource_place_typeList (
     orderBy: [{attribute: Code, direction:ASC, nullsGo: FIRST}]
   ) {
@@ -51,7 +51,7 @@ export const ResourcePlaceTypeQuery = `query ResourceType {
   }
 }`;
 
-export const ResourceFlatTypeQuery = `query ResourceFlatQuery {
+export const RESOURCE_FLAT_TYPES_QUERY = `query ResourceFlatQuery {
   data: Resource_Resource_flat_typeList {
     id
     code: Code
@@ -60,7 +60,7 @@ export const ResourceFlatTypeQuery = `query ResourceFlatQuery {
   }
 }`;
 
-export const PricingQuery = `query PricingQuery {
+export const PRICES_QUERY = `query PricingQuery {
   data: Billing_Pricing_detailList (
     orderBy: [{attribute: Building_id}, {attribute: Flat_type_id}, {attribute: Place_type_id}]
   ) {

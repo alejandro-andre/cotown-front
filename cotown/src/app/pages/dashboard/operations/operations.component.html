@@ -5,7 +5,7 @@
   <div class="header">
 
     <div class="pure-g">
-      <div class="pure-u-22-24">
+      <div class="pure-u-21-24">
         <span *ngIf="op=='nextin'"  ><h1>Próximas entradas</h1></span>
         <span *ngIf="op=='checkin'" ><h1>Entradas</h1></span>
         <span *ngIf="op=='issues'"  ><h1>Incidencias entradas</h1></span>
@@ -88,9 +88,9 @@
           <!-- Status field -->
           <span *ngIf="h.type === 'status'" (click)="goBooking(r.id)">{{ getLabel(r[h.key]) }}</span>
           <!-- Text/Date/Input fields -->
-          <span *ngIf="h.type === 'text'"  [innerHtml]="r[h.key] | safe"></span>
-          <span *ngIf="h.type === 'date'"  [innerHtml]="r[h.key] | safe"></span>
-          <span *ngIf="h.type === 'input'" [innerHtml]="r[h.key] | safe"></span>
+          <span *ngIf="h.type === 'text'"   (click)="goBooking(r.id)" [innerHtml]="r[h.key] | safe"></span>
+          <span *ngIf="h.type === 'date'"   (click)="goBooking(r.id)" [innerHtml]="r[h.key] | safe"></span>
+          <span *ngIf="h.type === 'input'"  [innerHtml]="r[h.key] | safe"></span>
           <!-- Boolean fields -->
           <span *ngIf="h.type === 'bool'" >
             <mat-checkbox 

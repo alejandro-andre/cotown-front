@@ -15,10 +15,10 @@ import { formatDate, getAge, nextMonth, prevMonth } from 'src/app/utils/utils';
 import { TimeChartRow } from 'src/app/time-chart/models/time-chart-row.model';
 import { TimeChartBar } from 'src/app/time-chart/models/time-chart-bar.model';
 
-import { CityListQuery } from 'src/app/schemas/query-definitions/city.query';
-import { BuildingListByLocationQuery, BuildingListQuery } from 'src/app/schemas/query-definitions/building.query';
-import { PricingQuery, ResourceFlatTypeQuery, ResourceListQuery, ResourcePlaceTypeQuery } from 'src/app/schemas/query-definitions/resource.query';
-import { BookingListQuery, BuildingDataViaBooking, BuildingDataViaBookingGroup } from 'src/app/schemas/query-definitions/booking.query';
+import { CITIES_QUERY } from 'src/app/schemas/query-definitions/city.query';
+import { BUILDINGS_BY_LOCATION_QUERY, BUILDINGS_QUERY, BUILDING_BY_BOOKING_GROUP_QUERY, BUILDING_BY_BOOKING_QUERY } from 'src/app/schemas/query-definitions/building.query';
+import { PRICES_QUERY, RESOURCE_FLAT_TYPES_QUERY, RESOURCES_QUERY, RESOURCE_PLACE_TYPES_QUERY } from 'src/app/schemas/query-definitions/resource.query';
+import { BOOKING_LIST_QUERY } from 'src/app/schemas/query-definitions/booking.query';
 
 import {
   ApolloVariables,
@@ -273,9 +273,9 @@ export class PlanningComponent {
   async initData(entity: string, bookingId: number) {
 
     // Query (single o group booking)
-    let q =  BuildingDataViaBooking;
+    let q =  BUILDING_BY_BOOKING_QUERY;
     if (entity == 'Booking.Booking_group') {
-      q =  BuildingDataViaBookingGroup;
+      q =  BUILDING_BY_BOOKING_GROUP_QUERY;
     }
 
     // Get data
@@ -316,7 +316,7 @@ export class PlanningComponent {
 
   // Load all cities
   async getCities() {
-    this.apolloApi.getData(CityListQuery).subscribe((result) => {
+    this.apolloApi.getData(CITIES_QUERY).subscribe((result) => {
       this.cities = result.data.data;
     });
   }
@@ -324,12 +324,12 @@ export class PlanningComponent {
   // Get all buildings
   async getBuildings(): Promise<void> {
     if (this.selectedCityId == Constants.allStaticNumericValue) {
-      this.apolloApi.getData(BuildingListQuery).subscribe(res => {
+      this.apolloApi.getData(BUILDINGS_QUERY).subscribe(res => {
         this.buildings = res.data.data;
       });
     } else {
       const variables = { id: this.selectedCityId };
-      this.apolloApi.getData(BuildingListByLocationQuery, variables).subscribe(res => {
+      this.apolloApi.getData(BUILDINGS_BY_LOCATION_QUERY, variables).subscribe(res => {
         this.buildings = res.data.data;
       });
     }
@@ -337,7 +337,7 @@ export class PlanningComponent {
 
   // Get all prices
   async getPrices(): Promise<void> {
-    this.apolloApi.getData(PricingQuery).subscribe(res => {
+    this.apolloApi.getData(PRICES_QUERY).subscribe(res => {
       for (const e of res.data.data) {
         this.prices.push({
           key: e.building + "-" + e.flat_type_id + "-" + (e.place_type_id || 0),
@@ -378,14 +378,14 @@ export class PlanningComponent {
 
   // Get all flat types
   async getResourceFlatTypes(): Promise<void> {
-    this.apolloApi.getData(ResourceFlatTypeQuery).subscribe(res => {
+    this.apolloApi.getData(RESOURCE_FLAT_TYPES_QUERY).subscribe(res => {
       this.resourceFlatTypes = res.data.data;
     });
   }
 
   // Get all place types
   async getResourcePlaceTypes(): Promise<void> {
-    this.apolloApi.getData(ResourcePlaceTypeQuery).subscribe(res => {
+    this.apolloApi.getData(RESOURCE_PLACE_TYPES_QUERY).subscribe(res => {
       this.resourcePlaceTypes = res.data.data;
     });
   }
@@ -434,7 +434,7 @@ export class PlanningComponent {
 
     if (params != '')  {
       this.isLoading = true;
-      const q = 'query ResourceList(' + params + ') {data:Resource_ResourceList(orderBy: [{attribute: Code direction: ASC nullsGo: FIRST}] ' + where + ')' + ResourceListQuery + '}';
+      const q = 'query ResourceList(' + params + ') {data:Resource_ResourceList(orderBy: [{attribute: Code direction: ASC nullsGo: FIRST}] ' + where + ')' + RESOURCES_QUERY + '}';
       await this.getResources(q, {
         cityId: this.selectedCityId,
         buildingId: this.selectedBuildingId,
@@ -472,7 +472,7 @@ export class PlanningComponent {
     if (whereplace != '')
       whereplace = 'where: { ' + whereplace + ' }';
     if (params != '')  {
-      const q = BookingListQuery
+      const q = BOOKING_LIST_QUERY
         .replace('[[params]]', params)
         .replace('[[where]]', where)
         .replace('[[whereplace]]', whereplace);

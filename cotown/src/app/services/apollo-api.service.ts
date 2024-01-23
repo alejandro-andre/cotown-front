@@ -23,4 +23,10 @@ export class ApolloQueryApi {
     }).valueChanges;
   }
 
+  setData(query: string, variables: any):Observable<any> {
+    return this.apollo.mutate({
+      mutation: gql`${query}`,
+      variables: {...variables, authorization: `${this.token}`},
+    })
+  }
 }

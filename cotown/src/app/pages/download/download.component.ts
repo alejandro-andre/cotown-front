@@ -4,7 +4,7 @@ import { DateAdapter } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { DomSanitizer } from '@angular/platform-browser';
 import {default as _rollupMoment, Moment } from 'moment';
-import { ProviderListQuery } from 'src/app/schemas/query-definitions/lookup.query';
+import { PROVIDERS_QUERY } from 'src/app/schemas/query-definitions/lookup.query';
 
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { LanguageService } from 'src/app/services/language.service';
@@ -61,7 +61,7 @@ export class DownloadComponent {
     private sanitizer: DomSanitizer
   ) { 
     this.adapter.setLocale(this.language.lang.substring(0,2));
-    this.apolloApi.getData(ProviderListQuery).subscribe(res => {
+    this.apolloApi.getData(PROVIDERS_QUERY).subscribe(res => {
       this.providers = res.data.data;
     });
   }    

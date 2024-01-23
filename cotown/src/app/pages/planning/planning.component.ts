@@ -359,7 +359,7 @@ export class PlanningComponent {
       .sort((a, b) => (a.year - b.year));
     if (prices) { 
       increments.forEach((e) => {
-        multiplier *= (e / 100.0);
+        multiplier *= ((100.0 + e) / 100.0);
       });
       prices.forEach((e) => {
         const p: Price = {

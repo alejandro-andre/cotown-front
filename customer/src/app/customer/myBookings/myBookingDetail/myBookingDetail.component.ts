@@ -178,6 +178,12 @@ export class MyBookingDetailComponent {
     return this.lookupService.checkinOptions.find((elem) => elem.id === this.booking.check_in_option_id)?.name_en || '';
   }
 
+  option_detail(): string {
+    if (this.isSpanish)
+      return this.lookupService.checkinOptions.find((elem) => elem.id === this.selectedOption)?.description || '';
+    return this.lookupService.checkinOptions.find((elem) => elem.id === this.selectedOption)?.description_en || '';
+  }
+
   get options(): any {
 
     const options =  [];
@@ -230,8 +236,11 @@ export class MyBookingDetailComponent {
           if (dow == 0) { from = price.timetable.Sun_from; to = price.timetable.Sun_to; }
           else if (dow == 6) { from = price.timetable.Sat_from; to = price.timetable.Sat_to; }
           else if (dow == 5) { from = price.timetable.Fri_from; to = price.timetable.Fri_to; }
+          console.log(from);
+          console.log(to);
+          console.log(this.checkintime);
           if (from != undefined) {
-            if ((this.checkintime || '00:00') >= from && (this.checkintime || '99:99') <= this.minusOneMinute(to)) {
+            if ((this.checkintime || '00:00') >= from.substring(0, 5) && (this.checkintime || '99:99') <= this.minusOneMinute(to)) {
               option.price = price.price;
               result.push(option);
             }
@@ -371,7 +380,6 @@ export class MyBookingDetailComponent {
       option: this.selectedOption,
     }
     this.isLoading = true;
-    console.log(variables);
     this.apollo.setData(UPDATE_BOOKING, variables).subscribe({
 
       next: (res) => {

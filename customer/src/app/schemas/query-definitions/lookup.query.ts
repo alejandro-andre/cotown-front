@@ -85,6 +85,8 @@ export const CHECKIN_OPTIONS_QUERY = `query checking_list {
     id
     name: Name
     name_en: Name_en
+    description: Description
+    description_en: Description_en
     prices: Checkin_priceListViaCheckin_type_id {
       location: Location_id
       price: Price

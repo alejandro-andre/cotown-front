@@ -365,7 +365,6 @@ export class OperationsDashboardComponent implements OnInit {
         }
       }, 
       error: (err)  => {
-        console.log(err)
         this.isLoading = false;
       }
     })

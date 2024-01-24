@@ -43,7 +43,7 @@ th {
 	color: #888;
 	border-bottom: 1px solid #ddd; 
 	white-space: nowrap;
-	vertical-align: bottom;
+	text-align: left;
 	padding: 0px 5px 10px 5px; 
 	font-size: 0.75em;
 }
@@ -128,12 +128,14 @@ td {
 .up    {opacity:1; transform: rotate(180deg); transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;}
 .down  {opacity:1; transform: rotate(0deg); transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;}
 
+/*
 .vertical {
 	writing-mode: vertical-rl !important;
 	white-space: normal;
 	text-align: right;
 	max-height: 50px;
 }
+*/
 .holiday {
 	background-color: #fcc;
 }

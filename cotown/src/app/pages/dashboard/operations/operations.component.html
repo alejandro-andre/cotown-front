@@ -6,11 +6,7 @@
 
     <div class="pure-g">
       <div class="pure-u-21-24">
-        <span *ngIf="op=='nextin'"  ><h1>Próximas entradas</h1></span>
-        <span *ngIf="op=='checkin'" ><h1>Entradas</h1></span>
-        <span *ngIf="op=='issues'"  ><h1>Incidencias entradas</h1></span>
-        <span *ngIf="op=='nextout'" ><h1>Próximas salidas</h1></span>
-        <span *ngIf="op=='checkout'"><h1>Salidas</h1></span>
+        <h1>Operaciones</h1>
       </div>
       <div class="pure-u-1-24" style="margin-top:20px;text-align:right;">
         <a [href]="link()"><mat-icon style="cursor:pointer;" fontIcon="cloud_download"></mat-icon></a>
@@ -22,6 +18,20 @@
   
     <form>
       <div class="pure-g">
+
+        <div class="pure-u-5-24">
+          <mat-form-field class="field" appearance="fill" >
+            <mat-label>{{ 'dashboard' | translate }}</mat-label>
+            <mat-select name="dashboards" 
+              [(ngModel)]="op"
+              [placeholder]="'nothing' | translate"
+              (selectionChange)="reset()">
+              <mat-option *ngFor="let dashboard of dashboards" [value]="dashboard.op">
+                {{ dashboard.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
 
         <div class="pure-u-5-24">
           <mat-form-field class="field" appearance="fill" >
@@ -94,6 +104,7 @@
           <!-- Boolean fields -->
           <span *ngIf="h.type === 'bool'" >
             <mat-checkbox 
+              style="text-align: center;"
               [checked]="r[h.key][0]" 
               (change)="emitCheck($event, h.key, r)">
             </mat-checkbox>

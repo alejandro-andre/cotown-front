@@ -26,6 +26,14 @@ import { BOOKING_UPDATE } from "src/app/schemas/query-definitions/booking.query"
 export class OperationsDashboardComponent implements OnInit { 
   // Operation
   public op!: string;
+  public dashboards: any[] = [
+    {op: 'nextin', name: 'Próximas entradas'},
+    {op: 'checkin', name: 'Entradas'},
+    {op: 'issues', name: 'Incidencias en entradas'},
+    {op: 'nextout', name: 'Próximas salidas'},
+    {op: 'checkout', name: 'Salidas'},
+  ];
+  public dashboardId: number = 1;
 
   // Cities
   public cities: City [] = [] as City[]; // Cities
@@ -55,28 +63,31 @@ export class OperationsDashboardComponent implements OnInit {
   public rows: any[] = [];
   public header: { key: string, value: string, sort: string, type: string } [] = [];
   public headerFields: { key: string, value: string, sort: string, type: string, filter: string[] }[] = [
-    { key:"id",                   value:"#",                  sort:"", type: "text",   filter: [] },
-    { key:"Name",                 value:"Residente",          sort:"", type: "text",   filter: [] },
-    { key:"Status",               value:"Estado",             sort:"", type: "status", filter: [] },
-    { key:"Date",                 value:"",                   sort:"", type: "date",   filter: ["---"] }, 
-    { key:"Date_in",              value:"Fecha entrada",      sort:"", type: "date",   filter: ["nextin","checkin","issues"] }, 
-    { key:"Date_out",             value:"Fecha salida",       sort:"", type: "date",   filter: ["nextout","checkout"] }, 
-    { key:"Dates",                value:"Fechas contrato",    sort:"", type: "text",   filter: [] }, 
-    { key:"Resource",             value:"Recurso / Edificio", sort:"", type: "text",   filter: [] },
-    { key:"Check_in_time",        value:"Hora check-in",      sort:"", type: "text",   filter: ["nextin","checkin"] },
-    { key:"Arrival",              value:"Hora llegada",       sort:"", type: "text",   filter: ["nextin","checkin"] },
-    { key:"Flight",               value:"Tren/Vuelo",         sort:"", type: "text",   filter: ["nextin","checkin"] },
-    { key:"Option",               value:"Opción",             sort:"", type: "text",   filter: ["nextin","checkin"] },
-    { key:"Issues",               value:"Incidencias",        sort:"", type: "text",   filter: ["issues"] },
-    { key:"Damages",              value:"Daños",              sort:"", type: "input",  filter: ["checkout"] },
-    { key:"Check_in_room_ok",     value:"Limpieza ok",        sort:"", type: "bool",   filter: ["nextin","checkin"] },
-    { key:"Check_in_notice_ok",   value:"Aviso roomates",     sort:"", type: "bool",   filter: ["nextin","checkin"] },
-    { key:"Check_in_keys_ok",     value:"Llaves   ok",        sort:"", type: "bool",   filter: ["nextin","checkin"] },
-    { key:"Check_in_keyless_ok",  value:"Keyless ok",         sort:"", type: "bool",   filter: ["nextin","checkin"] },
-    { key:"Check_out_keys_ok",    value:"Llaves   ok",        sort:"", type: "bool",   filter: ["nextout","checkout"] },
-    { key:"Check_out_keyless_ok", value:"Keyless ok",         sort:"", type: "bool",   filter: ["nextout","checkout"] },
-    { key:"Check_in",             value:"Check-in",           sort:"", type: "bool",   filter: ["checkin"] },
-    { key:"Check_out",            value:"Check-out",          sort:"", type: "bool",   filter: ["checkout"] },
+    { key:"id",                    value:"#",                  sort:"", type: "text",   filter: [] },
+    { key:"Name",                  value:"Residente",          sort:"", type: "text",   filter: [] },
+    { key:"Status",                value:"Estado",             sort:"", type: "status", filter: [] },
+    { key:"Date",                  value:"",                   sort:"", type: "date",   filter: ["---"] }, 
+    { key:"Date_in",               value:"Fecha entrada",      sort:"", type: "date",   filter: ["nextin","checkin","issues"] }, 
+    { key:"Date_out",              value:"Fecha salida",       sort:"", type: "date",   filter: ["nextout","checkout"] }, 
+    { key:"Dates",                 value:"Fechas contrato",    sort:"", type: "text",   filter: [] }, 
+    { key:"Resource",              value:"Recurso / Edificio", sort:"", type: "text",   filter: [] },
+    { key:"Check_in_time",         value:"Hora check-in",      sort:"", type: "text",   filter: ["nextin","checkin"] },
+    { key:"Arrival",               value:"Hora llegada",       sort:"", type: "text",   filter: ["nextin","checkin"] },
+    { key:"Flight",                value:"Tren/Vuelo",         sort:"", type: "text",   filter: ["nextin","checkin"] },
+    { key:"Option",                value:"Opción",             sort:"", type: "text",   filter: ["nextin","checkin"] },
+    { key:"Issues",                value:"Incidencias",        sort:"", type: "text",   filter: ["issues"] },
+    { key:"Issues_ok",             value:"Gestionadas",        sort:"", type: "boll",   filter: ["issues"] },
+    { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["nextout","checkout"] },
+    { key:"Damages_ok",            value:"Gestionados",        sort:"", type: "bool",   filter: ["nextout","checkout"] },
+    { key:"Check_in_room_ok",      value:"Limpieza ok",        sort:"", type: "bool",   filter: ["nextin",] },
+    { key:"Check_in_keys_ok",      value:"Llaves ok",          sort:"", type: "bool",   filter: ["nextin",] },
+    { key:"Check_in_keyless_ok",   value:"Keyless ok",         sort:"", type: "bool",   filter: ["nextin",] },
+    { key:"Check_in_notice_ok",    value:"Aviso roomates",     sort:"", type: "bool",   filter: ["nextin",] },
+    { key:"Check_out_keys_ok",     value:"Llaves ok",          sort:"", type: "bool",   filter: ["checkout"] },
+    { key:"Check_out_keyless_ok",  value:"Keyless ok",         sort:"", type: "bool",   filter: ["checkout"] },
+    { key:"Check_out_revision_ok", value:"Revisión ok",        sort:"", type: "bool",   filter: ["nextout","checkout"] },
+    { key:"Check_in",              value:"Check-in",           sort:"", type: "bool",   filter: ["checkin"] },
+    { key:"Check_out",             value:"Check-out",          sort:"", type: "bool",   filter: ["checkout"] },
   ];
 
   // Constructor
@@ -87,16 +98,10 @@ export class OperationsDashboardComponent implements OnInit {
     private datePipe: DatePipe,
     private apollo: ApolloQueryApi
   ) { 
-    // Operation type
-    this.route.data.subscribe((data: any) => {
-      this.op = data.op;
-    });
-
+    this.reset();
+    
     // Set locale
     this.adapter.setLocale(this.language.lang.substring(0, 2));
-
-    // Columns
-    this.header = this.headerFields.filter(d => (d.filter.length == 0 || d.filter.includes(this.op)));
 
     // Today and one month ago
     const today: Date = new Date();
@@ -154,11 +159,20 @@ export class OperationsDashboardComponent implements OnInit {
     }
   }
 
+  reset() {
+    // Columns
+    this.rows = [];
+    this.header = this.headerFields.filter(d => (d.filter.length == 0 || d.filter.includes(this.op)));
+    this.getBookings();
+  }
+
   // Get bookings
   async getBookings() { 
     // Clean
     this.rows = [];
     const params: any = {};
+    if (!this.op || !this.cityId)
+      return;
 
     // City
     if (this.cityId != Constants.allStaticNumericValue)
@@ -203,8 +217,11 @@ export class OperationsDashboardComponent implements OnInit {
           "Check_in_keyless_ok": [o.Check_in_keyless_ok, o.Check_in_keyless_ok],
           "Check_out_keys_ok": [o.Check_out_keys_ok, o.Check_out_keys_ok],
           "Check_out_keyless_ok": [o.Check_out_keyless_ok, o.Check_out_keyless_ok],
+          "Check_out_revision_ok": [o.Check_out_revision_ok, o.Check_out_revision_ok],
           "Issues": o.Issues || "-",
+          "Issues_ok": [o.Issues_ok, o.Issues_ok],
           "Damages": o.Damages || "-",
+          "Damages_ok": [o.Damages_ok, o.Damages_ok],
           "Warning": warning,
           "Check_in": [false, false],
           "Check_out": [false, false],

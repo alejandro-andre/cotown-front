@@ -32,6 +32,7 @@ export class OperationsDashboardComponent implements OnInit {
     {op: 'issues', name: 'Incidencias en entradas'},
     {op: 'nextout', name: 'Próximas salidas'},
     {op: 'checkout', name: 'Salidas'},
+    {op: 'ecoext', name: 'Early checkout/Extensiones'},
   ];
   public dashboardId: number = 1;
 

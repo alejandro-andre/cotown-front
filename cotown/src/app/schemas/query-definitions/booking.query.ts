@@ -84,7 +84,7 @@ query BookingList([[params]]) {
 
 export const BOOKING_UPDATE = `mutation(
   $id: Int!
-  $status: String!
+  $status: Auxiliar_Booking_statusEnumType!
   $checkinroomok: Boolean!
   $checkinnoticeok: Boolean!
   $checkinkeysok: Boolean!

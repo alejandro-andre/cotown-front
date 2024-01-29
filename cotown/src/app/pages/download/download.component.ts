@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
-import { DomSanitizer } from '@angular/platform-browser';
 import {default as _rollupMoment, Moment } from 'moment';
 import { PROVIDERS_QUERY } from 'src/app/schemas/query-definitions/lookup.query';
 
@@ -20,32 +19,33 @@ const moment = _rollupMoment;
 
 export class DownloadComponent {
 
+  reports = [
+    { name: 'propietarios',      provider: false, icon: 'account_box',        filter: false, text: 'Propietarios',     url: '/export/propietarios' },
+    { name: 'edificios',         provider: false, icon: 'business',           filter: false, text: 'Edificios',        url: '/export/edificios' },
+    { name: 'recursos',          provider: false, icon: 'hotel',              filter: false, text: 'Recursos, precios, tarifas', url: '/export/recursos' },
+    { name: 'precios',           provider: false, icon: 'monetization_on',    filter: false, text: 'Precios',          url: '/export/precios' },
+    { name: 'weekly',            provider: false, icon: 'blur_linear',        filter: false, text: 'Reservas PowerBI', url: '/export/weekly?fdesde=2020-01-01&fhasta=2099-12-31' },
+    { name: 'occupancy',         provider: false, icon: 'calendar_today',     filter: false, text: 'Monthy',           url: '/occupancy?fdesde=2023-10-01&fhasta=2024-12-31' },
+    { name: 'rooming',           provider: false, icon: 'people',             filter: true,  text: 'Rooming list' },
+    { name: 'reservas',          provider: false, icon: 'event',              filter: true,  text: 'Reservas' },
+    { name: 'pagos',             provider: false, icon: 'local_atm',          filter: true,  text: 'Pagos' },
+    { name: 'ingresos',          provider: true,  icon: 'receipt',            filter: true,  text: 'Ingresos' },
+    { name: 'contratos',         provider: false, icon: 'playlist_add_check', filter: true,  text: 'Contratos' },
+  ];
+  downloads = [
+    { name: 'downloadcontratos', provider: false, icon: 'attachment',         filter: true,  text: 'Contratos', url: '/download/contratos' },
+    { name: 'downloadfacturas',  provider: false, icon: 'attachment',         filter: true,  text: 'Facturas',  url: '/download/facturas' },
+  ];
+  selectedItem: any = null;
+
   // Spinner
   public isLoading: boolean = false;
 
   // Form controls
-  public bookingIdControl        = new FormControl<any>('', [ Validators.required ]);
-  public providerControl         = new FormControl(-1);
-  public billDateControl         = new FormControl<any>('', [ Validators.required ]);
-  public providerDownloadControl = new FormControl(-1);
-  public billDownloadDateControl = new FormControl<any>('', [ Validators.required ]);
-
-  public incomeDateControl = new FormGroup({
-    start: new FormControl<Date | null>(null, [ Validators.required ]),
-    end: new FormControl<Date | null>(null, [ Validators.required ]),
-  });
-
-  public paymentDateControl = new FormGroup({
-    start: new FormControl<Date | null>(null, [ Validators.required ]),
-    end: new FormControl<Date | null>(null, [ Validators.required ]),
-  });
-
-  public contractDateControl      = new FormGroup({
-    start: new FormControl<Date | null>(null, [ Validators.required ]),
-    end: new FormControl<Date | null>(null, [ Validators.required ]),
-  });
-
-  public bookingDateControl      = new FormGroup({
+  public bookingIdControl = new FormControl<any>('', [ Validators.required ]);
+  public providerControl  = new FormControl(-1);
+  public billDateControl  = new FormControl<any>('', [ Validators.required ]);
+  public dateControl      = new FormGroup({
     start: new FormControl<Date | null>(null, [ Validators.required ]),
     end: new FormControl<Date | null>(null, [ Validators.required ]),
   });
@@ -57,8 +57,7 @@ export class DownloadComponent {
   constructor(
     private apolloApi: ApolloQueryApi,
     private adapter: DateAdapter<any>,
-    private language: LanguageService,
-    private sanitizer: DomSanitizer
+    private language: LanguageService
   ) { 
     this.adapter.setLocale(this.language.lang.substring(0,2));
     this.apolloApi.getData(PROVIDERS_QUERY).subscribe(res => {
@@ -66,34 +65,47 @@ export class DownloadComponent {
     });
   }    
 
+  // Report selected
+  selectItem(item: any) {
+    this.selectedItem = item.name;
+    if (!item.filter) {
+      this.report(environment.backURL + item.url)
+      this.selectedItem = null;
+    }
+  }
+
   // Check if report can be executed
   check (data: string) {
-
     if (data == "rooming") {
-      if (!this.bookingIdControl.value)
-      return true;
+        if (!this.bookingIdControl.value)
+          return true;
     } else if (data == "reservas") {
-      if (!this.bookingDateControl.value.start || !this.bookingDateControl.value.end)
-      return true;
+        if (!this.dateControl.value.start || !this.dateControl.value.end)
+          return true;
     } else if (data == "facturas") {
-      if (this.billDateControl.value === '')
-        return true;
+        if (this.billDateControl.value === '')
+          return true;
     } else if (data == "ingresos") {
-        if (!this.incomeDateControl.value.start || !this.incomeDateControl.value.end || 
+        if (!this.dateControl.value.start || !this.dateControl.value.end || 
             this.providerControl.value == null || this.providerControl.value < 0)
           return true
     } else if (data == "pagos") {
-        if (!this.paymentDateControl.value.start || !this.paymentDateControl.value.end || 
+        if (!this.dateControl.value.start || !this.dateControl.value.end || 
             this.providerControl.value == null || this.providerControl.value < 0)
           return true
+    } else if (data == "contratos") {
+        if (!this.dateControl.value.start || !this.dateControl.value.end)
+          return true
     } else if (data == "downloadcontratos") {
-      if (!this.contractDateControl.value.start || !this.contractDateControl.value.end)
-        return true
+        if (!this.dateControl.value.start || !this.dateControl.value.end || 
+            this.providerControl.value == null || this.providerControl.value < 0)
+          return true
     } else if (data == "downloadfacturas") {
-      if (this.billDownloadDateControl.value === '')
-        return true
+        if (this.billDateControl.value === '' || 
+            this.providerControl.value == null || this.providerControl.value < 0)
+          return true
     }
-  return false;
+    return false;
   }
 
   // Execute report
@@ -117,8 +129,8 @@ export class DownloadComponent {
 
     // Reservas
     } else if (data == "reservas") {
-    const from = moment(this.bookingDateControl.value.start);
-    const to = moment(this.bookingDateControl.value.end).add(1,'d');
+    const from = moment(this.dateControl.value.start);
+    const to = moment(this.dateControl.value.end).add(1,'d');
     l = environment.backURL + '/export/reservas' 
       + '?fdesde=' + from.format('YYYY-MM-DD') 
       + '&fhasta=' + to.format('YYYY-MM-DD') 
@@ -139,8 +151,8 @@ export class DownloadComponent {
 
     // Pagos
     } else if (data == "pagos") {
-      const from = moment(this.paymentDateControl.value.start);
-      const to = moment(this.paymentDateControl.value.end).add(1,'d');
+      const from = moment(this.dateControl.value.start);
+      const to = moment(this.dateControl.value.end).add(1,'d');
       const prov_from = this.providerControl.value;
       const prov_to = prov_from || 99999; 
       l = environment.backURL + '/export/pagos' 
@@ -152,8 +164,8 @@ export class DownloadComponent {
 
     // Ingresos
     } else if (data == "ingresos") {
-      const from = moment(this.incomeDateControl.value.start);
-      const to = moment(this.incomeDateControl.value.end).add(1,'d');
+      const from = moment(this.dateControl.value.start);
+      const to = moment(this.dateControl.value.end).add(1,'d');
       const prov_from = this.providerControl.value;
       const prov_to = prov_from || 99999; 
       l = environment.backURL + '/export/ingresos' 
@@ -165,8 +177,8 @@ export class DownloadComponent {
 
     // Contratos PDF
     } else if (data == "downloadcontratos") {
-      const from = moment(this.contractDateControl.value.start);
-      const to = moment(this.contractDateControl.value.end).add(1,'d');
+      const from = moment(this.dateControl.value.start);
+      const to = moment(this.dateControl.value.end).add(1,'d');
       const prov_from = this.providerControl.value; 
       const prov_to = prov_from || 99999; 
       l = environment.backURL + '/download/contratos' 
@@ -178,7 +190,7 @@ export class DownloadComponent {
 
     // Facturas PDF
     } else if (data == "downloadfacturas") {
-      const from = moment(this.billDownloadDateControl.value);
+      const from = moment(this.billDateControl.value);
       const to = moment(from).add(1, 'M');
       const prov_from = this.providerControl.value; 
       const prov_to = prov_from || 99999; 
@@ -194,9 +206,14 @@ export class DownloadComponent {
       l = environment.backURL + '/export/' + data + '?access_token=' + this.apolloApi.token;
     }
 
+    // Report
+    this.report(l)
+  }
+
+  report(url: string) {
     // Fetch link
     this.isLoading = true;
-    fetch(l)
+    fetch(url)
       .then(response => response.blob())
       .then(blob => {
         const fileUrl = URL.createObjectURL(blob);

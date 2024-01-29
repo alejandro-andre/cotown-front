@@ -15,6 +15,7 @@ import { MatNativeDateModule, DateAdapter } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -71,6 +72,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatDialogModule,
     MatInputModule,
     MatCheckboxModule,
+    MatCardModule,
     GraphQLModule,
     TimeChartModule,
     SharedModule,

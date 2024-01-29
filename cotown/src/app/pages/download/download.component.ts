@@ -127,48 +127,22 @@ export class DownloadComponent {
     const id = this.bookingIdControl.value;
     l = environment.backURL + '/export/rooming?id=' + id + '&access_token=' + this.apolloApi.token;
 
-    // Reservas
-    } else if (data == "reservas") {
+    // Reservas y contratos
+    } else if (data == "reservas" || data == "contratos") {
     const from = moment(this.dateControl.value.start);
     const to = moment(this.dateControl.value.end).add(1,'d');
-    l = environment.backURL + '/export/reservas' 
+    l = environment.backURL + '/export/' + data
       + '?fdesde=' + from.format('YYYY-MM-DD') 
       + '&fhasta=' + to.format('YYYY-MM-DD') 
       + '&access_token=' + this.apolloApi.token;
 
-    // Facturas
-    } else if (data == "facturas") {
+    // Facturas, pagos e ingresos
+    } else if (data == "facturas" || data == "pagos" || data == "ingresos") {
       const from = moment(this.billDateControl.value);
       const to = moment(from).add(1, 'M');
       const prov_from = this.providerControl.value;
       const prov_to = prov_from || 99999; 
-      l = environment.backURL + '/export/facturas' 
-        + '?fdesde=' + from.format('YYYY-MM-DD') 
-        + '&fhasta=' + to.format('YYYY-MM-DD') 
-        + '&pdesde=' + prov_from
-        + '&phasta=' + prov_to
-        + '&access_token=' + this.apolloApi.token;
-
-    // Pagos
-    } else if (data == "pagos") {
-      const from = moment(this.dateControl.value.start);
-      const to = moment(this.dateControl.value.end).add(1,'d');
-      const prov_from = this.providerControl.value;
-      const prov_to = prov_from || 99999; 
-      l = environment.backURL + '/export/pagos' 
-        + '?fdesde=' + from.format('YYYY-MM-DD') 
-        + '&fhasta=' + to.format('YYYY-MM-DD') 
-        + '&pdesde=' + prov_from
-        + '&phasta=' + prov_to
-        + '&access_token=' + this.apolloApi.token;
-
-    // Ingresos
-    } else if (data == "ingresos") {
-      const from = moment(this.dateControl.value.start);
-      const to = moment(this.dateControl.value.end).add(1,'d');
-      const prov_from = this.providerControl.value;
-      const prov_to = prov_from || 99999; 
-      l = environment.backURL + '/export/ingresos' 
+      l = environment.backURL + '/export/' + data
         + '?fdesde=' + from.format('YYYY-MM-DD') 
         + '&fhasta=' + to.format('YYYY-MM-DD') 
         + '&pdesde=' + prov_from

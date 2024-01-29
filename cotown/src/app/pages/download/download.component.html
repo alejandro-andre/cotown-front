@@ -19,7 +19,7 @@
 
 <!-- Edificios -->
 <div class="pure-g row">
-  <div class="pure-u-1-8 execute" *ngIf="providers">
+  <div class="pure-u-1-8 execute" *ngIf="providers && providers.length > 1">
     <button mat-raised-button color="primary" (click)="execute('edificios')">Ejecutar</button>
   </div>
   <div class="pure-u-7-8 name"><span>Edificios</span></div>
@@ -27,7 +27,7 @@
 
 <!-- Recursos -->
 <div class="pure-g row">
-  <div class="pure-u-1-8 execute"  *ngIf="providers && providers.length > 1">
+  <div class="pure-u-1-8 execute" *ngIf="providers && providers.length > 1">
     <button mat-raised-button color="primary" (click)="execute('recursos')">Ejecutar</button>
   </div>
   <div class="pure-u-7-8 name"><span>Recursos, precios y tarifas</span></div>
@@ -76,7 +76,7 @@
 </div>
 
 <!-- Reservas -->
-<div class="pure-g row" *ngIf="providers">
+<div class="pure-g row" *ngIf="providers && providers.length > 1">
   <div class="pure-u-1-8 execute">
     <button mat-raised-button color="primary" [disabled]="check('reservas')"
             (click)="execute('reservas')">Ejecutar</button>

@@ -136,10 +136,10 @@ export class DownloadComponent {
       + '&fhasta=' + to.format('YYYY-MM-DD') 
       + '&access_token=' + this.apolloApi.token;
 
-    // Facturas, pagos e ingresos
-    } else if (data == "facturas" || data == "pagos" || data == "ingresos") {
-      const from = moment(this.billDateControl.value);
-      const to = moment(from).add(1, 'M');
+    // Pagos e ingresos
+    } else if (data == "pagos" || data == "ingresos") {
+      const from = moment(this.dateControl.value.start);
+      const to = moment(this.dateControl.value.end).add(1,'d');
       const prov_from = this.providerControl.value;
       const prov_to = prov_from || 99999; 
       l = environment.backURL + '/export/' + data

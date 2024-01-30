@@ -52,7 +52,6 @@ export class GeneralDashboardComponent implements OnInit {
     { key:"Flight",               value:"Tren/Vuelo",  sort:"", filter:["next"] },
     { key:"Option",               value:"Opción",      sort:"", filter:["next"] },
     { key:"Check_in_room_ok",     value:"Lim",         sort:"", filter:["next", "checkin"] },
-    { key:"Check_in_notice_ok",   value:"Avi",         sort:"", filter:["next", "checkin"] },
     { key:"Check_in_keys_ok",     value:"Lla",         sort:"", filter:["next", "checkin"] },
     { key:"Check_in_keyless_ok",  value:"Kls",         sort:"", filter:["next", "checkin"] }, 
     { key:"Check_out_keys_ok",    value:"Lla",         sort:"", filter:["nextout", "checkout"] },

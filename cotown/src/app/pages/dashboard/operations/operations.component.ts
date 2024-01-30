@@ -42,7 +42,7 @@ export class OperationsDashboardComponent implements OnInit {
 
   // Buildings
   public buildings: Building[] = [] as Building[]; // Buildings
-  public buildingId: number = Constants.allStaticNumericValue; // Selected building
+  public buildingIds: number[] = []; // Selected building
 
   // Date management
   public today!: string;
@@ -80,10 +80,9 @@ export class OperationsDashboardComponent implements OnInit {
     { key:"Issues_ok",             value:"Gestionadas",        sort:"", type: "boll",   filter: ["issues"] },
     { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["nextout","checkout"] },
     { key:"Damages_ok",            value:"Gestionados",        sort:"", type: "bool",   filter: ["nextout","checkout"] },
-    { key:"Check_in_room_ok",      value:"Limpieza ok",        sort:"", type: "bool",   filter: ["nextin",] },
-    { key:"Check_in_keys_ok",      value:"Llaves ok",          sort:"", type: "bool",   filter: ["nextin",] },
-    { key:"Check_in_keyless_ok",   value:"Keyless ok",         sort:"", type: "bool",   filter: ["nextin",] },
-    { key:"Check_in_notice_ok",    value:"Aviso roomates",     sort:"", type: "bool",   filter: ["nextin",] },
+    { key:"Check_in_room_ok",      value:"Limpieza ok",        sort:"", type: "bool",   filter: ["nextin","checkin"] },
+    { key:"Check_in_keys_ok",      value:"Llaves ok",          sort:"", type: "bool",   filter: ["nextin","checkin"] },
+    { key:"Check_in_keyless_ok",   value:"Keyless ok",         sort:"", type: "bool",   filter: ["nextin","checkin"] },
     { key:"Check_out_keys_ok",     value:"Llaves ok",          sort:"", type: "bool",   filter: ["checkout"] },
     { key:"Check_out_keyless_ok",  value:"Keyless ok",         sort:"", type: "bool",   filter: ["checkout"] },
     { key:"Check_out_revision_ok", value:"Revisión ok",        sort:"", type: "bool",   filter: ["nextout","checkout"] },
@@ -180,8 +179,8 @@ export class OperationsDashboardComponent implements OnInit {
       params["location"] = this.cityId;
 
     // Building
-    if (this.buildingId != Constants.allStaticNumericValue)
-      params["building"] = this.buildingId;
+    if (this.buildingIds.length > 0)
+      params["building"] = this.buildingIds;
 
     // Date range
     params["date_from"] = this.datePipe.transform(this.range.get("start")?.value, "yyyy-MM-dd");
@@ -199,21 +198,23 @@ export class OperationsDashboardComponent implements OnInit {
         if (this.op == "checkout") {
           warning = o.Date_out < this.lastmonth;
         }
+        let cha   = (o.Origin_id == null) ? "" : "<br><strong style='color:teal;'>CHA</strong>";
+        let c_in  = (o.Check_in  != null) ? "" : " <b>*</b>";
+        let c_out = (o.Check_out != null) ? "" : " <b>**</b>";
         return {
-          "id": o.id,
+          "id": o.id + cha,
           "Name": o.Name + "<br>" + (o.Email || "") + "<br>" + (o.Phones || ""),
           "Status": o.Status,
-          "Date_in": this.formatDate(o.Date_in) + "<br>" + this.formatWeekday(o.Date_in),
-          "Date_out": this.formatDate(o.Date_out) + "<br>" + this.formatWeekday(o.Date_out),
+          "Date_in": this.formatDate(o.Date_in) + "<br>" + this.formatWeekday(o.Date_in) + c_in,
+          "Date_out": this.formatDate(o.Date_out) + "<br>" + this.formatWeekday(o.Date_out) + c_out,
           "Date": ["nextin", "checkin", "issues"].includes(this.op) ? o.Date_in : o.Date_out,
           "Dates": this.formatDate(o.Date_from) + "<br>" + this.formatDate(o.Date_to),
           "Resource": o.Resource + "<br>" + o.Building,
           "Check_in_time": (o.Check_in_time || "--:--").substring(0, 5),
           "Arrival": (o.Arrival || "--:--").substring(0, 5),
           "Flight": (o.Flight || "-"),
-          "Option": (o.Option || "-"),
+          "Option": (o.Option || "-") + "<br>" + (o.Comments || ""),
           "Check_in_room_ok": [o.Check_in_room_ok, o.Check_in_room_ok],
-          "Check_in_notice_ok": [o.Check_in_notice_ok, o.Check_in_notice_ok],
           "Check_in_keys_ok": [o.Check_in_keys_ok, o.Check_in_keys_ok],
           "Check_in_keyless_ok": [o.Check_in_keyless_ok, o.Check_in_keyless_ok],
           "Check_out_keys_ok": [o.Check_out_keys_ok, o.Check_out_keys_ok],
@@ -262,7 +263,7 @@ export class OperationsDashboardComponent implements OnInit {
   // City change
   onCity(): void {
     // Clean
-    this.buildingId = Constants.allStaticNumericValue;
+    this.buildingIds = [];
     this.rows = [];
     this.getBuildings();
     this.getBookings();
@@ -270,6 +271,7 @@ export class OperationsDashboardComponent implements OnInit {
 
   // Building change
   onBuilding(): void {
+    console.log(this.buildingIds);
     this.getBookings();
   }
 
@@ -330,7 +332,6 @@ export class OperationsDashboardComponent implements OnInit {
     row[key][0] = event.checked;
     row["Changed"] = false;
     if (row["Check_in_room_ok"][0]     != row["Check_in_room_ok"][1])     row["Changed"] = true;
-    if (row["Check_in_notice_ok"][0]   != row["Check_in_notice_ok"][1])   row["Changed"] = true;
     if (row["Check_in_keys_ok"][0]     != row["Check_in_keys_ok"][1])     row["Changed"] = true;
     if (row["Check_in_keyless_ok"][0]  != row["Check_in_keyless_ok"][1])  row["Changed"] = true;
     if (row["Check_out_keys_ok"][0]    != row["Check_out_keys_ok"][1])    row["Changed"] = true;
@@ -356,7 +357,6 @@ export class OperationsDashboardComponent implements OnInit {
       id: row.id,
       status: row.Status,
       checkinroomok: row.Check_in_room_ok[0],
-      checkinnoticeok: row.Check_in_notice_ok[0],
       checkinkeysok: row.Check_in_keys_ok[0],
       checkinkeylessok: row.Check_in_keyless_ok[0],
       checkoutkeysok: row.Check_out_keys_ok[0],
@@ -369,7 +369,6 @@ export class OperationsDashboardComponent implements OnInit {
       next: (res) => {
         this.isLoading = false;
         row["Check_in_room_ok"][1]     = row["Check_in_room_ok"][0];
-        row["Check_in_notice_ok"][1]   = row["Check_in_notice_ok"][0];
         row["Check_in_keys_ok"][1]     = row["Check_in_keys_ok"][0];
         row["Check_in_keyless_ok"][1]  = row["Check_in_keyless_ok"][0];
         row["Check_out_keys_ok"][1]    = row["Check_out_keys_ok"][0];

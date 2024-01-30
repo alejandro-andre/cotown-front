@@ -96,7 +96,6 @@ export const BOOKING_UPDATE = `mutation(
     entity:{
       Status: $status
       Check_in_room_ok: $checkinroomok
-      Check_in_notice_ok: $checkinnoticeok
       Check_in_keys_ok: $checkinkeysok
       Check_in_keyless_ok: $checkinkeylessok
       Check_out_keys_ok: $checkoutkeysok

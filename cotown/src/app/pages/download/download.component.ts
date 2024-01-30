@@ -146,7 +146,7 @@ export class DownloadComponent {
     } else if (data == "pagos" || data == "ingresos") {
       const from = moment(this.dateControl.value.start);
       const to = moment(this.dateControl.value.end).add(1,'d');
-      const prov_from = this.providerControl.value || this.providers[0];
+      const prov_from = this.providerControl.value;
       const prov_to = prov_from || 99999; 
       l = environment.backURL + '/export/' + data
         + '?fdesde=' + from.format('YYYY-MM-DD') 
@@ -159,7 +159,7 @@ export class DownloadComponent {
     } else if (data == "downloadcontratos") {
       const from = moment(this.dateControl.value.start);
       const to = moment(this.dateControl.value.end).add(1,'d');
-      const prov_from = this.providerControl.value || this.providers[0];
+      const prov_from = this.providerControl.value;
       const prov_to = prov_from || 99999; 
       l = environment.backURL + '/download/contratos' 
         + '?fdesde=' + from.format('YYYY-MM-DD') 

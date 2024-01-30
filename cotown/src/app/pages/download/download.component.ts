@@ -19,7 +19,7 @@ const moment = _rollupMoment;
 
 export class DownloadComponent {
 
-  reports = [
+  reps = [
     { name: 'propietarios',      provider: false, icon: 'account_box',        filter: false, text: 'Propietarios',     url: '/export/propietarios' },
     { name: 'edificios',         provider: false, icon: 'business',           filter: false, text: 'Edificios',        url: '/export/edificios' },
     { name: 'recursos',          provider: false, icon: 'hotel',              filter: false, text: 'Recursos, precios, tarifas', url: '/export/recursos' },
@@ -62,8 +62,14 @@ export class DownloadComponent {
     this.adapter.setLocale(this.language.lang.substring(0,2));
     this.apolloApi.getData(PROVIDERS_QUERY).subscribe(res => {
       this.providers = res.data.data;
+      this.providerControl.setValue(this.providers[0].id);
     });
   }    
+
+  // Accesible reports
+  get reports() {
+    return this.reps.filter(r => this.providers && (r.provider || this.providers.length > 1));
+  }
 
   // Report selected
   selectItem(item: any) {
@@ -140,7 +146,7 @@ export class DownloadComponent {
     } else if (data == "pagos" || data == "ingresos") {
       const from = moment(this.dateControl.value.start);
       const to = moment(this.dateControl.value.end).add(1,'d');
-      const prov_from = this.providerControl.value;
+      const prov_from = this.providerControl.value || this.providers[0];
       const prov_to = prov_from || 99999; 
       l = environment.backURL + '/export/' + data
         + '?fdesde=' + from.format('YYYY-MM-DD') 
@@ -153,7 +159,7 @@ export class DownloadComponent {
     } else if (data == "downloadcontratos") {
       const from = moment(this.dateControl.value.start);
       const to = moment(this.dateControl.value.end).add(1,'d');
-      const prov_from = this.providerControl.value; 
+      const prov_from = this.providerControl.value || this.providers[0];
       const prov_to = prov_from || 99999; 
       l = environment.backURL + '/download/contratos' 
         + '?fdesde=' + from.format('YYYY-MM-DD') 
@@ -166,7 +172,7 @@ export class DownloadComponent {
     } else if (data == "downloadfacturas") {
       const from = moment(this.billDateControl.value);
       const to = moment(from).add(1, 'M');
-      const prov_from = this.providerControl.value; 
+      const prov_from = this.providerControl.value || this.providers[0];
       const prov_to = prov_from || 99999; 
       l = environment.backURL + '/download/facturas' 
         + '?fdesde=' + from.format('YYYY-MM-DD') 

@@ -5,7 +5,7 @@
 <!-- Report grid -->
 <div class="grid-container">
   <div class="grid-item" *ngFor="let item of reports; let i = index" [class.selected]="selectedItem === item.name">
-    <mat-card *ngIf="providers && (item.provider || providers.length >= 1)" (click)="selectItem(item)">
+    <mat-card *ngIf="providers && (item.provider || providers.length > 1)" (click)="selectItem(item)">
       <mat-icon class="icon">{{ item.icon }}</mat-icon>
       <p>{{ item.text }}</p>
       <mat-icon *ngIf="!item.filter" class="filter"></mat-icon>
@@ -14,14 +14,14 @@
   </div>
 </div>
 
-<div *ngIf="providers && providers.length >= 1">
+<div *ngIf="providers && providers.length > 1">
 
 <h1>Descargas</h1>
 
 <!-- Download grid -->
 <div class="grid-container">
   <div class="grid-item" *ngFor="let item of downloads; let i = index" [class.selected]="selectedItem === item.name">
-    <mat-card *ngIf="providers && (item.provider || providers.length >= 1)" (click)="selectItem(item)">
+    <mat-card *ngIf="providers && (item.provider || providers.length > 1)" (click)="selectItem(item)">
       <mat-icon class="icon">{{ item.icon }}</mat-icon>
       <p>{{ item.text }}</p>
       <mat-icon *ngIf="!item.filter" class="filter"></mat-icon>

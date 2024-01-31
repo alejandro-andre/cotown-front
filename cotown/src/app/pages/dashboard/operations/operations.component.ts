@@ -67,9 +67,9 @@ export class OperationsDashboardComponent implements OnInit {
     { key:"id",                    value:"#",                  sort:"", type: "text",   filter: [] },
     { key:"Name",                  value:"Residente",          sort:"", type: "text",   filter: [] },
     { key:"Status",                value:"Estado",             sort:"", type: "status", filter: [] },
-    { key:"Date",                  value:"",                   sort:"", type: "date",   filter: ["---"] }, 
     { key:"Date_in",               value:"Fecha entrada",      sort:"", type: "date",   filter: ["nextin","checkin","issues"] }, 
     { key:"Date_out",              value:"Fecha salida",       sort:"", type: "date",   filter: ["nextout","checkout"] }, 
+    { key:"Confirmation_date",     value:"Fecha confirmación", sort:"", type: "date",   filter: [] }, 
     { key:"Dates",                 value:"Fechas contrato",    sort:"", type: "text",   filter: [] }, 
     { key:"Resource",              value:"Recurso / Edificio", sort:"", type: "text",   filter: [] },
     { key:"Check_in_time",         value:"Hora check-in",      sort:"", type: "text",   filter: ["nextin","checkin"] },
@@ -80,6 +80,7 @@ export class OperationsDashboardComponent implements OnInit {
     { key:"Issues_ok",             value:"Gestionadas",        sort:"", type: "boll",   filter: ["issues"] },
     { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["nextout","checkout"] },
     { key:"Damages_ok",            value:"Gestionados",        sort:"", type: "bool",   filter: ["nextout","checkout"] },
+    { key:"Check_in_payed",        value:"Check-in pagado",    sort:"", type: "check",  filter: ["nextin","checkin"] },
     { key:"Check_in_room_ok",      value:"Limpieza ok",        sort:"", type: "bool",   filter: ["nextin","checkin"] },
     { key:"Check_in_keys_ok",      value:"Llaves ok",          sort:"", type: "bool",   filter: ["nextin","checkin"] },
     { key:"Check_in_keyless_ok",   value:"Keyless ok",         sort:"", type: "bool",   filter: ["nextin","checkin"] },
@@ -190,6 +191,7 @@ export class OperationsDashboardComponent implements OnInit {
     this.isLoading = true;
     axiosApi.getDashboardBookings(this.op, this.apollo.token, params).then((res) => { 
       // Get data
+      console.log(res.data);
       this.rows = res.data.map((o: any) => { 
         let warning = false;
         if (this.op == "checkin") {
@@ -207,13 +209,14 @@ export class OperationsDashboardComponent implements OnInit {
           "Status": o.Status,
           "Date_in": this.formatDate(o.Date_in) + "<br>" + this.formatWeekday(o.Date_in) + c_in,
           "Date_out": this.formatDate(o.Date_out) + "<br>" + this.formatWeekday(o.Date_out) + c_out,
-          "Date": ["nextin", "checkin", "issues"].includes(this.op) ? o.Date_in : o.Date_out,
+          "Confirmation_date": this.formatDate(o.Confirmation_date),
           "Dates": this.formatDate(o.Date_from) + "<br>" + this.formatDate(o.Date_to),
           "Resource": o.Resource + "<br>" + o.Building,
           "Check_in_time": (o.Check_in_time || "--:--").substring(0, 5),
           "Arrival": (o.Arrival || "--:--").substring(0, 5),
           "Flight": (o.Flight || "-"),
           "Option": (o.Option || "-") + "<br>" + (o.Comments || ""),
+          "Check_in_payed": o.Payment_id ? o.Payment_date != null : null,
           "Check_in_room_ok": [o.Check_in_room_ok, o.Check_in_room_ok],
           "Check_in_keys_ok": [o.Check_in_keys_ok, o.Check_in_keys_ok],
           "Check_in_keyless_ok": [o.Check_in_keyless_ok, o.Check_in_keyless_ok],
@@ -297,11 +300,13 @@ export class OperationsDashboardComponent implements OnInit {
     }
 
     // Sort
-    if (type == "date")
-      key = "Date";
-    this.rows = this.rows.sort((a:any, b:any) => { 
-      const va = String(a[key]);
-      const vb = String(b[key]);
+    this.rows = this.rows.sort((a:any, b:any) => {
+      let va = String(a[key]);
+      let vb = String(b[key]);
+      if (type == "date") {
+        va = va.substring(6, 10) + va.substring(3, 5) + va.substring(0, 2);
+        vb = vb.substring(6, 10) + vb.substring(3, 5) + vb.substring(0, 2);
+      }
       if (dir == "up")
         return va.localeCompare(vb);
       return vb.localeCompare(va);

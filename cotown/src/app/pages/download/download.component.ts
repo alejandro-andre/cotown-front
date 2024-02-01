@@ -172,7 +172,7 @@ export class DownloadComponent {
     } else if (data == "downloadfacturas") {
       const from = moment(this.billDateControl.value);
       const to = moment(from).add(1, 'M');
-      const prov_from = this.providerControl.value || this.providers[0];
+      const prov_from = this.providerControl.value;
       const prov_to = prov_from || 99999; 
       l = environment.backURL + '/download/facturas' 
         + '?fdesde=' + from.format('YYYY-MM-DD') 

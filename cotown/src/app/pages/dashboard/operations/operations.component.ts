@@ -75,7 +75,7 @@ export class OperationsDashboardComponent implements OnInit {
     { key:"Check_in_time",         value:"Hora check-in",      sort:"", type: "text",   filter: ["nextin","checkin"] },
     { key:"Arrival",               value:"Hora llegada",       sort:"", type: "text",   filter: ["nextin","checkin"] },
     { key:"Flight",                value:"Tren/Vuelo",         sort:"", type: "text",   filter: ["nextin","checkin"] },
-    { key:"Option",                value:"Opción",             sort:"", type: "text",   filter: ["nextin","checkin"] },
+    { key:"Option",                value:"Opción/Comentarios", sort:"", type: "text",   filter: ["nextin","checkin"] },
     { key:"Issues",                value:"Incidencias",        sort:"", type: "text",   filter: ["issues"] },
     { key:"Issues_ok",             value:"Gestionadas",        sort:"", type: "boll",   filter: ["issues"] },
     { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["nextout","checkout"] },
@@ -200,7 +200,7 @@ export class OperationsDashboardComponent implements OnInit {
         if (this.op == "checkout") {
           warning = o.Date_out < this.lastmonth;
         }
-        let cha   = (o.Origin_id == null) ? "" : "<br><strong style='color:teal;'>CHA</strong>";
+        let cha   = (o.Origin_id == null) ? "" : "<br><strong style='color:teal;'>CHA</strong><br>" + o.Origin_id;
         let c_in  = (o.Check_in  != null) ? "" : " <b>*</b>";
         let c_out = (o.Check_out != null) ? "" : " <b>**</b>";
         return {

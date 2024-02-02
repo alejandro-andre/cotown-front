@@ -86,11 +86,14 @@ export const BOOKING_UPDATE = `mutation(
   $id: Int!
   $status: Auxiliar_Booking_statusEnumType!
   $checkinroomok: Boolean!
-  $checkinnoticeok: Boolean!
   $checkinkeysok: Boolean!
   $checkinkeylessok: Boolean!
   $checkoutkeysok: Boolean!
   $checkoutkeylessok: Boolean!
+  $eco_ext_keyless_ok: Boolean!
+  $eco_ext_change_ok: Boolean!
+  $issues_ok: Boolean!
+  $damages_ok: Boolean!
 ) {
   data: Booking_BookingUpdate( where: { id: { EQ: $id } }
     entity:{
@@ -100,6 +103,10 @@ export const BOOKING_UPDATE = `mutation(
       Check_in_keyless_ok: $checkinkeylessok
       Check_out_keys_ok: $checkoutkeysok
       Check_out_keyless_ok: $checkoutkeylessok
+      Eco_ext_keyless_ok: $eco_ext_keyless_ok
+      Eco_ext_change_ok: $eco_ext_change_ok
+      Issues_ok: $issues_ok
+      Damages_ok: $damages_ok   
     }
   ) { id }
 }`;

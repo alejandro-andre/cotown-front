@@ -50,6 +50,7 @@ import { CustomerRoutingModule } from './customer-routing.module';
 import { SpinnerControlComponent } from './spinner/spinner-control.component';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, MatNativeDateModule } from '@angular/material/core';
 import { CustomDateAdapter } from '../utils/date-adapter';
+import { SafePipe } from '../services/safe.pipe';
 
 // Config of translation
 registerLocaleData(localeES, 'es-ES');
@@ -77,7 +78,8 @@ export function createTranslateLoader(http: HttpClient) {
     PdfsComponent,
     PaymentOKComponent,
     PaymentKOComponent,
-    SpinnerControlComponent
+    SpinnerControlComponent,
+    SafePipe
   ],
   imports: [
     CommonModule,
@@ -123,7 +125,8 @@ export function createTranslateLoader(http: HttpClient) {
     MatButtonModule,
     MatTabsModule,
     MatDialogModule,
-    TranslateModule
+    TranslateModule,
+    SafePipe
   ],
   providers: [
     DatePipe,

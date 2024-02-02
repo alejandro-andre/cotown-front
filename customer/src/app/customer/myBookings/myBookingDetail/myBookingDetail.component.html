@@ -364,7 +364,7 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <p *ngIf="checkinOptions.length > 0">{{ option_detail() }}</p>
+            <p *ngIf="checkinOptions.length > 0" [innerHtml]="option_detail() | safe"></p>
             <p *ngIf="checkinFormControl.value && checkintime && checkinOptions.length == 0">{{ 'check_in_no_options' | translate }}</p>
           </div>
     

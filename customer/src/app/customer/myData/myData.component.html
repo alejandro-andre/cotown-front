@@ -210,7 +210,7 @@
     <!-- Address -->
     <div class="pure-u-1">
       <mat-form-field>
-        <mat-label>{{ 'address' | translate }}</mat-label>
+        <mat-label>{{ 'address' | translate }} ({{ 'home_address' | translate }})</mat-label>
         <input matInput [formControl]="addressControl" 
                placeholder="{{'address' | translate}}" 
                [readonly]="!visibility['address']"               
@@ -221,7 +221,7 @@
         </mat-error>
       </mat-form-field>
     </div>
-
+   
     <!-- Zip -->
     <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
       <mat-form-field>

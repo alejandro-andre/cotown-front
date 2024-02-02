@@ -179,9 +179,12 @@ export class MyBookingDetailComponent {
   }
 
   option_detail(): string {
+    let text = ''
     if (this.isSpanish)
-      return this.lookupService.checkinOptions.find((elem) => elem.id === this.selectedOption)?.description || '';
-    return this.lookupService.checkinOptions.find((elem) => elem.id === this.selectedOption)?.description_en || '';
+      text = this.lookupService.checkinOptions.find((elem) => elem.id === this.selectedOption)?.description || '';
+    else
+      text = this.lookupService.checkinOptions.find((elem) => elem.id === this.selectedOption)?.description_en || '';
+    return text.replaceAll("\n", "<br>")
   }
 
   get options(): any {

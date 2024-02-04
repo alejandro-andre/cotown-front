@@ -239,9 +239,6 @@ export class MyBookingDetailComponent {
           if (dow == 0) { from = price.timetable.Sun_from; to = price.timetable.Sun_to; }
           else if (dow == 6) { from = price.timetable.Sat_from; to = price.timetable.Sat_to; }
           else if (dow == 5) { from = price.timetable.Fri_from; to = price.timetable.Fri_to; }
-          console.log(from);
-          console.log(to);
-          console.log(this.checkintime);
           if (from != undefined) {
             if ((this.checkintime || '00:00') >= from.substring(0, 5) && (this.checkintime || '99:99') <= this.minusOneMinute(to)) {
               option.price = price.price;

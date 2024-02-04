@@ -24,6 +24,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSliderModule } from '@angular/material/slider';
 
 // Components
 import { LayoutComponent } from './layout/layout.component';
@@ -35,6 +37,7 @@ import { NewContactComponent } from './myContacts/newContacts/newContact.compone
 import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
 import { MyBookingsComponent } from './myBookings/myBookings.component';
 import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBookingDetail.component';
+import { MyQuestionnairesComponent } from './myQuestionnaires/myQuestionnaires.component';
 import { MyInvoicesComponent } from './myInvoices/myInvoices.component';
 import { MyPaymentsComponent } from './myPayments/myPayments.component';
 import { InvoicePayComponent } from './myPayments/invoicePay/invoicePay.component';
@@ -42,6 +45,7 @@ import { PdfsComponent } from './pdfs/pdfs.component';
 import { HomeComponent } from './home/home.component';
 import { PaymentOKComponent } from './paymentOK/paymentOK.component';
 import { PaymentKOComponent } from './paymentKO/paymentKO.component';
+import { StarRatingComponent } from './star-rating/star-rating.component';
 
 // Routing
 import { CustomerRoutingModule } from './customer-routing.module';
@@ -72,6 +76,7 @@ export function createTranslateLoader(http: HttpClient) {
     MyDocumentsComponent,
     MyBookingsComponent,
     MyBookingDetailComponent,
+    MyQuestionnairesComponent,
     MyInvoicesComponent,
     MyPaymentsComponent,
     InvoicePayComponent,
@@ -79,7 +84,8 @@ export function createTranslateLoader(http: HttpClient) {
     PaymentOKComponent,
     PaymentKOComponent,
     SpinnerControlComponent,
-    SafePipe
+    SafePipe,
+    StarRatingComponent
   ],
   imports: [
     CommonModule,
@@ -101,6 +107,8 @@ export function createTranslateLoader(http: HttpClient) {
     MatProgressSpinnerModule,
     MatDialogModule,
     MatTabsModule,
+    MatSliderModule,
+    MatRadioModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -125,6 +133,8 @@ export function createTranslateLoader(http: HttpClient) {
     MatButtonModule,
     MatTabsModule,
     MatDialogModule,
+    MatSliderModule,
+    MatRadioModule,
     TranslateModule,
     SafePipe
   ],

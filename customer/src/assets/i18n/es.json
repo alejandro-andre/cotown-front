@@ -120,6 +120,8 @@
   "prices": "Detalles de la reserva",
   "province": "Provincia",
   "questionnaires": "Mis cuestionarios",
+  "questionnaire_checkin": "Cuestionario de check-in",
+  "questionnaire_checkout": "Cuestionario de Check-out",
   "reason": "Motivo de estancia",
   "rent": "Renta",
   "rent_contract": "Contrato de rentas",

@@ -1,0 +1,42 @@
+.questionnaire {
+	box-sizing: border-box;
+}
+
+.questionnaire .group p {
+    font-size: 1.2em;
+    font-weight: 400;
+}
+
+.questionnaire .question {
+	box-sizing: border-box;
+    border-bottom: 1px solid lightgrey;
+}
+
+.questionnaire .question .text {
+    vertical-align: middle;
+	box-sizing: border-box;
+}
+
+.questionnaire .question .text p {
+    padding: 0px 15px;
+}
+
+.questionnaire .question .answer {
+    vertical-align: middle;
+	box-sizing: border-box;
+}
+
+.questionnaire .question .answer.input {
+    margin-top: 10px; 
+    margin-bottom: -10px;
+    width: 50%;
+}
+
+.radio-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.radio-button {
+    margin-right: 20px;
+}

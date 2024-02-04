@@ -195,7 +195,6 @@ export class OperationsDashboardComponent implements OnInit {
     this.isLoading = true;
     axiosApi.getDashboardBookings(this.op, this.apollo.token, params).then((res) => { 
       // Get data
-      console.log(res.data);
       this.rows = res.data.map((o: any) => { 
         let warning = false;
         if (this.op == "checkin") {
@@ -290,7 +289,6 @@ export class OperationsDashboardComponent implements OnInit {
 
   // Building change
   onBuilding(): void {
-    console.log(this.buildingIds);
     this.getBookings();
   }
 

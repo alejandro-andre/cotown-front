@@ -21,6 +21,7 @@
     "my_contacts": "My contacts",
     "my_documents": "My documents",
     "my_bookings": "My bookings",
+    "my_questionnaires": "My questionnaires",
     "my_invoices": "My invoices",
     "my_payments": "My payments",
     "pdfs": "Information and help"
@@ -118,6 +119,7 @@
   "prefix": "Phone prefix",
   "prices": "Reservation details",
   "province": "Province",
+  "questionnaires": "Mis questionnaires",
   "reason": "Stay reason",
   "rent": "Rent",
   "rent_contract": "Rent contract",

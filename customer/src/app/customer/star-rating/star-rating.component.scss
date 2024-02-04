@@ -1,0 +1,20 @@
+.star-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.star-icons {
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+  color: gold;
+}
+
+.star-filled {
+  color: gold;
+}
+
+.star-empty {
+  color: lightgray;
+}

@@ -3,16 +3,15 @@ export const GET_QUESTIONNAIRE_BY_TYPE = `query q ($type: Auxiliar_Questionnaire
       where: { Questionnaire_type: { EQ: $type } }
       orderBy: { attribute: Order }
   ) {
-      Name
-      Description
-      Description_en
-      Booking_questionListViaGroup_id (
+      name: Name
+      description: Description
+      description_en: Description_en
+      questions: Booking_questionListViaGroup_id (
           orderBy: { attribute: Order }
       ) {
-          Question
-          Question_en
-          Question_type
+          question: Question
+          question_en: Question_en
+          type: Question_type
       }
   }
 }`;
-

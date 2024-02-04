@@ -22,20 +22,22 @@ export class Constants {
   ];
 
   // Navigation
-  public static NAV_HOME:      INav = { name: 'home',         url: 'home' };
-  public static NAV_DATA:      INav = { name: 'my_data',      url: 'data' };
-  public static NAV_CONTACTS:  INav = { name: 'my_contacts',  url: 'contact' };
-  public static NAV_DOCUMENTS: INav = { name: 'my_documents', url: 'documents' };
-  public static NAV_BOOKINGS:  INav = { name: 'my_bookings',  url: 'bookings' };
-  public static NAV_INVOICES:  INav = { name: 'my_invoices',  url: 'invoices' };
-  public static NAV_PAYMENTS:  INav = { name: 'my_payments',  url: 'payments' };
-  public static NAV_PDFS:      INav = { name: 'pdfs',         url: 'pdfs' };
-  public static NAV_LOG_OUT:   INav = { name: 'log_out',      url: 'logout' }
+  public static NAV_HOME:           INav = { name: 'home',              url: 'home' };
+  public static NAV_DATA:           INav = { name: 'my_data',           url: 'data' };
+  public static NAV_CONTACTS:       INav = { name: 'my_contacts',       url: 'contact' };
+  public static NAV_DOCUMENTS:      INav = { name: 'my_documents',      url: 'documents' };
+  public static NAV_BOOKINGS:       INav = { name: 'my_bookings',       url: 'bookings' };
+  public static NAV_QUESTIONNAIRES: INav = { name: 'my_questionnaires', url: 'questionnaires' };
+  public static NAV_INVOICES:       INav = { name: 'my_invoices',       url: 'invoices' };
+  public static NAV_PAYMENTS:       INav = { name: 'my_payments',       url: 'payments' };
+  public static NAV_PDFS:           INav = { name: 'pdfs',              url: 'pdfs' };
+  public static NAV_LOG_OUT:        INav = { name: 'log_out',           url: 'logout' }
   public static NAV_URLS: INav[] = [
     Constants.NAV_DATA,
     Constants.NAV_CONTACTS,
     Constants.NAV_DOCUMENTS,
     Constants.NAV_BOOKINGS,
+    Constants.NAV_QUESTIONNAIRES,
     Constants.NAV_INVOICES,
     Constants.NAV_PAYMENTS,
     Constants.NAV_PDFS,

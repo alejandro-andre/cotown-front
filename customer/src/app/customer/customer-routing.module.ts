@@ -3,22 +3,23 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // Components
+import { Constants } from '../constants/Constants';
 import { LayoutComponent } from './layout/layout.component';
 import { BaseComponent } from './base/base.component';
+import { HomeComponent } from './home/home.component';
 import { MyDataComponent } from './myData/myData.component';
 import { MyContactsComponent } from './myContacts/myContacts.component';
 import { MyDocumentsComponent } from './myDocuments/myDocuments.component';
 import { NewContactComponent } from './myContacts/newContacts/newContact.component';
 import { MyBookingsComponent } from './myBookings/myBookings.component';
-import { MyInvoicesComponent } from './myInvoices/myInvoices.component';
-import { Constants } from '../constants/Constants';
 import { MyBookingDetailComponent } from './myBookings/myBookingDetail/myBookingDetail.component';
+import { MyQuestionnairesComponent } from './myQuestionnaires/myQuestionnaires.component';
+import { MyInvoicesComponent } from './myInvoices/myInvoices.component';
+import { MyPaymentsComponent } from './myPayments/myPayments.component';
 import { InvoicePayComponent } from './myPayments/invoicePay/invoicePay.component';
 import { PaymentOKComponent } from './paymentOK/paymentOK.component';
 import { PaymentKOComponent } from './paymentKO/paymentKO.component';
 import { PdfsComponent } from './pdfs/pdfs.component';
-import { MyPaymentsComponent } from './myPayments/myPayments.component';
-import { HomeComponent } from './home/home.component';
 import { AuthGuard } from '../auth/auth.guard';
 
 const routes: Routes = [
@@ -53,6 +54,10 @@ const routes: Routes = [
       {
         path: Constants.NAV_BOOKINGS.url,
         component: MyBookingsComponent,
+      },
+      {
+        path: Constants.NAV_QUESTIONNAIRES.url,
+        component: MyQuestionnairesComponent,
       },
       {
         path: Constants.NAV_INVOICES.url,

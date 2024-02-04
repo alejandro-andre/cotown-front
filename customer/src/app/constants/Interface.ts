@@ -168,7 +168,8 @@ export interface IBooking {
   arrival: string | null,
   check_in_time: string | null,
   price_list?: IRent[],
-  options: IOption[] | null
+  options: IOption[] | null,
+  questionnaires: [] | null
 };
 
 export interface IBookingResource {

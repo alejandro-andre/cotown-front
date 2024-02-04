@@ -17,16 +17,16 @@
 
       <!-- Questions -->
       <div class="question pure-u-1" *ngFor="let q of g.questions">
-        <div class="text pure-u-1-2"><p>{{ isSpanish ? q.question : q.question_en }}</p></div>
-        <div class="answer pure-u-1-2" *ngIf="q.type === 'puntos'">
+        <div class="text pure-u-1 pure-u-lg-1-2"><p>{{ isSpanish ? q.question : q.question_en }}</p></div>
+        <div class="answer pure-u-1 pure-u-lg-1-2" *ngIf="q.type === 'puntos'">
           <app-star-rating of="{{ isSpanish ? 'de': 'out of' }}" [(ngModel)]="q.value" (change)="onChange(q)"></app-star-rating>
         </div>        
-        <div class="answer input pure-u-1-2" *ngIf="q.type === 'texto'">
+        <div class="answer input pure-u-1 pure-u-lg-1-2" *ngIf="q.type === 'texto'">
           <mat-form-field>
-            <input matInput [(ngModel)]="q.value" (change)="onChange(q)">
+            <input matInput [placeholder]="'comments' | translate" [(ngModel)]="q.value" (change)="onChange(q)">
           </mat-form-field>
         </div>
-        <div class="answer pure-u-1-2" *ngIf="q.type === 'check'">
+        <div class="answer pure-u-1 pure-u-lg-1-2" *ngIf="q.type === 'check'">
           <mat-radio-group [(ngModel)]="q.value" (change)="onChange(q)">
             <mat-radio-button class="radio-button" [value]="'Sí'">{{ isSpanish ? "Sí": "Yes" }}</mat-radio-button>
             <mat-radio-button class="radio-button" [value]="'No'">No</mat-radio-button>
@@ -47,5 +47,5 @@
 </ng-template>
 
 <ng-template #elseQuestionnairesBlock>
-  <div>{{ 'errors.no_results' | translate }}</div>
+  <div>{{ 'errors.no_questionnaires' | translate }}</div>
 </ng-template>

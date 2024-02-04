@@ -6,6 +6,7 @@ import { GET_QUESTIONNAIRE_BY_TYPE } from 'src/app/schemas/query-definitions/que
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { Constants } from 'src/app/constants/Constants';
+import { AxiosApi } from 'src/app/services/axios-api.service';
 
 @Component({
   selector: 'app-my-questionnaires',
@@ -30,6 +31,7 @@ export class MyQuestionnairesComponent implements OnInit {
   constructor(
     public customerService: CustomerService,
     private apolloApi: ApolloQueryApi,
+    private axiosApi: AxiosApi,
     public translate: TranslateService,
   ) { }
 
@@ -70,7 +72,13 @@ export class MyQuestionnairesComponent implements OnInit {
   }
 
   save(){
-    console.log(this.questions);
+    this.isLoading = true;
+    this.axiosApi.answerQuestionnaire(this.questionnaire.id, this.questions).then((res: any) => {
+      this.isLoading = false;
+      if (res && res.data === 'ok') {
+        this.ngOnInit();
+      }
+    });
   }
 
   get isSpanish(): boolean {

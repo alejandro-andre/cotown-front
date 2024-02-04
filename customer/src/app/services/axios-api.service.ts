@@ -81,4 +81,9 @@ export class AxiosApi {
     const token = this.apollo.token;
     return backendInstance.get(`/booking/${id}/status/${status}?access_token=${token}`);
   }
+
+  answerQuestionnaire(id: number, questionnaire: any) {
+    return backendInstance.post(`/questionnaire/${id}`, questionnaire, { headers: { 'Content-Type': 'application/json'} } );
+  }
+
 };

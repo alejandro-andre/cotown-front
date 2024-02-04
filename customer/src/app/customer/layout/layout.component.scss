@@ -13,10 +13,6 @@ a {
   padding: 0;
 }
 
-.logo {
-  height: 40px;
-}
-
 .mat-toolbar {
   background-color: e0e0e0;
   color: black;
@@ -56,9 +52,11 @@ a {
 }
 
 @media screen and (min-width: 768px) {
+  .logo { height: 36px; }
   .desktop { display: block; }
 }
 
 @media screen and (max-width: 767px) {
+  .logo { height: 28px; }
   .desktop { display: none; }
 }

@@ -9,6 +9,7 @@ export const GET_QUESTIONNAIRE_BY_TYPE = `query q ($type: Auxiliar_Questionnaire
       questions: Booking_questionListViaGroup_id (
           orderBy: { attribute: Order }
       ) {
+          id
           question: Question
           question_en: Question_en
           type: Question_type

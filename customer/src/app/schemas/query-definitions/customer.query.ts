@@ -121,7 +121,6 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
         }
       }
       questionnaires: Booking_questionnaireListViaBooking_id ( 
-        joinType: INNER
         where: { Completed: { IS_NULL: true } }
       ) {
         id

@@ -48,6 +48,7 @@ export class MyQuestionnairesComponent implements OnInit {
     })
 
     // Load questionnaire questions
+    this.questions = null;
     if (this.questionnaire) {
       this.apolloApi.getData(GET_QUESTIONNAIRE_BY_TYPE, { type: this.questionnaire.type }).subscribe((res: any) => {
         const data = res.data;
@@ -71,13 +72,16 @@ export class MyQuestionnairesComponent implements OnInit {
   onChange(value: any) {
   }
 
-  save(){
+  save() {
     this.isLoading = true;
     this.axiosApi.answerQuestionnaire(this.questionnaire.id, this.questions).then((res: any) => {
       this.isLoading = false;
       if (res && res.data === 'ok') {
-        this.ngOnInit();
+        this.customerService.customer.bookings.forEach((b: any) => {
+          b.questionnaires = b.questionnaires.filter((q: any) => this.questionnaire.id != q.id);
+        })
       }
+      this.ngOnInit();
     });
   }
 

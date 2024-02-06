@@ -174,9 +174,9 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       }
     }
     payments: PaymentListViaCustomer_id (
+      where: { Amount: { GT: 0 } }
       orderBy: [
-        {attribute: Payment_date, direction:ASC}
-        {attribute: Payment_type, direction:ASC}
+        {attribute: Issued_date, direction:ASC}
       ]
     ) {
       id

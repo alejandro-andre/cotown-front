@@ -58,25 +58,30 @@ export class MyPaymentsComponent {
 
   showPayButton(elem: any): boolean {
     // Already paid
-    if (elem.payment_date !== null || elem.payment_date === '') 
+    if (elem.payment_date !== null || elem.payment_date === '') {
       return false;
+    }
 
     // Discardes
-    if (elem.booking.status.includes('descartada'))
+    if (elem.booking.status.includes('descartada')) {
       return false;
+    }
 
     // No Card/POS
     const method = this.lookupService.paymentMethods.find((e) => e.id === elem.payment_method_id);
-    if (!method?.gateway )
+    if (!method?.gateway ) {
       return false;
+    }
 
     // Is there a booking fee payment pending for the same booking?
     if (this.customerService.customer?.payments.find((e) => (
       (e.id != elem.id) && 
       (e.booking.id == elem.booking.id) && 
       (e.payment_type == 'booking') && 
+      (e.amount > 0) &&
       (e.payment_date == null))
     )) {
+      console.log("!!!");
       return false;
     }
 

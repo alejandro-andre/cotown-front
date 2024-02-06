@@ -15,6 +15,7 @@ export class Constants {
     checkin: '#70f070',
     inhouse: '#40c040',
     checkout: '#a0d0f0',
+    revision: '#80b0f0',
     devolvergarantia: '#60a0f0',
     finalizada: '#d0d0d0',
   }

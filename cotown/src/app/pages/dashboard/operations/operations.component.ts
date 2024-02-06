@@ -79,20 +79,20 @@ export class OperationsDashboardComponent implements OnInit {
     { key:"Option",                value:"Opción/Comentarios", sort:"", type: "text",   filter: ["nextin","checkin"] },
     { key:"Issues",                value:"Incidencias",        sort:"", type: "text",   filter: ["issues"] },
     { key:"Issues_ok",             value:"Gestionadas",        sort:"", type: "boll",   filter: ["issues"] },
-    { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["nextout","checkout","ecoext"] },
-    { key:"Damages_ok",            value:"Gestionados",        sort:"", type: "bool",   filter: ["nextout","checkout","ecoext"] },
     { key:"Check_in_payed",        value:"Check-in pagado",    sort:"", type: "check",  filter: ["nextin","checkin"] },
     { key:"Check_in_notice_ok",    value:"Aviso comp.",        sort:"", type: "check",  filter: ["nextin","checkin"] },
     { key:"Check_in_room_ok",      value:"Limpieza ok",        sort:"", type: "bool",   filter: ["nextin","checkin"] },
     { key:"Check_in_keys_ok",      value:"Llaves ok",          sort:"", type: "bool",   filter: ["nextin","checkin"] },
     { key:"Check_in_keyless_ok",   value:"Keyless ok",         sort:"", type: "bool",   filter: ["nextin","checkin"] },
-    { key:"Check_out_keys_ok",     value:"Llaves ok",          sort:"", type: "bool",   filter: ["checkout"] },
-    { key:"Check_out_keyless_ok",  value:"Keyless ok",         sort:"", type: "bool",   filter: ["checkout"] },
-    { key:"Check_out_revision_ok", value:"Revisión ok",        sort:"", type: "bool",   filter: ["nextout","checkout"] },
+    { key:"Check_in",              value:"Check-in",           sort:"", type: "bool",   filter: ["checkin"] },
+    { key:"Check_out_keys_ok",     value:"Llaves ok",          sort:"", type: "bool",   filter: ["nextout","checkout"] },
+    { key:"Check_out_keyless_ok",  value:"Keyless ok",         sort:"", type: "bool",   filter: ["nextout","checkout"] },
+    { key:"Check_out",             value:"Check-out",          sort:"", type: "bool",   filter: ["checkout"] },
     { key:"Eco_ext_keyless_ok",    value:"Keyless ok",         sort:"", type: "bool",   filter: ["ecoext"] },
     { key:"Eco_ext_change_ok",     value:"ECO/EXT ok",         sort:"", type: "bool",   filter: ["ecoext"] },
-    { key:"Check_in",              value:"Check-in",           sort:"", type: "bool",   filter: ["checkin"] },
-    { key:"Check_out",             value:"Check-out",          sort:"", type: "bool",   filter: ["checkout"] },
+    { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["nextout","checkout","ecoext"] },
+    { key:"Damages_ok",            value:"Gestionados",        sort:"", type: "bool",   filter: ["nextout","checkout","ecoext"] },
+    { key:"Check_out_revision_ok", value:"Revisión ok",        sort:"", type: "bool",   filter: ["checkout"] },
   ];
 
   // Constructor
@@ -204,8 +204,10 @@ export class OperationsDashboardComponent implements OnInit {
           warning = o.Date_out < this.lastmonth;
         }
         let cha_eco_ext = ""
-        if (o.Origin_id != null) 
+        if (o.Origin_id != null && (this.op == 'checkin' || this.op == 'nextin' || this.op == 'issues'))
           cha_eco_ext = "<br><strong style='color:teal;'>CHA</strong><br>" + o.Origin_id;
+        if (o.Destination_id != null && (this.op == 'checkout' || this.op == 'nextout'))
+          cha_eco_ext = "<br><strong style='color:teal;'>CHA</strong><br>" + o.Destination_id;
         if (o.New_check_out < o.Date_out) 
           cha_eco_ext = "<br><strong style='color:teal;'>ECO</strong><br>";
         if (o.New_check_out > o.Date_out) 
@@ -350,28 +352,34 @@ export class OperationsDashboardComponent implements OnInit {
   emitCheck(event: MatCheckboxChange, key: string, row: any) {
     row[key][0] = event.checked;
     row["Changed"] = false;
-    if (row["Check_in_room_ok"][0]     != row["Check_in_room_ok"][1])     row["Changed"] = true;
-    if (row["Check_in_keys_ok"][0]     != row["Check_in_keys_ok"][1])     row["Changed"] = true;
-    if (row["Check_in_keyless_ok"][0]  != row["Check_in_keyless_ok"][1])  row["Changed"] = true;
-    if (row["Check_out_keys_ok"][0]    != row["Check_out_keys_ok"][1])    row["Changed"] = true;
-    if (row["Check_out_keyless_ok"][0] != row["Check_out_keyless_ok"][1]) row["Changed"] = true;
-    if (row["Eco_ext_keyless_ok"][0]   != row["Eco_ext_keyless_ok"][1])   row["Changed"] = true;
-    if (row["Eco_ext_change_ok"][0]    != row["Eco_ext_change_ok"][1])    row["Changed"] = true;
-    if (row["Issues_ok"][0]            != row["Issues_ok"][1])            row["Changed"] = true;
-    if (row["Damages_ok"][0]           != row["Damages_ok"][1])           row["Changed"] = true;
-    if (row["Check_in"][0]             != row["Check_in"][1])             row["Changed"] = true;
-    if (row["Check_out"][0]            != row["Check_out"][1])            row["Changed"] = true;
+    if (row["Check_in_room_ok"][0]      != row["Check_in_room_ok"][1])     row["Changed"] = true;
+    if (row["Check_in_keys_ok"][0]      != row["Check_in_keys_ok"][1])     row["Changed"] = true;
+    if (row["Check_in_keyless_ok"][0]   != row["Check_in_keyless_ok"][1])  row["Changed"] = true;
+    if (row["Check_out_keys_ok"][0]     != row["Check_out_keys_ok"][1])    row["Changed"] = true;
+    if (row["Check_out_keyless_ok"][0]  != row["Check_out_keyless_ok"][1]) row["Changed"] = true;
+    if (row["Check_out_revision_ok"][0] != row["Check_out_revision_ok"][1]) row["Changed"] = true;
+    if (row["Eco_ext_keyless_ok"][0]    != row["Eco_ext_keyless_ok"][1])   row["Changed"] = true;
+    if (row["Eco_ext_change_ok"][0]     != row["Eco_ext_change_ok"][1])    row["Changed"] = true;
+    if (row["Issues_ok"][0]             != row["Issues_ok"][1])            row["Changed"] = true;
+    if (row["Damages_ok"][0]            != row["Damages_ok"][1])           row["Changed"] = true;
+    if (row["Check_in"][0]              != row["Check_in"][1])             row["Changed"] = true;
+    if (row["Check_out"][0]             != row["Check_out"][1])            row["Changed"] = true;
     return row["Changed"];
   }
 
   save(row: any) {
     // Check-in?
-    if (this.op == "checkin" && row.Status == "checkin" && row["Check_in"][0]) {
+    if (row.status == "checkin" && row["Check_in"][0] && !row["Check_in"][1]) {
       row.status = "inhouse";
     }
 
     // Check-out?
-    if (this.op == "checkout" && row.Status == "checkout" && row["Check_out"][0]) {
+    else if (["checkout", "revision"].includes(row.status) && row["Check_out"][0] && row["Check_out"][1]) {
+      row.status = "revision";
+    }
+
+    // Revision Ok?
+    else if (["checkout", "revision"].includes(row.status) && row["Check_out_revision_ok"][0] && !row["Check_out_revision_ok"][1]) {
       row.status = "devolvergarantia";
     }
 

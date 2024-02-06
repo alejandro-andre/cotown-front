@@ -313,7 +313,7 @@
     
     </mat-tab>
 
-    <mat-tab *ngIf="canCheckIn(booking.status)" label="{{ 'dates' | translate }}">
+    <mat-tab *ngIf="canCheck(booking.status)" label="{{ 'dates' | translate }}">
 
       <!-- Checkin -->
       <h2>{{ 'check_in_title' | translate }}</h2>

@@ -257,7 +257,7 @@ export class MyBookingDetailComponent {
    * Methods
    */
 
-  canCheckIn(status: string): boolean {
+  canCheck(status: string): boolean {
     return (
       status === 'checkinconfirmado' ||
       status === 'contrato' ||

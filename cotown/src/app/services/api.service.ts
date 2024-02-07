@@ -17,6 +17,11 @@ export default {
     return axiosInstance.get('dashboard/' + status, { params: params });
   },
 
+  getDashboardPrevNext(token: string, params: any): Promise<AxiosResponse> {
+    params['access_token'] = token;
+    return axiosInstance.get('dashboard/prevnext', { params: params });
+  },
+
   getLabels(id: number, locale: string, token: string): Promise<AxiosResponse> {
     return axiosInstance.get('labels/' + id + '/' + locale, { params: { 'access_token': token } } );
   }

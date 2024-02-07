@@ -62,15 +62,18 @@ export class OperationsDashboardComponent implements OnInit {
 
   // Table info
   public rows: any[] = [];
+  public prevnext: any[][] = [];
   public header: { key: string, value: string, sort: string, type: string } [] = [];
   public headerFields: { key: string, value: string, sort: string, type: string, filter: string[] }[] = [
     { key:"ids",                   value:"#",                  sort:"", type: "text",   filter: [] },
+    { key:"Confirmation_date",     value:"Fecha confirmación", sort:"", type: "date",   filter: ["nextin"] }, 
     { key:"Name",                  value:"Residente",          sort:"", type: "text",   filter: [] },
     { key:"Status",                value:"Estado",             sort:"", type: "status", filter: [] },
     { key:"Date_in",               value:"Fecha entrada",      sort:"", type: "date",   filter: ["nextin","checkin","issues"] }, 
     { key:"Date_out",              value:"Fecha salida",       sort:"", type: "date",   filter: ["nextout","checkout", "ecoext"] }, 
+    { key:"Prev",                  value:"Salida anterior",    sort:"", type: "text",   filter: ["nextin"] },
+    { key:"Next",                  value:"Entrada siguiente",  sort:"", type: "text",   filter: ["nextout"] },
     { key:"New_check_out",         value:"Nueva salida",       sort:"", type: "date",   filter: ["ecoext"] }, 
-    { key:"Confirmation_date",     value:"Fecha confirmación", sort:"", type: "date",   filter: ["nextin","checkin"] }, 
     { key:"Dates",                 value:"Fechas contrato",    sort:"", type: "text",   filter: [] }, 
     { key:"Resource",              value:"Recurso / Edificio", sort:"", type: "text",   filter: [] },
     { key:"Check_in_time",         value:"Hora check-in",      sort:"", type: "text",   filter: ["nextin","checkin"] },
@@ -173,6 +176,9 @@ export class OperationsDashboardComponent implements OnInit {
 
   // Get bookings
   async getBookings() { 
+    // Spinner
+    this.isLoading = true;
+
     // Clean
     this.rows = [];
     const params: any = {};
@@ -191,11 +197,11 @@ export class OperationsDashboardComponent implements OnInit {
     params["date_from"] = this.datePipe.transform(this.range.get("start")?.value, "yyyy-MM-dd");
     params["date_to"] = this.datePipe.transform(this.range.get("end")?.value, "yyyy-MM-dd")
 
-    // Ger bookings
-    this.isLoading = true;
-    axiosApi.getDashboardBookings(this.op, this.apollo.token, params).then((res) => { 
-      // Get data
+    // Get bookings
+    await axiosApi.getDashboardBookings(this.op, this.apollo.token, params).then((res) => { 
       this.rows = res.data.map((o: any) => { 
+
+        // Warning style
         let warning = false;
         if (this.op == "checkin") {
           warning = o.Date_in < this.today;
@@ -203,6 +209,8 @@ export class OperationsDashboardComponent implements OnInit {
         if (this.op == "checkout") {
           warning = o.Date_out < this.lastmonth;
         }
+
+        // CHA/ECO/EXT indicator
         let cha_eco_ext = ""
         if (o.Origin_id != null && (this.op == 'checkin' || this.op == 'nextin' || this.op == 'issues'))
           cha_eco_ext = "<br><strong style='color:teal;'>CHA</strong><br>" + o.Origin_id;
@@ -212,13 +220,20 @@ export class OperationsDashboardComponent implements OnInit {
           cha_eco_ext = "<br><strong style='color:teal;'>ECO</strong><br>";
         if (o.New_check_out > o.Date_out) 
           cha_eco_ext = "<br><strong style='color:teal;'>EXT</strong><br>";
+
+        // Asterisks
         let c_in  = (o.Check_in  != null) ? "" : " <b>*</b>";
         let c_out = (o.Check_out != null) ? "" : " <b>**</b>";
+
+        // Return data
         return {
           "id": o.id,
           "ids": o.id + cha_eco_ext,
           "Name": o.Name + "<br>" + (o.Email || "") + "<br>" + (o.Phones || ""),
           "Status": o.Status,
+          "Date": o.Date_in,
+          "D_in": new Date(o.Date_in),
+          "D_out": new Date(o.Date_out),
           "Date_in": this.formatDate(o.Date_in) + "<br>" + this.formatWeekday(o.Date_in) + c_in,
           "Date_out": this.formatDate(o.Date_out) + "<br>" + this.formatWeekday(o.Date_out) + c_out,
           "New_check_out": this.formatDate(o.New_check_out) + "<br>" + this.formatWeekday(o.New_check_out),
@@ -247,17 +262,63 @@ export class OperationsDashboardComponent implements OnInit {
           "Warning": warning,
           "Check_in": [false, false],
           "Check_out": [false, false],
-          "Changed": false
+          "Changed": false,
+          "Prev": "",
+          "Next": "",
+          "Days": ""
         }
       });
-      this.isLoading  = false;
-
-      // Sort
-      if (["nextin", "checkin", "issues"].includes(this.op))
-        this.sort("Date_in", "up")
-      else
-        this.sort("Date_out", "up")
     });      
+
+    // Get previous and next bookings
+    await axiosApi.getDashboardPrevNext(this.apollo.token, params).then((res) => {
+      this.rows.forEach((row: any) => {
+
+        // Previous bookings
+        if (this.op == "nextin") {
+          const prev = res.data[0].find((d: any) => (d.id == row.id));
+          if (prev) {
+            const d = new Date(prev.Prev_date);
+            let labordays = -1;
+            while (d <= row.D_in) {
+              d.setDate(d.getDate() + 1);
+              if (d.getDay() > 0 && d.getDay() < 6 && !this.holidays.find(h => (h.location == null || h.location == this.cityId) ? prev.Prev_date == h.day : false))
+                labordays += 1;
+            }
+            if (labordays < 2)
+              row.Warning = true;
+            row.Prev = this.formatDate(prev.Prev_date) + "<br>" + labordays + " días<br>" + prev.Prev_id ;
+          }
+        }
+
+        // Next bookings
+        if (this.op == "nextout") {
+          const next = res.data[1].find((d: any) => (d.id == row.id));
+          if (next) {
+            const d = new Date(next.Next_date);
+            let labordays = -1;
+            while (d >= row.D_out) {
+              d.setDate(d.getDate() - 1);
+              if (d.getDay() > 0 && d.getDay() < 6 && !this.holidays.find(h => (h.location == null || h.location == this.cityId) ? next.Next_date == h.day : false))
+                labordays += 1;
+            }
+            if (labordays < 2)
+              row.Warning = true;
+            row.Next = this.formatDate(next.Next_date) + "<br>" + labordays + " días<br>" + next.Next_id ;
+          }
+        }
+
+      })
+    });
+
+    // Spinner
+    this.isLoading  = false;
+
+    // Sort
+    if (["nextin", "checkin", "issues"].includes(this.op))
+      this.sort("Date_in", "up")
+    else
+      this.sort("Date_out", "up")
   }
 
   goBooking(id: string) { 
@@ -341,8 +402,6 @@ export class OperationsDashboardComponent implements OnInit {
   }
 
   isHoliday(date: string) {
-    if (this.op == 'checkout')
-      return false;
     const d = new Date(date);
     if (d.getDay() == 0 || d.getDay() == 6)
       return true;
@@ -352,18 +411,18 @@ export class OperationsDashboardComponent implements OnInit {
   emitCheck(event: MatCheckboxChange, key: string, row: any) {
     row[key][0] = event.checked;
     row["Changed"] = false;
-    if (row["Check_in_room_ok"][0]      != row["Check_in_room_ok"][1])     row["Changed"] = true;
-    if (row["Check_in_keys_ok"][0]      != row["Check_in_keys_ok"][1])     row["Changed"] = true;
-    if (row["Check_in_keyless_ok"][0]   != row["Check_in_keyless_ok"][1])  row["Changed"] = true;
-    if (row["Check_out_keys_ok"][0]     != row["Check_out_keys_ok"][1])    row["Changed"] = true;
-    if (row["Check_out_keyless_ok"][0]  != row["Check_out_keyless_ok"][1]) row["Changed"] = true;
+    if (row["Check_in_room_ok"][0]      != row["Check_in_room_ok"][1])      row["Changed"] = true;
+    if (row["Check_in_keys_ok"][0]      != row["Check_in_keys_ok"][1])      row["Changed"] = true;
+    if (row["Check_in_keyless_ok"][0]   != row["Check_in_keyless_ok"][1])   row["Changed"] = true;
+    if (row["Check_out_keys_ok"][0]     != row["Check_out_keys_ok"][1])     row["Changed"] = true;
+    if (row["Check_out_keyless_ok"][0]  != row["Check_out_keyless_ok"][1])  row["Changed"] = true;
     if (row["Check_out_revision_ok"][0] != row["Check_out_revision_ok"][1]) row["Changed"] = true;
-    if (row["Eco_ext_keyless_ok"][0]    != row["Eco_ext_keyless_ok"][1])   row["Changed"] = true;
-    if (row["Eco_ext_change_ok"][0]     != row["Eco_ext_change_ok"][1])    row["Changed"] = true;
-    if (row["Issues_ok"][0]             != row["Issues_ok"][1])            row["Changed"] = true;
-    if (row["Damages_ok"][0]            != row["Damages_ok"][1])           row["Changed"] = true;
-    if (row["Check_in"][0]              != row["Check_in"][1])             row["Changed"] = true;
-    if (row["Check_out"][0]             != row["Check_out"][1])            row["Changed"] = true;
+    if (row["Eco_ext_keyless_ok"][0]    != row["Eco_ext_keyless_ok"][1])    row["Changed"] = true;
+    if (row["Eco_ext_change_ok"][0]     != row["Eco_ext_change_ok"][1])     row["Changed"] = true;
+    if (row["Issues_ok"][0]             != row["Issues_ok"][1])             row["Changed"] = true;
+    if (row["Damages_ok"][0]            != row["Damages_ok"][1])            row["Changed"] = true;
+    if (row["Check_in"][0]              != row["Check_in"][1])              row["Changed"] = true;
+    if (row["Check_out"][0]             != row["Check_out"][1])             row["Changed"] = true;
     return row["Changed"];
   }
 
@@ -396,7 +455,7 @@ export class OperationsDashboardComponent implements OnInit {
       eco_ext_change_ok: row.Eco_ext_change_ok[0],
       issues_ok: row.Issues_ok[0],
       damages_ok: row.Damages_ok[0]
-  }
+    }
 
     // Update
     this.isLoading = true;
@@ -435,8 +494,16 @@ export class OperationsDashboardComponent implements OnInit {
     if (this.status == 'nextout') 
       return environment.backURL + '/export/dashboardnextout?access_token=' + this.apollo.token;
 
+    // Issues
+    if (this.status == 'issues') 
+      return null;
+
+    // ECO/EXT
+    if (this.status == 'ecoext') 
+      return null;
+
     // Rest of status
-    return null;
+    return environment.backURL + '/export/dashboard?status=' + this.status + ',' + this.status + '&access_token=' + this.apollo.token;
   }
 
 }

@@ -80,7 +80,7 @@
   "email": "Email",
   "expiry_date": "Expiry date",
   "flat_type": "Flat type",
-  "flight": "Flight/Train",
+  "flight": "Flight/Train Number",
   "from": "From",
   "full_name": "Full name",
   "gender": "Gender",

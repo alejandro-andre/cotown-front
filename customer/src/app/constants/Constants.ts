@@ -37,7 +37,7 @@ export class Constants {
     Constants.NAV_CONTACTS,
     Constants.NAV_DOCUMENTS,
     Constants.NAV_BOOKINGS,
-    Constants.NAV_QUESTIONNAIRES,
+    //?Constants.NAV_QUESTIONNAIRES,
     Constants.NAV_INVOICES,
     Constants.NAV_PAYMENTS,
     Constants.NAV_PDFS,

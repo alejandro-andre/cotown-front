@@ -107,25 +107,7 @@ export class OperationsDashboardComponent implements OnInit {
     private apollo: ApolloQueryApi
   ) { 
     this.reset();
-    
-    // Set locale
     this.adapter.setLocale(this.language.lang.substring(0, 2));
-
-    // Today and one month ago
-    const today: Date = new Date();
-    this.today = this.datePipe.transform(today, "yyyy-MM-dd") || "";
-    today.setDate(today.getDate() - 30);
-    this.lastmonth = this.datePipe.transform(today, "yyyy-MM-dd") || "";
-    
-    // Start date range
-    const start: Date = new Date();
-    start.setDate(start.getDate() + 1);
-    this.range.get("start")?.setValue(start);
-
-    // End date range
-    const end: Date = new Date();
-    end.setDate(end.getDate() + (this.op == 'checkout' ? 30 : 15));
-    this.range.get("end")?.setValue(end);
   }
 
   async ngOnInit() { 
@@ -168,6 +150,22 @@ export class OperationsDashboardComponent implements OnInit {
   }
 
   reset() {
+    // Today and one month ago
+    const today: Date = new Date();
+    this.today = this.datePipe.transform(today, "yyyy-MM-dd") || "";
+    today.setDate(today.getDate() - 30);
+    this.lastmonth = this.datePipe.transform(today, "yyyy-MM-dd") || "";
+    
+    // Start date range
+    const start: Date = new Date();
+    start.setDate(start.getDate() + 1);
+    this.range.get("start")?.setValue(start);
+
+    // End date range
+    const end: Date = new Date();
+    end.setDate(end.getDate() + (["nextout", "checkout"].includes(this.op) ? 30 : 15));
+    this.range.get("end")?.setValue(end);
+
     // Columns
     this.rows = [];
     this.header = this.headerFields.filter(d => (d.filter.length == 0 || d.filter.includes(this.op)));

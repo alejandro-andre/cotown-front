@@ -82,8 +82,12 @@ export class AxiosApi {
     return backendInstance.get(`/booking/${id}/status/${status}?access_token=${token}`);
   }
 
-  answerQuestionnaire(id: number, questionnaire: any) {
-    return backendInstance.post(`/questionnaire/${id}`, questionnaire, { headers: { 'Content-Type': 'application/json'} } );
+  answerQuestionnaire(id: number, questions: any[], issues: string) {
+    const data: any = {}
+    data.questions = questions;
+    if (issues)
+      data.issues = issues;
+    return backendInstance.post(`/questionnaire/${id}`, data, { headers: { 'Content-Type': 'application/json'} } );
   }
 
 };

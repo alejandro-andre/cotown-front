@@ -9,6 +9,8 @@
   <div class="questionnaire pure-g">
      
     <h2>{{ "questionnaire_" + questionnaire.type | translate }}</h2>
+    <br>
+    <p>{{ "questionnairetext_" + questionnaire.type | translate }}</p>
 
     <div class="pure-u-1" *ngFor="let g of questions">
 
@@ -36,8 +38,25 @@
 
     </div>
 
+    <div class="pure-u-1" *ngIf="questionnaire.type=='checkin'">
+
+      <!-- Group title -->
+      <div class="group"><p>{{ "questionnaire_issues" | translate }}</p></div>
+
+      <!-- Questions -->
+      <div class="question pure-u-1">
+        <div class="text pure-u-1 pure-u-lg-1-2"><p>{{ "questionnairetext_issues" | translate }}</p></div>
+        <div class="answer input pure-u-1 pure-u-lg-1-2">
+          <mat-form-field>
+            <input matInput [placeholder]="'comments' | translate" [(ngModel)]="issues">
+          </mat-form-field>
+        </div>
+      </div>
+
+    </div>
+
   </div>
-    
+
   <div class="pure-u-1">
     <button class="action" mat-raised-button color="primary" (click)="save()">
       {{ 'save' | translate }}

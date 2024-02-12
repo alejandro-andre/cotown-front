@@ -277,12 +277,12 @@ export class OperationsDashboardComponent implements OnInit {
           const prev = res.data[0].find((d: any) => (d.id == row.id));
           if (prev) {
             const d = new Date(prev.Prev_date);
-            let labordays = -1;
-            while (d <= row.D_in) {
-              d.setDate(d.getDate() + 1);
+            let labordays = 0;
+            while (d < row.D_in) {
               if (d.getDay() > 0 && d.getDay() < 6 && !this.holidays.find(h => (h.location == null || h.location == this.cityId) ? prev.Prev_date == h.day : false))
                 labordays += 1;
-            }
+              d.setDate(d.getDate() + 1);
+              }
             if (labordays < 2)
               row.Warning = true;
             row.Prev = this.formatDate(prev.Prev_date) + "<br>" + labordays + " días<br>" + prev.Prev_id ;
@@ -294,12 +294,12 @@ export class OperationsDashboardComponent implements OnInit {
           const next = res.data[1].find((d: any) => (d.id == row.id));
           if (next) {
             const d = new Date(next.Next_date);
-            let labordays = -1;
-            while (d >= row.D_out) {
-              d.setDate(d.getDate() - 1);
+            let labordays = 0;
+            while (d > row.D_out) {
               if (d.getDay() > 0 && d.getDay() < 6 && !this.holidays.find(h => (h.location == null || h.location == this.cityId) ? next.Next_date == h.day : false))
                 labordays += 1;
-            }
+              d.setDate(d.getDate() - 1);
+              }
             if (labordays < 2)
               row.Warning = true;
             row.Next = this.formatDate(next.Next_date) + "<br>" + labordays + " días<br>" + next.Next_id ;

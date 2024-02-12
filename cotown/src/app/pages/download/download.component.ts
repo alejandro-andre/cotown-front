@@ -26,6 +26,7 @@ export class DownloadComponent {
     { name: 'precios',           provider: false, icon: 'monetization_on',    filter: false, text: 'Precios',          url: '/export/precios' },
     { name: 'weekly',            provider: false, icon: 'blur_linear',        filter: false, text: 'Reservas PowerBI', url: '/export/weekly?fdesde=2020-01-01&fhasta=2099-12-31' },
     { name: 'occupancy',         provider: false, icon: 'calendar_today',     filter: false, text: 'Monthy',           url: '/occupancy?fdesde=2023-10-01&fhasta=2024-12-31' },
+    { name: 'ac',                provider: false, icon: 'send',               filter: false, text: 'ActiveCampaign',   url: '/export/ac' },
     { name: 'rooming',           provider: false, icon: 'people',             filter: true,  text: 'Rooming list' },
     { name: 'reservas',          provider: false, icon: 'event',              filter: true,  text: 'Reservas' },
     { name: 'pagos',             provider: false, icon: 'local_atm',          filter: true,  text: 'Pagos' },
@@ -60,7 +61,7 @@ export class DownloadComponent {
     private language: LanguageService
   ) { 
     this.adapter.setLocale(this.language.lang.substring(0,2));
-    this.apolloApi.getData(PROVIDERS_QUERY).subscribe(res => {
+    this.apolloApi.getData(PROVIDERS_QUERY).subscribe((res: any) => {
       this.providers = res.data.data;
       this.providerControl.setValue(this.providers[0].id);
     });
@@ -180,10 +181,6 @@ export class DownloadComponent {
         + '&pdesde=' + prov_from
         + '&phasta=' + prov_to
         + '&access_token=' + this.apolloApi.token;
-
-    // Resto
-    } else {
-      l = environment.backURL + '/export/' + data + '?access_token=' + this.apolloApi.token;
     }
 
     // Report

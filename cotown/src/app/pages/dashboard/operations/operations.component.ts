@@ -223,13 +223,22 @@ export class OperationsDashboardComponent implements OnInit {
         let c_in  = (o.Check_in  != null) ? "" : " <b>*</b>";
         let c_out = (o.Check_out != null) ? "" : " <b>**</b>";
 
+        // Holiday check
+        let holiday;
+        if (this.op == "nextin" || this.op == "checkin") {
+          holiday = o.Date_in
+        }
+        if (this.op == "nextout" || this.op == "checkout") {
+          holiday = o.Date_out
+        }
+
         // Return data
         return {
           "id": o.id,
           "ids": o.id + cha_eco_ext,
           "Name": o.Name + "<br>" + (o.Email || "") + "<br>" + (o.Phones || ""),
           "Status": o.Status,
-          "Date": o.Date_in,
+          "Date": holiday,
           "D_in": new Date(o.Date_in),
           "D_out": new Date(o.Date_out),
           "Date_in": this.formatDate(o.Date_in) + "<br>" + this.formatWeekday(o.Date_in) + c_in,

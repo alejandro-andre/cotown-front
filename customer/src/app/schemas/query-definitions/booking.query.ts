@@ -72,7 +72,6 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
       service_discount: Services_discount
     }
     questionnaires: Booking_questionnaireListViaBooking_id ( 
-      joinType: INNER
       where: { Completed: { IS_NULL: true } }
     ) {
       id

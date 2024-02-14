@@ -81,7 +81,6 @@ export class MyPaymentsComponent {
       (e.amount > 0) &&
       (e.payment_date == null))
     )) {
-      console.log("!!!");
       return false;
     }
 

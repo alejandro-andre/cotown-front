@@ -27,11 +27,17 @@ export class Customer implements ICustomer {
   id_type_id: number | null = null;
   school_id: number | null = null;
   payment_method_id: number | null = null;
+  iban: string = '';
+  same_account: string = '';
   bank_account: string = '';
   swift: string = '';
+  bank_holder: string = '';
+  bank_name: string = '';
+  bank_address: string = '';
+  bank_city: string = '';
+  bank_country_id: number | null = null;
   appLang: string = 'es';
   photo: IPhoto | null = null;
-
   contacts: IContact[] = [] as IContact[];
   documents: IDocument[] = [] as IDocument[];
   bookings: IBooking[] = [] as IBooking[];
@@ -65,11 +71,21 @@ export class Customer implements ICustomer {
     this.tutor_email = data.tutor_email;
     this.tutor_phones = data.tutor_phones;
     this.school_id = data.school_id || null;
+
     this.payment_method_id = data.payment_method_id || null;
+    this.iban = data.iban || '';
+    this.same_account = data.same_account;
     this.bank_account = data.bank_account || '';
+    this.swift = data.swift || '';
+    this.bank_holder = data.bank_holder || '';
+    this.bank_name = data.bank_name || '';
+    this.bank_address = data.bank_address || '';
+    this.bank_city = data.bank_city || '';
+    this.bank_country_id = data.bank_country_id;
+
     this.appLang = data.appLang || 'es';
     this.photo = data.photo || null;
-    
+   
     this.contacts = data.contacts || [];
     this.documents = data.documents || [];
     this.bookings = data.bookings || [];

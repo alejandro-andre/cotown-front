@@ -35,12 +35,19 @@
 
       <!-- Id Type -->
       <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+        <mat-form-field *ngIf="!visibility['id_type_id']">
+          <mat-label>{{ 'id_type' | translate }}</mat-label>
+          <input matInput 
+                 readonly 
+                 [ngModel]="idType">
+        </mat-form-field>
         <mat-form-field *ngIf="visibility['id_type_id']">
           <mat-label>{{ 'id_type' | translate }}</mat-label>
-          <mat-select [formControl]="id_type_idControl" 
-                [(ngModel)]="customer.id_type_id"
-                placeholder="{{ 'id_type' | translate }}"
-                (selectionChange)="enableSave()">
+          <mat-select 
+                 placeholder="{{ 'id_type' | translate }}"
+                 [formControl]="id_type_idControl" 
+                 [(ngModel)]="customer.id_type_id"
+                 (selectionChange)="enableSave()">
             <mat-option *ngFor="let c of lookupService.idTypes" [value]="c.id">
               {{ isSpanish ? c.name : c.name_en  }}
             </mat-option>
@@ -49,20 +56,17 @@
             {{ 'errors.field_required' | translate }}
           </mat-error>
         </mat-form-field>
-        <mat-form-field *ngIf="!visibility['id_type_id']">
-          <mat-label>{{ 'id_type' | translate }}</mat-label>
-          <input matInput readonly [ngModel]="idType">
-        </mat-form-field>
       </div>
 
       <!-- Id -->
       <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
         <mat-form-field>
           <mat-label>{{ 'document' | translate}}</mat-label>
-          <input matInput [formControl]="documentControl" 
-                 (change)="enableSave()" 
+          <input matInput 
+                 [readonly]="!visibility['document']"
+                 [formControl]="documentControl" 
                  [(ngModel)]="customer.document"
-                 [readonly]="!visibility['document']">
+                 (change)="enableSave()">
           <mat-error class="mat-error" *ngIf="documentControl.errors">
             {{ 'errors.field_required' | translate }}
           </mat-error>
@@ -73,7 +77,10 @@
       <div class="pure-u-1 pure-u-lg-1-2">
         <mat-form-field>
           <mat-label>{{ 'email' | translate }}</mat-label>
-          <input matInput readonly placeholder="{{'email' | translate}}" [(ngModel)]="customer.email">
+          <input matInput 
+                 placeholder="{{'email' | translate}}" 
+                 readonly 
+                 [ngModel]="customer.email">
         </mat-form-field>
       </div>
   
@@ -81,7 +88,9 @@
       <div class="pure-u-1 pure-u-lg-1-2" *ngIf="!visibility['phones']">
         <mat-form-field>
           <mat-label>{{ 'phone' | translate }}</mat-label>
-          <input matInput readonly [ngModel]="customer.phones">
+          <input matInput 
+                 readonly 
+                 [ngModel]="customer.phones">
         </mat-form-field>
       </div>
       <div class="pure-u-1 pure-u-lg-1-4" *ngIf="visibility['phones']">
@@ -109,7 +118,10 @@
       <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
         <mat-form-field *ngIf="!visibility['gender_id']">
           <mat-label>{{ 'gender' | translate }}</mat-label>
-          <input matInput readonly placeholder="{{ 'gender' | translate }}" [ngModel]="gender">
+          <input matInput 
+                 placeholder="{{ 'gender' | translate }}" 
+                 readonly 
+                 [ngModel]="gender">
         </mat-form-field>
         <mat-form-field *ngIf="visibility['gender_id']">
           <mat-label>{{ 'gender' | translate }}</mat-label>
@@ -125,7 +137,10 @@
       <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
         <mat-form-field *ngIf="!visibility['language_id']">
           <mat-label>{{ 'language' | translate }}</mat-label>
-          <input matInput readonly placeholder="{{ 'language' | translate }}" [ngModel]="language">
+          <input matInput 
+                 placeholder="{{ 'language' | translate }}" 
+                 readonly 
+                 [ngModel]="language">
         </mat-form-field>
         <mat-form-field *ngIf="visibility['language_id']">
           <mat-label>{{ 'language' | translate }}</mat-label>
@@ -141,7 +156,10 @@
       <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
         <mat-form-field *ngIf="!visibility['nationality_id']">
           <mat-label>{{ 'nationality' | translate }}</mat-label>
-          <input matInput readonly placeholder="{{ 'nationality' | translate }}" [ngModel]="nationality">
+          <input matInput 
+                 placeholder="{{ 'nationality' | translate }}" 
+                 readonly 
+                 [ngModel]="nationality">
         </mat-form-field>
         <mat-form-field *ngIf="visibility['nationality_id']">
           <mat-label>{{ 'nationality' | translate}}</mat-label>
@@ -157,7 +175,10 @@
       <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
         <mat-form-field *ngIf="!visibility['country_origin_id']">
           <mat-label>{{ 'country_origin' | translate }}</mat-label>
-          <input matInput readonly placeholder="{{ 'country_origin' | translate }}" [ngModel]="origin">
+          <input matInput 
+                 placeholder="{{ 'country_origin' | translate }}" 
+                 readonly 
+                 [ngModel]="origin">
         </mat-form-field>
         <mat-form-field *ngIf="visibility['country_origin_id']">
           <mat-label>{{ 'country_origin' | translate }}</mat-label>
@@ -173,7 +194,10 @@
       <div class="pure-u-1">     
         <mat-form-field *ngIf="!visibility['school_id']">
           <mat-label>{{ 'school' | translate }}</mat-label>
-          <input matInput readonly placeholder="{{ 'school' | translate }}" [ngModel]="school">
+          <input matInput 
+                 placeholder="{{ 'school' | translate }}" 
+                 readonly 
+                 [ngModel]="school">
         </mat-form-field>
         <mat-form-field *ngIf="visibility['school_id']">
           <mat-label>{{ 'school' | translate }}</mat-label>
@@ -211,9 +235,10 @@
     <div class="pure-u-1">
       <mat-form-field>
         <mat-label>{{ 'address' | translate }} ({{ 'home_address' | translate }})</mat-label>
-        <input matInput [formControl]="addressControl" 
+        <input matInput 
                placeholder="{{'address' | translate}}" 
                [readonly]="!visibility['address']"               
+               [formControl]="addressControl" 
                [(ngModel)]="customer.address"
                (change)="enableSave()">
         <mat-error class="mat-error" *ngIf="addressControl.errors">
@@ -226,14 +251,15 @@
     <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
       <mat-form-field>
         <mat-label>{{ 'zip' | translate }}</mat-label>
-        <input matInput [formControl]="zipControl" 
+        <input matInput 
                placeholder="{{'zip' | translate}}" 
                [readonly]="!visibility['zip']" 
+               [formControl]="zipControl" 
                [(ngModel)]="customer.zip"
                (change)="enableSave()" >
-          <mat-error class="mat-error" *ngIf="zipControl.errors">
-            {{ 'errors.field_required' | translate }}
-          </mat-error>
+        <mat-error class="mat-error" *ngIf="zipControl.errors">
+          {{ 'errors.field_required' | translate }}
+        </mat-error>
       </mat-form-field>
     </div>
 
@@ -241,9 +267,10 @@
     <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
       <mat-form-field>
         <mat-label>{{ 'city' | translate }}</mat-label>
-        <input matInput [formControl]="cityControl"
+        <input matInput 
                placeholder="{{'city' | translate}}"
                [readonly]="!visibility['city']" 
+               [formControl]="cityControl"
                [(ngModel)]="customer.city" 
                (change)="enableSave()">
         <mat-error class="mat-error" *ngIf="cityControl.errors">
@@ -256,9 +283,10 @@
     <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
       <mat-form-field>
         <mat-label>{{ 'province' | translate }}</mat-label>
-        <input matInput [formControl]="provinceControl"
+        <input matInput 
                placeholder="{{'province' | translate}}"
                [readonly]="!visibility['province']"
+               [formControl]="provinceControl"
                [(ngModel)]="customer.province"
                (change)="enableSave()">
         <mat-error class="mat-error" *ngIf="provinceControl.errors">
@@ -269,10 +297,18 @@
 
     <!-- Country -->
     <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+      <mat-form-field *ngIf="!visibility['country_id']">
+        <mat-label>{{ 'country' | translate }}</mat-label>
+        <input matInput 
+               placeholder="{{ 'country' | translate }}" 
+               readonly 
+               [ngModel]="country">
+      </mat-form-field>
       <mat-form-field *ngIf="visibility['country_id']">
         <mat-label>{{ 'country' | translate }}</mat-label>
-        <mat-select [formControl]="country_idControl" 
+        <mat-select 
               placeholder="{{ 'country' | translate }}" 
+              [formControl]="country_idControl" 
               [(ngModel)]="customer.country_id"
               (selectionChange)="enableSave()">
           <mat-option *ngFor="let c of lookupService.countries" [value]="c.id">
@@ -282,10 +318,6 @@
         <mat-error class="mat-error" *ngIf="country_idControl.errors">
           {{ 'errors.field_required' | translate }}
         </mat-error>
-      </mat-form-field>
-      <mat-form-field *ngIf="!visibility['country_id']">
-        <mat-label>{{ 'country' | translate }}</mat-label>
-        <input matInput readonly placeholder="{{ 'country' | translate }}" [ngModel]="country">
       </mat-form-field>
     </div>
 
@@ -299,105 +331,116 @@
   <!-- Birthdate -->
   <div class="pure-g">
     <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-        <mat-form-field *ngIf="visibility['birth_date']">
-          <mat-label>{{ 'birth_date' | translate }}</mat-label>
-          <input matInput [formControl]="birth_dateControl" 
-                 placeholder="{{ 'birth_date' | translate }}" 
-                 [matDatepicker]="picker" 
-                 [(ngModel)]="customer.birth_date"
-                 (dateInput)="enableSave()">
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-          <mat-error class="mat-error" *ngIf="birth_dateControl.hasError('under16')">
-            {{ 'errors.under_16' | translate }}
-          </mat-error>
-          <mat-error class="mat-error" *ngIf="birth_dateControl.hasError('required')">
-            {{ 'errors.field_required' | translate }}
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field *ngIf="!visibility['birth_date']">
-          <mat-label>{{ 'birth_date' | translate }}</mat-label> 
-          <input matInput readonly placeholder="{{ 'birth_date' | translate }}" [ngModel]="birthDate">
-        </mat-form-field>
-      </div>
+      <mat-form-field *ngIf="!visibility['birth_date']">
+        <mat-label>{{ 'birth_date' | translate }}</mat-label> 
+        <input matInput 
+               placeholder="{{ 'birth_date' | translate }}" 
+               readonly 
+               [ngModel]="birthDate">
+      </mat-form-field>
+      <mat-form-field *ngIf="visibility['birth_date']">
+        <mat-label>{{ 'birth_date' | translate }}</mat-label>
+        <input matInput 
+               placeholder="{{ 'birth_date' | translate }}" 
+               [matDatepicker]="picker" 
+               [formControl]="birth_dateControl" 
+               [(ngModel)]="customer.birth_date"
+               (dateInput)="enableSave()">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error class="mat-error" *ngIf="birth_dateControl.hasError('under16')">
+          {{ 'errors.under_16' | translate }}
+        </mat-error>
+        <mat-error class="mat-error" *ngIf="birth_dateControl.hasError('required')">
+          {{ 'errors.field_required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <h3 *ngIf="age < 18 && age > 15">Tutor</h3>
+  <div class="pure-g" *ngIf="age < 18 && age > 15">  
+
+    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+      <mat-form-field *ngIf="!visibility['tutor_id_type_id']">
+        <mat-label>{{ 'tutor_id_type' | translate }}</mat-label>
+        <input matInput 
+               placeholder="{{ 'tutor_id_type' | translate }}" 
+               readonly 
+               [ngModel]="tutor_id_type">
+      </mat-form-field>
+      <mat-form-field *ngIf="visibility['tutor_id_type_id']">
+        <mat-label>{{ 'tutor_id_type' | translate }}</mat-label>
+        <mat-select 
+               [formControl]="tutor_id_type_idControl"
+               [(ngModel)]="customer.tutor_id_type_id" 
+               (selectionChange)="enableSave()">
+          <mat-option *ngFor="let c of lookupService.idTypes" [value]="c.id">
+            {{ isSpanish ? c.name : c.name_en  }}
+          </mat-option>
+        </mat-select>
+        <mat-error class="mat-error" *ngIf="tutor_id_type_idControl.errors">
+          {{ 'errors.field_required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  
+    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+      <mat-form-field>
+        <mat-label>{{ 'tutor_document' | translate }}</mat-label>
+        <input matInput 
+               placeholder="{{ 'tutor_document' | translate }}" 
+               [readonly]="!visibility['tutor_document']" 
+               [formControl]="tutor_documentControl"
+               [(ngModel)]="customer.tutor_document">
+        <mat-error class="mat-error" *ngIf="tutor_documentControl.errors">
+          {{ 'errors.field_required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  
+    <div class="pure-u-1 pure-u-lg-1-2">
+      <mat-form-field >
+        <mat-label>{{ 'tutor_name' | translate }}</mat-label>
+        <input matInput 
+               placeholder="{{ 'tutor_name' | translate }}" 
+               [readonly]="!visibility['tutor_name']" 
+               [formControl]="tutor_nameControl"
+               [(ngModel)]="customer.tutor_name">
+        <mat-error class="mat-error" *ngIf="tutor_nameControl.errors">
+          {{ 'errors.field_required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  
+    <div class="pure-u-1 pure-u-lg-1-2">
+      <mat-form-field>
+        <mat-label>{{ 'tutor_email' | translate }}</mat-label>
+        <input matInput 
+               placeholder="{{ 'tutor_email' | translate }}" 
+               [readonly]="!visibility['tutor_email']" 
+               [(ngModel)]="customer.tutor_email">
+        <mat-error class="mat-error" *ngIf="tutor_emailControl.errors">
+          {{ 'errors.field_required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  
+    <div class="pure-u-1 pure-u-lg-1-2">
+      <mat-form-field>
+        <mat-label>{{ 'tutor_phones' | translate }}</mat-label>
+        <input matInput 
+               placeholder="{{ 'tutor_phones' | translate }}" 
+               [readonly]="!visibility['tutor_phones']" 
+               [(ngModel)]="customer.tutor_phones">
+        <mat-error class="mat-error" *ngIf="tutor_phonesControl.errors">
+          {{ 'errors.field_required' | translate }}
+        </mat-error>
+      </mat-form-field>
     </div>
 
-    <h3 *ngIf="age < 18 && age > 15">Tutor</h3>
-    <div class="pure-g" *ngIf="age < 18 && age > 15">  
-
-      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-        <mat-form-field *ngIf="visibility['tutor_id_type_id']">
-          <mat-label>{{ 'tutor_id_type' | translate }}</mat-label>
-          <mat-select [formControl]="tutor_id_type_idControl"
-                  [(ngModel)]="customer.tutor_id_type_id" 
-                  (selectionChange)="enableSave()">
-            <mat-option *ngFor="let c of lookupService.idTypes" [value]="c.id">
-              {{ isSpanish ? c.name : c.name_en  }}
-            </mat-option>
-          </mat-select>
-          <mat-error class="mat-error" *ngIf="tutor_id_type_idControl.errors">
-            {{ 'errors.field_required' | translate }}
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field *ngIf="!visibility['tutor_id_type_id']">
-          <mat-label>{{ 'tutor_id_type' | translate }}</mat-label>
-          <input matInput readonly placeholder="{{ 'tutor_id_type' | translate }}" [ngModel]="tutor_id_type">
-        </mat-form-field>
-      </div>
-    
-      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-        <mat-form-field>
-          <mat-label>{{ 'tutor_document' | translate }}</mat-label>
-          <input matInput [formControl]="tutor_documentControl"
-                 placeholder="{{ 'tutor_document' | translate }}" 
-                 [readonly]="!visibility['tutor_document']" 
-                 [(ngModel)]="customer.tutor_document">
-          <mat-error class="mat-error" *ngIf="tutor_documentControl.errors">
-            {{ 'errors.field_required' | translate }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-    
-      <div class="pure-u-1 pure-u-lg-1-2">
-        <mat-form-field >
-          <mat-label>{{ 'tutor_name' | translate }}</mat-label>
-          <input matInput [formControl]="tutor_nameControl"
-                 placeholder="{{ 'tutor_name' | translate }}" 
-                 [readonly]="!visibility['tutor_name']" 
-                 [(ngModel)]="customer.tutor_name">
-          <mat-error class="mat-error" *ngIf="tutor_nameControl.errors">
-            {{ 'errors.field_required' | translate }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-    
-      <div class="pure-u-1 pure-u-lg-1-2">
-        <mat-form-field>
-          <mat-label>{{ 'tutor_email' | translate }}</mat-label>
-          <input matInput 
-                 placeholder="{{ 'tutor_email' | translate }}" 
-                 [readonly]="!visibility['tutor_email']" 
-                 [(ngModel)]="customer.tutor_email">
-          <mat-error class="mat-error" *ngIf="tutor_emailControl.errors">
-            {{ 'errors.field_required' | translate }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-    
-      <div class="pure-u-1 pure-u-lg-1-2">
-        <mat-form-field>
-          <mat-label>{{ 'tutor_phones' | translate }}</mat-label>
-          <input matInput 
-                 placeholder="{{ 'tutor_phones' | translate }}" 
-                 [readonly]="!visibility['tutor_phones']" 
-                 [(ngModel)]="customer.tutor_phones">
-          <mat-error class="mat-error" *ngIf="tutor_phonesControl.errors">
-            {{ 'errors.field_required' | translate }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-  
   </div>
+
 </div>
 
 <!-- Other -->
@@ -407,19 +450,22 @@
   <h3>{{ 'method' | translate }}</h3>
   <div class="pure-g">
 
-
     <!-- Payment method -->
     <div class="pure-u-1 pure-u-lg-1-4">
       <mat-form-field *ngIf="!visibility['payment_method_id']">
         <mat-label>{{ 'method' | translate }}</mat-label>
-        <input matInput readonly placeholder="{{ 'method' | translate }}" [ngModel]="paymentMethod">
+        <input matInput 
+               placeholder="{{ 'method' | translate }}" 
+               readonly 
+               [ngModel]="paymentMethod">
       </mat-form-field>
       <mat-form-field *ngIf="visibility['payment_method_id']">
         <mat-label>{{ 'method' | translate }}</mat-label>
-        <mat-select [readonly]="!visibility['payment_method_id']" 
-                [formControl]="payment_method_idControl"
-                [(ngModel)]="customer.payment_method_id" 
-                (selectionChange)="enableSave()">
+        <mat-select 
+               [readonly]="!visibility['payment_method_id']" 
+               [formControl]="payment_method_idControl"
+               [(ngModel)]="customer.payment_method_id" 
+               (selectionChange)="enableSave()">
           <mat-option *ngFor="let c of lookupService.paymentMethods" [value]="c.id">
             {{ isSpanish ? c.name : c.name_en  }}
           </mat-option>
@@ -429,6 +475,37 @@
   
   </div>
 
+  <h3>{{ 'iban' | translate }}</h3>
+  <div class="pure-g">
+
+    <!-- IBAN -->
+    <div class="pure-u-1 pure-u-lg-1-2">
+      <mat-form-field>
+        <mat-label>{{ 'iban' | translate }}</mat-label>
+        <input matInput 
+               placeholder="{{'iban' | translate}}" 
+               [readonly]="!visibility['iban']" 
+               [formControl]="ibanControl" 
+               [(ngModel)]="customer.iban"
+               (change)="validateIBAN()">
+      </mat-form-field>
+      <mat-error class="mat-error" *ngIf="ibanControl.hasError('iban_mandatory')">
+        {{ 'errors.iban_mandatory' | translate }}
+      </mat-error>
+    </div>
+    <div class="pure-u-1 pure-u-lg-1-2">
+      <mat-checkbox 
+               [readonly]="!visibility['iban']" 
+               [formControl]="same_accountControl"
+               [(ngModel)]="customer.same_account" 
+               (change)="sameAccount($event);">
+      </mat-checkbox>
+      <mat-label>{{ 'same_account' | translate }}</mat-label>
+    </div>
+
+  </div>
+
+  <div *ngIf="!customer.same_account">
   <h3>{{ 'account' | translate }}</h3>
   <div class="pure-g">
 
@@ -436,9 +513,10 @@
     <div class="pure-u-1 pure-u-lg-1-2">
       <mat-form-field>
         <mat-label>{{ 'bank_account' | translate }}</mat-label>
-        <input [readonly]="!visibility['bank_account']" 
-               [formControl]="bank_accountControl"
-               matInput placeholder="{{'bank_account' | translate}}"
+        <input matInput 
+               placeholder="{{'bank_account' | translate}}" 
+               [readonly]="!visibility['bank_account']" 
+               [formControl]="bank_accountControl" 
                [(ngModel)]="customer.bank_account" 
                (change)="validateCCC()">
       </mat-form-field>
@@ -454,10 +532,11 @@
     <div class="pure-u-1 pure-u-lg-1-4">     
       <mat-form-field>
         <mat-label>{{ 'swift' | translate }}</mat-label>
-        <input [readonly]="!visibility['swift']" 
-               [formControl]="swiftControl"
-               matInput placeholder="{{'swift' | translate}}"
-               [(ngModel)]="customer.swift" 
+        <input matInput 
+               placeholder="{{'swift' | translate}}" 
+               [readonly]="!visibility['swift']" 
+               [formControl]="swiftControl" 
+               [(ngModel)]="customer.swift"
                (change)="validateCCC()">
       </mat-form-field>
       <mat-error class="mat-error" *ngIf="swiftControl.hasError('swift_wrong')">
@@ -465,8 +544,90 @@
       </mat-error>
     </div>
 
-  </div>
+    <!-- Bank details -->
+    <div class="pure-u-1 pure-u-lg-1-2">
+      <mat-form-field>
+        <mat-label>{{ 'bank_holder' | translate }}</mat-label>
+        <input matInput 
+               placeholder="{{ 'bank_holder' | translate }}" 
+               [readonly]="!visibility['bank_holder']" 
+               [formControl]="bank_holderControl" 
+               [(ngModel)]="customer.bank_holder" 
+               (input)="validateBankData(bank_holderControl)">
+        <mat-error class="mat-error" *ngIf="bank_holderControl.errors">
+          {{ 'errors.field_required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="pure-u-1 pure-u-lg-1-2">
+      <mat-form-field>
+        <mat-label>{{ 'bank_name' | translate }}</mat-label>
+        <input matInput 
+               placeholder="{{ 'bank_name' | translate }}" 
+               [readonly]="!visibility['bank_name']" 
+               [formControl]="bank_nameControl" 
+               [(ngModel)]="customer.bank_name" 
+               (input)="validateBankData(bank_nameControl)">
+        <mat-error class="mat-error" *ngIf="bank_nameControl.errors">
+          {{ 'errors.field_required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="pure-u-1">
+      <mat-form-field>
+        <mat-label>{{ 'bank_address' | translate }}</mat-label>
+        <input matInput 
+               placeholder="{{ 'bank_address' | translate }}" 
+               [readonly]="!visibility['bank_address']"
+               [formControl]="bank_addressControl" 
+               [(ngModel)]="customer.bank_address" 
+               (input)="validateBankData(bank_addressControl)">
+        <mat-error class="mat-error" *ngIf="bank_addressControl.errors">
+          {{ 'errors.field_required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="pure-u-1 pure-u-lg-1-2">
+      <mat-form-field>
+        <mat-label>{{ 'bank_city' | translate }}</mat-label>
+        <input matInput 
+               placeholder="{{ 'bank_city' | translate }}" 
+               [readonly]="!visibility['bank_city']" 
+               [formControl]="bank_cityControl" 
+               [(ngModel)]="customer.bank_city" 
+               (input)="validateBankData(bank_cityControl)">
+        <mat-error class="mat-error" *ngIf="bank_cityControl.errors">
+          {{ 'errors.field_required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+      <mat-form-field *ngIf="!visibility['bank_country_id']">
+        <mat-label>{{ 'bank_country' | translate }}</mat-label>
+        <input matInput 
+               placeholder="{{ 'bank_country' | translate }}"
+               readonly 
+               [ngModel]="bank_country">
+      </mat-form-field>
+      <mat-form-field *ngIf="visibility['bank_country_id']">
+        <mat-label>{{ 'bank_country' | translate }}</mat-label>
+        <mat-select 
+               [formControl]="bank_country_idControl" 
+               [(ngModel)]="customer.bank_country_id" 
+               (selectionChange)="validateBankData(bank_country_idControl)">
+          <mat-option *ngFor="let c of lookupService.countries" [value]="c.id">
+            {{ isSpanish ? c.name : c.name_en }}
+          </mat-option>
+          <mat-error class="mat-error" *ngIf="bank_country_idControl.errors">
+            {{ 'errors.field_required' | translate }}
+          </mat-error>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
+  </div>
+  </div>
+  
 </div>
 
 <div class="pure-u-1">

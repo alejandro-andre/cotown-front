@@ -6,7 +6,7 @@ export const CUSTOMER_ID_QUERY = `query user_id {
 
 export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
   data: Customer_CustomerList(where: { id: { EQ: $id } } ) {
-    id,
+    id
     appLang: Lang
     name: Name
     email: Email
@@ -15,7 +15,15 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
     province: Province
     address: Address
     payment_method_id: Payment_method_id
+    iban: IBAN
+    same_account: Same_account
     bank_account: Bank_account
+    swift: Swift
+    bank_holder: Bank_holder
+    bank_name: Bank_name
+    bank_address: Bank_address
+    bank_city: Bank_city
+    bank_country_id: Bank_country_id
     birth_date: Birth_date
     tutor_id_type_id: Tutor_id_type_id
     tutor_document: Tutor_document
@@ -222,7 +230,15 @@ export const UPDATE_CUSTOMER = `
     $tutor_phones: String
     $school_id: Int
     $payment_method_id: Int
+    $iban: String
+    $same_account: Boolean
     $bank_account: String
+    $swift: String
+    $bank_holder: String
+    $bank_name: String
+    $bank_address: String
+    $bank_city: String
+    $bank_country_id: Int
     $appLang: Auxiliar_LangEnumType) {
   update: Customer_CustomerUpdate(
     where: { id: {EQ: $id} }
@@ -246,7 +262,15 @@ export const UPDATE_CUSTOMER = `
       Nationality_id:$nationality_id
       Country_id: $country_id
       Payment_method_id: $payment_method_id
+      IBAN: $iban
+      Same_account: $same_account
       Bank_account: $bank_account
+      Swift: $swift
+      Bank_holder: $bank_holder
+      Bank_name: $bank_name
+      Bank_address: $bank_address
+      Bank_city: $bank_city
+      Bank_country_id: $bank_country_id
       Lang: $appLang
     }) {id}
 }`;

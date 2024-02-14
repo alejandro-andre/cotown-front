@@ -69,11 +69,13 @@ export class AxiosApi {
     return airflowsInstance.get(url, { responseType: 'blob' });
   }
 
-  validateIBAN(code: string) {
+  validateIBAN(code: string): any {
+    code = code.replace(/\//g, "_");
     return backendInstance.get(`/iban/${code}`);
   }
 
-  validateSWIFT(code: string) {
+  validateSWIFT(code: string): any {
+    code = code.replace(/\//g, "_");
     return backendInstance.get(`/swift/${code}`);
   }
 

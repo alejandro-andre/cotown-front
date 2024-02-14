@@ -172,7 +172,6 @@ export class LookupService {
     ]
     this.apolloApi.getData(STATUS_QUERY).subscribe((res) => {
       const value = res.data;
-      console.log
       for (let i = 0; i < value.data[0].labels.length; i++) {
         if (value.data[0].locale == "es_ES") {
           this.status[i].name = value.data[0].labels[i],

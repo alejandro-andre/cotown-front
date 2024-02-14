@@ -47,12 +47,21 @@
   <div class="pure-u-6-24" *ngIf="['reservas','pagos','ingresos','contratos','downloadcontratos'].includes(selectedItem)">
     <mat-form-field>
       <mat-label>Rango de fechas</mat-label>
-      <mat-date-range-input [rangePicker]="datepicker" [formGroup]="dateControl">
+      <mat-date-range-input [rangePicker]="rangepicker" [formGroup]="dateRangeControl">
       <input matStartDate formControlName="start" placeholder="Desde">
       <input matEndDate formControlName="end" placeholder="Hasta">
       </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="rangepicker"></mat-datepicker-toggle>
+      <mat-date-range-picker #rangepicker></mat-date-range-picker>
+    </mat-form-field>
+  </div>
+
+  <div class="pure-u-6-24" *ngIf="['ac'].includes(selectedItem)">
+    <mat-form-field>
+      <mat-label>Fecha (a partir de)</mat-label>
+      <input matInput [matDatepicker]="datepicker" [formControl]="dateControl">
       <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
-      <mat-date-range-picker #datepicker></mat-date-range-picker>
+      <mat-datepicker #datepicker></mat-datepicker>
     </mat-form-field>
   </div>
 

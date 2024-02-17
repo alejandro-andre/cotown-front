@@ -25,7 +25,7 @@ export class DownloadComponent {
     { name: 'recursos',          provider: false, icon: 'hotel',              filter: false, text: 'Recursos, precios, tarifas', url: '/export/recursos' },
     { name: 'precios',           provider: false, icon: 'monetization_on',    filter: false, text: 'Precios',          url: '/export/precios' },
     { name: 'weekly',            provider: false, icon: 'blur_linear',        filter: false, text: 'Reservas PowerBI', url: '/export/weekly?fdesde=2023-10-01&fhasta=2099-12-31' },
-    { name: 'occupancy',         provider: false, icon: 'calendar_today',     filter: false, text: 'Monthy',           url: '/occupancy?fdesde=2023-11-01&fhasta=2099-12-31' },
+    { name: 'occupancy',         provider: false, icon: 'calendar_today',     filter: false, text: 'Monthy',           url: '/occupancy?fdesde=2024-01-01&fhasta=2024-12-31' },
     { name: 'ac',                provider: false, icon: 'send',               filter: true,  text: 'ActiveCampaign'},
     { name: 'rooming',           provider: false, icon: 'people',             filter: true,  text: 'Rooming list' },
     { name: 'reservas',          provider: false, icon: 'event',              filter: true,  text: 'Reservas' },

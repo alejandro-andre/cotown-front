@@ -44,7 +44,7 @@
     </mat-form-field>
   </div>
 
-  <div class="pure-u-6-24" *ngIf="['reservas','pagos','ingresos','contratos','downloadcontratos'].includes(selectedItem)">
+  <div class="pure-u-6-24" *ngIf="['occupancy','reservas','pagos','ingresos','contratos','downloadcontratos'].includes(selectedItem)">
     <mat-form-field>
       <mat-label>Rango de fechas</mat-label>
       <mat-date-range-input [rangePicker]="rangepicker" [formGroup]="dateRangeControl">

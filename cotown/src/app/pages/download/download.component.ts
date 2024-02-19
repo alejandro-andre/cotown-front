@@ -25,7 +25,7 @@ export class DownloadComponent {
     { name: 'recursos',          provider: false, icon: 'hotel',              filter: false, text: 'Recursos, precios, tarifas', url: '/export/recursos' },
     { name: 'precios',           provider: false, icon: 'monetization_on',    filter: false, text: 'Precios',          url: '/export/precios' },
     { name: 'weekly',            provider: false, icon: 'blur_linear',        filter: false, text: 'Reservas PowerBI', url: '/export/weekly?fdesde=2023-10-01&fhasta=2099-12-31' },
-    { name: 'occupancy',         provider: false, icon: 'calendar_today',     filter: false, text: 'Monthy',           url: '/occupancy?fdesde=2024-01-01&fhasta=2024-12-31' },
+    { name: 'occupancy',         provider: false, icon: 'calendar_today',     filter: true,  text: 'Monthy',           url: '/occupancy' },
     { name: 'ac',                provider: false, icon: 'send',               filter: true,  text: 'ActiveCampaign'},
     { name: 'rooming',           provider: false, icon: 'people',             filter: true,  text: 'Rooming list' },
     { name: 'reservas',          provider: false, icon: 'event',              filter: true,  text: 'Reservas' },
@@ -90,9 +90,12 @@ export class DownloadComponent {
     } else if (data == "rooming") {
         if (!this.bookingIdControl.value)
           return true;
+    } else if (data == "occupancy") {
+      if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end)
+        return true;
     } else if (data == "reservas") {
-        if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end)
-          return true;
+      if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end)
+        return true;
     } else if (data == "facturas") {
         if (this.billDateControl.value === '')
           return true;
@@ -138,7 +141,16 @@ export class DownloadComponent {
       + '&access_token=' + this.apolloApi.token;
 
     // Reservas y contratos
-    } else if (data == "reservas" || data == "contratos") {
+  } else if (data == "occupancy" || data == "reservas" || data == "contratos") {
+    const from = moment(this.dateRangeControl.value.start);
+    const to = moment(this.dateRangeControl.value.end).add(1,'d');
+    l = environment.backURL + '/export/' + data
+      + '?fdesde=' + from.format('YYYY-MM-DD') 
+      + '&fhasta=' + to.format('YYYY-MM-DD') 
+      + '&access_token=' + this.apolloApi.token;
+
+    // Reservas y contratos
+    } else if (data == "occupancy" || data == "reservas" || data == "contratos") {
     const from = moment(this.dateRangeControl.value.start);
     const to = moment(this.dateRangeControl.value.end).add(1,'d');
     l = environment.backURL + '/export/' + data

@@ -22,10 +22,11 @@ export class DownloadComponent {
   reps = [
     { name: 'propietarios',      provider: false, icon: 'account_box',        filter: false, text: 'Propietarios',     url: '/export/propietarios' },
     { name: 'edificios',         provider: false, icon: 'business',           filter: false, text: 'Edificios',        url: '/export/edificios' },
-    { name: 'recursos',          provider: false, icon: 'hotel',              filter: false, text: 'Recursos, precios, tarifas', url: '/export/recursos' },
+    { name: 'recursos',          provider: false, icon: 'apps',               filter: false, text: 'Recursos, precios, tarifas', url: '/export/recursos' },
     { name: 'precios',           provider: false, icon: 'monetization_on',    filter: false, text: 'Precios',          url: '/export/precios' },
     { name: 'weekly',            provider: false, icon: 'blur_linear',        filter: false, text: 'Reservas PowerBI', url: '/export/weekly?fdesde=2023-10-01&fhasta=2099-12-31' },
-    { name: 'occupancy',         provider: false, icon: 'calendar_today',     filter: true,  text: 'Monthy',           url: '/occupancy' },
+    { name: 'occupancy',         provider: false, icon: 'calendar_today',     filter: true,  text: 'Monthy'},
+    { name: 'disponibilidad',    provider: false, icon: 'hotel',              filter: true,  text: 'Disponibilidad'},
     { name: 'ac',                provider: false, icon: 'send',               filter: true,  text: 'ActiveCampaign'},
     { name: 'rooming',           provider: false, icon: 'people',             filter: true,  text: 'Rooming list' },
     { name: 'reservas',          provider: false, icon: 'event',              filter: true,  text: 'Reservas' },
@@ -90,30 +91,19 @@ export class DownloadComponent {
     } else if (data == "rooming") {
         if (!this.bookingIdControl.value)
           return true;
-    } else if (data == "occupancy") {
-      if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end)
-        return true;
-    } else if (data == "reservas") {
+    } else if (data == "disponibilidad" || data == "occupancy" || data == "reservas") {
       if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end)
         return true;
     } else if (data == "facturas") {
         if (this.billDateControl.value === '')
           return true;
-    } else if (data == "ingresos") {
-        if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end || 
-            this.providerControl.value == null || this.providerControl.value < 0)
-          return true
-    } else if (data == "pagos") {
-        if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end || 
-            this.providerControl.value == null || this.providerControl.value < 0)
-          return true
+    } else if (data == "ingresos" || data == "pagos" || data == "downloadcontratos") {
+      if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end || 
+          this.providerControl.value == null || this.providerControl.value < 0)
+        return true
     } else if (data == "contratos") {
-        if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end)
-          return true
-    } else if (data == "downloadcontratos") {
-        if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end || 
-            this.providerControl.value == null || this.providerControl.value < 0)
-          return true
+      if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end)
+        return true
     } else if (data == "downloadfacturas") {
         if (this.billDateControl.value === '' || 
             this.providerControl.value == null || this.providerControl.value < 0)
@@ -141,7 +131,7 @@ export class DownloadComponent {
       + '&access_token=' + this.apolloApi.token;
 
     // Reservas y contratos
-  } else if (data == "occupancy" || data == "reservas" || data == "contratos") {
+  } else if (data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "contratos") {
     const from = moment(this.dateRangeControl.value.start);
     const to = moment(this.dateRangeControl.value.end).add(1,'d');
     l = environment.backURL + '/export/' + data
@@ -199,7 +189,7 @@ export class DownloadComponent {
     }
 
     // Report
-    this.report(l)
+    this.report(l);
   }
 
   report(url: string) {

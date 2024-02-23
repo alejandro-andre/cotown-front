@@ -64,6 +64,7 @@ export class PlanningComponent {
 
   // Planning
   public now!: Date;
+  public limit!: Date;
   public rows: TimeChartRow[] = []; // Rows
   public labels: any = null;
 
@@ -101,6 +102,16 @@ export class PlanningComponent {
     this.now.setMinutes(59);
     this.now.setSeconds(59);
     this.now.setMilliseconds(99);
+
+    // Limit date, six months ago
+    let m = new Date().getMonth();
+    let y = new Date().getFullYear();
+    m -= 6;
+    if (m < 0) {
+      m += 12;
+      y -= 1;
+    }
+    this.limit = new Date(y, m, 1);
 
     // Set locale
     this.adapter.setLocale(this.language.lang.substring(0, 2));
@@ -253,6 +264,8 @@ export class PlanningComponent {
       let date= prevMonth(this.now);
       this.now = date;
     }
+    if (this.now < this.limit)
+      this.now = new Date(this.limit.getTime());
   }
 
   goForward(type: string) {
@@ -447,9 +460,8 @@ export class PlanningComponent {
   // Get filtered bookings
   queryBookings(): void {
 
-    // Two months ago
-    const date = new Date();
-    date.setTime(date.getTime() - 60 * 24 * 60 * 60 * 1000);
+    // Limit
+    const date = this.limit;
 
     // GraphQL params
     let params = '$date: String $cityId: Int';

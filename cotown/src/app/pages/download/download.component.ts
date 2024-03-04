@@ -34,7 +34,7 @@ export class DownloadComponent {
     { name: 'ingresos',          provider: true,  icon: 'receipt',            filter: true,  text: 'Ingresos' },
     { name: 'contratos',         provider: false, icon: 'playlist_add_check', filter: true,  text: 'Contratos' },
   ];
-  downloads = [
+  down = [
     { name: 'downloadcontratos', provider: false, icon: 'attachment',         filter: true,  text: 'Contratos', url: '/download/contratos' },
     { name: 'downloadfacturas',  provider: true,  icon: 'attachment',         filter: true,  text: 'Facturas y recibos',  url: '/download/facturas' },
   ];
@@ -72,6 +72,9 @@ export class DownloadComponent {
   // Accesible reports
   get reports() {
     return this.reps.filter(r => this.providers && (r.provider || this.providers.length > 1));
+  }
+  get downloads() {
+    return this.down.filter(r => this.providers && (r.provider || this.providers.length > 1));
   }
 
   // Report selected

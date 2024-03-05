@@ -27,6 +27,9 @@ export class TimeChartControlComponent implements OnChanges {
 
   ONEDAY: number = (1000*60*60*24);
 
+  // Parent
+  private parent: any = null;
+
   // Constructor
   constructor() { }
 
@@ -188,12 +191,18 @@ export class TimeChartControlComponent implements OnChanges {
   public go_booking(link: string) {
     if (link == '')
       return;
-    parent.history.pushState("", "", link);
-    parent.history.go(-1);
-    parent.history.go(1);
-    parent.history.pushState("", "", link);
-    parent.history.go(-1);
-    parent.history.go(1);
+    if (window.opener && !this.parent)
+      this.parent = window.opener.parent;
+    else if (parent && !this.parent)
+      this.parent = parent;
+    if (this.parent) {
+      this.parent.history.pushState(null, "", link);
+      this.parent.history.go(-1);
+      this.parent.history.go(1);
+      this.parent.history.pushState(null, "", link);
+      this.parent.history.go(-1);
+      this.parent.history.go(1);
+    }
   }
 
 }

@@ -172,18 +172,9 @@ export class OperationsDashboardComponent implements OnInit {
     this.getBookings();
   }
 
-  // Get bookings
-  async getBookings() { 
-    // Spinner
-    this.isLoading = true;
-
-    // Clean
-    this.rows = [];
-    const params: any = {};
-    if (!this.op || !this.cityId)
-      return;
-
+  get_params() {
     // City
+    const params: any = {};
     if (this.cityId != Constants.allStaticNumericValue)
       params["location"] = this.cityId;
 
@@ -194,8 +185,21 @@ export class OperationsDashboardComponent implements OnInit {
     // Date range
     params["date_from"] = this.datePipe.transform(this.range.get("start")?.value, "yyyy-MM-dd");
     params["date_to"] = this.datePipe.transform(this.range.get("end")?.value, "yyyy-MM-dd")
+    return params;
+  }
+
+  // Get bookings
+  async getBookings() { 
+    // Spinner
+    this.isLoading = true;
+
+    // Clean
+    this.rows = [];
+    if (!this.op || !this.cityId)
+      return;
 
     // Get bookings
+    const params: any = this.get_params();
     await axiosApi.getDashboardBookings(this.op, this.apollo.token, params).then((res) => { 
       this.rows = res.data.map((o: any) => { 
 
@@ -492,25 +496,12 @@ export class OperationsDashboardComponent implements OnInit {
     })
   }
 
-  link() { 
-    // Next checkins
-    if (this.op == 'nextin') 
-      return environment.backURL + '/export/dashboardnext?access_token=' + this.apollo.token;
-
-    // Next checkouts
-    if (this.status == 'nextout') 
-      return environment.backURL + '/export/dashboardnextout?access_token=' + this.apollo.token;
-
-    // Issues
-    if (this.status == 'issues') 
-      return null;
-
-    // ECO/EXT
-    if (this.status == 'ecoext') 
-      return null;
-
-    // Rest of status
-    return environment.backURL + '/export/dashboard?status=' + this.status + ',' + this.status + '&access_token=' + this.apollo.token;
+  link() {
+    if (!this.op || !this.cityId)
+      return;
+    const params: any = this.get_params();
+    let queryString = Object.keys(params).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
+    return environment.backURL + '/report/' + this.op + '?access_token=' + this.apollo.token + '&' + queryString;
   }
 
 }

@@ -25,6 +25,7 @@ export class DownloadComponent {
     { name: 'recursos',          provider: false, icon: 'apps',               filter: false, text: 'Recursos, precios, tarifas', url: '/export/recursos' },
     { name: 'precios',           provider: false, icon: 'monetization_on',    filter: false, text: 'Precios',          url: '/export/precios' },
     { name: 'weekly',            provider: false, icon: 'blur_linear',        filter: false, text: 'Reservas PowerBI', url: '/export/weekly?fdesde=2023-10-01&fhasta=2099-12-31' },
+    { name: 'devolucines',       provider: false, icon: 'cached',             filter: false, text: 'Devoluciones',     url: '/export/devoluciones' },
     { name: 'occupancy',         provider: false, icon: 'calendar_today',     filter: true,  text: 'Monthy'},
     { name: 'disponibilidad',    provider: false, icon: 'hotel',              filter: true,  text: 'Disponibilidad'},
     { name: 'ac',                provider: false, icon: 'send',               filter: true,  text: 'ActiveCampaign'},
@@ -32,7 +33,6 @@ export class DownloadComponent {
     { name: 'reservas',          provider: false, icon: 'event',              filter: true,  text: 'Reservas' },
     { name: 'pagos',             provider: false, icon: 'local_atm',          filter: true,  text: 'Pagos' },
     { name: 'ingresos',          provider: true,  icon: 'receipt',            filter: true,  text: 'Ingresos' },
-    { name: 'devolucines',       provider: false, icon: 'cached',             filter: false, text: 'Devoluciones' },
     { name: 'contratos',         provider: false, icon: 'playlist_add_check', filter: true,  text: 'Contratos' },
   ];
   down = [

@@ -32,6 +32,7 @@ export class DownloadComponent {
     { name: 'reservas',          provider: false, icon: 'event',              filter: true,  text: 'Reservas' },
     { name: 'pagos',             provider: false, icon: 'local_atm',          filter: true,  text: 'Pagos' },
     { name: 'ingresos',          provider: true,  icon: 'receipt',            filter: true,  text: 'Ingresos' },
+    { name: 'devolucines',       provider: false, icon: 'cached',             filter: true,  text: 'Devoluciones' },
     { name: 'contratos',         provider: false, icon: 'playlist_add_check', filter: true,  text: 'Contratos' },
   ];
   down = [

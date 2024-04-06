@@ -218,9 +218,9 @@ export class OperationsDashboardComponent implements OnInit {
           cha_eco_ext = "<br><strong style='color:teal;'>CHA</strong><br>" + o.Origin_id;
         if (o.Destination_id != null && (this.op == 'checkout' || this.op == 'nextout'))
           cha_eco_ext = "<br><strong style='color:teal;'>CHA</strong><br>" + o.Destination_id;
-        if (o.New_check_out < o.Date_out) 
+        if (o.New_check_out < o.Date_out && !o.Eco_ext_change_ok) 
           cha_eco_ext = "<br><strong style='color:teal;'>ECO</strong><br>";
-        if (o.New_check_out > o.Date_out) 
+        if (o.New_check_out > o.Date_out && !o.Eco_ext_change_ok) 
           cha_eco_ext = "<br><strong style='color:teal;'>EXT</strong><br>";
 
         // Asterisks

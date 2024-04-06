@@ -74,6 +74,7 @@ export class OperationsDashboardComponent implements OnInit {
     { key:"Prev",                  value:"Salida anterior",    sort:"", type: "text",   filter: ["nextin"] },
     { key:"Next",                  value:"Entrada siguiente",  sort:"", type: "text",   filter: ["nextout"] },
     { key:"New_check_out",         value:"Nueva salida",       sort:"", type: "date",   filter: ["ecoext"] }, 
+    { key:"Old_check_out",         value:"Antigua salida",     sort:"", type: "date",   filter: ["ecoext"] }, 
     { key:"Dates",                 value:"Fechas contrato",    sort:"", type: "text",   filter: [] }, 
     { key:"Resource",              value:"Recurso / Edificio", sort:"", type: "text",   filter: [] },
     { key:"Check_in_time",         value:"Hora check-in",      sort:"", type: "text",   filter: ["nextin","checkin"] },

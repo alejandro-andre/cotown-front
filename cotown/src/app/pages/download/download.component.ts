@@ -36,7 +36,7 @@ export class DownloadComponent {
     { name: 'contratos',         provider: false, icon: 'playlist_add_check', filter: true,  text: 'Contratos' },
   ];
   down = [
-    { name: 'downloadcontratos', provider: false, icon: 'attachment',         filter: true,  text: 'Contratos', url: '/download/contratos' },
+    { name: 'downloadcontratos', provider: true,  icon: 'attachment',         filter: true,  text: 'Contratos', url: '/download/contratos' },
     { name: 'downloadfacturas',  provider: true,  icon: 'attachment',         filter: true,  text: 'Facturas y recibos',  url: '/download/facturas' },
   ];
   selectedItem: any = null;

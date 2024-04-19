@@ -24,6 +24,9 @@ import { BOOKING_UPDATE } from "src/app/schemas/query-definitions/booking.query"
  })
 
 export class OperationsDashboardComponent implements OnInit { 
+  // Parent
+  private parent: any = null;
+
   // Operation
   public op!: string;
   public dashboards: any[] = [
@@ -335,12 +338,18 @@ export class OperationsDashboardComponent implements OnInit {
 
   goBooking(id: string) { 
     const link = "/admin/Booking.Booking/" + id + "/view";
-    parent.history.pushState("", "", link);
-    parent.history.go(-1);
-    parent.history.go(1);
-    parent.history.pushState("", "", link);
-    parent.history.go(-1);
-    parent.history.go(1);
+    if (window.opener && !this.parent)
+      this.parent = window.opener.parent;
+    else if (parent && !this.parent)
+      this.parent = parent;
+    if (this.parent) {
+      this.parent.history.pushState(null, "", link);
+      this.parent.history.go(-1);
+      this.parent.history.go(1);
+      this.parent.history.pushState(null, "", link);
+      this.parent.history.go(-1);
+      this.parent.history.go(1);
+    }
   }
 
   getLabel(code: string) {

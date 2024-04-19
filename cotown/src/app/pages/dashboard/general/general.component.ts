@@ -14,6 +14,9 @@ import { DatePipe } from "@angular/common";
 
 export class GeneralDashboardComponent implements OnInit { 
 
+  // Parent
+  private parent: any = null;
+
   public isLoading: boolean = true;
 
   public dashboard: any = null;
@@ -134,12 +137,18 @@ export class GeneralDashboardComponent implements OnInit {
 
   goBooking(id: string) { 
     const link = "/admin/Booking.Booking/" + id + "/view";
-    parent.history.pushState("", "", link);
-    parent.history.go(-1);
-    parent.history.go(1);
-    parent.history.pushState("", "", link);
-    parent.history.go(-1);
-    parent.history.go(1);
+    if (window.opener && !this.parent)
+      this.parent = window.opener.parent;
+    else if (parent && !this.parent)
+      this.parent = parent;
+    if (this.parent) {
+      this.parent.history.pushState(null, "", link);
+      this.parent.history.go(-1);
+      this.parent.history.go(1);
+      this.parent.history.pushState(null, "", link);
+      this.parent.history.go(-1);
+      this.parent.history.go(1);
+    }
   }
 
   getLabel(code: string) {

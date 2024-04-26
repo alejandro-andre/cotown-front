@@ -73,7 +73,7 @@ export class MyPaymentsComponent {
       return false;
     }
 
-    // Is there a booking fee payment pending for the same booking?
+    // Is there a membership fee payment pending for the same booking?
     if (this.customerService.customer?.payments.find((e) => (
       (e.id != elem.id) && 
       (e.booking.id == elem.booking.id) && 

@@ -282,6 +282,16 @@ export class MyBookingDetailComponent {
   }
 
   enableSave() {
+    // Checkin
+    if (this.booking && this.checkinFormControl.value) {
+      const fecha = this.checkinFormControl.value;
+      const d = fecha.getFullYear() + '-' + (fecha.getMonth() + 1).toString().padStart(2, '0') + '-' + fecha.getDate().toString().padStart(2, '0');
+      if (d < this.booking.date_from) {
+        this.checkinFormControl.setErrors({ 'wrong_date': true });
+        this.enabledSave = false;
+        return;
+      }
+    }
     this.enabledSave = true;
   }
 

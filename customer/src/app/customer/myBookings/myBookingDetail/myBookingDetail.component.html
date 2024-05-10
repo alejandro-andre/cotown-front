@@ -324,9 +324,15 @@
           <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
             <mat-form-field>
               <mat-label>{{ 'check_in' | translate }}</mat-label>
-              <input matInput [readonly]="!visibility['check_in']" [matDatepicker]="pickerFrom" [formControl]="checkinFormControl" (dateInput)="enableSave()">
+              <input matInput [readonly]="!visibility['check_in']" [matDatepicker]="pickerFrom" [formControl]="checkinControl" (dateInput)="enableSave()">
               <mat-datepicker-toggle *ngIf="visibility['check_in']" matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
               <mat-datepicker #pickerFrom></mat-datepicker>
+              <mat-error class="mat-error" *ngIf="checkinControl.hasError('low_date')">
+                {{ 'errors.low_date' | translate }}
+              </mat-error>
+              <mat-error class="mat-error" *ngIf="checkinControl.hasError('field_required')">
+                {{ 'errors.field_required' | translate }}
+              </mat-error>
             </mat-form-field>
           </div>
     
@@ -347,7 +353,10 @@
           <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
             <mat-form-field>
               <mat-label>{{ 'check_in_time' | translate }}</mat-label>
-              <input matInput type="time" [readonly]="!visibility['check_in_time']" [(ngModel)]="checkintime" (change)="enableSave()">
+              <input matInput type="time" [readonly]="!visibility['check_in_time']" [formControl]="checkinTimeControl" [(ngModel)]="checkintime" (change)="enableSave()">
+              <mat-error class="mat-error" *ngIf="checkinTimeControl.hasError('field_required')">
+                {{ 'errors.field_required' | translate }}
+              </mat-error>
             </mat-form-field>
           </div> 
       
@@ -358,14 +367,17 @@
             </mat-form-field>
             <mat-form-field *ngIf="visibility['check_in_option_id']">
               <mat-label>{{ 'check_in_option_id' | translate }}</mat-label>
-              <mat-select [(ngModel)]="selectedOption" (selectionChange)="enableSave()" >
+              <mat-select [formControl]="checkinOptionControl" [(ngModel)]="selectedOption" (selectionChange)="enableSave()" >
                 <mat-option *ngFor="let op of checkinOptions" [value]="op.id">
                 {{ isSpanish ? op.name : op.name_en }} - {{ op.price }} €
                 </mat-option>
               </mat-select>
+              <mat-error class="mat-error" *ngIf="checkinOptionControl.hasError('field_required')">
+                {{ 'errors.field_required' | translate }}
+              </mat-error>
             </mat-form-field>
             <p *ngIf="checkinOptions.length > 0" [innerHtml]="option_detail() | safe"></p>
-            <p *ngIf="checkinFormControl.value && checkintime && checkinOptions.length == 0">{{ 'check_in_no_options' | translate }}</p>
+            <p *ngIf="checkinControl.value && checkintime && checkinOptions.length == 0">{{ 'check_in_no_options' | translate }}</p>
           </div>
     
         </div>
@@ -380,7 +392,7 @@
           <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
             <mat-form-field>
               <mat-label>{{ 'check_out' | translate }}</mat-label>
-              <input readonly matInput [matDatepicker]="pickerTo" [formControl]="checkoutFormControl" (dateInput)="enableSave()" >
+              <input readonly matInput [matDatepicker]="pickerTo" [formControl]="checkoutControl" (dateInput)="enableSave()" >
               <!--
               <mat-datepicker-toggle matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
               -->

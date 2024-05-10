@@ -5,6 +5,7 @@
     "field_required": "The field is required",
     "missing_fields": "There are still missing fields",
     "under_16": "Mínimum age is 16 years old",
+    "low_date": "Date before contract starts",
     "contact_type_required": "The contact type is required",
     "invalid_email": "Invalid email",
     "no_booking": "No booking found with that id",

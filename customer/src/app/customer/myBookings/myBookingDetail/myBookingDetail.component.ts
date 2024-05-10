@@ -79,8 +79,10 @@ export class MyBookingDetailComponent {
   ];
 
   // Form data
-  public checkinFormControl = new FormControl<Date | null>(null);
-  public checkoutFormControl = new FormControl<Date | null>(null);
+  public checkinControl = new FormControl<Date | null>(null);
+  public checkoutControl = new FormControl<Date | null>(null);
+  public checkinTimeControl = new FormControl<String | null>(null);
+  public checkinOptionControl = new FormControl<String | null>(null);
   public selectedReason!: number;
   public selectedSchool!: number;
   public selectedOption: number | null = null;
@@ -98,7 +100,6 @@ export class MyBookingDetailComponent {
     private modalService: ModalService
   ) {
     // Look for booking
-    this.enableSave();
     this.isLoading = true;
     this.activeRoute.params.subscribe((res) => {
       this.isLoading = false;
@@ -218,12 +219,12 @@ export class MyBookingDetailComponent {
   // Return array of valid check in options for the check in date, hour and location
   get checkinOptions() {
     // Enough data?
-    const checkin = this.checkinFormControl.value !== null ? this.datePipe.transform(this.checkinFormControl.value, 'yyyy-MM-dd') : null;
+    const checkin = this.checkinControl.value !== null ? this.datePipe.transform(this.checkinControl.value, 'yyyy-MM-dd') : null;
     if (checkin == null || this.checkintime == null)
       return [];
 
     // Check day of week or if it's holiday
-    let dow = this.checkinFormControl.value?.getDay();
+    let dow = this.checkinControl.value?.getDay();
     this.lookupService.holidays.forEach((d: any) => {
       if (d.day == checkin && (d.location == null || d.location == this.booking.resource.building.district.location))
         dow = 0;
@@ -282,17 +283,48 @@ export class MyBookingDetailComponent {
   }
 
   enableSave() {
-    // Checkin
-    if (this.booking && this.checkinFormControl.value) {
-      const fecha = this.checkinFormControl.value;
+    // No by default
+    this.enabledSave = false;
+
+    // Checkin date correct?
+    if (this.booking && this.checkinControl.value) {
+      const fecha = this.checkinControl.value;
       const d = fecha.getFullYear() + '-' + (fecha.getMonth() + 1).toString().padStart(2, '0') + '-' + fecha.getDate().toString().padStart(2, '0');
       if (d < this.booking.date_from) {
-        this.checkinFormControl.setErrors({ 'wrong_date': true });
-        this.enabledSave = false;
+        this.checkinControl.setErrors({ 'low_date': true });
         return;
       }
     }
-    this.enabledSave = true;
+
+    // Mandatory fields?
+    let ok = true;
+    if (this.checkinControl.value || this.checkinTimeControl.value) {
+      if (!this.checkinControl.value) {
+        this.checkinControl.setErrors({ 'field_required': true });
+        ok = false;
+      }
+      if (!this.checkinTimeControl.value) {
+        this.checkinTimeControl.setErrors({ 'field_required': true });
+        ok = false;
+      }
+      if (!this.checkinOptionControl.value || this.checkinOptions.length == 0) {
+        this.checkinOptionControl.setErrors({ 'field_required': true });
+        ok = false;
+      } 
+    } else {
+      this.checkinControl.setErrors(null)
+      this.checkinTimeControl.setErrors(null)
+      this.checkinOptionControl.setErrors(null)
+      ok = (this.checkinControl.value != null);
+    }
+
+    // Show errors
+    this.checkinControl.markAsTouched({ onlySelf: true });
+    this.checkinTimeControl.markAsTouched({ onlySelf: true });
+    this.checkinOptionControl.markAsTouched({ onlySelf: true });
+
+    // Ok
+    this.enabledSave = ok;
   }
 
   setBooking(booking: any) {
@@ -306,13 +338,13 @@ export class MyBookingDetailComponent {
     this.checkintime = this.booking.check_in_time;
 
     // Checkin date
-    this.checkinFormControl = new FormControl(
+    this.checkinControl = new FormControl(
       this.booking.check_in !== null ?
       new Date(this.booking.check_in) : null
     );
 
     // Checkout date
-    this.checkoutFormControl = new FormControl(
+    this.checkoutControl = new FormControl(
       this.booking.check_out !== null ?
       new Date(this.booking.check_out) : null
     )
@@ -374,8 +406,8 @@ export class MyBookingDetailComponent {
   save () {
 
     // Format dates
-    const checkin = this.checkinFormControl.value !== null ? this.datePipe.transform(this.checkinFormControl.value, 'yyyy-MM-dd') : null;
-    const checkout = this.checkoutFormControl.value !== null ? this.datePipe.transform(this.checkoutFormControl.value, 'yyyy-MM-dd'): null;
+    const checkin = this.checkinControl.value !== null ? this.datePipe.transform(this.checkinControl.value, 'yyyy-MM-dd') : null;
+    const checkout = this.checkoutControl.value !== null ? this.datePipe.transform(this.checkoutControl.value, 'yyyy-MM-dd'): null;
 
     // GraphQL API
     const variables: any = {

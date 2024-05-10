@@ -5,6 +5,7 @@
     "field_required": "Este dato is obligatorio",
     "missing_fields": "Faltan datos obligatorios por completar",
     "under_16": "La edad mínima es 16 años",
+    "low_date": "Fecha anterior al inicio de contrato",
     "contact_type_required": "El tipo de contacto es necesario",
     "invalid_email" : "Email invalido",
     "no_booking": "No se ha encontrado ningún booking con ese id",

@@ -35,6 +35,7 @@ export class DownloadComponent {
     { name: 'pagos',             provider: false, icon: 'local_atm',          filter: true,  text: 'Pagos' },
     { name: 'ingresos',          provider: true,  icon: 'receipt',            filter: true,  text: 'Ingresos' },
     { name: 'contratos',         provider: false, icon: 'playlist_add_check', filter: true,  text: 'Contratos' },
+    { name: 'forecast',          provider: false, icon: 'query_stats',        filter: true,  text: 'Plantilla Forecast' },
   ];
   down = [
     { name: 'downloadcontratos', provider: true,  icon: 'attachment',         filter: true,  text: 'Contratos', url: '/download/contratos' },
@@ -136,16 +137,7 @@ export class DownloadComponent {
       + '&access_token=' + this.apolloApi.token;
 
     // Reservas y contratos
-  } else if (data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "contratos") {
-    const from = moment(this.dateRangeControl.value.start);
-    const to = moment(this.dateRangeControl.value.end).add(1,'d');
-    l = environment.backURL + '/export/' + data
-      + '?fdesde=' + from.format('YYYY-MM-DD') 
-      + '&fhasta=' + to.format('YYYY-MM-DD') 
-      + '&access_token=' + this.apolloApi.token;
-
-    // Reservas y contratos
-    } else if (data == "occupancy" || data == "reservas" || data == "contratos") {
+  } else if (data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "contratos" || data == "forecast") {
     const from = moment(this.dateRangeControl.value.start);
     const to = moment(this.dateRangeControl.value.end).add(1,'d');
     l = environment.backURL + '/export/' + data

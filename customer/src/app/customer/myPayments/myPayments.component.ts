@@ -62,6 +62,11 @@ export class MyPaymentsComponent {
       return false;
     }
 
+    // Cotown backdoor
+    if (this.customerService.customer.email.includes('@cotown.com')) {
+      return true;
+    }
+
     // Discardes
     if (elem.booking.status.includes('descartada')) {
       return false;
@@ -69,7 +74,7 @@ export class MyPaymentsComponent {
 
     // No Card/POS
     const method = this.lookupService.paymentMethods.find((e) => e.id === elem.payment_method_id);
-    if (!method?.gateway ) {
+    if (!method?.gateway) {
       return false;
     }
 

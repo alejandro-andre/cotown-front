@@ -138,7 +138,7 @@ export class DownloadComponent {
       + '&access_token=' + this.apolloApi.token;
 
     // Reservas y contratos
-  } else if (data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "contratos" || data == "forecast") {
+  } else if (data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "pagosrecibidos" || data == "contratos" || data == "forecast") {
     const from = moment(this.dateRangeControl.value.start);
     const to = moment(this.dateRangeControl.value.end).add(1,'d');
     l = environment.backURL + '/export/' + data
@@ -147,7 +147,7 @@ export class DownloadComponent {
       + '&access_token=' + this.apolloApi.token;
 
     // Pagos e ingresos
-    } else if (data == "pagosemitidos" || data == "pagorecibidos" || data == "ingresos") {
+    } else if (data == "pagosemitidos" || data == "ingresos") {
       const from = moment(this.dateRangeControl.value.start);
       const to = moment(this.dateRangeControl.value.end).add(1,'d');
       const prov_from = this.providerControl.value;

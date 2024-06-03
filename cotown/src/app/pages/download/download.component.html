@@ -40,7 +40,7 @@
     </mat-form-field>
   </div>
 
-  <div class="pure-u-6-24" *ngIf="['disponibilidad','occupancy','reservas','pagos','ingresos','contratos','forecast','downloadcontratos'].includes(selectedItem)">
+  <div class="pure-u-6-24" *ngIf="['disponibilidad','occupancy','reservas','pagosemitidos','pagosrecibidos','ingresos','contratos','forecast','downloadcontratos'].includes(selectedItem)">
     <mat-form-field>
       <mat-label>Rango de fechas</mat-label>
       <mat-date-range-input [rangePicker]="rangepicker" [formGroup]="dateRangeControl">
@@ -73,7 +73,7 @@
     </mat-form-field>
   </div>
 
-  <div class="pure-u-10-24" *ngIf="providers && providers.length > 1 && ['pagos','ingresos','downloadcontratos','downloadfacturas'].includes(selectedItem)">
+  <div class="pure-u-10-24" *ngIf="providers && providers.length > 1 && ['pagosemitidos','ingresos','downloadcontratos','downloadfacturas'].includes(selectedItem)">
     <mat-form-field>
       <mat-label>Emisor</mat-label>
       <mat-select [formControl]="providerControl">

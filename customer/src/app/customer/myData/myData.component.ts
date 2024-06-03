@@ -89,7 +89,7 @@ export class MyDataComponent implements OnInit {
     
     // Birth date
     if (this.customerService.customer.birth_date) {
-      const date = new Date(this.customerService.customer.birth_date)
+      const date = new Date(this.customerService.customer.birth_date + 'T23:59:00');
       this.birth_dateControl.setValue(date);
     }
 

@@ -32,7 +32,8 @@ export class DownloadComponent {
     { name: 'ac',                provider: false, icon: 'send',               filter: true,  text: 'ActiveCampaign'},
     { name: 'rooming',           provider: false, icon: 'people',             filter: true,  text: 'Rooming list' },
     { name: 'reservas',          provider: false, icon: 'event',              filter: true,  text: 'Reservas' },
-    { name: 'pagos',             provider: false, icon: 'local_atm',          filter: true,  text: 'Pagos' },
+    { name: 'pagosemitidos',     provider: false, icon: 'local_atm',          filter: true,  text: 'Pagos emitidos' },
+    { name: 'pagosrecibidos',    provider: false, icon: 'local_atm',          filter: true,  text: 'Pagos recibidos' },
     { name: 'ingresos',          provider: true,  icon: 'receipt',            filter: true,  text: 'Ingresos' },
     { name: 'contratos',         provider: false, icon: 'playlist_add_check', filter: true,  text: 'Contratos' },
     { name: 'forecast',          provider: false, icon: 'query_stats',        filter: true,  text: 'Plantilla Forecast' },
@@ -103,7 +104,7 @@ export class DownloadComponent {
     } else if (data == "facturas") {
         if (this.billDateControl.value === '')
           return true;
-    } else if (data == "ingresos" || data == "pagos" || data == "downloadcontratos") {
+    } else if (data == "ingresos" || data == "pagosemitidos" || data == "pagosrecibidos" || data == "downloadcontratos") {
       if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end || 
           this.providerControl.value == null || this.providerControl.value < 0)
         return true
@@ -146,7 +147,7 @@ export class DownloadComponent {
       + '&access_token=' + this.apolloApi.token;
 
     // Pagos e ingresos
-    } else if (data == "pagos" || data == "ingresos") {
+    } else if (data == "pagosemitidos" || data == "pagorecibidos" || data == "ingresos") {
       const from = moment(this.dateRangeControl.value.start);
       const to = moment(this.dateRangeControl.value.end).add(1,'d');
       const prov_from = this.providerControl.value;

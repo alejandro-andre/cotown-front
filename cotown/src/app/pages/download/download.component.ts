@@ -98,13 +98,13 @@ export class DownloadComponent {
     } else if (data == "rooming") {
         if (!this.bookingIdControl.value)
           return true;
-    } else if (data == "disponibilidad" || data == "occupancy" || data == "reservas") {
+    } else if (data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "pagosrecibidos") {
       if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end)
         return true;
     } else if (data == "facturas") {
         if (this.billDateControl.value === '')
           return true;
-    } else if (data == "ingresos" || data == "pagosemitidos" || data == "pagosrecibidos" || data == "downloadcontratos") {
+    } else if (data == "ingresos" || data == "pagosemitidos" || data == "downloadcontratos") {
       if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end || 
           this.providerControl.value == null || this.providerControl.value < 0)
         return true

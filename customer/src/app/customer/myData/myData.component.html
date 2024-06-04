@@ -475,6 +475,7 @@
   
   </div>
 
+  <div *ngIf="customer.payment_method_id != 1">
   <h3>{{ 'iban' | translate }}</h3>
   <div class="pure-g">
 
@@ -504,8 +505,9 @@
     </div>
 
   </div>
+  </div>
 
-  <div *ngIf="!customer.same_account">
+  <div *ngIf="customer.payment_method_id != 1 && !customer.same_account">
   <h3>{{ 'account' | translate }}</h3>
   <div class="pure-g">
 

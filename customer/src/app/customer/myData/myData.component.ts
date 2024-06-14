@@ -44,20 +44,20 @@ export class MyDataComponent implements OnInit {
   public phone: IPhone = { prefix: '', number: '' };
 
   // Form fields
-  public id_type_idControl = new FormControl('', Validators.required);
-  public documentControl = new FormControl('', Validators.required);
-  public addressControl = new FormControl('', Validators.required);
-  public zipControl = new FormControl('', Validators.required);
-  public cityControl = new FormControl('', Validators.required);
+  public id_type_idControl = new FormControl('', this.validateNotEmpty);
+  public documentControl = new FormControl('', this.validateNotEmpty);
+  public addressControl = new FormControl('', this.validateNotEmpty);
+  public zipControl = new FormControl('', this.validateNotEmpty);
+  public cityControl = new FormControl('', this.validateNotEmpty);
   public provinceControl = new FormControl();
-  public country_idControl = new FormControl('', Validators.required);
+  public country_idControl = new FormControl('', this.validateNotEmpty);
   public payment_method_idControl = new FormControl();
-  public birth_dateControl = new FormControl<any>('', [ Validators.required, this.validateAge ]);
-  public tutor_id_type_idControl = new FormControl('', Validators.required);
-  public tutor_documentControl = new FormControl('', Validators.required);
-  public tutor_nameControl = new FormControl('', Validators.required);
-  public tutor_emailControl = new FormControl('', Validators.required);
-  public tutor_phonesControl = new FormControl('', Validators.required);
+  public birth_dateControl = new FormControl<any>('', [ this.validateNotEmpty, this.validateAge ]);
+  public tutor_id_type_idControl = new FormControl('', this.validateNotEmpty);
+  public tutor_documentControl = new FormControl('', this.validateNotEmpty);
+  public tutor_nameControl = new FormControl('', this.validateNotEmpty);
+  public tutor_emailControl = new FormControl('', this.validateNotEmpty);
+  public tutor_phonesControl = new FormControl('', this.validateNotEmpty);
   public ibanControl = new FormControl('');
   public same_accountControl = new FormControl('');
   public bank_accountControl = new FormControl('');
@@ -224,6 +224,12 @@ export class MyDataComponent implements OnInit {
   sameAccount(event: any) {
     this.validateCCC();
     this.validate();
+  }
+
+  validateNotEmpty(control: AbstractControl): ValidationErrors | null {
+    if ((control.value || '').trim().length === 0)
+      return { 'field_required': true };
+    return null;
   }
 
   validateAge(control: AbstractControl): ValidationErrors | null {

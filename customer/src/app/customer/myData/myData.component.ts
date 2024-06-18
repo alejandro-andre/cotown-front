@@ -49,15 +49,15 @@ export class MyDataComponent implements OnInit {
   public addressControl = new FormControl('', this.validateNotEmpty);
   public zipControl = new FormControl('', this.validateNotEmpty);
   public cityControl = new FormControl('', this.validateNotEmpty);
-  public provinceControl = new FormControl();
+  public provinceControl = new FormControl('', this.validateNotEmpty);
   public country_idControl = new FormControl('', this.validateNotEmpty);
   public payment_method_idControl = new FormControl();
-  public birth_dateControl = new FormControl<any>('', [ this.validateNotEmpty, this.validateAge ]);
-  public tutor_id_type_idControl = new FormControl('', this.validateNotEmpty);
-  public tutor_documentControl = new FormControl('', this.validateNotEmpty);
-  public tutor_nameControl = new FormControl('', this.validateNotEmpty);
-  public tutor_emailControl = new FormControl('', this.validateNotEmpty);
-  public tutor_phonesControl = new FormControl('', this.validateNotEmpty);
+  public birth_dateControl = new FormControl<any>('', [ Validators.required, this.validateAge ]);
+  public tutor_id_type_idControl = new FormControl('');
+  public tutor_documentControl = new FormControl('');
+  public tutor_nameControl = new FormControl('');
+  public tutor_emailControl = new FormControl('');
+  public tutor_phonesControl = new FormControl('');
   public ibanControl = new FormControl('');
   public same_accountControl = new FormControl('');
   public bank_accountControl = new FormControl('');
@@ -227,8 +227,18 @@ export class MyDataComponent implements OnInit {
   }
 
   validateNotEmpty(control: AbstractControl): ValidationErrors | null {
-    if ((control.value || '').trim().length === 0)
-      return { 'field_required': true };
+    const value = control.value;
+    if (typeof value === 'string') {
+      if (value.trim().length === 0) {
+        return { required: true };
+      }
+    } else if (typeof value === 'object' && value !== null) {
+      if (Object.keys(value).length === 0) {
+        return { required: true };
+      }
+    } else if (value === null || value === undefined) {
+      return { required: true };
+    }
     return null;
   }
 
@@ -343,8 +353,9 @@ export class MyDataComponent implements OnInit {
     this.bank_country_idControl.markAllAsTouched();
 
     // Under 16
-    if (this.birth_dateControl.errors)
+    if (this.birth_dateControl.errors) {
       return false;
+    }
 
     // Mandatory fields
     if (!this.customer.id_type_id ||

@@ -218,7 +218,7 @@
               </mat-form-field>
             </div>
       
-            <div class="pure-u-1">
+            <div *ngIf="canCert(booking.status)" class="pure-u-1">
               <button mat-raised-button (click)="certificate()" color="secondary" style="margin: 0 20px 20px 0;">
                 {{ 'certificate' | translate }}
               </button>

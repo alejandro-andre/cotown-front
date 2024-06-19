@@ -260,8 +260,19 @@ export class MyBookingDetailComponent {
 
   canCheck(status: string): boolean {
     return (
-      status === 'checkinconfirmado' ||
       status === 'contrato' ||
+      status === 'checkinconfirmado' ||
+      status === 'checkin' ||
+      status === 'inhouse' ||
+      status === 'checkout'
+    )
+  }
+  
+  canCert(status: string): boolean {
+    return (
+      status === 'firmacontrato' ||
+      status === 'contrato' ||
+      status === 'checkinconfirmado' ||
       status === 'checkin' ||
       status === 'inhouse' ||
       status === 'checkout'

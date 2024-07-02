@@ -35,6 +35,7 @@ export class OperationsDashboardComponent implements OnInit {
     {op: 'issues', name: 'Incidencias en entradas'},
     {op: 'nextout', name: 'Próximas salidas'},
     {op: 'checkout', name: 'Salidas'},
+    {op: 'revision', name: 'Revisiones'},
     {op: 'ecoext', name: 'Early checkout/Extensiones'},
   ];
   public dashboardId: number = 1;
@@ -73,7 +74,7 @@ export class OperationsDashboardComponent implements OnInit {
     { key:"Name",                  value:"Residente",          sort:"", type: "text",   filter: [] },
     { key:"Status",                value:"Estado",             sort:"", type: "status", filter: [] },
     { key:"Date_in",               value:"Fecha entrada",      sort:"", type: "date",   filter: ["nextin","checkin","issues"] }, 
-    { key:"Date_out",              value:"Fecha salida",       sort:"", type: "date",   filter: ["nextout","checkout", "ecoext"] }, 
+    { key:"Date_out",              value:"Fecha salida",       sort:"", type: "date",   filter: ["nextout","checkout","revision","ecoext"] }, 
     { key:"Prev",                  value:"Salida anterior",    sort:"", type: "text",   filter: ["nextin"] },
     { key:"Next",                  value:"Entrada siguiente",  sort:"", type: "text",   filter: ["nextout"] },
     { key:"New_check_out",         value:"Nueva salida",       sort:"", type: "date",   filter: ["ecoext"] }, 
@@ -97,9 +98,9 @@ export class OperationsDashboardComponent implements OnInit {
     { key:"Check_out",             value:"Check-out",          sort:"", type: "bool",   filter: ["checkout"] },
     { key:"Eco_ext_keyless_ok",    value:"Keyless ok",         sort:"", type: "bool",   filter: ["ecoext"] },
     { key:"Eco_ext_change_ok",     value:"ECO/EXT ok",         sort:"", type: "bool",   filter: ["ecoext"] },
-    { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["nextout","checkout","ecoext"] },
-    { key:"Damages_ok",            value:"Gestionados",        sort:"", type: "bool",   filter: ["nextout","checkout","ecoext"] },
-    { key:"Check_out_revision_ok", value:"Revisión ok",        sort:"", type: "bool",   filter: ["checkout"] },
+    { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["nextout","checkout","revision","ecoext"] },
+    { key:"Damages_ok",            value:"Gestionados",        sort:"", type: "bool",   filter: ["nextout","checkout","revision","ecoext"] },
+    { key:"Check_out_revision_ok", value:"Revisión ok",        sort:"", type: "bool",   filter: ["checkout","revision"] },
   ];
 
   // Constructor

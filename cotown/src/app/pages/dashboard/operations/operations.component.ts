@@ -449,24 +449,24 @@ export class OperationsDashboardComponent implements OnInit {
 
   save(row: any) {
     // Check-in?
-    if (row.status == "checkin" && row["Check_in"][0] && !row["Check_in"][1]) {
-      row.status = "inhouse";
+    if (row["Status"] == "checkin" && row["Check_in"][0] && !row["Check_in"][1]) {
+      row["Status"] = "inhouse";
     }
 
     // Check-out?
-    else if (["checkout", "revision"].includes(row.status) && row["Check_out"][0] && row["Check_out"][1]) {
-      row.status = "revision";
+    else if (["checkout", "revision"].includes(row["Status"]) && row["Check_out"][0] && row["Check_out"][1]) {
+      row["Status"] = "revision";
     }
 
     // Revision Ok?
-    else if (["checkout", "revision"].includes(row.status) && row["Check_out_revision_ok"][0] && !row["Check_out_revision_ok"][1]) {
-      row.status = "devolvergarantia";
+    else if (["checkout", "revision"].includes(row["Status"]) && row["Check_out_revision_ok"][0] && !row["Check_out_revision_ok"][1]) {
+      row["Status"] = "devolvergarantia";
     }
 
     // GraphQL variables
     const variables: any = {
       id: row.id,
-      status: row.Status,
+      status: row["Status"],
       checkinroomok: row.Check_in_room_ok[0],
       checkinkeysok: row.Check_in_keys_ok[0],
       checkinkeylessok: row.Check_in_keyless_ok[0],
@@ -477,7 +477,7 @@ export class OperationsDashboardComponent implements OnInit {
       issues_ok: row.Issues_ok[0],
       damages_ok: row.Damages_ok[0]
     }
-
+    
     // Update
     this.isLoading = true;
     this.apollo.setData(BOOKING_UPDATE, variables).subscribe({
@@ -492,10 +492,10 @@ export class OperationsDashboardComponent implements OnInit {
         row["Eco_ext_change_ok"][1]    = row["Eco_ext_change_ok"][0];
         row["Issues_ok"][1]            = row["Issues_ok"][0];
         row["Damages_ok"][1]           = row["Damages_ok"][0];   
-        if (this.op == "checkin" && row.status == "inhouse") {
+        if (this.op == "checkin" && row["Status"] == "inhouse") {
           this.rows = this.rows.filter(r => r.id != row.id)
         }
-        if (this.op == "checkout" && row.status == "devolvergarantia") {
+        if (this.op == "checkout" && row["Status"] == "devolvergarantia") {
           this.rows = this.rows.filter(r => r.id != row.id)
         }
         row["Changed"] = false;

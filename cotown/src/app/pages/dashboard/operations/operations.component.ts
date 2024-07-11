@@ -95,12 +95,17 @@ export class OperationsDashboardComponent implements OnInit {
     { key:"Check_in",              value:"Check-in",           sort:"", type: "bool",   filter: ["checkin"] },
     { key:"Check_out_keys_ok",     value:"Llaves ok",          sort:"", type: "bool",   filter: ["nextout","checkout"] },
     { key:"Check_out_keyless_ok",  value:"Keyless ok",         sort:"", type: "bool",   filter: ["nextout","checkout"] },
+//    { key:"Check_out_keys_ok",     value:"Llaves ok",          sort:"", type: "bool",   filter: ["revision"] },
+//    { key:"Check_out_keyless_ok",  value:"Keyless ok",         sort:"", type: "bool",   filter: ["checkout","revision"] },
     { key:"Check_out",             value:"Check-out",          sort:"", type: "bool",   filter: ["checkout"] },
     { key:"Eco_ext_keyless_ok",    value:"Keyless ok",         sort:"", type: "bool",   filter: ["ecoext"] },
     { key:"Eco_ext_change_ok",     value:"ECO/EXT ok",         sort:"", type: "bool",   filter: ["ecoext"] },
     { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["nextout","checkout","revision","ecoext"] },
     { key:"Damages_ok",            value:"Gestionados",        sort:"", type: "bool",   filter: ["nextout","checkout","revision","ecoext"] },
     { key:"Check_out_revision_ok", value:"Revisión ok",        sort:"", type: "bool",   filter: ["checkout","revision"] },
+//    { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["revision","ecoext"] },
+//    { key:"Damages_ok",            value:"Gestionados",        sort:"", type: "bool",   filter: ["revision","ecoext"] },
+//    { key:"Check_out_revision_ok", value:"Revisión ok",        sort:"", type: "bool",   filter: ["revision"] },
   ];
 
   // Constructor

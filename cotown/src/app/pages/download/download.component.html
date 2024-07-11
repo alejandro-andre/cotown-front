@@ -78,7 +78,17 @@
       <mat-label>Emisor</mat-label>
       <mat-select [formControl]="providerControl">
         <mat-option [value]="0">Todos</mat-option>
-        <mat-option *ngFor="let c of providers" [value]="c.id">{{ c.name}}</mat-option>
+        <mat-option *ngFor="let c of providers" [value]="c.id">{{c.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+ 
+  <div class="pure-u-6-24" *ngIf="buildings && buildings.length > 1 && ['downloadcontratos'].includes(selectedItem)">
+    <mat-form-field>
+      <mat-label>Edificio</mat-label>
+      <mat-select [formControl]="buildingControl">
+        <mat-option [value]="0">Todos</mat-option>
+        <mat-option *ngFor="let b of buildings" [value]="b.id">{{b.name}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>

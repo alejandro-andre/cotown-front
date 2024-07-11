@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
 import {default as _rollupMoment, Moment } from 'moment';
+import { BUILDINGS_QUERY } from 'src/app/schemas/query-definitions/building.query';
 import { PROVIDERS_QUERY } from 'src/app/schemas/query-definitions/lookup.query';
 
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
@@ -51,6 +52,7 @@ export class DownloadComponent {
   // Form controls
   public bookingIdControl = new FormControl<any>('', [ Validators.required ]);
   public providerControl  = new FormControl(-1);
+  public buildingControl  = new FormControl(-1);
   public billDateControl  = new FormControl<any>('', [ Validators.required ]);
   public dateControl      = new FormControl<any>('', [ Validators.required ]);
   public dateRangeControl = new FormGroup({
@@ -60,6 +62,7 @@ export class DownloadComponent {
   
   // Providers
   public providers: {id:number, name:string}[] = [];
+  public buildings: {id:number, name:string}[] = [];
 
   // Constructor
   constructor(
@@ -71,6 +74,10 @@ export class DownloadComponent {
     this.apolloApi.getData(PROVIDERS_QUERY).subscribe((res: any) => {
       this.providers = res.data.data;
       this.providerControl.setValue(this.providers[0].id);
+    });
+    this.apolloApi.getData(BUILDINGS_QUERY).subscribe((res: any) => {
+      this.buildings = res.data.data;
+      this.buildingControl.setValue(this.buildings[0].id);
     });
   }    
 
@@ -166,11 +173,15 @@ export class DownloadComponent {
       const to = moment(this.dateRangeControl.value.end).add(1,'d');
       const prov_from = this.providerControl.value;
       const prov_to = prov_from || 99999; 
+      const building_from = this.buildingControl.value;
+      const building_to = building_from || 99999; 
       l = environment.backURL + '/download/contratos' 
         + '?fdesde=' + from.format('YYYY-MM-DD') 
         + '&fhasta=' + to.format('YYYY-MM-DD') 
         + '&pdesde=' + prov_from
         + '&phasta=' + prov_to
+        + '&bdesde=' + building_from
+        + '&bhasta=' + building_to
         + '&access_token=' + this.apolloApi.token;
 
     // Facturas PDF

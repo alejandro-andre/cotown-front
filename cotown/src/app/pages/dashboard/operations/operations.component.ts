@@ -225,9 +225,9 @@ export class OperationsDashboardComponent implements OnInit {
         // CHA/ECO/EXT indicator
         let indicator = "";
         if (o.Origin_id != null && (this.op == 'checkin' || this.op == 'nextin' || this.op == 'issues'))
-          indicator = "<br><strong style='color:teal;'>" + o.cha_ext.toUpperCase() + "</strong><br>" + o.Origin_id;
+          indicator = "<br><strong style='color:teal;'>" + o.Cha_ext.toUpperCase() + "</strong><br>" + o.Origin_id;
         if (o.Destination_id != null && (this.op == 'checkout' || this.op == 'nextout'))
-          indicator = "<br><strong style='color:teal;'>" + o.cha_ext.toUpperCase() + "</strong><br>" + o.Destination_id;
+          indicator = "<br><strong style='color:teal;'>" + o.Cha_ext.toUpperCase() + "</strong><br>" + o.Destination_id;
         if (o.Old_check_out && o.New_check_out < o.Old_check_out && !o.Eco_ext_change_ok) 
           indicator = "<br><strong style='color:teal;'>ECO</strong><br>";
         if (o.Old_check_out && o.New_check_out > o.Old_check_out && !o.Eco_ext_change_ok) 
@@ -281,6 +281,7 @@ export class OperationsDashboardComponent implements OnInit {
           "Damages": o.Damages || "-",
           "Damages_ok": [o.Damages_ok, o.Damages_ok],
           "Warning": warning,
+          "Cha_ext": o.Cha_ext,
           "Check_in": [false, false],
           "Check_out": [false, false],
           "Changed": false,

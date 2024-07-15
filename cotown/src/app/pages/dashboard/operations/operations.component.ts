@@ -95,17 +95,17 @@ export class OperationsDashboardComponent implements OnInit {
     { key:"Check_in",              value:"Check-in",           sort:"", type: "bool",   filter: ["checkin"] },
     { key:"Check_out_keys_ok",     value:"Llaves ok",          sort:"", type: "bool",   filter: ["nextout","checkout"] },
     { key:"Check_out_keyless_ok",  value:"Keyless ok",         sort:"", type: "bool",   filter: ["nextout","checkout"] },
-//    { key:"Check_out_keys_ok",     value:"Llaves ok",          sort:"", type: "bool",   filter: ["revision"] },
-//    { key:"Check_out_keyless_ok",  value:"Keyless ok",         sort:"", type: "bool",   filter: ["checkout","revision"] },
+//?   { key:"Check_out_keys_ok",     value:"Llaves ok",          sort:"", type: "bool",   filter: ["revision"] },
+//?   { key:"Check_out_keyless_ok",  value:"Keyless ok",         sort:"", type: "bool",   filter: ["checkout","revision"] },
     { key:"Check_out",             value:"Check-out",          sort:"", type: "bool",   filter: ["checkout"] },
     { key:"Eco_ext_keyless_ok",    value:"Keyless ok",         sort:"", type: "bool",   filter: ["ecoext"] },
     { key:"Eco_ext_change_ok",     value:"ECO/EXT ok",         sort:"", type: "bool",   filter: ["ecoext"] },
     { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["nextout","checkout","revision","ecoext"] },
     { key:"Damages_ok",            value:"Gestionados",        sort:"", type: "bool",   filter: ["nextout","checkout","revision","ecoext"] },
     { key:"Check_out_revision_ok", value:"Revisión ok",        sort:"", type: "bool",   filter: ["checkout","revision"] },
-//    { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["revision","ecoext"] },
-//    { key:"Damages_ok",            value:"Gestionados",        sort:"", type: "bool",   filter: ["revision","ecoext"] },
-//    { key:"Check_out_revision_ok", value:"Revisión ok",        sort:"", type: "bool",   filter: ["revision"] },
+//?   { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["revision","ecoext"] },
+//?   { key:"Damages_ok",            value:"Gestionados",        sort:"", type: "bool",   filter: ["revision","ecoext"] },
+//?   { key:"Check_out_revision_ok", value:"Revisión ok",        sort:"", type: "bool",   filter: ["revision"] },
   ];
 
   // Constructor
@@ -223,15 +223,15 @@ export class OperationsDashboardComponent implements OnInit {
         }
 
         // CHA/ECO/EXT indicator
-        let cha_eco_ext = ""
+        let indicator = "";
         if (o.Origin_id != null && (this.op == 'checkin' || this.op == 'nextin' || this.op == 'issues'))
-          cha_eco_ext = "<br><strong style='color:teal;'>CHA</strong><br>" + o.Origin_id;
+          indicator = "<br><strong style='color:teal;'>" + (o.cha_ext == 'change' ? 'CHA' : 'EXT') + "</strong><br>" + o.Origin_id;
         if (o.Destination_id != null && (this.op == 'checkout' || this.op == 'nextout'))
-          cha_eco_ext = "<br><strong style='color:teal;'>CHA</strong><br>" + o.Destination_id;
+          indicator = "<br><strong style='color:teal;'>" + (o.cha_ext == 'change' ? 'CHA' : 'EXT') + "</strong><br>" + o.Destination_id;
         if (o.Old_check_out && o.New_check_out < o.Old_check_out && !o.Eco_ext_change_ok) 
-          cha_eco_ext = "<br><strong style='color:teal;'>ECO</strong><br>";
+          indicator = "<br><strong style='color:teal;'>ECO</strong><br>";
         if (o.Old_check_out && o.New_check_out > o.Old_check_out && !o.Eco_ext_change_ok) 
-          cha_eco_ext = "<br><strong style='color:teal;'>EXT</strong><br>";
+          indicator = "<br><strong style='color:teal;'>EXT</strong><br>";
 
         // Asterisks
         let c_in  = (o.Check_in  != null) ? "" : " <b>*</b>";
@@ -249,7 +249,7 @@ export class OperationsDashboardComponent implements OnInit {
         // Return data
         return {
           "id": o.id,
-          "ids": o.id + cha_eco_ext,
+          "ids": o.id + indicator,
           "Name": o.Name + "<br>" + (o.Email || "") + "<br>" + (o.Phones || ""),
           "Status": o.Status,
           "Date": holiday,

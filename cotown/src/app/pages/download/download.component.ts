@@ -21,28 +21,29 @@ const moment = _rollupMoment;
 export class DownloadComponent {
 
   reps = [
-    { name: 'propietarios',      provider: false, icon: 'account_box',        filter: false, text: 'Propietarios',        url: '/export/propietarios' },
-    { name: 'edificios',         provider: false, icon: 'business',           filter: false, text: 'Edificios',           url: '/export/edificios' },
-    { name: 'recursos',          provider: false, icon: 'apps',               filter: false, text: 'Recursos, precios, tarifas', url: '/export/recursos' },
-    { name: 'inventario',        provider: false, icon: 'art_track',          filter: false, text: 'Inventario',          url: '/export/inventario' },
-    { name: 'precios',           provider: false, icon: 'monetization_on',    filter: false, text: 'Precios',             url: '/export/precios' },
-    { name: 'weekly',            provider: false, icon: 'blur_linear',        filter: false, text: 'Reservas PowerBI',    url: '/export/weekly?fdesde=2020-01-01&fhasta=2099-12-31' },
-    { name: 'devolucines',       provider: false, icon: 'cached',             filter: false, text: 'Devoluciones',        url: '/export/devoluciones' },
-    { name: 'occupancy',         provider: false, icon: 'calendar_today',     filter: true,  text: 'Monthly'},
-    { name: 'disponibilidad',    provider: false, icon: 'hotel',              filter: true,  text: 'Disponibilidad'},
-    { name: 'ac',                provider: false, icon: 'send',               filter: true,  text: 'ActiveCampaign'},
-    { name: 'rooming',           provider: false, icon: 'people',             filter: true,  text: 'Rooming list' },
-    { name: 'reservas',          provider: false, icon: 'event',              filter: true,  text: 'Reservas' },
-    { name: 'pagosemitidos',     provider: false, icon: 'local_atm',          filter: true,  text: 'Pagos emitidos' },
-    { name: 'pagosrecibidos',    provider: false, icon: 'local_atm',          filter: true,  text: 'Pagos recibidos' },
-    { name: 'sepa',              provider: false, icon: 'account_balance',    filter: false, text: 'SEPA',                url: '/export/sepa'  },
-    { name: 'ingresos',          provider: true,  icon: 'receipt',            filter: true,  text: 'Ingresos' },
-    { name: 'contratos',         provider: false, icon: 'playlist_add_check', filter: true,  text: 'Contratos' },
-    { name: 'forecast',          provider: false, icon: 'query_stats',        filter: true,  text: 'Plantilla Forecast' },
+    { name: 'propietarios',      cotown: true,  provider: false, icon: 'account_box',        filter: false, text: 'Propietarios' },
+    { name: 'edificios',         cotown: true,  provider: false, icon: 'business',           filter: false, text: 'Edificios' },
+    { name: 'recursos',          cotown: true,  provider: false, icon: 'apps',               filter: false, text: 'Recursos, precios, tarifas' },
+    { name: 'inventario',        cotown: true,  provider: false, icon: 'art_track',          filter: false, text: 'Inventario' },
+    { name: 'precios',           cotown: true,  provider: false, icon: 'monetization_on',    filter: false, text: 'Precios' },
+    { name: 'weekly',            cotown: true,  provider: false, icon: 'blur_linear',        filter: false, text: 'Reservas PowerBI', url: '/export/weekly?fdesde=2020-01-01&fhasta=2099-12-31' },
+    { name: 'devoluciones',      cotown: true,  provider: false, icon: 'cached',             filter: false, text: 'Devoluciones' },
+    { name: 'occupancy',         cotown: true,  provider: false, icon: 'calendar_today',     filter: true,  text: 'Monthly'},
+    { name: 'disponibilidad',    cotown: true,  provider: false, icon: 'hotel',              filter: true,  text: 'Disponibilidad'},
+    { name: 'ac',                cotown: true,  provider: false, icon: 'send',               filter: true,  text: 'ActiveCampaign'},
+    { name: 'rooming',           cotown: true,  provider: false, icon: 'people',             filter: true,  text: 'Rooming list' },
+    { name: 'reservas',          cotown: true,  provider: false, icon: 'event',              filter: true,  text: 'Reservas' },
+    { name: 'pagosemitidos',     cotown: true,  provider: false, icon: 'local_atm',          filter: true,  text: 'Pagos emitidos' },
+    { name: 'pagosrecibidos',    cotown: true,  provider: false, icon: 'local_atm',          filter: true,  text: 'Pagos recibidos' },
+    { name: 'sepa',              cotown: true,  provider: false, icon: 'account_balance',    filter: false, text: 'SEPA' },
+    { name: 'ingresos',          cotown: true,  provider: true,  icon: 'receipt',            filter: true,  text: 'Ingresos' },
+    { name: 'ingresos_prop',     cotown: false, provider: true,  icon: 'receipt',            filter: true,  text: 'Ingresos' },
+    { name: 'contratos',         cotown: true,  provider: false, icon: 'playlist_add_check', filter: true,  text: 'Contratos' },
+    { name: 'forecast',          cotown: true,  provider: false, icon: 'query_stats',        filter: true,  text: 'Plantilla Forecast' },
   ];
   down = [
-    { name: 'downloadcontratos', provider: true,  icon: 'attachment',         filter: true,  text: 'Contratos',           url: '/download/contratos' },
-    { name: 'downloadfacturas',  provider: true,  icon: 'attachment',         filter: true,  text: 'Facturas y recibos',  url: '/download/facturas' },
+    { name: 'downloadcontratos', cotown: true,  provider: true,  icon: 'attachment',         filter: true,  text: 'Contratos',           url: '/download/contratos' },
+    { name: 'downloadfacturas',  cotown: true,  provider: true,  icon: 'attachment',         filter: true,  text: 'Facturas y recibos',  url: '/download/facturas' },
   ];
   selectedItem: any = null;
 
@@ -83,17 +84,17 @@ export class DownloadComponent {
 
   // Accesible reports
   get reports() {
-    return this.reps.filter(r => this.providers && (r.provider || this.providers.length > 1));
+    return this.reps.filter(r => this.providers && ((r.provider && this.providers.length == 1) || (r.cotown && this.providers.length > 1)));
   }
   get downloads() {
-    return this.down.filter(r => this.providers && (r.provider || this.providers.length > 1));
+    return this.down.filter(r => this.providers && ((r.provider && this.providers.length == 1) || (r.cotown && this.providers.length > 1)));
   }
 
   // Report selected
   selectItem(item: any) {
     this.selectedItem = item.name;
     if (!item.filter) {
-      this.report(environment.backURL + item.url)
+      this.report(environment.backURL + (item.url || item.name))
       this.selectedItem = null;
     }
   }

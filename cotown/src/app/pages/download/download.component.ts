@@ -26,7 +26,7 @@ export class DownloadComponent {
     { name: 'recursos',          cotown: true,  provider: false, icon: 'apps',               filter: false, text: 'Recursos, precios, tarifas' },
     { name: 'inventario',        cotown: true,  provider: false, icon: 'art_track',          filter: false, text: 'Inventario' },
     { name: 'precios',           cotown: true,  provider: false, icon: 'monetization_on',    filter: false, text: 'Precios' },
-    { name: 'weekly',            cotown: true,  provider: false, icon: 'blur_linear',        filter: false, text: 'Reservas PowerBI', url: '/export/weekly?fdesde=2020-01-01&fhasta=2099-12-31' },
+    { name: 'weekly',            cotown: true,  provider: false, icon: 'blur_linear',        filter: false, text: 'Reservas PowerBI', url: 'export/weekly?fdesde=2020-01-01&fhasta=2099-12-31' },
     { name: 'devoluciones',      cotown: true,  provider: false, icon: 'cached',             filter: false, text: 'Devoluciones' },
     { name: 'occupancy',         cotown: true,  provider: false, icon: 'calendar_today',     filter: true,  text: 'Monthly'},
     { name: 'disponibilidad',    cotown: true,  provider: false, icon: 'hotel',              filter: true,  text: 'Disponibilidad'},
@@ -94,7 +94,7 @@ export class DownloadComponent {
   selectItem(item: any) {
     this.selectedItem = item.name;
     if (!item.filter) {
-      this.report(environment.backURL + (item.url || item.name))
+      this.report(environment.backURL + '/' + (item.url || item.name))
       this.selectedItem = null;
     }
   }

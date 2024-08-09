@@ -86,8 +86,8 @@ export class MyBookingDetailComponent {
   public selectedReason!: number;
   public selectedSchool!: number;
   public selectedOption: number | null = null;
-  public flight:string = '';
-  public arrival: string = '';
+  public flight: string = '';
+  public arrival: string | null = '';
   public checkintime: string | null = null;
 
   constructor(
@@ -345,7 +345,7 @@ export class MyBookingDetailComponent {
     // Fill form fields
     this.selectedOption = this.booking.check_in_option_id;
     this.flight = this.booking.flight !== null ? this.booking.flight : '';
-    this.arrival = this.booking.arrival !== null ? this.booking.arrival : '';
+    this.arrival = this.booking.arrival;
     this.checkintime = this.booking.check_in_time;
 
     // Checkin date
@@ -423,16 +423,18 @@ export class MyBookingDetailComponent {
     // GraphQL API
     const variables: any = {
       id: this.booking.id,
-      checkin :checkin,
+      checkin: checkin,
       checkout: checkout,
-      arrival:  this.arrival,
-      flight : this.flight,
+      arrival: this.arrival,
+      flight: this.flight,
       checkintime: this.checkintime == '' ? null : this.checkintime,
       selectedSchool : this.selectedSchool,
       selectedReason : this.selectedReason,
       option: this.selectedOption,
     }
     this.isLoading = true;
+    console.log(UPDATE_BOOKING)
+    console.log(variables)
     this.apollo.setData(UPDATE_BOOKING, variables).subscribe({
 
       next: (res) => {
@@ -447,6 +449,7 @@ export class MyBookingDetailComponent {
 
       error: (err)  => {
         this.isLoading = false;
+        console.log(err)
         const bodyToSend = formatErrorBody(err, this.customerService.customer.appLang || 'es');
         this.modalService.openModal(bodyToSend);
       }

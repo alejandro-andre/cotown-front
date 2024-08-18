@@ -443,11 +443,11 @@ export class PlanningComponent {
     }
 
     if (where != '')
-      where = 'where:{' + where + '}';
+      where = 'where:{ Resource_type: { IN: [piso,habitacion,plaza] } ' + where + '}';
 
     if (params != '')  {
       this.isLoading = true;
-      const q = 'query ResourceList(' + params + ') {data:Resource_ResourceList(orderBy: [{attribute: Code direction: ASC nullsGo: FIRST}] ' + where + ')' + RESOURCES_QUERY + '}';
+      const q = 'query ResourceList(' + params + ') {data:Resource_ResourceList(orderBy:[{attribute: Code direction: ASC nullsGo: FIRST}] ' + where + ')' + RESOURCES_QUERY + '}';
       await this.getResources(q, {
         cityId: this.selectedCityId,
         buildingId: this.selectedBuildingId,

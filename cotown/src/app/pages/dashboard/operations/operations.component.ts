@@ -461,7 +461,7 @@ export class OperationsDashboardComponent implements OnInit {
     }
 
     // Check-out?
-    else if (["checkout", "revision"].includes(row["Status"]) && row["Check_out"][0] && row["Check_out"][1]) {
+    else if (["checkout", "revision"].includes(row["Status"]) && row["Check_out"][0] && !row["Check_out"][1]) {
       row["Status"] = "revision";
     }
 

@@ -427,11 +427,6 @@ export class PlanningComponent {
       where += ' Building_id: { EQ: $buildingId }'
     }
 
-    if (this.selectedBuildingId > 0) {
-      params += ' $buildingId: Int'
-      where += ' Building_id: { EQ: $buildingId }'
-    }
-
     if (this.selectedResourceFlatTypeId != Constants.allStaticNumericValue) {
       params += ' $resourceFlatTypeId: Int'
       where += ' Flat_type_id: { EQ: $resourceFlatTypeId }'

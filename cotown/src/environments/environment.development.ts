@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  backURL: 'https://dev.cotown.ciber.es/api/v1',
+  backURL: 'https://back.cotown.oimbra.tech/api/v1',
   graphqlURL: 'https://experis.flows.ninja/graphql'
 };
   

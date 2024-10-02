@@ -27,7 +27,7 @@
     "apollo-angular": "^4.2.1",
     "axios": "^1.7.7",
     "cotown": "file:",
-    "graphql": "^16",
+    "graphql": "^16.9.0",
     "moment": "^2.29.4",
     "purecss": "^3.0.0",
     "rxjs": "~7.8.0",

@@ -534,7 +534,7 @@ export class PlanningComponent {
         }
 
         // Group bookings
-        if (!booking.booking_id && booking.rooms && booking.group) {
+        if (!booking.booking_id && booking.group) {
           email = booking.group.customer?.email;
           phone = booking.group.customer?.phones;
           name = booking.group.customer?.name

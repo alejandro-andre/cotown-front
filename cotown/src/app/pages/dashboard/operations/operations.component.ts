@@ -93,19 +93,14 @@ export class OperationsDashboardComponent implements OnInit {
     { key:"Check_in_keys_ok",      value:"Llaves ok",          sort:"", type: "bool",   filter: ["nextin","checkin"] },
     { key:"Check_in_keyless_ok",   value:"Keyless ok",         sort:"", type: "bool",   filter: ["nextin","checkin"] },
     { key:"Check_in",              value:"Check-in",           sort:"", type: "bool",   filter: ["checkin"] },
-//¿    { key:"Check_out_keys_ok",     value:"Llaves ok",          sort:"", type: "bool",   filter: ["nextout","checkout"] },
-//¿    { key:"Check_out_keyless_ok",  value:"Keyless ok",         sort:"", type: "bool",   filter: ["nextout","checkout"] },
-   { key:"Check_out_keys_ok",     value:"Llaves ok",          sort:"", type: "bool",   filter: ["revision"] },
-   { key:"Check_out_keyless_ok",  value:"Keyless ok",         sort:"", type: "bool",   filter: ["checkout"] },
+    { key:"Check_out_keys_ok",     value:"Llaves ok",          sort:"", type: "bool",   filter: ["revision"] },
+    { key:"Check_out_keyless_ok",  value:"Keyless ok",         sort:"", type: "bool",   filter: ["checkout"] },
     { key:"Check_out",             value:"Check-out",          sort:"", type: "bool",   filter: ["checkout"] },
     { key:"Eco_ext_keyless_ok",    value:"Keyless ok",         sort:"", type: "bool",   filter: ["ecoext"] },
     { key:"Eco_ext_change_ok",     value:"ECO/EXT ok",         sort:"", type: "bool",   filter: ["ecoext"] },
-//¿    { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["nextout","checkout","revision","ecoext"] },
-//¿    { key:"Damages_ok",            value:"Gestionados",        sort:"", type: "bool",   filter: ["nextout","checkout","revision","ecoext"] },
-//¿    { key:"Check_out_revision_ok", value:"Revisión ok",        sort:"", type: "bool",   filter: ["checkout","revision"] },
-   { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["revision","ecoext"] },
-   { key:"Damages_ok",            value:"Gestionados",        sort:"", type: "bool",   filter: ["revision","ecoext"] },
-   { key:"Check_out_revision_ok", value:"Revisión ok",        sort:"", type: "bool",   filter: ["revision"] },
+    { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["revision","ecoext"] },
+    { key:"Damages_ok",            value:"Gestionados",        sort:"", type: "bool",   filter: ["revision","ecoext"] },
+    { key:"Check_out_revision_ok", value:"Revisión ok",        sort:"", type: "bool",   filter: ["revision"] },
   ];
 
   // Constructor
@@ -479,6 +474,7 @@ export class OperationsDashboardComponent implements OnInit {
       checkinkeylessok: row.Check_in_keyless_ok[0],
       checkoutkeysok: row.Check_out_keys_ok[0],
       checkoutkeylessok: row.Check_out_keyless_ok[0],
+      checkoutrevisionok: row.Check_out_revision_ok[0],
       eco_ext_keyless_ok: row.Eco_ext_keyless_ok[0],
       eco_ext_change_ok: row.Eco_ext_change_ok[0],
       issues_ok: row.Issues_ok[0],
@@ -495,6 +491,7 @@ export class OperationsDashboardComponent implements OnInit {
         row["Check_in_keyless_ok"][1]  = row["Check_in_keyless_ok"][0];
         row["Check_out_keys_ok"][1]    = row["Check_out_keys_ok"][0];
         row["Check_out_keyless_ok"][1] = row["Check_out_keyless_ok"][0];
+        row["Check_out_revision_ok"][1] = row["Check_out_revision_ok"][0];
         row["Eco_ext_keyless_ok"][1]   = row["Eco_ext_keyless_ok"][0];
         row["Eco_ext_change_ok"][1]    = row["Eco_ext_change_ok"][0];
         row["Issues_ok"][1]            = row["Issues_ok"][0];

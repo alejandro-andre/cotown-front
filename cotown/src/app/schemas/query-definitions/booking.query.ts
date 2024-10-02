@@ -90,6 +90,7 @@ export const BOOKING_UPDATE = `mutation(
   $checkinkeylessok: Boolean!
   $checkoutkeysok: Boolean!
   $checkoutkeylessok: Boolean!
+  $checkoutrevisionok: Boolean!
   $eco_ext_keyless_ok: Boolean!
   $eco_ext_change_ok: Boolean!
   $issues_ok: Boolean!
@@ -103,6 +104,7 @@ export const BOOKING_UPDATE = `mutation(
       Check_in_keyless_ok: $checkinkeylessok
       Check_out_keys_ok: $checkoutkeysok
       Check_out_keyless_ok: $checkoutkeylessok
+      Check_out_revision_ok: $checkoutrevisionok
       Eco_ext_keyless_ok: $eco_ext_keyless_ok
       Eco_ext_change_ok: $eco_ext_change_ok
       Issues_ok: $issues_ok

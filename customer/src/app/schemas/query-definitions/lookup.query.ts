@@ -80,8 +80,36 @@ export const REASONS_QUERY = `query get {
   }
 }`;
 
-export const CHECKIN_OPTIONS_QUERY = `query checking_list {
-  data: Booking_Checkin_typeList {
+export const CHECKIN_OPTIONS_QUERY = `query list {
+  data: Booking_Checkin_typeList (
+    where: { Type: { EQ: checkin } }
+  ) {
+    id
+    name: Name
+    name_en: Name_en
+    description: Description
+    description_en: Description_en
+    prices: Checkin_priceListViaCheckin_type_id {
+      location: Location_id
+      price: Price
+      timetable: TimetableViaTimetable_id {
+        Week_from
+        Week_to
+        Fri_from
+        Fri_to
+        Sat_from
+        Sat_to
+        Sun_from
+        Sun_to
+      }
+    }
+  }
+}`;
+
+export const CHECKOUT_OPTIONS_QUERY = `query list {
+  data: Booking_Checkin_typeList (
+    where: { Type: { EQ: checkout } }
+  ) {
     id
     name: Name
     name_en: Name_en

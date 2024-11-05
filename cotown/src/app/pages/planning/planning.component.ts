@@ -75,8 +75,8 @@ export class PlanningComponent {
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
   });
-  public selectedCityId: number = Constants.allStaticNumericValue; // Current city
-  public selectedBuildingId: number = -99; // Selected building
+  public selectedCityId: number = Constants.allStaticNumericValue;
+  public selectedBuildingId: number = -1;
   public selectedResourcePlaceTypeId = Constants.allStaticNumericValue;
   public selectedResourceFlatTypeId=  Constants.allStaticNumericValue;
   public initialPlaceTypeId = Constants.allStaticNumericValue;
@@ -500,19 +500,21 @@ export class PlanningComponent {
       for (const e of res.data.data) {
         const type = e.resource_type === 'piso' ? e.flat_type.code : e.place_type?.code;
         const amenities = e.amenities ? e.amenities.map((t: any) => t.amenity_type.increment) : [];
-        const prices = this.calcPrices(e.building.id, e.flat_type.id, e.place_type?.id || 0, e.pricing.multiplier, amenities)
-        this.resources.push({
-          resource_id: e.id,
-          resource_code: e.code,
-          resource_type: e.resource_type,
-          resource_building_id: e.building.id,
-          resource_flat_type: e.flat_type.id,
-          resource_place_type: e.place_type?.id || -1,
-          resource_info: type || '',
-          resource_notes: e.notes || '',
-          resource_rate: e.pricing.multiplier,
-          resource_prices: prices
-        });
+        if (e.pricing) {
+          const prices = this.calcPrices(e.building.id, e.flat_type.id, e.place_type?.id || 0, e.pricing.multiplier, amenities)
+          this.resources.push({
+            resource_id: e.id,
+            resource_code: e.code,
+            resource_type: e.resource_type,
+            resource_building_id: e.building.id,
+            resource_flat_type: e.flat_type.id,
+            resource_place_type: e.place_type?.id || -1,
+            resource_info: type || '',
+            resource_notes: e.notes || '',
+            resource_rate: e.pricing.multiplier,
+            resource_prices: prices
+          });
+        }
       }
     });
   }
@@ -841,7 +843,7 @@ export class PlanningComponent {
   onSelectCity():void {
 
     // Clean
-    this.selectedBuildingId = -99;
+    this.selectedBuildingId = -1;
     this.resources = [];
     this.bookings = [];
     this.rows = [];

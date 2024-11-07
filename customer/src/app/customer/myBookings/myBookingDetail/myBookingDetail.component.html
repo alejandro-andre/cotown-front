@@ -392,14 +392,55 @@
           <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
             <mat-form-field>
               <mat-label>{{ 'check_out' | translate }}</mat-label>
-              <input readonly matInput [matDatepicker]="pickerTo" [formControl]="checkoutControl" (dateInput)="enableSave()" >
-              <!--
-              <mat-datepicker-toggle matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
-              -->
-              <mat-datepicker #pickerTo></mat-datepicker>
+              <input matInput [readonly]="!visibility['check_out']" [matDatepicker]="pickerFrom" [formControl]="checkoutControl" (dateInput)="enableSave()">
+              <mat-datepicker-toggle *ngIf="visibility['check_out']" matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+              <mat-datepicker #pickerFrom></mat-datepicker>
+              <mat-error class="mat-error" *ngIf="checkoutControl.hasError('low_date')">
+                {{ 'errors.low_date' | translate }}
+              </mat-error>
+              <mat-error class="mat-error" *ngIf="checkinControl.hasError('field_required')">
+                {{ 'errors.field_required' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+            <mat-form-field>
+              <mat-label>{{ 'flight' | translate }}</mat-label>
+              <input matInput [readonly]="!visibility['flight_out']" placeholder="{{ 'flight' | translate }}" [(ngModel)]="flight_out" (change)="enableSave()">
             </mat-form-field>
           </div>
     
+          <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+            <mat-form-field>
+              <mat-label>{{ 'check_out_time' | translate }}</mat-label>
+              <input matInput type="time" [readonly]="!visibility['check_out_time']" [formControl]="checkoutTimeControl" [(ngModel)]="checkouttime" (change)="enableSave()">
+              <mat-error class="mat-error" *ngIf="checkoutTimeControl.hasError('field_required')">
+                {{ 'errors.field_required' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div> 
+      
+          <div class="pure-u-1">
+            <mat-form-field *ngIf="!visibility['check_out_option_id']">
+              <mat-label>{{ 'check_out_option_id' | translate }}</mat-label>
+              <input matInput readonly placeholder="{{ 'check_out_option_id' | translate }}" [ngModel]="check_out_option">
+            </mat-form-field>
+            <mat-form-field *ngIf="visibility['check_out_option_id']">
+              <mat-label>{{ 'check_out_option_id' | translate }}</mat-label>
+              <mat-select [formControl]="checkoutOptionControl" [(ngModel)]="selectedOption" (selectionChange)="enableSave()" >
+                <mat-option *ngFor="let op of checkoutOptions" [value]="op.id">
+                {{ isSpanish ? op.name : op.name_en }} - {{ op.price }} €
+                </mat-option>
+              </mat-select>
+              <mat-error class="mat-error" *ngIf="checkoutOptionControl.hasError('field_required')">
+                {{ 'errors.field_required' | translate }}
+              </mat-error>
+            </mat-form-field>
+            <p *ngIf="checkoutOptions.length > 0" [innerHtml]="option_detail() | safe"></p>
+            <p *ngIf="checkoutControl.value && checkouttime && checkoutOptions.length == 0">{{ 'check_out_no_options' | translate }}</p>
+          </div>
+
         </div>
       </div>
 

@@ -16,8 +16,11 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
     limit: Limit
     arrival: Arrival
     check_in_time: Check_in_time
+    check_out_time: Check_out_time
     flight: Flight
+    flight_out: Flight_out
     check_in_option_id: Check_in_option_id
+    check_out_option_id: Check_out_option_id
     contract_rent: Contract_rent { name oid type size }
     contract_services: Contract_services { name oid type size }
     contract_signed:Contract_signed

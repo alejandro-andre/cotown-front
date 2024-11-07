@@ -171,9 +171,12 @@ export interface IBooking {
   contract_services: IDocFile | null,
   contract_signed: string | null,
   check_in_option_id: number | null,
+  check_out_option_id: number | null,
   flight: string | null,
+  flight_out: string | null,
   arrival: string | null,
   check_in_time: string | null,
+  check_out_time: string | null,
   price_list?: IRent[],
   options: IOption[] | null,
   questionnaires: [] | null

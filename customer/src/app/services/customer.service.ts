@@ -90,10 +90,14 @@ export class CustomerService {
 
   setBookingVisibility(booking: IBooking): void {
     this.readOnly['check_in'] = (booking.check_in === null);
+    this.readOnly['check_out'] = (booking.check_out === null);
     this.readOnly['flight'] = (booking.flight === null);
+    this.readOnly['flight_out'] = (booking.flight_out === null);
     this.readOnly['arrival'] = (booking.arrival === null);
     this.readOnly['check_in_time'] = (booking.check_in_time === null);
+    this.readOnly['check_out_time'] = (booking.check_out_time === null);
     this.readOnly['check_in_option_id'] = (booking.check_in_option_id === null);
+    this.readOnly['check_out_option_id'] = (booking.check_out_option_id === null);
   }
 
 }

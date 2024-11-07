@@ -80,15 +80,19 @@ export class MyBookingDetailComponent {
 
   // Form data
   public checkinControl = new FormControl<Date | null>(null);
-  public checkoutControl = new FormControl<Date | null>(null);
   public checkinTimeControl = new FormControl<String | null>(null);
   public checkinOptionControl = new FormControl<String | null>(null);
+  public checkoutControl = new FormControl<Date | null>(null);
+  public checkoutTimeControl = new FormControl<String | null>(null);
+  public checkoutOptionControl = new FormControl<String | null>(null);
   public selectedReason!: number;
   public selectedSchool!: number;
   public selectedOption: number | null = null;
   public flight: string = '';
+  public flight_out: string = '';
   public arrival: string | null = '';
   public checkintime: string | null = null;
+  public checkouttime: string | null = null;
 
   constructor(
     public customerService: CustomerService,
@@ -179,12 +183,27 @@ export class MyBookingDetailComponent {
     return this.lookupService.checkinOptions.find((elem) => elem.id === this.booking.check_in_option_id)?.name_en || '';
   }
 
+  get check_out_option(): string {
+    if (this.isSpanish)
+      return this.lookupService.checkoutOptions.find((elem) => elem.id === this.booking.check_out_option_id)?.name || '';
+    return this.lookupService.checkoutOptions.find((elem) => elem.id === this.booking.check_out_option_id)?.name_en || '';
+  }
+
   option_detail(): string {
     let text = ''
     if (this.isSpanish)
       text = this.lookupService.checkinOptions.find((elem) => elem.id === this.selectedOption)?.description || '';
     else
       text = this.lookupService.checkinOptions.find((elem) => elem.id === this.selectedOption)?.description_en || '';
+    return text.replaceAll("\n", "<br>")
+  }
+
+  option_detail_out(): string {
+    let text = ''
+    if (this.isSpanish)
+      text = this.lookupService.checkoutOptions.find((elem) => elem.id === this.selectedOption)?.description || '';
+    else
+      text = this.lookupService.checkoutOptions.find((elem) => elem.id === this.selectedOption)?.description_en || '';
     return text.replaceAll("\n", "<br>")
   }
 
@@ -242,6 +261,44 @@ export class MyBookingDetailComponent {
           else if (dow == 5) { from = price.timetable.Fri_from; to = price.timetable.Fri_to; }
           if (from != undefined) {
             if ((this.checkintime || '00:00') >= from.substring(0, 5) && (this.checkintime || '99:99') <= this.minusOneMinute(to)) {
+              option.price = price.price;
+              result.push(option);
+            }
+          }
+        }
+      })
+    })
+
+    // Options
+    return result;
+  }
+
+  // Return array of valid check out options for the check in date, hour and location
+  get checkoutOptions() {
+    // Enough data?
+    const checkout = this.checkoutControl.value !== null ? this.datePipe.transform(this.checkoutControl.value, 'yyyy-MM-dd') : null;
+    if (checkout == null || this.checkouttime == null)
+      return [];
+
+    // Check day of week or if it's holiday
+    let dow = this.checkoutControl.value?.getDay();
+    this.lookupService.holidays.forEach((d: any) => {
+      if (d.day == checkout && (d.location == null || d.location == this.booking.resource.building.district.location))
+        dow = 0;
+    });
+
+    // Look up checkin options
+    const result: any = []
+    this.lookupService.checkoutOptions.forEach(option => {
+      option.prices.forEach((price: any) =>{
+        if (price.location == this.booking.resource.building.district.location) {
+          let from = price.timetable.Week_from; 
+          let to   = price.timetable.Week_to;
+          if (dow == 0) { from = price.timetable.Sun_from; to = price.timetable.Sun_to; }
+          else if (dow == 6) { from = price.timetable.Sat_from; to = price.timetable.Sat_to; }
+          else if (dow == 5) { from = price.timetable.Fri_from; to = price.timetable.Fri_to; }
+          if (from != undefined) {
+            if ((this.checkouttime || '00:00') >= from.substring(0, 5) && (this.checkouttime || '99:99') <= this.minusOneMinute(to)) {
               option.price = price.price;
               result.push(option);
             }

@@ -202,9 +202,9 @@ export class MyBookingDetailComponent {
   option_detail_out(): string {
     let text = ''
     if (this.isSpanish)
-      text = this.lookupService.checkoutOptions.find((elem) => elem.id === this.checkinOption)?.description || '';
+      text = this.lookupService.checkoutOptions.find((elem) => elem.id === this.checkoutOption)?.description || '';
     else
-      text = this.lookupService.checkoutOptions.find((elem) => elem.id === this.checkinOption)?.description_en || '';
+      text = this.lookupService.checkoutOptions.find((elem) => elem.id === this.checkoutOption)?.description_en || '';
     return text.replaceAll("\n", "<br>")
   }
 
@@ -380,7 +380,7 @@ export class MyBookingDetailComponent {
     }
 
     // Mandatory fields?
-    let ok = true;
+    let ok = (this.checkinControl.value != null || this.checkoutControl.value != null);
     if (this.checkinControl.value || this.checkinTimeControl.value) {
       if (!this.checkinControl.value) {
         this.checkinControl.setErrors({ 'field_required': true });
@@ -390,7 +390,7 @@ export class MyBookingDetailComponent {
         this.checkinTimeControl.setErrors({ 'field_required': true });
         ok = false;
       }
-      if (!this.checkinOptionControl.value || this.checkinOptions.length == 0) {
+      if (!this.check_in_option && (!this.checkinOptionControl.value || this.checkinOptions.length == 0)) {
         this.checkinOptionControl.setErrors({ 'field_required': true });
         ok = false;
       } 
@@ -398,7 +398,6 @@ export class MyBookingDetailComponent {
       this.checkinControl.setErrors(null)
       this.checkinTimeControl.setErrors(null)
       this.checkinOptionControl.setErrors(null)
-      ok = (this.checkinControl.value != null || this.checkoutControl.value != null);
     }
 
     // Show errors

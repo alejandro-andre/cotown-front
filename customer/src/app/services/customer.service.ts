@@ -89,15 +89,24 @@ export class CustomerService {
   }
 
   setBookingVisibility(booking: IBooking): void {
+    // Checkin
     this.readOnly['check_in'] = (booking.check_in === null);
-    this.readOnly['check_out'] = (booking.check_out === null);
     this.readOnly['flight'] = (booking.flight === null);
-    this.readOnly['flight_out'] = (booking.flight_out === null);
     this.readOnly['arrival'] = (booking.arrival === null);
     this.readOnly['check_in_time'] = (booking.check_in_time === null);
-    this.readOnly['check_out_time'] = (booking.check_out_time === null);
     this.readOnly['check_in_option_id'] = (booking.check_in_option_id === null);
-    this.readOnly['check_out_option_id'] = (booking.check_out_option_id === null);
+
+    // Checkout
+    const date_to = new Date(booking.date_to);
+    const date_now = new Date();
+    date_to.setDate(date_now.getDate() - 10);
+    console.log(date_to);
+    console.log(date_now);
+    console.log(date_now > date_to);
+    this.readOnly['check_out'] = (booking.check_out === null && date_now > date_to);
+    this.readOnly['flight_out'] = (booking.flight_out === null && date_now > date_to);
+    this.readOnly['check_out_time'] = (booking.check_out_time === null && date_now > date_to);
+    this.readOnly['check_out_option_id'] = (booking.check_out_option_id === null && date_now > date_to);
   }
 
 }

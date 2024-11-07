@@ -127,8 +127,11 @@ export const UPDATE_BOOKING = `mutation(
   $checkout: String,
   $arrival: String,
   $flight: String,
+  $flightout: String,
   $checkintime: String,
-  $option: Int,
+  $checkouttime: String,
+  $optionin: Int,
+  $optionout: Int,
   $selectedSchool: Int,
   $selectedReason: Int
 ){
@@ -137,9 +140,12 @@ export const UPDATE_BOOKING = `mutation(
       Check_in: $checkin
       Check_out: $checkout
       Arrival: $arrival
-      Check_in_time: $checkintime
       Flight: $flight
-      Check_in_option_id: $option
+      Flight_out: $flightout
+      Check_in_time: $checkintime
+      Check_out_time: $checkouttime
+      Check_in_option_id: $optionin
+      Check_out_option_id: $optionout
       School_id: $selectedSchool,
       Reason_id: $selectedReason
     }

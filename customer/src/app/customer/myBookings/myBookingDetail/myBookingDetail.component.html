@@ -324,11 +324,11 @@
           <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
             <mat-form-field>
               <mat-label>{{ 'check_in' | translate }}</mat-label>
-              <input matInput [readonly]="!visibility['check_in']" [matDatepicker]="pickerFrom" [formControl]="checkinControl" (dateInput)="enableSave()">
-              <mat-datepicker-toggle *ngIf="visibility['check_in']" matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
-              <mat-datepicker #pickerFrom></mat-datepicker>
-              <mat-error class="mat-error" *ngIf="checkinControl.hasError('low_date')">
-                {{ 'errors.low_date' | translate }}
+              <input matInput [readonly]="!visibility['check_in']" [matDatepicker]="pickerCheckin" [formControl]="checkinControl" (dateInput)="enableSave()">
+              <mat-datepicker-toggle *ngIf="visibility['check_in']" matIconSuffix [for]="pickerCheckin"></mat-datepicker-toggle>
+              <mat-datepicker #pickerCheckin></mat-datepicker>
+              <mat-error class="mat-error" *ngIf="checkinControl.hasError('before_contract')">
+                {{ 'errors.before_contract' | translate }}
               </mat-error>
               <mat-error class="mat-error" *ngIf="checkinControl.hasError('field_required')">
                 {{ 'errors.field_required' | translate }}
@@ -367,7 +367,7 @@
             </mat-form-field>
             <mat-form-field *ngIf="visibility['check_in_option_id']">
               <mat-label>{{ 'check_in_option_id' | translate }}</mat-label>
-              <mat-select [formControl]="checkinOptionControl" [(ngModel)]="selectedOption" (selectionChange)="enableSave()" >
+              <mat-select [formControl]="checkinOptionControl" [(ngModel)]="checkinOption" (selectionChange)="enableSave()" >
                 <mat-option *ngFor="let op of checkinOptions" [value]="op.id">
                 {{ isSpanish ? op.name : op.name_en }} - {{ op.price }} €
                 </mat-option>
@@ -392,11 +392,14 @@
           <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
             <mat-form-field>
               <mat-label>{{ 'check_out' | translate }}</mat-label>
-              <input matInput [readonly]="!visibility['check_out']" [matDatepicker]="pickerFrom" [formControl]="checkoutControl" (dateInput)="enableSave()">
-              <mat-datepicker-toggle *ngIf="visibility['check_out']" matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
-              <mat-datepicker #pickerFrom></mat-datepicker>
-              <mat-error class="mat-error" *ngIf="checkoutControl.hasError('low_date')">
-                {{ 'errors.low_date' | translate }}
+              <input matInput [readonly]="!visibility['check_out']" [matDatepicker]="pickerCheckout" [formControl]="checkoutControl" (dateInput)="enableSave()">
+              <mat-datepicker-toggle *ngIf="visibility['check_out']" matIconSuffix [for]="pickerCheckout"></mat-datepicker-toggle>
+              <mat-datepicker #pickerCheckout></mat-datepicker>
+              <mat-error class="mat-error" *ngIf="checkoutControl.hasError('past_date')">
+                {{ 'errors.past_date' | translate }}
+              </mat-error>
+              <mat-error class="mat-error" *ngIf="checkoutControl.hasError('after_contract')">
+                {{ 'errors.after_contract' | translate }}
               </mat-error>
               <mat-error class="mat-error" *ngIf="checkinControl.hasError('field_required')">
                 {{ 'errors.field_required' | translate }}
@@ -428,7 +431,8 @@
             </mat-form-field>
             <mat-form-field *ngIf="visibility['check_out_option_id']">
               <mat-label>{{ 'check_out_option_id' | translate }}</mat-label>
-              <mat-select [formControl]="checkoutOptionControl" [(ngModel)]="selectedOption" (selectionChange)="enableSave()" >
+              <mat-select [formControl]="checkoutOptionControl" [(ngModel)]="checkoutOption" (selectionChange)="enableSave()" >
+                <mat-option [value]="">-</mat-option>
                 <mat-option *ngFor="let op of checkoutOptions" [value]="op.id">
                 {{ isSpanish ? op.name : op.name_en }} - {{ op.price }} €
                 </mat-option>
@@ -437,7 +441,7 @@
                 {{ 'errors.field_required' | translate }}
               </mat-error>
             </mat-form-field>
-            <p *ngIf="checkoutOptions.length > 0" [innerHtml]="option_detail() | safe"></p>
+            <p *ngIf="checkoutOptions.length > 0" [innerHtml]="option_detail_out() | safe"></p>
             <p *ngIf="checkoutControl.value && checkouttime && checkoutOptions.length == 0">{{ 'check_out_no_options' | translate }}</p>
           </div>
 

@@ -87,7 +87,8 @@ export class MyBookingDetailComponent {
   public checkoutOptionControl = new FormControl<String | null>(null);
   public selectedReason!: number;
   public selectedSchool!: number;
-  public selectedOption: number | null = null;
+  public checkinOption: number | null = null;
+  public checkoutOption: number | null = null;
   public flight: string = '';
   public flight_out: string = '';
   public arrival: string | null = '';
@@ -192,18 +193,18 @@ export class MyBookingDetailComponent {
   option_detail(): string {
     let text = ''
     if (this.isSpanish)
-      text = this.lookupService.checkinOptions.find((elem) => elem.id === this.selectedOption)?.description || '';
+      text = this.lookupService.checkinOptions.find((elem) => elem.id === this.checkinOption)?.description || '';
     else
-      text = this.lookupService.checkinOptions.find((elem) => elem.id === this.selectedOption)?.description_en || '';
+      text = this.lookupService.checkinOptions.find((elem) => elem.id === this.checkinOption)?.description_en || '';
     return text.replaceAll("\n", "<br>")
   }
 
   option_detail_out(): string {
     let text = ''
     if (this.isSpanish)
-      text = this.lookupService.checkoutOptions.find((elem) => elem.id === this.selectedOption)?.description || '';
+      text = this.lookupService.checkoutOptions.find((elem) => elem.id === this.checkinOption)?.description || '';
     else
-      text = this.lookupService.checkoutOptions.find((elem) => elem.id === this.selectedOption)?.description_en || '';
+      text = this.lookupService.checkoutOptions.find((elem) => elem.id === this.checkinOption)?.description_en || '';
     return text.replaceAll("\n", "<br>")
   }
 
@@ -359,7 +360,21 @@ export class MyBookingDetailComponent {
       const fecha = this.checkinControl.value;
       const d = fecha.getFullYear() + '-' + (fecha.getMonth() + 1).toString().padStart(2, '0') + '-' + fecha.getDate().toString().padStart(2, '0');
       if (d < this.booking.date_from) {
-        this.checkinControl.setErrors({ 'low_date': true });
+        this.checkinControl.setErrors({ 'before_contract': true });
+        return;
+      }
+    }
+
+    // Checkout date correct?
+    if (this.booking && this.checkoutControl.value) {
+      const fecha = this.checkoutControl.value;
+      const d = fecha.getFullYear() + '-' + (fecha.getMonth() + 1).toString().padStart(2, '0') + '-' + fecha.getDate().toString().padStart(2, '0');
+      if (d > this.booking.date_to) {
+        this.checkoutControl.setErrors({ 'after_contract': true });
+        return;
+      }
+      if (fecha < new Date()) {
+        this.checkoutControl.setErrors({ 'past_date': true });
         return;
       }
     }
@@ -383,13 +398,16 @@ export class MyBookingDetailComponent {
       this.checkinControl.setErrors(null)
       this.checkinTimeControl.setErrors(null)
       this.checkinOptionControl.setErrors(null)
-      ok = (this.checkinControl.value != null);
+      ok = (this.checkinControl.value != null || this.checkoutControl.value != null);
     }
 
     // Show errors
     this.checkinControl.markAsTouched({ onlySelf: true });
     this.checkinTimeControl.markAsTouched({ onlySelf: true });
     this.checkinOptionControl.markAsTouched({ onlySelf: true });
+    this.checkoutControl.markAsTouched({ onlySelf: true });
+    this.checkoutTimeControl.markAsTouched({ onlySelf: true });
+    this.checkoutOptionControl.markAsTouched({ onlySelf: true });
 
     // Ok
     this.enabledSave = ok;
@@ -400,10 +418,13 @@ export class MyBookingDetailComponent {
     this.booking = booking;
 
     // Fill form fields
-    this.selectedOption = this.booking.check_in_option_id;
+    this.checkinOption = this.booking.check_in_option_id;
+    this.checkoutOption = this.booking.check_out_option_id;
     this.flight = this.booking.flight !== null ? this.booking.flight : '';
+    this.flight_out = this.booking.flight_out !== null ? this.booking.flight_out : '';
     this.arrival = this.booking.arrival;
     this.checkintime = this.booking.check_in_time;
+    this.checkouttime = this.booking.check_out_time;
 
     // Checkin date
     this.checkinControl = new FormControl(
@@ -484,14 +505,15 @@ export class MyBookingDetailComponent {
       checkout: checkout,
       arrival: this.arrival,
       flight: this.flight,
+      flightout: this.flight_out,
       checkintime: this.checkintime == '' ? null : this.checkintime,
+      checkouttime: this.checkouttime == '' ? null : this.checkouttime,
+      optionin: this.checkinOption,
+      optionout: this.checkinOption,
       selectedSchool : this.selectedSchool,
       selectedReason : this.selectedReason,
-      option: this.selectedOption,
     }
     this.isLoading = true;
-    console.log(UPDATE_BOOKING)
-    console.log(variables)
     this.apollo.setData(UPDATE_BOOKING, variables).subscribe({
 
       next: (res) => {

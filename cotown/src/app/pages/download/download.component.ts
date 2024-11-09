@@ -29,7 +29,7 @@ export class DownloadComponent {
     { name: 'weekly',            cotown: true,  provider: false, icon: 'blur_linear',        filter: false, text: 'Reservas PowerBI', url: 'weekly?fdesde=2020-01-01&fhasta=2099-12-31' },
     { name: 'devoluciones',      cotown: true,  provider: false, icon: 'cached',             filter: false, text: 'Devoluciones' },
     { name: 'reservaslau',       cotown: true,  provider: false, icon: 'home',               filter: false, text: 'Reservas LAU/Otros' },
-    { name: 'occupancy',         cotown: true,  provider: false, icon: 'calendar_today',     filter: true,  text: 'Monthly'},
+    //{ name: 'occupancy',         cotown: true,  provider: false, icon: 'calendar_today',     filter: true,  text: 'Monthly'},
     { name: 'disponibilidad',    cotown: true,  provider: false, icon: 'hotel',              filter: true,  text: 'Disponibilidad'},
     { name: 'ac',                cotown: true,  provider: false, icon: 'send',               filter: true,  text: 'ActiveCampaign'},
     { name: 'rooming',           cotown: true,  provider: false, icon: 'people',             filter: true,  text: 'Rooming list' },

@@ -712,7 +712,8 @@ export class PlanningComponent {
         if (locks.length > 0)
           row.bars.push(...this.consolidateIntervals(locks));
         if (noavails.length > 0)
-          row.bars.push(...this.consolidateIntervals(noavails));
+          //?row.bars.push(...this.consolidateIntervals(noavails));
+          row.bars.push(...noavails);
       }
     }
     this.isLoading = false;

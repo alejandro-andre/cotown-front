@@ -508,7 +508,7 @@ export class MyBookingDetailComponent {
       checkintime: this.checkintime == '' ? null : this.checkintime,
       checkouttime: this.checkouttime == '' ? null : this.checkouttime,
       optionin: this.checkinOption,
-      optionout: this.checkinOption,
+      optionout: this.checkoutOption,
       selectedSchool : this.selectedSchool,
       selectedReason : this.selectedReason,
     }

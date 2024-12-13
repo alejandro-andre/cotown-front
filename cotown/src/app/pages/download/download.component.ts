@@ -30,6 +30,7 @@ export class DownloadComponent {
     { name: 'devoluciones',      cotown: true,  provider: false, icon: 'cached',             filter: false, text: 'Devoluciones' },
     { name: 'reservaslau',       cotown: true,  provider: false, icon: 'home',               filter: false, text: 'Reservas LAU/Otros' },
     { name: 'ltc',               cotown: true,  provider: false, icon: 'reorder',            filter: false, text: 'Análisis LT LAU' },
+    { name: 'cuestionarios',     cotown: true,  provider: false, icon: 'mood',               filter: false, text: 'Cuestionarios de satisfacción' },
     { name: 'disponibilidad',    cotown: true,  provider: false, icon: 'hotel',              filter: true,  text: 'Disponibilidad'},
     { name: 'ac',                cotown: true,  provider: false, icon: 'send',               filter: true,  text: 'ActiveCampaign'},
     { name: 'rooming',           cotown: true,  provider: false, icon: 'people',             filter: true,  text: 'Rooming list' },

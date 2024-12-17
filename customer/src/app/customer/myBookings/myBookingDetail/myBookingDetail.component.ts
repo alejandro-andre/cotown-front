@@ -452,7 +452,7 @@ export class MyBookingDetailComponent {
     }
 
     // Signature
-    if (this.booking.contract_signed !== null) {
+    if (this.booking.contract_status === 'completed') {
       this.contractMessage = 'signed_message';
       const locale = Constants.LANGUAGES.find((elem) => elem.id === this.customerService.customer.appLang)?.date;
       this.formatedDate = this.datePipe.transform(this.booking.contract_signed, locale + ' HH:MM:SS') || '';

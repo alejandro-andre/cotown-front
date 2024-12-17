@@ -86,9 +86,11 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       flight_out: Flight_out
       check_in_option_id: Check_in_option_id
       check_out_option_id: Check_out_option_id
+      contract_id: Contract_id
+      contract_status: Contract_status
+      contract_signed: Contract_signed
       contract_rent: Contract_rent { name oid type size }
       contract_services: Contract_services { name oid type size }
-      contract_signed: Contract_signed
       reason: Customer_reasonViaReason_id {
         id
         name: Name

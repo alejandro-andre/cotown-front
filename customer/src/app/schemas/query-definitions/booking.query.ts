@@ -21,9 +21,11 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
     flight_out: Flight_out
     check_in_option_id: Check_in_option_id
     check_out_option_id: Check_out_option_id
+    contract_id:Contract_id
+    contract_status:Contract_status
+    contract_signed:Contract_signed
     contract_rent: Contract_rent { name oid type size }
     contract_services: Contract_services { name oid type size }
-    contract_signed:Contract_signed
     reason: Customer_reasonViaReason_id{
       id
       name: Name
@@ -116,6 +118,7 @@ export const ACCEPT_BOOKING_OPTION = `mutation ($id: Int!, $accepted: Boolean) {
 export const SIGN_BOOKING_CONTRACT = `mutation($id: Int!,$time: String){
   data: Booking_BookingUpdate( where:{ id: {EQ: $id}}
     entity:{
+      Contract_status:'completed'
       Contract_signed:$time
     }
   ){id, Contract_signed}

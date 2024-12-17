@@ -167,9 +167,11 @@ export interface IBooking {
   deposit: number
   reason: IBase,
   school: IBase,
+  contract_id: string | null,
+  contract_status: string | null,
+  contract_signed: string | null,
   contract_rent: IDocFile | null,
   contract_services: IDocFile | null,
-  contract_signed: string | null,
   check_in_option_id: number | null,
   check_out_option_id: number | null,
   flight: string | null,

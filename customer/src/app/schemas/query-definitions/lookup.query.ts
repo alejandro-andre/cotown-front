@@ -92,6 +92,8 @@ export const CHECKIN_OPTIONS_QUERY = `query list {
     prices: Checkin_priceListViaCheckin_type_id {
       location: Location_id
       price: Price
+      date_from: Date_from
+      date_to: Date_to
       timetable: TimetableViaTimetable_id {
         Week_from
         Week_to
@@ -118,6 +120,8 @@ export const CHECKOUT_OPTIONS_QUERY = `query list {
     prices: Checkin_priceListViaCheckin_type_id {
       location: Location_id
       price: Price
+      date_from: Date_from
+      date_to: Date_to
       timetable: TimetableViaTimetable_id {
         Week_from
         Week_to

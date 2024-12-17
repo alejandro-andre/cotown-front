@@ -254,8 +254,12 @@ export class MyBookingDetailComponent {
     const result: any = []
     this.lookupService.checkinOptions.forEach(option => {
       if (option.prices)
-        option.prices.forEach((price: any) =>{
-          if (price.location == this.booking.resource.building.district.location) {
+        option.prices.forEach((price: any) => {
+          if (
+            price.location == this.booking.resource.building.district.location &&
+            (!price.date_from || checkin >= price.date_from) && 
+            (!price.date_to || checkin <= price.date_to)
+          ) {
             let from = price.timetable.Week_from; 
             let to   = price.timetable.Week_to;
             if (dow == 0) { from = price.timetable.Sun_from; to = price.timetable.Sun_to; }
@@ -292,21 +296,26 @@ export class MyBookingDetailComponent {
     // Look up checkin options
     const result: any = []
     this.lookupService.checkoutOptions.forEach(option => {
-      option.prices.forEach((price: any) =>{
-        if (price.location == this.booking.resource.building.district.location) {
-          let from = price.timetable.Week_from; 
-          let to   = price.timetable.Week_to;
-          if (dow == 0) { from = price.timetable.Sun_from; to = price.timetable.Sun_to; }
-          else if (dow == 6) { from = price.timetable.Sat_from; to = price.timetable.Sat_to; }
-          else if (dow == 5) { from = price.timetable.Fri_from; to = price.timetable.Fri_to; }
-          if (from != undefined) {
-            if ((this.checkouttime || '00:00') >= from.substring(0, 5) && (this.checkouttime || '99:99') <= this.minusOneMinute(to)) {
-              option.price = price.price;
-              result.push(option);
+      if (option.prices)
+        option.prices.forEach((price: any) => {
+          if (
+            price.location == this.booking.resource.building.district.location &&
+            (!price.date_from || checkout >= price.date_from) && 
+            (!price.date_to || checkout <= price.date_to)
+          ) {
+            let from = price.timetable.Week_from; 
+            let to   = price.timetable.Week_to;
+            if (dow == 0) { from = price.timetable.Sun_from; to = price.timetable.Sun_to; }
+            else if (dow == 6) { from = price.timetable.Sat_from; to = price.timetable.Sat_to; }
+            else if (dow == 5) { from = price.timetable.Fri_from; to = price.timetable.Fri_to; }
+            if (from != undefined) {
+              if ((this.checkouttime || '00:00') >= from.substring(0, 5) && (this.checkouttime || '99:99') <= this.minusOneMinute(to)) {
+                option.price = price.price;
+                result.push(option);
+              }
             }
           }
-        }
-      })
+        })
     })
 
     // Options

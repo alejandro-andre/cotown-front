@@ -115,11 +115,11 @@ export const ACCEPT_BOOKING_OPTION = `mutation ($id: Int!, $accepted: Boolean) {
   ){id}
 }`;
 
-export const SIGN_BOOKING_CONTRACT = `mutation($id: Int!,$time: String){
+export const SIGN_BOOKING_CONTRACT = `mutation($id: Int! $time: String){
   data: Booking_BookingUpdate( where:{ id: {EQ: $id}}
     entity:{
-      Contract_status:'completed'
-      Contract_signed:$time
+      Contract_status: completed
+      Contract_signed: $time
     }
   ){id, Contract_signed}
 }`;

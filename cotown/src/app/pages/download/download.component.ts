@@ -35,6 +35,7 @@ export class DownloadComponent {
     { name: 'ac',                cotown: true,  provider: false, icon: 'send',               filter: true,  text: 'ActiveCampaign'},
     { name: 'rooming',           cotown: true,  provider: false, icon: 'people',             filter: true,  text: 'Rooming list' },
     { name: 'reservas',          cotown: true,  provider: false, icon: 'event',              filter: true,  text: 'Reservas' },
+    { name: 'marketplaces',      cotown: true,  provider: false, icon: 'public',             filter: true,  text: 'Marketplaces' },
     { name: 'pagosemitidos',     cotown: true,  provider: false, icon: 'local_atm',          filter: true,  text: 'Pagos emitidos' },
     { name: 'pagosrecibidos',    cotown: true,  provider: false, icon: 'local_atm',          filter: true,  text: 'Pagos recibidos' },
     { name: 'sepa',              cotown: true,  provider: false, icon: 'account_balance',    filter: false, text: 'SEPA' },
@@ -149,7 +150,7 @@ export class DownloadComponent {
       + '&access_token=' + this.apolloApi.token;
 
     // Reservas y contratos
-  } else if (data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "pagosrecibidos" || data == "contratos" || data == "forecast") {
+  } else if (data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "marketplaces" || data == "pagosrecibidos" || data == "contratos" || data == "forecast") {
     const from = moment(this.dateRangeControl.value.start);
     const to = moment(this.dateRangeControl.value.end).add(1,'d');
     l = environment.backURL + '/export/' + data

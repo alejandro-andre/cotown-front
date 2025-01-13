@@ -276,7 +276,7 @@
                   [show-all]="true" [show-borders]="true"
                   (after-load-complete)="afterLoadRent($event)"
                 ></pdf-viewer>
-                <div class="sign"*ngIf="booking.contract_signed === null">
+                <div class="sign" *ngIf="booking.contract_status == 'sent'">
                   <button mat-raised-button color="primary" (click)="sign(RENT_CONTRACT_TYPE)" 
                           [disabled]="contractRentInfo.current_page < contractRentInfo.total_pages || contractRentInfo.signed">
                     {{ 'sign' | translate }}
@@ -298,7 +298,7 @@
                   [show-all]="true" [show-borders]="true"
                   (after-load-complete)="afterLoadServices($event)"
                 ></pdf-viewer>
-                <div class="sign" *ngIf="booking.contract_signed === null">
+                <div class="sign" *ngIf="booking.contract_status == 'sent'">
                   <button mat-raised-button color="primary" (click)="sign(SERVICE_CONTRACT_TYPE)" 
                           [disabled]="contractServicesInfo.current_page < contractServicesInfo.total_pages || contractServicesInfo.signed">
                     {{ 'sign' | translate }}

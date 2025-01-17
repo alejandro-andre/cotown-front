@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { PlanningComponent } from './pages/planning/planning.component';
-import { DownloadComponent } from './pages/download/download.component';
 import { GeneralDashboardComponent } from './pages/dashboard/general/general.component';
 import { OperationsDashboardComponent } from './pages/dashboard/operations/operations.component';
+import { ReportsComponent } from './pages/reports/reports.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard' ,  pathMatch: 'full' },
   { path: 'planning', component: PlanningComponent },
-  { path: 'download', component: DownloadComponent },
+  { path: 'reports', component: ReportsComponent },
   { path: 'dashboard', component: GeneralDashboardComponent },
   { path: 'operations', component: OperationsDashboardComponent },
 ];

@@ -13,12 +13,12 @@ import { environment } from 'src/environments/environment';
 const moment = _rollupMoment;
 
 @Component({
-  selector: 'app-download',
-  templateUrl: './download.component.html',
-  styleUrls: ['./download.component.scss'],
+  selector: 'app-reports',
+  templateUrl: './reports.component.html',
+  styleUrls: ['./reports.component.scss'],
 })
 
-export class DownloadComponent {
+export class ReportsComponent {
 
   reps = [
     { name: 'propietarios',      cotown: true,  provider: false, icon: 'account_box',        filter: false, text: 'Propietarios' },

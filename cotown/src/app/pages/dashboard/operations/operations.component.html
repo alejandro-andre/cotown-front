@@ -15,7 +15,7 @@
         <mat-icon style="cursor:pointer;" onclick="window.open(window.location.href, '_blank');" fontIcon="open_in_new"></mat-icon>   
       </div>
     </div>
-  
+
     <form>
       <div class="pure-g">
 
@@ -54,7 +54,6 @@
               [(ngModel)]="buildingIds"
               [placeholder]="'nothing' | translate"
               (selectionChange)="onBuilding()">
-              <!-- <mat-option  [value]=-1>{{ 'allM' | translate }}</mat-option> -->
               <mat-option *ngFor="let building of buildings" [value]="building.id">
                 {{ building.name }}
               </mat-option>

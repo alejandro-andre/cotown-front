@@ -32,7 +32,8 @@ import { CustomDateAdapter } from './plugins/custom-date-adapter';
 import { MonthYearPickerFormatDirective } from './plugins/month-year-picker-format-directive';
 
 import { PlanningComponent } from './pages/planning/planning.component';
-import { DownloadComponent } from './pages/download/download.component';
+import { ReportsComponent } from './pages/reports/reports.component';
+import { LauDashboardComponent } from './pages/dashboard/lau/lau.component';
 import { ConfirmationComponent } from './pages/confirmation/confirmation.component';
 import { GeneralDashboardComponent } from './pages/dashboard/general/general.component';
 import { OperationsDashboardComponent } from './pages/dashboard/operations/operations.component';
@@ -51,7 +52,8 @@ export function createTranslateLoader(http: HttpClient) {
     PlanningComponent,
     GeneralDashboardComponent,
     OperationsDashboardComponent,
-    DownloadComponent,
+    LauDashboardComponent,
+    ReportsComponent,
     ConfirmationComponent,
     MonthYearPickerFormatDirective
   ],

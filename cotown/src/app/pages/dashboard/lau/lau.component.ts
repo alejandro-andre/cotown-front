@@ -17,26 +17,22 @@ import { MatCheckboxChange } from "@angular/material/checkbox";
 import { BOOKING_UPDATE } from "src/app/schemas/query-definitions/booking.query";
 
 @Component({ 
-  selector: "app-dashboard-operations",
-  templateUrl: "./operations.component.html",
+  selector: "app-dashboard-lau",
+  templateUrl: "./lau.component.html",
   styleUrls: ["../dashboard.component.scss"],
   encapsulation: ViewEncapsulation.None
  })
 
-export class OperationsDashboardComponent implements OnInit { 
+export class LauDashboardComponent implements OnInit { 
   // Parent
   private parent: any = null;
 
   // Operation
   public op!: string;
   public dashboards: any[] = [
-    {op: 'nextin', name: 'Próximas entradas'},
-    {op: 'checkin', name: 'Entradas'},
-    {op: 'issues', name: 'Incidencias en entradas'},
-    {op: 'nextout', name: 'Próximas salidas'},
-    {op: 'checkout', name: 'Salidas'},
-    {op: 'revision', name: 'Revisiones'},
-    {op: 'ecoext', name: 'Early checkout/Extensiones'},
+    {op: 'devoluciones', name: 'Devoluciones de fianza'},
+    {op: 'itp', name: 'Pagos ITP'},
+    {op: 'fin', name: 'Fin de contrato'},
   ];
   public dashboardId: number = 1;
 

@@ -35,7 +35,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-planning',
   templateUrl: './planning.component.html',
   styleUrls: ['./planning.component.scss'],
   encapsulation: ViewEncapsulation.None

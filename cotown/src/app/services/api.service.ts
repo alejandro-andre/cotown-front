@@ -8,18 +8,23 @@ export default {
     return axiosInstance.post('availability', data, { params: { 'access_token': token } } );
   },
 
-  getDashboard(token: string): Promise<AxiosResponse> {
+  getOperations(token: string): Promise<AxiosResponse> {
     return axiosInstance.get('dashboard', { params: { 'access_token': token } } );
   },
 
-  getDashboardBookings(status: string, token: string, params: any): Promise<AxiosResponse> {
+  getOperationsBookings(status: string, token: string, params: any): Promise<AxiosResponse> {
     params['access_token'] = token;
     return axiosInstance.get('dashboard/' + status, { params: params });
   },
 
-  getDashboardPrevNext(token: string, params: any): Promise<AxiosResponse> {
+  getOperationsPrevNext(token: string, params: any): Promise<AxiosResponse> {
     params['access_token'] = token;
     return axiosInstance.get('dashboard/prevnext', { params: params });
+  },
+
+  getLauBookings(type: string, token: string, params: any): Promise<AxiosResponse> {
+    params['access_token'] = token;
+    return axiosInstance.get('dashboardlau/' + type, { params: params });
   },
 
   getLabels(id: number, locale: string, token: string): Promise<AxiosResponse> {

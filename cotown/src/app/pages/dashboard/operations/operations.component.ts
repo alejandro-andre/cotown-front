@@ -206,7 +206,7 @@ export class OperationsDashboardComponent implements OnInit {
 
     // Get bookings
     const params: any = this.get_params();
-    await axiosApi.getDashboardBookings(this.op, this.apollo.token, params).then((res) => { 
+    await axiosApi.getOperationsBookings(this.op, this.apollo.token, params).then((res) => { 
       this.rows = res.data.map((o: any) => { 
 
         // Warning style
@@ -290,7 +290,7 @@ export class OperationsDashboardComponent implements OnInit {
     });      
 
     // Get previous and next bookings
-    await axiosApi.getDashboardPrevNext(this.apollo.token, params).then((res) => {
+    await axiosApi.getOperationsPrevNext(this.apollo.token, params).then((res) => {
       this.rows.forEach((row: any) => {
 
         // Previous bookings

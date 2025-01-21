@@ -9,7 +9,9 @@
         <h1>LAU y otros</h1>
       </div>
       <div class="pure-u-1-24" style="margin-top:20px;text-align:right;">
+        <!--
         <a [href]="link()"><mat-icon style="cursor:pointer;" fontIcon="cloud_download"></mat-icon></a>
+        -->
       </div>
       <div class="pure-u-1-24" style="margin-top:20px;text-align:right;">
         <mat-icon style="cursor:pointer;" onclick="window.open(window.location.href, '_blank');" fontIcon="open_in_new"></mat-icon>   
@@ -61,6 +63,17 @@
           </mat-form-field>
         </div>
 
+        <div class="pure-u-5-24">
+          <mat-form-field class="field" appearance="fill" >
+            <mat-label>{{ 'date range' | translate }}</mat-label>
+            <mat-date-range-input [rangePicker]="picker" [formGroup]="range">
+              <input matStartDate formControlName="start" [placeholder]="'from' | translate">
+              <input matEndDate formControlName="end" [placeholder]="'to' | translate" (dateChange)="onDates()">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </div>
 
       </div>
     </form>
@@ -68,6 +81,42 @@
   </div>
 
   <table *ngIf="rows">
+
+    <thead>
+      <tr>
+        <th *ngFor="let h of header" (click)="sort(h.key, null);" class="link">
+          <span [class.vertical]="h.type === 'bool'">{{h.value}}</span>
+          <svg class="arrow {{h.sort}}" focusable="false" viewBox="0 0 24 24"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"></path></svg>
+        </th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let r of rows" class="link">
+        <td *ngFor="let h of header" [style.text-align]="h.type === 'number' ? 'right' : 'left'">
+          <!-- Status field -->
+          <span *ngIf="h.type === 'status'" (click)="goBooking(r.id)">{{ getLabel(r[h.key]) }}</span>
+          <!-- Text/Date/Input fields -->
+          <span *ngIf="h.type === 'text'"   (click)="goBooking(r.id)" [innerHtml]="r[h.key] | safe"></span>
+          <span *ngIf="h.type === 'number'" (click)="goBooking(r.id)" [innerHtml]="r[h.key] | safe"></span>
+          <span *ngIf="h.type === 'date'"   (click)="goBooking(r.id)" [innerHtml]="r[h.key] | safe"></span>
+          <span *ngIf="h.type === 'input'"  [innerHtml]="r[h.key] | safe"></span>
+          <!-- Boolean fields -->
+          <span *ngIf="h.type === 'bool'" >
+            <mat-checkbox 
+              style="text-align: center;"
+              [checked]="r[h.key][0]">
+            </mat-checkbox>
+          </span>
+          <span *ngIf="h.type === 'check' && r[h.key] === true"><mat-icon style="padding-top:8px;" fontIcon="check"></mat-icon></span>
+          <span *ngIf="h.type === 'check' && r[h.key] === false"><mat-icon style="padding-top:8px;" fontIcon="clear"></mat-icon></span>
+        </td>
+        <td>
+          <button mat-raised-button color="primary" [disabled]="!r['Changed']" (click)="save(r)">Guardar</button>
+        </td>
+      </tr>
+    </tbody>
 
   </table>
 

@@ -5,6 +5,7 @@ import { PlanningComponent } from './pages/planning/planning.component';
 import { GeneralDashboardComponent } from './pages/dashboard/general/general.component';
 import { OperationsDashboardComponent } from './pages/dashboard/operations/operations.component';
 import { ReportsComponent } from './pages/reports/reports.component';
+import { LauDashboardComponent } from './pages/dashboard/lau/lau.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard' ,  pathMatch: 'full' },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'reports', component: ReportsComponent },
   { path: 'dashboard', component: GeneralDashboardComponent },
   { path: 'operations', component: OperationsDashboardComponent },
+  { path: 'lau', component: LauDashboardComponent },
 ];
 
 @NgModule({

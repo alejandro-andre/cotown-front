@@ -88,13 +88,16 @@
           <span [class.vertical]="h.type === 'bool'">{{h.value}}</span>
           <svg class="arrow {{h.sort}}" focusable="false" viewBox="0 0 24 24"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"></path></svg>
         </th>
+        <th *ngIf="op=='dev'">Fecha real devolución</th>
+        <th *ngIf="op=='itp'">Fecha real ITP</th>
+        <th *ngIf="op=='end'">Fecha burofax</th>
         <th></th>
       </tr>
     </thead>
 
     <tbody>
       <tr *ngFor="let r of rows" class="link">
-        <td *ngFor="let h of header" [style.text-align]="h.type === 'number' ? 'right' : 'left'">
+        <td *ngFor="let h of header" [style.text-align]="h.type === 'number' ? 'left' : 'left'">
           <!-- Status field -->
           <span *ngIf="h.type === 'status'" (click)="goBooking(r.id)">{{ getLabel(r[h.key]) }}</span>
           <!-- Text/Date/Input fields -->
@@ -111,6 +114,14 @@
           </span>
           <span *ngIf="h.type === 'check' && r[h.key] === true"><mat-icon style="padding-top:8px;" fontIcon="check"></mat-icon></span>
           <span *ngIf="h.type === 'check' && r[h.key] === false"><mat-icon style="padding-top:8px;" fontIcon="clear"></mat-icon></span>
+        </td>
+        <td>
+          <mat-form-field class="dateinternal">
+            <mat-label>Fecha</mat-label>
+            <input matInput [matDatepicker]="datepicker" [formControl]="dateControl">
+            <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+            <mat-datepicker #datepicker></mat-datepicker>
+          </mat-form-field>
         </td>
         <td>
           <button mat-raised-button color="primary" [disabled]="!r['Changed']" (click)="save(r)">Guardar</button>

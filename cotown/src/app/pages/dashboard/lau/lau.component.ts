@@ -1,10 +1,9 @@
-import { Component, OnInit, ViewEncapsulation, LOCALE_ID, Inject } from "@angular/core";
+import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { DateAdapter } from "@angular/material/core";
-import { environment } from 'src/environments/environment';
 
 import axiosApi from "src/app/services/api.service";
 import { ApolloQueryApi } from "src/app/services/apollo-api.service";
-import { Building, City, Holiday } from "src/app/constants/Interfaces";
+import { Building, City } from "src/app/constants/Interfaces";
 import { CITIES_QUERY } from "src/app/schemas/query-definitions/city.query";
 import { BUILDINGS_BY_LOCATION_QUERY, BUILDINGS_QUERY } from "src/app/schemas/query-definitions/building.query";
 import { Constants } from "src/app/constants/Constants";
@@ -65,15 +64,17 @@ export class LauDashboardComponent implements OnInit {
     { key:"Resource",             value:"Recurso",                   sort:"", type: "text",   filter: [] }, 
     { key:"Customer",             value:"Inquilino",                 sort:"", type: "text",   filter: [] }, 
     { key:"Dates",                value:"Fechas contrato",           sort:"", type: "date",   filter: [] },
-    { key:"Date_estimated",       value:"Fecha estimada salida",     sort:"", type: "date",   filter: [] },
     { key:"Deposit",              value:"Fianza depositada",         sort:"", type: "number", filter: ["dev"] }, 
     { key:"Deposit_required",     value:"Fianza a devolver",         sort:"", type: "number", filter: ["dev"] }, 
     { key:"Deposit_return_date",  value:"Fecha prevista devolución", sort:"", type: "date",   filter: ["dev"] }, 
     { key:"Compensation",         value:"Indemnización",             sort:"", type: "number", filter: ["itp"] }, 
     { key:"Compensation_date",    value:"Fecha indemnización",       sort:"", type: "date",   filter: ["itp"] }, 
-    { key:"ITP_required_date",    value:"Fecha ITP",                 sort:"", type: "date",   filter: ["itp"] }, 
+    { key:"ITP_required_date",    value:"Fecha prevista ITP",        sort:"", type: "date",   filter: ["itp"] }, 
   ];
 
+  // Date control
+  public dateControl = new FormControl<any>('');
+  
   // Constructor
   constructor(
     private route: ActivatedRoute,
@@ -171,8 +172,6 @@ export class LauDashboardComponent implements OnInit {
     await axiosApi.getLauBookings(this.op, this.apollo.token, params).then((res) => { 
       this.rows = res.data.map((o: any) => { 
 
-        console.log(this.rows);
-
         // Return data
         return {
           "id": o.id,
@@ -195,7 +194,7 @@ export class LauDashboardComponent implements OnInit {
   }
 
   goBooking(id: string) { 
-    const link = "/admin/Booking.Booking/" + id + "/view";
+    const link = "/admin/Booking.Booking_other/" + id + "/view";
     if (window.opener && !this.parent)
       this.parent = window.opener.parent;
     else if (parent && !this.parent)

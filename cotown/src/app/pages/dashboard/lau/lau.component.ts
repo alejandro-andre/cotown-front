@@ -11,6 +11,9 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { LanguageService } from "src/app/services/language.service";
 import { ActivatedRoute } from "@angular/router";
+import { BOOKING_OTHER_UPDATE_DEV } from "src/app/schemas/query-definitions/booking.query";
+import { BOOKING_OTHER_UPDATE_ITP } from "src/app/schemas/query-definitions/booking.query";
+import { BOOKING_OTHER_UPDATE_END } from "src/app/schemas/query-definitions/booking.query";
 
 @Component({ 
   selector: "app-dashboard-lau",
@@ -289,8 +292,35 @@ export class LauDashboardComponent implements OnInit {
     return "-";
   }
 
-  save(row: any) {
+  change(event: any, row: any) {
+    row["Changed"] = true;
+    row["Date"] = this.datePipe.transform(this.dateControl.value, "yyyy-MM-dd");
+  }
 
+  save(row: any) {
+    // GraphQL variables
+    const variables: any = {
+      id: row.id,
+      date: row["Date"],
+    }
+    let query = '';
+    if (this.op == 'dev')
+      query = BOOKING_OTHER_UPDATE_DEV;
+    if (this.op == 'itp')
+      query = BOOKING_OTHER_UPDATE_ITP;
+    if (this.op == 'end')
+      query = BOOKING_OTHER_UPDATE_END;
+    
+    // Update
+    this.isLoading = true;
+    this.apollo.setData(query, variables).subscribe({
+      next: (res) => {
+        this.isLoading = false;
+      }, 
+      error: (err)  => {
+        this.isLoading = false;
+      }
+    })
   }
 
 }

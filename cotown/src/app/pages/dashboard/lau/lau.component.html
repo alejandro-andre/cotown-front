@@ -118,7 +118,7 @@
         <td>
           <mat-form-field class="dateinternal">
             <mat-label>Fecha</mat-label>
-            <input matInput [matDatepicker]="datepicker" [formControl]="dateControl">
+            <input matInput [matDatepicker]="datepicker" [formControl]="dateControl" (dateChange)="change($event, r)">
             <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
             <mat-datepicker #datepicker></mat-datepicker>
           </mat-form-field>

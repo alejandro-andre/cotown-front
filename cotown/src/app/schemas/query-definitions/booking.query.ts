@@ -113,5 +113,24 @@ export const BOOKING_UPDATE = `mutation(
   ) { id }
 }`;
 
+export const BOOKING_OTHER_UPDATE_DEV = `mutation ($id: Int!, $date: String) {
+  updated: Booking_Booking_otherUpdate(
+    where: { id: { EQ: $id } }
+    entity: { Deposit_return_date: $date }
+  ) {id}
+}`;
 
+export const BOOKING_OTHER_UPDATE_ITP = `mutation ($id: Int!, $date: String) {
+  updated: Booking_Booking_otherUpdate(
+    where: { id: { EQ: $id } }
+    entity: { ITP_date: $date }
+  ) {id}
+}`;
+
+export const BOOKING_OTHER_UPDATE_END = `mutation ($id: Int!, $date: String) {
+  updated: Booking_Booking_otherUpdate(
+    where: { id: { EQ: $id } }
+    entity: { Burofax_date: $date }
+  ) {id}
+}`;
 

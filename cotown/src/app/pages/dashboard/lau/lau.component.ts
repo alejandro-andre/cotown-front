@@ -315,6 +315,10 @@ export class LauDashboardComponent implements OnInit {
     this.isLoading = true;
     this.apollo.setData(query, variables).subscribe({
       next: (res) => {
+        const index = this.rows.findIndex(r => r.id === row.id);
+        if (index !== -1) {
+          this.rows.splice(index, 1);
+        }
         this.isLoading = false;
       }, 
       error: (err)  => {

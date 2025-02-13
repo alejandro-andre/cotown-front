@@ -87,7 +87,7 @@ export class OperationsDashboardComponent implements OnInit {
     { key:"Option_in",             value:"Opción/Comentarios", sort:"", type: "text",   filter: ["nextin","checkin"] },
     { key:"Option_out",            value:"Opción/Comentarios", sort:"", type: "text",   filter: ["nextout","checkout"] },
     { key:"Issues",                value:"Incidencias",        sort:"", type: "text",   filter: ["issues"] },
-    { key:"Issues_ok",             value:"Gestionadas",        sort:"", type: "boll",   filter: ["issues"] },
+    { key:"Issues_ok",             value:"Gestionadas",        sort:"", type: "bool",   filter: ["issues"] },
     { key:"Check_in_payed",        value:"Check-in pagado",    sort:"", type: "check",  filter: ["nextin","checkin"] },
     { key:"Check_in_notice_ok",    value:"Aviso comp.",        sort:"", type: "check",  filter: ["nextin","checkin"] },
     { key:"Check_in_room_ok",      value:"Limpieza ok",        sort:"", type: "bool",   filter: ["nextin","checkin"] },

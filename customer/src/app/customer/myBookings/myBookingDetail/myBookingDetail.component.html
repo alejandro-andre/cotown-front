@@ -262,6 +262,7 @@
         <h2>{{ 'contracts' | translate }}</h2>
         <h3 *ngIf="contractsSigned === null">{{ contractMessage | translate }}</h3>
         <h3 *ngIf="contractsSigned !== null">{{ contractMessage | translate: { value: formatedDate } }}</h3>
+        <!--
         <div class="group">
           <div class="pure-g">
             <div class="pure-u-7-8">
@@ -308,7 +309,8 @@
             </div>
           </div>
         </div>
-    
+        -->
+
       </div>
     
     </mat-tab>

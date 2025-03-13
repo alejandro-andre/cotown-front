@@ -88,9 +88,9 @@
           <span [class.vertical]="h.type === 'bool'">{{h.value}}</span>
           <svg class="arrow {{h.sort}}" focusable="false" viewBox="0 0 24 24"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"></path></svg>
         </th>
-        <th *ngIf="op=='dev'">Fecha real devolución</th>
-        <th *ngIf="op=='itp'">Fecha real ITP</th>
-        <th *ngIf="op=='end'">Fecha burofax</th>
+        <th *ngIf="op=='dev'">Indicar fecha devolución</th>
+        <th *ngIf="op=='itp'">Indicar fecha ITP</th>
+        <th *ngIf="op=='end'">Indicar fecha burofax</th>
         <th></th>
       </tr>
     </thead>
@@ -112,13 +112,13 @@
               [checked]="r[h.key][0]">
             </mat-checkbox>
           </span>
+          <!-- Checkboxes fields -->
           <span *ngIf="h.type === 'check' && r[h.key] === true"><mat-icon style="padding-top:8px;" fontIcon="check"></mat-icon></span>
           <span *ngIf="h.type === 'check' && r[h.key] === false"><mat-icon style="padding-top:8px;" fontIcon="clear"></mat-icon></span>
-        </td>
-        <td>
-          <mat-form-field class="dateinternal">
+          <!-- Control fields -->
+          <mat-form-field *ngIf="h.type === 'control'" class="dateinternal">
             <mat-label>Fecha</mat-label>
-            <input matInput [matDatepicker]="datepicker" [formControl]="dateControl" (dateChange)="change($event, r)">
+            <input matInput [matDatepicker]="datepicker" [formControl]="r[h.key]" (dateChange)="change($event, r)">
             <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
             <mat-datepicker #datepicker></mat-datepicker>
           </mat-form-field>

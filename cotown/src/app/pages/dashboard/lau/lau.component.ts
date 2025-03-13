@@ -63,16 +63,19 @@ export class LauDashboardComponent implements OnInit {
   public prevnext: any[][] = [];
   public header: { key: string, value: string, sort: string, type: string } [] = [];
   public headerFields: { key: string, value: string, sort: string, type: string, filter: string[] }[] = [
-    { key:"id",                   value:"#",                         sort:"", type: "text",   filter: [] },
-    { key:"Resource",             value:"Recurso",                   sort:"", type: "text",   filter: [] }, 
-    { key:"Customer",             value:"Inquilino",                 sort:"", type: "text",   filter: [] }, 
-    { key:"Dates",                value:"Fechas contrato",           sort:"", type: "date",   filter: [] },
-    { key:"Deposit",              value:"Fianza depositada",         sort:"", type: "number", filter: ["dev"] }, 
-    { key:"Deposit_required",     value:"Fianza a devolver",         sort:"", type: "number", filter: ["dev"] }, 
-    { key:"Deposit_return_date",  value:"Fecha prevista devolución", sort:"", type: "date",   filter: ["dev"] }, 
-    { key:"Compensation",         value:"Indemnización",             sort:"", type: "number", filter: ["itp"] }, 
-    { key:"Compensation_date",    value:"Fecha indemnización",       sort:"", type: "date",   filter: ["itp"] }, 
-    { key:"ITP_required_date",    value:"Fecha prevista ITP",        sort:"", type: "date",   filter: ["itp"] }, 
+    { key:"id",                    value:"#",                         sort:"", type: "text",    filter: [] },
+    { key:"Resource",              value:"Recurso",                   sort:"", type: "text",    filter: [] }, 
+    { key:"Customer",              value:"Inquilino",                 sort:"", type: "text",    filter: [] }, 
+    { key:"Dates",                 value:"Fechas contrato",           sort:"", type: "date",    filter: [] },
+    { key:"Deposit",               value:"Fianza depositada",         sort:"", type: "number",  filter: ["dev"] }, 
+    { key:"Deposit_required",      value:"Fianza a devolver",         sort:"", type: "number",  filter: ["dev"] }, 
+    { key:"Deposit_required_date", value:"Fecha prevista devolución", sort:"", type: "date",    filter: ["dev"] }, 
+    { key:"Deposit_return_date",   value:"Fecha devolución",          sort:"", type: "control", filter: ["dev"] }, 
+    { key:"Compensation",          value:"Indemnización",             sort:"", type: "number",  filter: ["itp"] }, 
+    { key:"Compensation_date",     value:"Fecha indemnización",       sort:"", type: "date",    filter: ["itp"] }, 
+    { key:"ITP_required_date",     value:"Fecha prevista ITP",        sort:"", type: "date",    filter: ["itp"] }, 
+    { key:"ITP_date",              value:"Fecha ITP",                 sort:"", type: "control", filter: ["itp"] }, 
+    { key:"Burofax_date",          value:"Fecha burofax",             sort:"", type: "control", filter: ["end"] }, 
   ];
 
   // Date control
@@ -184,10 +187,12 @@ export class LauDashboardComponent implements OnInit {
           "Date_estimated": this.formatDate(o.Date_estimated),
           "Deposit": this.formatAmount(o.Deposit),
           "Deposit_required": this.formatAmount(o.Deposit_Required),
-          "Deposit_return_date": this.formatDate(o.Deposit_return_date),
+          "Deposit_return_date": new FormControl<any>(o.Deposit_return_date),
           "Compensation": this.formatAmount(o.Compensation),
           "Compensation_date": this.formatDate(o.Compensation_date),
           "ITP_required_date": this.formatDate(o.ITP_required_date),
+          "ITP_date": new FormControl<any>(o.ITP_date),
+          "Burofax_date": new FormControl<any>(o.Burofax_date)
         }
       });
     });      
@@ -294,31 +299,30 @@ export class LauDashboardComponent implements OnInit {
 
   change(event: any, row: any) {
     row["Changed"] = true;
-    row["Date"] = this.datePipe.transform(this.dateControl.value, "yyyy-MM-dd");
   }
 
   save(row: any) {
     // GraphQL variables
     const variables: any = {
       id: row.id,
-      date: row["Date"],
+      date: null,
     }
     let query = '';
-    if (this.op == 'dev')
+    if (this.op == 'dev') {
       query = BOOKING_OTHER_UPDATE_DEV;
-    if (this.op == 'itp')
+      variables.date = this.datePipe.transform(row.Deposit_return_date.value, "yyyy-MM-dd");
+    } else if (this.op == 'itp') {
       query = BOOKING_OTHER_UPDATE_ITP;
-    if (this.op == 'end')
+      variables.date = this.datePipe.transform(row.ITP_date.value, "yyyy-MM-dd");
+    } else {
       query = BOOKING_OTHER_UPDATE_END;
-    
+      variables.date = this.datePipe.transform(row.Burofax_date.value, "yyyy-MM-dd");
+    }
+
     // Update
     this.isLoading = true;
     this.apollo.setData(query, variables).subscribe({
       next: (res) => {
-        const index = this.rows.findIndex(r => r.id === row.id);
-        if (index !== -1) {
-          this.rows.splice(index, 1);
-        }
         this.isLoading = false;
       }, 
       error: (err)  => {

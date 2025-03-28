@@ -75,7 +75,6 @@ export class CustomerService {
     this.readOnly['tutor_name'] = (this.customer.tutor_name === '' || this.customer.tutor_name === null );
     this.readOnly['tutor_email'] = (this.customer.tutor_email === '' || this.customer.tutor_email === null);
     this.readOnly['tutor_phones'] = (this.customer.tutor_phones === '' || this.customer.tutor_phones === null);
-    this.readOnly['school_id'] = (this.customer.school_id === null);
     this.readOnly['payment_method_id'] = (this.customer.payment_method_id === null);
     this.readOnly['iban'] = (this.customer.iban === '' || this.customer.iban === null);
     this.readOnly['same_account'] = (this.customer.same_account === '' || this.customer.same_account === null);

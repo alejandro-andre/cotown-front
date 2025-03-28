@@ -35,6 +35,8 @@ export const GET_BOOKING_BY_ID = `query booking($id: Int){
       id
       name: Name
     }
+    school_other: Other_school
+    company: Company
     building: BuildingViaBuilding_id {
       id
       name: Name
@@ -134,9 +136,7 @@ export const UPDATE_BOOKING = `mutation(
   $checkintime: String,
   $checkouttime: String,
   $optionin: Int,
-  $optionout: Int,
-  $selectedSchool: Int,
-  $selectedReason: Int
+  $optionout: Int
 ){
   data: Booking_BookingUpdate( where:{ id: {EQ: $id}}
     entity:{
@@ -149,8 +149,6 @@ export const UPDATE_BOOKING = `mutation(
       Check_out_time: $checkouttime
       Check_in_option_id: $optionin
       Check_out_option_id: $optionout
-      School_id: $selectedSchool,
-      Reason_id: $selectedReason
     }
   ){
     id

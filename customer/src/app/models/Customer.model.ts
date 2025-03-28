@@ -25,7 +25,6 @@ export class Customer implements ICustomer {
   tutor_email: string | null = null;
   tutor_phones: string | null = null;
   id_type_id: number | null = null;
-  school_id: number | null = null;
   payment_method_id: number | null = null;
   iban: string = '';
   same_account: string = '';
@@ -70,7 +69,6 @@ export class Customer implements ICustomer {
     this.tutor_name = data.tutor_name;
     this.tutor_email = data.tutor_email;
     this.tutor_phones = data.tutor_phones;
-    this.school_id = data.school_id || null;
 
     this.payment_method_id = data.payment_method_id || null;
     this.iban = data.iban || '';

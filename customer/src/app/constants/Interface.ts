@@ -72,7 +72,6 @@ export interface ICustomer extends IBase {
   document: string | null,
   country_origin_id: number | null,
   id_type_id: number | null,
-  school_id?: number | null,
   gender_id?: number | null,
   language_id: number | null,
   nationality_id: number | null,
@@ -167,6 +166,8 @@ export interface IBooking {
   deposit: number
   reason: IBase,
   school: IBase,
+  school_other: string | null,
+  company: string | null,
   contract_id: string | null,
   contract_status: string | null,
   contract_signed: string | null,

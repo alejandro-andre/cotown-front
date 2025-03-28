@@ -61,7 +61,28 @@
             </button>
           </div>
     
-        </div>
+          <div class="pure-u-1 pure-u-lg-1-5">
+            <mat-form-field>
+              <mat-label>{{ 'reason' | translate }}</mat-label>
+              <input matInput placeholder="{{'reason' | translate}}" [ngModel]="reasonName" readonly>
+            </mat-form-field>
+          </div>
+  
+          <div class="pure-u-1 pure-u-lg-2-5">
+            <mat-form-field>
+              <mat-label>{{ 'school' | translate }}</mat-label>
+              <input matInput placeholder="{{ 'school' | translate}}" [ngModel]="schoolName" readonly>
+            </mat-form-field>
+          </div>
+  
+          <div class="pure-u-1 pure-u-lg-2-5">
+            <mat-form-field>
+              <mat-label>{{ 'company' | translate }}</mat-label>
+              <input matInput placeholder="{{ 'company' | translate}}" [ngModel]="company" readonly>
+            </mat-form-field>
+          </div>
+  
+      </div>
       </div>
 
       <!-- Request -->
@@ -96,36 +117,6 @@
                 <mat-label>{{ 'place_type' | translate }}</mat-label>
                 <input matInput placeholder="{{'place_type' | translate}}" [ngModel]="placeType" readonly>
               </mat-form-field>
-            </div>
-    
-            <div class="pure-u-1 pure-u-lg-1-2">
-              <mat-form-field *ngIf="!isEditableReason">
-                <mat-label>{{ 'reason' | translate }}</mat-label>
-                <input matInput placeholder="{{'reason' | translate}}" [ngModel]="reasonName" readonly>
-              </mat-form-field>
-              <mat-form-field *ngIf="isEditableReason">
-                <mat-label>{{ 'reason' | translate }}</mat-label>
-                <mat-select [(ngModel)]="selectedReason" (selectionChange)="enableSave()">
-                  <mat-option *ngFor="let c of lookupService.reasons" [value]="c.id">
-                  {{ isSpanish ? c.name : c.name_en  }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-    
-            <div class="pure-u-1 pure-u-lg-1-2">
-              <mat-form-field *ngIf="!isEditableSchool">
-                <mat-label>{{ 'school' | translate }}</mat-label>
-                <input matInput placeholder="{{ 'school' | translate}}" [ngModel]="schoolName" readonly>
-              </mat-form-field>
-              <mat-form-field *ngIf="isEditableSchool">
-                <mat-label>{{ 'school' | translate }}</mat-label>
-                <mat-select [(ngModel)]="selectedSchool" (selectionChange)="enableSave()">
-                  <mat-option *ngFor="let school of lookupService.schools" [value]="school.id">
-                  {{ school.name }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>      
             </div>
     
           </div>

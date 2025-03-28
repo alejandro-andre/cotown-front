@@ -186,11 +186,6 @@ export class MyDataComponent implements OnInit {
     return this.lookupService.countries.find((elem) => elem.id === this.customer.bank_country_id)?.name_en || '';
   }
 
-  // Return school name of current customer
-  get school(): string {
-    return this.lookupService.schools.find((elem) => elem.id === this.customer.school_id)?.name || '';
-  }
-
   // Return formated birth_date of current customer
   get birthDate(): string | null {
     const date = this.birth_dateControl.value;

@@ -34,7 +34,6 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
     document: Document
     country_origin_id: Country_origin_id
     id_type_id: Id_type_id
-    school_id: School_id
     gender_id:  Gender_id
     language_id: Language_id
     nationality_id: Nationality_id
@@ -100,6 +99,8 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
         id
         name: Name
       }
+      school_other: Other_school
+      company: Company
       building: BuildingViaBuilding_id {
         id
         name: Name
@@ -233,7 +234,6 @@ export const UPDATE_CUSTOMER = `
     $tutor_name: String
     $tutor_email: String
     $tutor_phones: String
-    $school_id: Int
     $payment_method_id: Int
     $iban: String
     $same_account: Boolean
@@ -261,7 +261,6 @@ export const UPDATE_CUSTOMER = `
       Tutor_email: $tutor_email
       Tutor_phones: $tutor_phones
       Country_origin_id: $country_origin_id
-      School_id: $school_id
       Gender_id: $gender_id
       Language_id: $language_id
       Nationality_id:$nationality_id

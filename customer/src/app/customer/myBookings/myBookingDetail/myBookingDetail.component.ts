@@ -110,6 +110,7 @@ export class MyBookingDetailComponent {
       this.isLoading = false;
       const found = this.customerService.customer.bookings?.find((b: IBooking) => b.id === parseInt(res['id']));
       if (found) {
+        console.log(found);
         this.setBooking(found)
         this.getPdfsContracts();
       }
@@ -175,7 +176,13 @@ export class MyBookingDetailComponent {
   }
 
   get schoolName(): string {
+    if (this.booking.school?.id == 1)
+      return this.booking.school?.name + ' - ' + this.booking.school_other;
     return this.booking.school?.name || '';
+  }
+
+  get company(): string {
+    return this.booking.company || '';
   }
 
   get check_in_option(): string {

@@ -27,6 +27,11 @@ export default {
     return axiosInstance.get('dashboardlau/' + type, { params: params });
   },
 
+  getAdmon(type: string, token: string, params: any): Promise<AxiosResponse> {
+    params['access_token'] = token;
+    return axiosInstance.get('dashboardadmon/' + type, { params: params });
+  },
+
   getLabels(id: number, locale: string, token: string): Promise<AxiosResponse> {
     return axiosInstance.get('labels/' + id + '/' + locale, { params: { 'access_token': token } } );
   }

@@ -6,6 +6,7 @@ import { GeneralDashboardComponent } from './pages/dashboard/general/general.com
 import { OperationsDashboardComponent } from './pages/dashboard/operations/operations.component';
 import { ReportsComponent } from './pages/reports/reports.component';
 import { LauDashboardComponent } from './pages/dashboard/lau/lau.component';
+import { AdmonDashboardComponent } from './pages/dashboard/admon/admon.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard' ,  pathMatch: 'full' },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'dashboard', component: GeneralDashboardComponent },
   { path: 'operations', component: OperationsDashboardComponent },
   { path: 'lau', component: LauDashboardComponent },
+  { path: 'admon', component: AdmonDashboardComponent },
 ];
 
 @NgModule({

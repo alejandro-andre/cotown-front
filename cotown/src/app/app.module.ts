@@ -34,9 +34,10 @@ import { MonthYearPickerFormatDirective } from './plugins/month-year-picker-form
 import { PlanningComponent } from './pages/planning/planning.component';
 import { ReportsComponent } from './pages/reports/reports.component';
 import { LauDashboardComponent } from './pages/dashboard/lau/lau.component';
+import { AdmonDashboardComponent } from './pages/dashboard/admon/admon.component';
+import { OperationsDashboardComponent } from './pages/dashboard/operations/operations.component';
 import { ConfirmationComponent } from './pages/confirmation/confirmation.component';
 import { GeneralDashboardComponent } from './pages/dashboard/general/general.component';
-import { OperationsDashboardComponent } from './pages/dashboard/operations/operations.component';
 import { SharedModule } from './shared/shared.module';
 
 registerLocaleData(localeES, 'es-ES');
@@ -53,6 +54,7 @@ export function createTranslateLoader(http: HttpClient) {
     GeneralDashboardComponent,
     OperationsDashboardComponent,
     LauDashboardComponent,
+    AdmonDashboardComponent,
     ReportsComponent,
     ConfirmationComponent,
     MonthYearPickerFormatDirective

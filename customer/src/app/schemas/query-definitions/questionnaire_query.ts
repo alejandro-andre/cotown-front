@@ -16,3 +16,24 @@ export const GET_QUESTIONNAIRE_BY_TYPE = `query q ($type: Auxiliar_Questionnaire
       }
   }
 }`;
+
+export const INSERT_QUESTIONNAIRE_PHOTO = `mutation ($questionnaireId: Int! $image: Models_DocumentTypeInputType $comments: String) {
+  data: Booking_Booking_photoCreate(
+    entity: {
+      Questionnaire_id: $questionnaireId
+      Image: $image
+      Comments: $comments
+    }
+  ) {
+    id
+    Questionnaire_id
+    Comments
+    Image {
+      oid
+      name
+      thumbnail
+      type
+    }
+  }
+}
+`;

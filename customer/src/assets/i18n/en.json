@@ -140,6 +140,8 @@
   "questionnairetext_checkout": "",
   "questionnaire_issues": "Issues",
   "questionnairetext_issues": "Is there any issue you would like to report?",
+  "questionnaire_upload_media": "Upload photos or videos",
+  "questionnaire_upload_media_description": "You can attach one or more media files",
   "reason": "Stay reason",
   "rent": "Rent",
   "rent_contract": "Rent contract",

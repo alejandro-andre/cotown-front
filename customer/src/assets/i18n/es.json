@@ -140,6 +140,8 @@
   "questionnairetext_checkout": "",
   "questionnaire_issues": "Incidencias",
   "questionnairetext_issues": "¿Alguna incidencia que nos quieras reportar?",
+  "questionnaire_upload_media": "Sube fotos o videos",
+  "questionnaire_upload_media_description": "Puedes añadir uno o más archivos multimedia",
   "reason": "Motivo de estancia",
   "rent": "Renta",
   "rent_contract": "Contrato de rentas",

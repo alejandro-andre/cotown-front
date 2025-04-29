@@ -2,11 +2,13 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { GET_QUESTIONNAIRE_BY_TYPE } from 'src/app/schemas/query-definitions/questionnaire_query';
+import { GET_QUESTIONNAIRE_BY_TYPE, INSERT_QUESTIONNAIRE_PHOTO } from 'src/app/schemas/query-definitions/questionnaire_query';
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
+import { FileService } from 'src/app/services/file.service';
 import { Constants } from 'src/app/constants/Constants';
 import { AxiosApi } from 'src/app/services/axios-api.service';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'app-my-questionnaires',
@@ -28,12 +30,18 @@ export class MyQuestionnairesComponent implements OnInit {
   public star: number = 5;
   public issues: any = null;
 
+  // Media
+  mediaPreviews: { type: 'image' | 'video', url: string }[] = [];
+  selectedFiles: File[] = [];
+
   // Constructor
   constructor(
     public customerService: CustomerService,
-    private apolloApi: ApolloQueryApi,
+    private fileService: FileService,
+    private apollo: ApolloQueryApi,
     private axiosApi: AxiosApi,
     public translate: TranslateService,
+    private modalService: ModalService
   ) { }
 
   // On init
@@ -52,7 +60,7 @@ export class MyQuestionnairesComponent implements OnInit {
     this.questions = null;
     this.issues = null;
     if (this.questionnaire) {
-      this.apolloApi.getData(GET_QUESTIONNAIRE_BY_TYPE, { type: this.questionnaire.type }).subscribe((res: any) => {
+      this.apollo.getData(GET_QUESTIONNAIRE_BY_TYPE, { type: this.questionnaire.type }).subscribe((res: any) => {
         const data = res.data;
         if(data && data.data) {
           this.questions = data.data;
@@ -74,7 +82,36 @@ export class MyQuestionnairesComponent implements OnInit {
   onChange(value: any) {
   }
 
+  onFilesSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      const files = Array.from(input.files);
+      this.selectedFiles = files;
+      this.mediaPreviews = [];
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          if (reader.result) {
+            const fileType = file.type.startsWith('image/')
+              ? 'image'
+              : file.type.startsWith('video/')
+                ? 'video'
+                : null;
+            if (fileType) {
+              this.mediaPreviews.push({
+                type: fileType,
+                url: reader.result as string
+              });
+            }
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  }
+
   save() {
+    // Save questions
     this.isLoading = true;
     this.axiosApi.answerQuestionnaire(this.questionnaire.id, this.questions, this.issues).then((res: any) => {
       this.isLoading = false;
@@ -83,6 +120,23 @@ export class MyQuestionnairesComponent implements OnInit {
           b.questionnaires = b.questionnaires.filter((q: any) => this.questionnaire.id != q.id);
         })
       }
+      
+      // Save photos
+      this.selectedFiles.forEach((f: any) => {
+        const variables = {
+          questionnaireId: this.questionnaire.id,
+          image: null,
+          comnets: ""
+        };
+        this.apollo.setData(INSERT_QUESTIONNAIRE_PHOTO, variables).subscribe({
+          next: (res) => {
+          }, 
+          error: (err)  => {
+          }
+        })
+      });
+
+      // Init
       this.ngOnInit();
     });
   }

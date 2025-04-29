@@ -113,7 +113,11 @@
           <span *ngIf="h.type === 'check' && r[h.key] === true"><mat-icon style="padding-top:8px;" fontIcon="check"></mat-icon></span>
           <span *ngIf="h.type === 'check' && r[h.key] === false"><mat-icon style="padding-top:8px;" fontIcon="clear"></mat-icon></span>
           <!-- Control fields -->
-          <mat-form-field *ngIf="h.type === 'control'" class="dateinternal">
+          <mat-form-field *ngIf="h.type === 'numbctl'" class="controlinternal">
+            <mat-label>Valor</mat-label>
+            <input matInput type="number" [formControl]="r[h.key]" (change)="change($event, r)">
+          </mat-form-field>
+          <mat-form-field *ngIf="h.type === 'datectl'" class="controlinternal">
             <mat-label>Fecha</mat-label>
             <input matInput [matDatepicker]="datepicker" [formControl]="r[h.key]" (dateChange)="change($event, r)">
             <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>

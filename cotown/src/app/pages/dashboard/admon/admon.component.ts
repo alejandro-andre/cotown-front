@@ -6,14 +6,12 @@ import { ApolloQueryApi } from "src/app/services/apollo-api.service";
 import { Building, City } from "src/app/constants/Interfaces";
 import { CITIES_QUERY } from "src/app/schemas/query-definitions/city.query";
 import { BUILDINGS_BY_LOCATION_QUERY, BUILDINGS_QUERY } from "src/app/schemas/query-definitions/building.query";
+import { PAYMENT_UPDATE, DEPOSIT_UPDATE } from "src/app/schemas/query-definitions/admon.query";
 import { Constants } from "src/app/constants/Constants";
 import { FormControl, FormGroup } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { LanguageService } from "src/app/services/language.service";
 import { ActivatedRoute } from "@angular/router";
-import { BOOKING_OTHER_UPDATE_DEV } from "src/app/schemas/query-definitions/booking.query";
-import { BOOKING_OTHER_UPDATE_ITP } from "src/app/schemas/query-definitions/booking.query";
-import { BOOKING_OTHER_UPDATE_END } from "src/app/schemas/query-definitions/booking.query";
 
 @Component({ 
   selector: "app-dashboard-admon",
@@ -69,13 +67,13 @@ export class AdmonDashboardComponent implements OnInit {
     { key:"Amount",                value:"Importe",                       sort:"", type: "number",  filter: ["pay"] }, 
     { key:"Concept",               value:"Concepto/Facturas/Comentarios", sort:"", type: "text",    filter: ["pay"] }, 
     { key:"Payment",               value:"Método/Aut/Fecha pago",         sort:"", type: "text",    filter: ["pay"] }, 
-    { key:"Warning_1",             value:"Aviso 1",                       sort:"", type: "control", filter: ["pay"] }, 
-    { key:"Warning_2",             value:"Aviso 3",                       sort:"", type: "control", filter: ["pay"] }, 
-    { key:"Warning_3",             value:"Aviso 3",                       sort:"", type: "control", filter: ["pay"] }, 
+    { key:"Warning_1",             value:"Aviso 1",                       sort:"", type: "datectl", filter: ["pay"] }, 
+    { key:"Warning_2",             value:"Aviso 3",                       sort:"", type: "datectl", filter: ["pay"] }, 
+    { key:"Warning_3",             value:"Aviso 3",                       sort:"", type: "datectl", filter: ["pay"] }, 
     { key:"Deposit_required",      value:"Garantía a devolver",           sort:"", type: "number",  filter: ["dep"] }, 
     { key:"Date_deposit_required", value:"Fecha a devolver",              sort:"", type: "date",    filter: ["dep"] }, 
-    { key:"Deposit_returned",      value:"Garantía devuelta",             sort:"", type: "number",  filter: ["dep"] }, 
-    { key:"Date_deposit_returned", value:"Fecha devuelta",                sort:"", type: "control", filter: ["dep"] }, 
+    { key:"Deposit_returned",      value:"Garantía devuelta",             sort:"", type: "numbctl", filter: ["dep"] }, 
+    { key:"Date_deposit_returned", value:"Fecha devuelta",                sort:"", type: "datectl", filter: ["dep"] }, 
   ];
 
   // Date control
@@ -172,11 +170,12 @@ export class AdmonDashboardComponent implements OnInit {
     if (this.op == 'pay')
       await axiosApi.getPayments(this.apollo.token, params).then((res) => { 
         this.rows = res.data.map((o: any) => { 
+          console.log(o.Warning_1)
           return {
+            "id": o.id,
             "Booking": o.Booking_id + "<br>" + this.formatDate(o.Date_from) + "<br>" + this.formatDate(o.Date_to),
             "Resource": o.Resource,
             "Customer": o.Customer,
-            "id": o.id,
             "Issued_date": this.formatDate(o.Issued_date),
             "Payment": o.Payment_method + "<br>" + (o.Payment_auth || '') + "<br>" + (o.Payment_date || ''),
             "Concept": o.Concept + "<br>" + o.Invoices + "<br>" + (o.Comments || ''),
@@ -192,12 +191,13 @@ export class AdmonDashboardComponent implements OnInit {
       await axiosApi.getDeposits(this.apollo.token, params).then((res) => { 
         this.rows = res.data.map((o: any) => { 
           return {
+            "id": o.Booking_id,
             "Booking": o.Booking_id + "<br>" + this.formatDate(o.Date_from) + "<br>" + this.formatDate(o.Date_to),
             "Resource": o.Resource,
             "Customer": o.Customer,
-            "Deposit_required": this.formatDate(o.Deposit_required), 
+            "Deposit_required": this.formatAmount(o.Deposit_required), 
             "Date_deposit_required": this.formatDate(o.Date_deposit_required),
-            "Deposit_returned": this.formatDate(o.Deposit_returned),
+            "Deposit_returned": new FormControl<any>(o.Deposit_returned),
             "Date_deposit_returned": new FormControl<any>(o.Date_deposit_returned),
           }
         });
@@ -326,18 +326,17 @@ export class AdmonDashboardComponent implements OnInit {
     // GraphQL variables
     const variables: any = {
       id: row.id,
-      date: null,
     }
     let query = '';
-    if (this.op == 'dev') {
-      query = BOOKING_OTHER_UPDATE_DEV;
-      variables.date = this.datePipe.transform(row.Deposit_return_date.value, "yyyy-MM-dd");
-    } else if (this.op == 'itp') {
-      query = BOOKING_OTHER_UPDATE_ITP;
-      variables.date = this.datePipe.transform(row.ITP_date.value, "yyyy-MM-dd");
+    if (this.op == 'pay') {
+      query = PAYMENT_UPDATE;
+      variables.warning_1 = this.datePipe.transform(row.Warning_1.value, "yyyy-MM-dd");
+      variables.warning_2 = this.datePipe.transform(row.Warning_2.value, "yyyy-MM-dd");
+      variables.warning_3 = this.datePipe.transform(row.Warning_3.value, "yyyy-MM-dd");
     } else {
-      query = BOOKING_OTHER_UPDATE_END;
-      variables.date = this.datePipe.transform(row.Burofax_date.value, "yyyy-MM-dd");
+      query = DEPOSIT_UPDATE;
+      variables.deposit_returned = row.Deposit_returned.value;
+      variables.date_deposit_returned = this.datePipe.transform(row.Date_deposit_returned.value, "yyyy-MM-dd");
     }
 
     // Update

@@ -61,14 +61,21 @@ export class AdmonDashboardComponent implements OnInit {
   public prevnext: any[][] = [];
   public header: { key: string, value: string, sort: string, type: string } [] = [];
   public headerFields: { key: string, value: string, sort: string, type: string, filter: string[] }[] = [
-    { key:"id",          value:"Pago",                          sort:"", type: "number",  filter: [] },
-    { key:"Issued_date", value:"Emitido",                       sort:"", type: "text",    filter: [] }, 
-    { key:"Amount",      value:"Importe",                       sort:"", type: "number",  filter: [] }, 
-    { key:"Concept",     value:"Concepto/Facturas/Comentarios", sort:"", type: "text",    filter: [] }, 
-    { key:"Payment",     value:"Método/Aut/Fecha pago",         sort:"", type: "text",    filter: [] }, 
-    { key:"Customer",    value:"Cliente",                       sort:"", type: "text",    filter: [] }, 
-    { key:"Booking",     value:"Reserva",                       sort:"", type: "text",    filter: [] }, 
-    { key:"Resource",    value:"Recurso",                       sort:"", type: "text",    filter: [] }, 
+    { key:"Booking",               value:"Reserva",                       sort:"", type: "text",    filter: [] }, 
+    { key:"Resource",              value:"Recurso",                       sort:"", type: "text",    filter: [] }, 
+    { key:"Customer",              value:"Cliente",                       sort:"", type: "text",    filter: [] }, 
+    { key:"id",                    value:"Pago",                          sort:"", type: "number",  filter: ["pay"] },
+    { key:"Issued_date",           value:"Emitido",                       sort:"", type: "date",    filter: ["pay"] }, 
+    { key:"Amount",                value:"Importe",                       sort:"", type: "number",  filter: ["pay"] }, 
+    { key:"Concept",               value:"Concepto/Facturas/Comentarios", sort:"", type: "text",    filter: ["pay"] }, 
+    { key:"Payment",               value:"Método/Aut/Fecha pago",         sort:"", type: "text",    filter: ["pay"] }, 
+    { key:"Warning_1",             value:"Aviso 1",                       sort:"", type: "control", filter: ["pay"] }, 
+    { key:"Warning_2",             value:"Aviso 3",                       sort:"", type: "control", filter: ["pay"] }, 
+    { key:"Warning_3",             value:"Aviso 3",                       sort:"", type: "control", filter: ["pay"] }, 
+    { key:"Deposit_required",      value:"Garantía a devolver",           sort:"", type: "number",  filter: ["dep"] }, 
+    { key:"Date_deposit_required", value:"Fecha a devolver",              sort:"", type: "date",    filter: ["dep"] }, 
+    { key:"Deposit_returned",      value:"Garantía devuelta",             sort:"", type: "number",  filter: ["dep"] }, 
+    { key:"Date_deposit_returned", value:"Fecha devuelta",                sort:"", type: "control", filter: ["dep"] }, 
   ];
 
   // Date control
@@ -160,26 +167,43 @@ export class AdmonDashboardComponent implements OnInit {
     if (!this.op || !this.cityId)
       return;
 
-    // Get bookings
+    // Get payments
     const params: any = this.get_params();
-    await axiosApi.getAdmon(this.op, this.apollo.token, params).then((res) => { 
-      this.rows = res.data.map((o: any) => { 
+    if (this.op == 'pay')
+      await axiosApi.getPayments(this.apollo.token, params).then((res) => { 
+        this.rows = res.data.map((o: any) => { 
+          return {
+            "Booking": o.Booking_id + "<br>" + this.formatDate(o.Date_from) + "<br>" + this.formatDate(o.Date_to),
+            "Resource": o.Resource,
+            "Customer": o.Customer,
+            "id": o.id,
+            "Issued_date": this.formatDate(o.Issued_date),
+            "Payment": o.Payment_method + "<br>" + (o.Payment_auth || '') + "<br>" + (o.Payment_date || ''),
+            "Concept": o.Concept + "<br>" + o.Invoices + "<br>" + (o.Comments || ''),
+            "Amount": this.formatAmount(o.Amount),
+            "Warning_1": new FormControl<any>(o.Warning_1),
+            "Warning_2": new FormControl<any>(o.Warning_2),
+            "Warning_3": new FormControl<any>(o.Warning_3),
+          }
+        });
+      });      
 
-        // Return data
-        return {
-          "id": o.id,
-          "Issued_date": this.formatDate(o.Issued_date),
-          "Booking": o.Booking_id + "<br>" + this.formatDate(o.Date_from) + "<br>" + this.formatDate(o.Date_to),
-          "Resource": o.Resource + "<br>" + o.Building,
-          "Concept": o.Concept + "<br>" + o.Invoices + "<br>" + (o.Comments || ''),
-          "Payment": o.Payment_method + "<br>" + (o.Payment_auth || '') + "<br>" + (o.Payment_date || ''),
-          "Amount": this.formatAmount(o.Amount),
-          "Customer": o.Customer,
-        }
-      });
-    });      
+    else
+      await axiosApi.getDeposits(this.apollo.token, params).then((res) => { 
+        this.rows = res.data.map((o: any) => { 
+          return {
+            "Booking": o.Booking_id + "<br>" + this.formatDate(o.Date_from) + "<br>" + this.formatDate(o.Date_to),
+            "Resource": o.Resource,
+            "Customer": o.Customer,
+            "Deposit_required": this.formatDate(o.Deposit_required), 
+            "Date_deposit_required": this.formatDate(o.Date_deposit_required),
+            "Deposit_returned": this.formatDate(o.Deposit_returned),
+            "Date_deposit_returned": new FormControl<any>(o.Date_deposit_returned),
+          }
+        });
+      });      
 
-    // Spinner
+      // Spinner
     this.isLoading  = false;
   }
 

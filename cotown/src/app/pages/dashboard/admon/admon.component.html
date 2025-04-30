@@ -96,11 +96,11 @@
       <tr *ngFor="let r of rows" class="link">
         <td *ngFor="let h of header" [style.text-align]="h.type === 'number' ? 'left' : 'left'">
           <!-- Status field -->
-          <span *ngIf="h.type === 'status'" (click)="goPayment(r.id)">{{ getLabel(r[h.key]) }}</span>
+          <span *ngIf="h.type === 'status'" (click)="goRecord(r.id)">{{ getLabel(r[h.key]) }}</span>
           <!-- Text/Date/Input fields -->
-          <span *ngIf="h.type === 'text'"   (click)="goPayment(r.id)" [innerHtml]="r[h.key] | safe"></span>
-          <span *ngIf="h.type === 'number'" (click)="goPayment(r.id)" [innerHtml]="r[h.key] | safe"></span>
-          <span *ngIf="h.type === 'date'"   (click)="goPayment(r.id)" [innerHtml]="r[h.key] | safe"></span>
+          <span *ngIf="h.type === 'text'"   (click)="goRecord(r.id)" [innerHtml]="r[h.key] | safe"></span>
+          <span *ngIf="h.type === 'number'" (click)="goRecord(r.id)" [innerHtml]="r[h.key] | safe"></span>
+          <span *ngIf="h.type === 'date'"   (click)="goRecord(r.id)" [innerHtml]="r[h.key] | safe"></span>
           <span *ngIf="h.type === 'input'"  [innerHtml]="r[h.key] | safe"></span>
           <!-- Boolean fields -->
           <span *ngIf="h.type === 'bool'" >

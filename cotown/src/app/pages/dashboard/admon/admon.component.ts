@@ -207,8 +207,10 @@ export class AdmonDashboardComponent implements OnInit {
     this.isLoading  = false;
   }
 
-  goPayment(id: string) { 
-    const link = "/admin/Billing.Payment/" + id + "/view";
+  goRecord(id: string) { 
+    let link = "/admin/Booking.Booking/" + id + "/view";
+    if (this.op == 'pay')
+      link = "/admin/Billing.Payment/" + id + "/view";
     if (window.opener && !this.parent)
       this.parent = window.opener.parent;
     else if (parent && !this.parent)

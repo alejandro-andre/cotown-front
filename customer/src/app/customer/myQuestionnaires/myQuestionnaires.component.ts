@@ -10,6 +10,8 @@ import { Constants } from 'src/app/constants/Constants';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { ModalService } from 'src/app/services/modal.service';
 
+import { IPayloadFile } from 'src/app/constants/Interface';
+
 @Component({
   selector: 'app-my-questionnaires',
   templateUrl: './myQuestionnaires.component.html',
@@ -111,8 +113,51 @@ export class MyQuestionnairesComponent implements OnInit {
   }
 
   save() {
-    // Save questions
+    // Save photos
     this.isLoading = true;
+    this.selectedFiles.forEach(async (f: File) => {
+
+      // Read file
+      const data = await this.fileService.readFile(f);
+
+      // Thumbnail
+      const uint8Array = new Uint8Array(data);
+      const array = Array.from(uint8Array);
+      const base64String = btoa(array.map(byte => String.fromCharCode(byte)).join(''));
+      const base64DataUrl = `data:${f.type};base64,${base64String}`;
+
+      // Call API
+      const payload: IPayloadFile = {
+        id: 0,
+        data: data,
+        type: f.type,
+      };
+
+      // Upload image
+      await this.axiosApi.uploadImage(payload).then (
+        (res) => {
+          const variables = {
+            questionnaireId: this.questionnaire.id,
+            comments: "",
+            image: {
+              oid: res.data,
+              name: f.name,
+              type: f.type,
+              thumbnail: base64DataUrl
+            }
+          };
+          this.apollo.setData(INSERT_QUESTIONNAIRE_PHOTO, variables).subscribe({
+            next: (r) => {
+            }, 
+            error: (err)  => {
+              console.log(err);
+            }
+          })
+        }
+      )   
+    });
+
+    // Save questions
     this.axiosApi.answerQuestionnaire(this.questionnaire.id, this.questions, this.issues).then((res: any) => {
       this.isLoading = false;
       if (res && res.data === 'ok') {
@@ -120,23 +165,6 @@ export class MyQuestionnairesComponent implements OnInit {
           b.questionnaires = b.questionnaires.filter((q: any) => this.questionnaire.id != q.id);
         })
       }
-      
-      // Save photos
-      this.selectedFiles.forEach((f: any) => {
-        const variables = {
-          questionnaireId: this.questionnaire.id,
-          image: null,
-          comnets: ""
-        };
-        this.apollo.setData(INSERT_QUESTIONNAIRE_PHOTO, variables).subscribe({
-          next: (res) => {
-          }, 
-          error: (err)  => {
-          }
-        })
-      });
-
-      // Init
       this.ngOnInit();
     });
   }

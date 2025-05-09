@@ -121,18 +121,18 @@ export class GeneralDashboardComponent implements OnInit {
 
     // Next checkins
     if (this.status == 'next') 
-      return environment.backURL + '/export/dashboardnext?access_token=' + this.apolloApi.token;
+      return environment.backURL + '/export/bookings_in?access_token=' + this.apolloApi.token;
 
     // Next checkouts
     if (this.status == 'nextout') 
-      return environment.backURL + '/export/dashboardnextout?access_token=' + this.apolloApi.token;
+      return environment.backURL + '/export/bookings_out?access_token=' + this.apolloApi.token;
 
     // Confirmed bookings
     if (this.status == 'ok') 
-      return environment.backURL + '/export/dashboard?status=firmacontrato,contrato,checkinconfirmado&access_token=' + this.apolloApi.token;
+      return environment.backURL + '/export/bookings?status=firmacontrato,contrato,checkinconfirmado&access_token=' + this.apolloApi.token;
 
     // Rest of status
-    return environment.backURL + '/export/dashboard?status=' + this.status + ',' + this.status + '&access_token=' + this.apolloApi.token;
+    return environment.backURL + '/export/bookings?status=' + this.status + ',' + this.status + '&access_token=' + this.apolloApi.token;
   }
 
   goBooking(id: string) { 

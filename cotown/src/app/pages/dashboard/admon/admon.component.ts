@@ -369,7 +369,7 @@ export class AdmonDashboardComponent implements OnInit {
   export() {
     const params: any = this.get_params();
     let queryString = Object.keys(params).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
-    return environment.backURL + '/report/dashboard' + this.op + '?access_token=' + this.apollo.token + '&' + queryString;
+    return environment.backURL + '/report/' + this.op + '?access_token=' + this.apollo.token + '&' + queryString;
   }
 
 }

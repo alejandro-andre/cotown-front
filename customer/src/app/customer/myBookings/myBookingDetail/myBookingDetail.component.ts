@@ -110,7 +110,6 @@ export class MyBookingDetailComponent {
       this.isLoading = false;
       const found = this.customerService.customer.bookings?.find((b: IBooking) => b.id === parseInt(res['id']));
       if (found) {
-        console.log(found);
         this.setBooking(found)
         this.getPdfsContracts();
       }

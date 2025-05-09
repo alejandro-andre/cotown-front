@@ -171,7 +171,6 @@ export class AdmonDashboardComponent implements OnInit {
     if (this.op == 'pay')
       await axiosApi.getPayments(this.apollo.token, params).then((res) => { 
         this.rows = res.data.map((o: any) => { 
-          console.log(o.Warning_1)
           return {
             "id": o.id,
             "Booking": o.Booking_id + "<br>" + this.formatDate(o.Date_from) + "<br>" + this.formatDate(o.Date_to),
@@ -283,8 +282,6 @@ export class AdmonDashboardComponent implements OnInit {
         va = a[key].value || "";
         vb = b[key].value || "";
       }
-      console.log(va);
-      console.log(vb);
       if (type == "number") {
         if (dir == "up")
           return this.parseFloatFromCurrency(va) - this.parseFloatFromCurrency(vb);

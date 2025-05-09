@@ -99,9 +99,6 @@ export class CustomerService {
     const date_to = new Date(booking.date_to);
     const date_now = new Date();
     date_to.setDate(date_now.getDate() - 10);
-    console.log(date_to);
-    console.log(date_now);
-    console.log(date_now > date_to);
     this.readOnly['check_out'] = (booking.check_out === null && date_now > date_to);
     this.readOnly['flight_out'] = (booking.flight_out === null && date_now > date_to);
     this.readOnly['check_out_time'] = (booking.check_out_time === null && date_now > date_to);

@@ -27,7 +27,7 @@ export class LauDashboardComponent implements OnInit {
   private parent: any = null;
 
   // Operation
-  public op!: string;
+  public op = 'dev';
   public dashboards: any[] = [
     {op: 'dev', name: 'Devoluciones de fianza'},
     {op: 'itp', name: 'Pagos ITP'},

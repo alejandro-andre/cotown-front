@@ -9,7 +9,7 @@
         <h1>Operaciones</h1>
       </div>
       <div class="pure-u-1-24" style="margin-top:20px;text-align:right;">
-        <a [href]="link()"><mat-icon style="cursor:pointer;" fontIcon="cloud_download"></mat-icon></a>
+        <a [href]="export()"><mat-icon style="cursor:pointer;" fontIcon="cloud_download"></mat-icon></a>
       </div>
       <div class="pure-u-1-24" style="margin-top:20px;text-align:right;">
         <mat-icon style="cursor:pointer;" onclick="window.open(window.location.href, '_blank');" fontIcon="open_in_new"></mat-icon>   
@@ -40,8 +40,8 @@
               [(ngModel)]="cityId"
               [placeholder]="'nothing' | translate" 
               (selectionChange)="onCity()">
-              <mat-option *ngFor="let citie of cities" [value]="citie.id">
-                {{ citie.name }}
+              <mat-option *ngFor="let city of cities" [value]="city.id">
+                {{ city.name }}
               </mat-option>
             </mat-select>
           </mat-form-field>

@@ -29,8 +29,8 @@
 							[(ngModel)]="selectedCityId"
 							[placeholder]="'nothing' | translate" 
 							(selectionChange)="onSelectCity()">
-							<mat-option *ngFor="let citie of cities" [value]="citie.id">
-								{{ citie.name }}
+							<mat-option *ngFor="let city of cities" [value]="city.id">
+								{{ city.name }}
 							</mat-option>
 						</mat-select>
 					</mat-form-field>

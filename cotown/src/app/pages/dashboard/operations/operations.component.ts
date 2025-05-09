@@ -28,7 +28,7 @@ export class OperationsDashboardComponent implements OnInit {
   private parent: any = null;
 
   // Operation
-  public op!: string;
+  public op = 'nextin';
   public dashboards: any[] = [
     {op: 'nextin', name: 'Próximas entradas'},
     {op: 'checkin', name: 'Entradas'},
@@ -512,7 +512,7 @@ export class OperationsDashboardComponent implements OnInit {
     })
   }
 
-  link() {
+  export() {
     if (!this.op || !this.cityId)
       return;
     const params: any = this.get_params();

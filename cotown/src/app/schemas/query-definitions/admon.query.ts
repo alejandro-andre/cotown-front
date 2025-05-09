@@ -15,11 +15,15 @@ export const PAYMENT_UPDATE = `mutation(
 
 export const DEPOSIT_UPDATE = `mutation(
   $id: Int!
+  $deposit_required: Float
+  $date_deposit_required: String
   $deposit_returned: Float
   $date_deposit_returned: String
 ) {
   data: Booking_BookingUpdate( where: { id: { EQ: $id } }
     entity:{
+      Deposit_required: $deposit_required
+      Date_deposit_required: $date_deposit_required
       Deposit_returned: $deposit_returned
       Date_deposit_returned: $date_deposit_returned
     }

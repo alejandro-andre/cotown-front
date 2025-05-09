@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { DateAdapter } from "@angular/material/core";
+import { environment } from 'src/environments/environment';
 
 import axiosApi from "src/app/services/api.service";
 import { ApolloQueryApi } from "src/app/services/apollo-api.service";
@@ -25,7 +26,7 @@ export class AdmonDashboardComponent implements OnInit {
   private parent: any = null;
 
   // Operation
-  public op!: string;
+  public op = 'pay';
   public dashboards: any[] = [
     {op: 'pay', name: 'Pagos pendientes'},
     {op: 'dep', name: 'Garantías'}
@@ -68,10 +69,10 @@ export class AdmonDashboardComponent implements OnInit {
     { key:"Concept",               value:"Concepto/Facturas/Comentarios", sort:"", type: "text",    filter: ["pay"] }, 
     { key:"Payment",               value:"Método/Aut/Fecha pago",         sort:"", type: "text",    filter: ["pay"] }, 
     { key:"Warning_1",             value:"Aviso 1",                       sort:"", type: "datectl", filter: ["pay"] }, 
-    { key:"Warning_2",             value:"Aviso 3",                       sort:"", type: "datectl", filter: ["pay"] }, 
+    { key:"Warning_2",             value:"Aviso 2",                       sort:"", type: "datectl", filter: ["pay"] }, 
     { key:"Warning_3",             value:"Aviso 3",                       sort:"", type: "datectl", filter: ["pay"] }, 
-    { key:"Deposit_required",      value:"Garantía a devolver",           sort:"", type: "number",  filter: ["dep"] }, 
-    { key:"Date_deposit_required", value:"Fecha a devolver",              sort:"", type: "date",    filter: ["dep"] }, 
+    { key:"Deposit_required",      value:"Garantía a devolver",           sort:"", type: "numbctl", filter: ["dep"] }, 
+    { key:"Date_deposit_required", value:"Fecha a devolver",              sort:"", type: "datectl", filter: ["dep"] }, 
     { key:"Deposit_returned",      value:"Garantía devuelta",             sort:"", type: "numbctl", filter: ["dep"] }, 
     { key:"Date_deposit_returned", value:"Fecha devuelta",                sort:"", type: "datectl", filter: ["dep"] }, 
   ];
@@ -195,8 +196,8 @@ export class AdmonDashboardComponent implements OnInit {
             "Booking": o.Booking_id + "<br>" + this.formatDate(o.Date_from) + "<br>" + this.formatDate(o.Date_to),
             "Resource": o.Resource,
             "Customer": o.Customer,
-            "Deposit_required": this.formatAmount(o.Deposit_required), 
-            "Date_deposit_required": this.formatDate(o.Date_deposit_required),
+            "Deposit_required": new FormControl<any>(o.Deposit_required), 
+            "Date_deposit_required": new FormControl<any>(o.Date_deposit_required),
             "Deposit_returned": new FormControl<any>(o.Deposit_returned),
             "Date_deposit_returned": new FormControl<any>(o.Date_deposit_returned),
           }
@@ -274,12 +275,22 @@ export class AdmonDashboardComponent implements OnInit {
     this.rows = this.rows.sort((a:any, b:any) => {
       let va = String(a[key]);
       let vb = String(b[key]);
+      if (type == "numbctl") {
+        va = a[key].value || "0";
+        vb = b[key].value || "0";
+      }
+      if (type == 'datectl') {
+        va = a[key].value || "";
+        vb = b[key].value || "";
+      }
+      console.log(va);
+      console.log(vb);
       if (type == "number") {
         if (dir == "up")
           return this.parseFloatFromCurrency(va) - this.parseFloatFromCurrency(vb);
         return this.parseFloatFromCurrency(vb) - this.parseFloatFromCurrency(va);
       }
-      if (type == "date") {
+      if (type == "date" || type == "datectl") {
         va = va.substring(6, 10) + va.substring(3, 5) + va.substring(0, 2);
         vb = vb.substring(6, 10) + vb.substring(3, 5) + vb.substring(0, 2);
       }
@@ -337,6 +348,8 @@ export class AdmonDashboardComponent implements OnInit {
       variables.warning_3 = this.datePipe.transform(row.Warning_3.value, "yyyy-MM-dd");
     } else {
       query = DEPOSIT_UPDATE;
+      variables.Deposit_required = row.Deposit_required.value;
+      variables.Date_deposit_required = this.datePipe.transform(row.Date_deposit_required.value, "yyyy-MM-dd");
       variables.deposit_returned = row.Deposit_returned.value;
       variables.date_deposit_returned = this.datePipe.transform(row.Date_deposit_returned.value, "yyyy-MM-dd");
     }
@@ -351,6 +364,12 @@ export class AdmonDashboardComponent implements OnInit {
         this.isLoading = false;
       }
     })
+  }
+
+  export() {
+    const params: any = this.get_params();
+    let queryString = Object.keys(params).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
+    return environment.backURL + '/report/dashboard' + this.op + '?access_token=' + this.apollo.token + '&' + queryString;
   }
 
 }

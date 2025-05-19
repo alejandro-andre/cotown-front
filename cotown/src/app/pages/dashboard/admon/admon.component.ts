@@ -345,8 +345,8 @@ export class AdmonDashboardComponent implements OnInit {
       variables.warning_3 = this.datePipe.transform(row.Warning_3.value, "yyyy-MM-dd");
     } else {
       query = DEPOSIT_UPDATE;
-      variables.Deposit_required = row.Deposit_required.value;
-      variables.Date_deposit_required = this.datePipe.transform(row.Date_deposit_required.value, "yyyy-MM-dd");
+      variables.deposit_required = row.Deposit_required.value;
+      variables.date_deposit_required = this.datePipe.transform(row.Date_deposit_required.value, "yyyy-MM-dd");
       variables.deposit_returned = row.Deposit_returned.value;
       variables.date_deposit_returned = this.datePipe.transform(row.Date_deposit_returned.value, "yyyy-MM-dd");
     }

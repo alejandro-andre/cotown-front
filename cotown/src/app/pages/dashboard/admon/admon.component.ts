@@ -282,7 +282,7 @@ export class AdmonDashboardComponent implements OnInit {
         va = a[key].value || "";
         vb = b[key].value || "";
       }
-      if (type == "number") {
+      if (type == "number" || type == "numbctl") {
         if (dir == "up")
           return this.parseFloatFromCurrency(va) - this.parseFloatFromCurrency(vb);
         return this.parseFloatFromCurrency(vb) - this.parseFloatFromCurrency(va);

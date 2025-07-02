@@ -3,9 +3,9 @@
     mat-icon-button
     class="star"
     *ngFor="let ratingId of ratingArr; index as i"
-    [id]="'star_' + i"
-    (click)="onClick(i)"
-    [ngClass]="getClasses(i)"
+    [id]="'star_' + (i + 1)"
+    (click)="onClick(i + 1)"
+    [ngClass]="getClasses(i + 1)"
   >
     <mat-icon>{{ showIcon(i) }}</mat-icon>
   </button>

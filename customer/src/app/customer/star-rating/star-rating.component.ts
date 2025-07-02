@@ -27,7 +27,7 @@ export class StarRatingComponent implements OnInit, ControlValueAccessor  {
   }
 
   ngOnInit() {
-    for (let index = 0; index <= this.stars; index++) {
+    for (let index = 1; index <= this.stars; index++) {
       this.ratingArr.push(index);
     }
   }

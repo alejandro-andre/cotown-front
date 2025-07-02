@@ -27,7 +27,7 @@ export class StarRatingComponent implements OnInit, ControlValueAccessor  {
   }
 
   ngOnInit() {
-    for (let index = 0; index < this.stars; index++) {
+    for (let index = 0; index <= this.stars; index++) {
       this.ratingArr.push(index);
     }
   }
@@ -62,6 +62,13 @@ export class StarRatingComponent implements OnInit, ControlValueAccessor  {
     } else {
       return 'star_border';
     }
+  }
+
+  getClasses(i: number): { [klass: string]: boolean } {
+    return {
+      selected: this.rating === i,
+      ['color-' + i]: true
+    };
   }
 
 }

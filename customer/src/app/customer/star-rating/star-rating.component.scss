@@ -1,9 +1,42 @@
+.star-container {
+  display: flex;
+  align-items: center;
+}
+
+.star {
+  width: 40px;
+  height: 36px;
+  padding: 0;
+  margin: 0 2px;
+  background-color: transparent;
+  border: 2px solid transparent;
+  border-radius: 0;
+  color: white;
+  font-size: 30px;
+  line-height: 1;
+  opacity: 0.4;
+  transition: none; // ✅ sin animaciones
+}
+
+.star.selected {
+  opacity: 1;
+  border: 3px solid #000;
+}
+
+.color-0  { background-color: #6e1e10; }
+.color-1  { background-color: #802417; }
+.color-2  { background-color: #992d1f; }
+.color-3  { background-color: #b13423; }
+.color-4  { background-color: #cc3c24; }
+.color-5  { background-color: #e6471c; }
+.color-6  { background-color: #f55c1e; }
+.color-7  { background-color: #f7931e; }
+.color-8  { background-color: #faaa3c; }
+.color-9  { background-color: #74c476; }
+.color-10 { background-color: #31a354; }
+
 span {
   padding-left: 20px;
   vertical-align: super;
   font-weight: 700;
-}
-
-.star {
-  color: teal;
 }

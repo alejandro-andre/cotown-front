@@ -29,7 +29,7 @@ export class MyQuestionnairesComponent implements OnInit {
 
   // Answers
   public opt: string = "Sí";
-  public star: number = 5;
+  public star: number = 10;
   public issues: any = null;
 
   // Media
@@ -69,7 +69,7 @@ export class MyQuestionnairesComponent implements OnInit {
           this.questions.forEach((g: any) => {
             g.questions.forEach((q: any) => {
               if (q.type === "puntos")
-                q.value = 5;
+                q.value = 10;
               else if (q.type === "check")
                 q.value = "Sí";
               else

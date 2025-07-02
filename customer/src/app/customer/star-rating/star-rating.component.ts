@@ -17,10 +17,10 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class StarRatingComponent implements OnInit, ControlValueAccessor  {
 
   @Output() change = new EventEmitter<number>();
-  @Input('stars') public stars: number = 5;
+  @Input('stars') public stars: number = 10;
   @Input('of') public of: string = "de";
   
-  public rating: number = 5;
+  public rating: number = 10;
   public ratingArr: any[] = [];
 
   constructor() {

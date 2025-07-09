@@ -404,7 +404,7 @@ export class PlanningComponent {
   }
 
   // Load all resources and bookings
-  async getResourcesAndBookings(): Promise<void> {
+  async getResourcesAndBookings() {
 
     // Clean
     this.resources = [];
@@ -413,7 +413,10 @@ export class PlanningComponent {
 
     // Query
     await this.queryResources();
-    this.queryBookings();
+    await this.queryBookings();
+
+    // Generate planning rows
+    this.generateRows();
   }
 
   // Get filtered resources
@@ -453,7 +456,7 @@ export class PlanningComponent {
   }
 
   // Get filtered bookings
-  queryBookings(): void {
+  async queryBookings() {
 
     // Limit
     const date = this.limit;
@@ -490,88 +493,91 @@ export class PlanningComponent {
         resourceFlatTypeId: this.selectedResourceFlatTypeId,
         resourcePlaceTypeId: this.selectedResourcePlaceTypeId
       };
-      this.getBookings(q, v);
+      await this.getBookings(q, v);
     }
   }
 
   // Get filtered resources
   async getResources(query: string, variables: ApolloVariables | undefined = undefined): Promise<void> {
-    this.apolloApi.getData(query, variables).subscribe((res: any) => {
-      for (const e of res.data.data) {
-        const type = e.resource_type === 'piso' ? e.flat_type.code : e.place_type?.code;
-        const amenities = e.amenities ? e.amenities.map((t: any) => t.amenity_type.increment) : [];
-        if (e.pricing) {
-          const prices = this.calcPrices(e.building.id, e.flat_type.id, e.place_type?.id || 0, e.pricing.multiplier, amenities)
-          this.resources.push({
-            resource_id: e.id,
-            resource_code: e.code,
-            resource_type: e.resource_type,
-            resource_building_id: e.building.id,
-            resource_flat_type: e.flat_type.id,
-            resource_place_type: e.place_type?.id || -1,
-            resource_info: type || '',
-            resource_notes: e.notes || '',
-            resource_rate: e.pricing.multiplier,
-            resource_prices: prices
-          });
+    return new Promise((resolve) => {
+      this.apolloApi.getData(query, variables).subscribe((res: any) => {
+        for (const e of res.data.data) {
+          const type = e.resource_type === 'piso' ? e.flat_type.code : e.place_type?.code;
+          const amenities = e.amenities ? e.amenities.map((t: any) => t.amenity_type.increment) : [];
+          if (e.pricing) {
+            const prices = this.calcPrices(e.building.id, e.flat_type.id, e.place_type?.id || 0, e.pricing.multiplier, amenities);
+            this.resources.push({
+              resource_id: e.id,
+              resource_code: e.code,
+              resource_type: e.resource_type,
+              resource_building_id: e.building.id,
+              resource_flat_type: e.flat_type.id,
+              resource_place_type: e.place_type?.id || -1,
+              resource_info: type || '',
+              resource_notes: e.notes || '',
+              resource_rate: e.pricing.multiplier,
+              resource_prices: prices
+            });
+          }
         }
-      }
+
+        resolve();
+      });
     });
   }
 
   // Get filtered bookings
-  getBookings(query: string, variables: ApolloVariables | undefined = undefined): void {
-    this.bookings = [];
-    this.apolloApi.getData(query, variables).subscribe((response: any) => {
-      for (const booking of response.data.data) {
+  getBookings(query: string, variables: ApolloVariables | undefined = undefined): Promise<void> {
+    return new Promise((resolve) => {
+      this.bookings = [];
+      this.apolloApi.getData(query, variables).subscribe((response: any) => {
+        for (const booking of response.data.data) {
 
-        // Bookings
-        let age, email, phone, name, code;
-        if (booking.booking && booking.booking.customer) {
-          age = getAge(booking.booking.customer.birth_date);
-          name = booking.booking?.customer.name;
-          phone = booking.booking?.customer.phones;
-          email = booking.booking?.customer.email;
-          code = booking.booking_id
-        }
-
-        // Group bookings
-        if (!booking.booking_id && booking.group) {
-          email = booking.group.customer?.email;
-          phone = booking.group.customer?.phones;
-          name = booking.group.customer?.name
-          code = `G${booking.group.id}`
-          if (booking.rooms && booking.rooms.name !== null) {
-            const aux = `${name} (${booking.rooms.name})`;
-            name = aux;
+          // Bookings
+          let age, email, phone, name, code;
+          if (booking.booking && booking.booking.customer) {
+            age = getAge(booking.booking.customer.birth_date);
+            name = booking.booking?.customer.name;
+            phone = booking.booking?.customer.phones;
+            email = booking.booking?.customer.email;
+            code = booking.booking_id
           }
+
+          // Group bookings
+          if (!booking.booking_id && booking.group) {
+            email = booking.group.customer?.email;
+            phone = booking.group.customer?.phones;
+            name = booking.group.customer?.name
+            code = `G${booking.group.id}`
+            if (booking.rooms && booking.rooms.name !== null) {
+              const aux = `${name} (${booking.rooms.name})`;
+              name = aux;
+            }
+          }
+
+          // Store each booking
+          this.bookings.push({
+            Booking_code: code,
+            Booking_lock: booking.lock,
+            Booking_status: booking.status,
+            Booking_date_from: booking.date_from,
+            Booking_date_to: booking.date_to,
+            Booking_check_in: booking.booking?.check_in,
+            Booking_check_out: booking.booking?.check_out,
+            Booking_comments: booking.booking?.comments || '',
+            Resource_id: booking.resource?.id || 0,
+            Resource_code: booking.resource?.code || '',
+            Customer_name: name || '',
+            Customer_gender: booking.booking?.customer.gender?.code || '',
+            Customer_country: booking.booking?.customer.country?.name || '',
+            Customer_nationality: booking.booking?.customer.nationality?.name || '',
+            Customer_email: email || '',
+            Customer_phone: phone || '',
+            Customer_age: age || '',
+          });
         }
-
-        // Store each booking
-        this.bookings.push({
-          Booking_code: code,
-          Booking_lock: booking.lock,
-          Booking_status: booking.status,
-          Booking_date_from: booking.date_from,
-          Booking_date_to: booking.date_to,
-          Booking_check_in: booking.booking?.check_in,
-          Booking_check_out: booking.booking?.check_out,
-          Booking_comments: booking.booking?.comments || '',
-          Resource_id: booking.resource?.id || 0,
-          Resource_code: booking.resource?.code || '',
-          Customer_name: name || '',
-          Customer_gender: booking.booking?.customer.gender?.code || '',
-          Customer_country: booking.booking?.customer.country?.name || '',
-          Customer_nationality: booking.booking?.customer.nationality?.name || '',
-          Customer_email: email || '',
-          Customer_phone: phone || '',
-          Customer_age: age || '',
-        });
-      }
-
-      // Generate planning rows
-      this.generateRows();
-
+        resolve();
+      });
     });
   }
 

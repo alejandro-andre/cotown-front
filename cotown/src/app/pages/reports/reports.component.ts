@@ -28,6 +28,7 @@ export class ReportsComponent {
     { name: 'precios',           cotown: true,  provider: false, icon: 'monetization_on',    filter: false, text: 'Precios' },
     { name: 'weekly',            cotown: true,  provider: false, icon: 'blur_linear',        filter: false, text: 'Reservas PowerBI', url: 'weekly?fdesde=2020-01-01&fhasta=2099-12-31' },
     { name: 'devoluciones',      cotown: true,  provider: false, icon: 'cached',             filter: false, text: 'Devoluciones' },
+    { name: 'depositreturns',    cotown: true,  provider: false, icon: 'find_replace',       filter: false, text: 'Previsión de devoluciones' },
     { name: 'reservaslau',       cotown: true,  provider: false, icon: 'home',               filter: false, text: 'Reservas LAU/Otros' },
     { name: 'ltc',               cotown: true,  provider: false, icon: 'reorder',            filter: false, text: 'Análisis LT LAU' },
     { name: 'cuestionarios',     cotown: true,  provider: false, icon: 'mood',               filter: false, text: 'Cuestionarios de satisfacción' },

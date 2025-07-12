@@ -42,6 +42,7 @@ export class ReportsComponent {
     { name: 'sepa',              cotown: true,  provider: false, icon: 'account_balance',    filter: false, text: 'SEPA' },
     { name: 'ingresos',          cotown: true,  provider: true,  icon: 'receipt',            filter: true,  text: 'Ingresos' },
     { name: 'ingresos_prop',     cotown: false, provider: true,  icon: 'receipt',            filter: true,  text: 'Ingresos' },
+    { name: 'descuentos',        cotown: true,  provider: false, icon: 'local_play',         filter: true,  text: 'Descuentos' },
     { name: 'contratos',         cotown: true,  provider: false, icon: 'playlist_add_check', filter: true,  text: 'Contratos' },
     { name: 'forecast',          cotown: true,  provider: false, icon: 'query_stats',        filter: true,  text: 'Plantilla Forecast' },
   ];
@@ -151,7 +152,7 @@ export class ReportsComponent {
       + '&access_token=' + this.apolloApi.token;
 
     // Reservas y contratos
-  } else if (data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "marketplaces" || data == "pagosrecibidos" || data == "contratos" || data == "forecast") {
+  } else if (data == "descuentos" || data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "marketplaces" || data == "pagosrecibidos" || data == "contratos" || data == "forecast") {
     const from = moment(this.dateRangeControl.value.start);
     const to = moment(this.dateRangeControl.value.end).add(1,'d');
     l = environment.backURL + '/export/' + data

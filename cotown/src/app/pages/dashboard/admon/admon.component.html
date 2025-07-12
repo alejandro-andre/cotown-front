@@ -104,7 +104,8 @@
           <span *ngIf="h.type === 'bool'" >
             <mat-checkbox 
               style="text-align: center;"
-              [checked]="r[h.key][0]">
+              [checked]="r[h.key][0]"
+              (change)="emitCheck($event, h.key, r)">
             </mat-checkbox>
           </span>
           <!-- Checkboxes fields -->

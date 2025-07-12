@@ -19,6 +19,7 @@ export const DEPOSIT_UPDATE = `mutation(
   $date_deposit_required: String
   $deposit_returned: Float
   $date_deposit_returned: String
+  $deposit_locked: Boolean
 ) {
   data: Booking_BookingUpdate( where: { id: { EQ: $id } }
     entity:{
@@ -26,6 +27,7 @@ export const DEPOSIT_UPDATE = `mutation(
       Date_deposit_required: $date_deposit_required
       Deposit_returned: $deposit_returned
       Date_deposit_returned: $date_deposit_returned
+      Deposit_locked: $deposit_locked
     }
   ) { id }
 }`;

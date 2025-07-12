@@ -10,6 +10,7 @@ import { BUILDINGS_BY_LOCATION_QUERY, BUILDINGS_QUERY } from "src/app/schemas/qu
 import { PAYMENT_UPDATE, DEPOSIT_UPDATE } from "src/app/schemas/query-definitions/admon.query";
 import { Constants } from "src/app/constants/Constants";
 import { FormControl, FormGroup } from "@angular/forms";
+import { MatCheckboxChange } from "@angular/material/checkbox";
 import { DatePipe } from "@angular/common";
 import { LanguageService } from "src/app/services/language.service";
 import { ActivatedRoute } from "@angular/router";
@@ -75,6 +76,7 @@ export class AdmonDashboardComponent implements OnInit {
     { key:"Date_deposit_required", value:"Fecha a devolver",              sort:"", type: "datectl", filter: ["dep"] }, 
     { key:"Deposit_returned",      value:"Garantía devuelta",             sort:"", type: "numbctl", filter: ["dep"] }, 
     { key:"Date_deposit_returned", value:"Fecha devuelta",                sort:"", type: "datectl", filter: ["dep"] }, 
+    { key:"Deposit_locked",        value:"Retenida temporalmente",        sort:"", type: "bool",    filter: ["dep"] }, 
   ];
 
   // Date control
@@ -199,6 +201,7 @@ export class AdmonDashboardComponent implements OnInit {
             "Date_deposit_required": new FormControl<any>(o.Date_deposit_required),
             "Deposit_returned": new FormControl<any>(o.Deposit_returned),
             "Date_deposit_returned": new FormControl<any>(o.Date_deposit_returned),
+            "Deposit_locked": [o.Deposit_locked, o.Deposit_locked],
           }
         });
       });      
@@ -332,6 +335,13 @@ export class AdmonDashboardComponent implements OnInit {
     row["Changed"] = true;
   }
 
+  emitCheck(event: MatCheckboxChange, key: string, row: any) {
+    row[key][0] = event.checked;
+    row["Changed"] = false;
+    if (row["Deposit_locked"][0] != row["Deposit_locked"][1]) row["Changed"] = true;
+    return row["Changed"];
+  }
+
   save(row: any) {
     // GraphQL variables
     const variables: any = {
@@ -349,6 +359,8 @@ export class AdmonDashboardComponent implements OnInit {
       variables.date_deposit_required = this.datePipe.transform(row.Date_deposit_required.value, "yyyy-MM-dd");
       variables.deposit_returned = parseFloat(row.Deposit_returned.value);
       variables.date_deposit_returned = this.datePipe.transform(row.Date_deposit_returned.value, "yyyy-MM-dd");
+      variables.deposit_locked = row.Deposit_locked[0];
+      row.Deposit_locked[1] = row.Deposit_locked[0];
     }
 
     // Update

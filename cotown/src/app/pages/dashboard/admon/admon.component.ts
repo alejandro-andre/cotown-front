@@ -201,7 +201,7 @@ export class AdmonDashboardComponent implements OnInit {
             "Date_deposit_required": new FormControl<any>(o.Date_deposit_required),
             "Deposit_returned": new FormControl<any>(o.Deposit_returned),
             "Date_deposit_returned": new FormControl<any>(o.Date_deposit_returned),
-            "Deposit_locked": [o.Deposit_locked, o.Deposit_locked],
+            "Deposit_locked": [o.Deposit_locked == '1', o.Deposit_locked == '1'],
           }
         });
       });      
@@ -336,6 +336,7 @@ export class AdmonDashboardComponent implements OnInit {
   }
 
   emitCheck(event: MatCheckboxChange, key: string, row: any) {
+    console.log(key);
     row[key][0] = event.checked;
     row["Changed"] = false;
     if (row["Deposit_locked"][0] != row["Deposit_locked"][1]) row["Changed"] = true;
@@ -368,6 +369,8 @@ export class AdmonDashboardComponent implements OnInit {
     this.apollo.setData(query, variables).subscribe({
       next: (res) => {
         this.isLoading = false;
+        row["Deposit_locked"][1] = row["Deposit_locked"][0];
+        row["Changed"] = false;
       }, 
       error: (err)  => {
         this.isLoading = false;

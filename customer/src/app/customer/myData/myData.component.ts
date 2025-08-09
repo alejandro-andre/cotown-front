@@ -390,9 +390,6 @@ export class MyDataComponent implements OnInit, AfterViewInit {
   // Update customer
   async save() {
     // Enabled?
-    await this.validateIBAN();
-    await this.validateSwift();
-    this.validate();
     if (!this.isSaveEnabled)
       return;
 

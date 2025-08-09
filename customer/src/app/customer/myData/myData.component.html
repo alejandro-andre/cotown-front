@@ -516,7 +516,7 @@
                [readonly]="!visibility['bank_account']" 
                [formControl]="bank_accountControl" 
                [(ngModel)]="customer.bank_account" 
-               (input)="validateBankData(bank_accountControl)">
+               (input)="enableSave()">
         <mat-error class="mat-error" *ngIf="bank_accountControl.errors">
           {{ 'errors.field_required' | translate }}
         </mat-error>
@@ -551,7 +551,7 @@
                [readonly]="!visibility['bank_holder']" 
                [formControl]="bank_holderControl" 
                [(ngModel)]="customer.bank_holder" 
-               (input)="validateBankData(bank_holderControl)">
+               (input)="enableSave()">
         <mat-error class="mat-error" *ngIf="bank_holderControl.errors">
           {{ 'errors.field_required' | translate }}
         </mat-error>
@@ -565,7 +565,7 @@
                [readonly]="!visibility['bank_name']" 
                [formControl]="bank_nameControl" 
                [(ngModel)]="customer.bank_name" 
-               (input)="validateBankData(bank_nameControl)">
+               (input)="enableSave()">
         <mat-error class="mat-error" *ngIf="bank_nameControl.errors">
           {{ 'errors.field_required' | translate }}
         </mat-error>
@@ -579,7 +579,7 @@
                [readonly]="!visibility['bank_address']"
                [formControl]="bank_addressControl" 
                [(ngModel)]="customer.bank_address" 
-               (input)="validateBankData(bank_addressControl)">
+               (input)="enableSave()">
         <mat-error class="mat-error" *ngIf="bank_addressControl.errors">
           {{ 'errors.field_required' | translate }}
         </mat-error>
@@ -593,7 +593,7 @@
                [readonly]="!visibility['bank_city']" 
                [formControl]="bank_cityControl" 
                [(ngModel)]="customer.bank_city" 
-               (input)="validateBankData(bank_cityControl)">
+               (input)="enableSave()">
         <mat-error class="mat-error" *ngIf="bank_cityControl.errors">
           {{ 'errors.field_required' | translate }}
         </mat-error>
@@ -612,7 +612,7 @@
         <mat-select 
                [formControl]="bank_country_idControl" 
                [(ngModel)]="customer.bank_country_id" 
-               (selectionChange)="validateBankData(bank_country_idControl)">
+               (selectionChange)="enableSave()">
           <mat-option *ngFor="let c of lookupService.countries" [value]="c.id">
             {{ isSpanish ? c.name : c.name_en }}
           </mat-option>

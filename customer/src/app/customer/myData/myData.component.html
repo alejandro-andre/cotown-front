@@ -491,19 +491,13 @@
                [formControl]="ibanControl" 
                [(ngModel)]="customer.iban"
                (change)="validateIBAN()">
+        <mat-error class="mat-error" *ngIf="ibanControl.hasError('iban_mandatory')">
+          {{ 'errors.iban_mandatory' | translate }}
+        </mat-error>
+        <mat-error class="mat-error" *ngIf="ibanControl.hasError('field_required')">
+          {{ 'errors.field_required' | translate }}
+        </mat-error>
       </mat-form-field>
-      <mat-error class="mat-error" *ngIf="ibanControl.hasError('iban_mandatory')">
-        {{ 'errors.iban_mandatory' | translate }}
-      </mat-error>
-    </div>
-    <div class="pure-u-1 pure-u-lg-1-2">
-      <mat-checkbox 
-               [readonly]="!visibility['iban']" 
-               [formControl]="same_accountControl"
-               [(ngModel)]="customer.same_account" 
-               (change)="sameAccount($event);">
-      </mat-checkbox>
-      <mat-label>{{ 'same_account' | translate }}</mat-label>
     </div>
 
   </div>
@@ -522,14 +516,11 @@
                [readonly]="!visibility['bank_account']" 
                [formControl]="bank_accountControl" 
                [(ngModel)]="customer.bank_account" 
-               (change)="validateCCC()">
+               (input)="validateBankData(bank_accountControl)">
+        <mat-error class="mat-error" *ngIf="bank_accountControl.errors">
+          {{ 'errors.field_required' | translate }}
+        </mat-error>
       </mat-form-field>
-      <mat-error class="mat-error" *ngIf="bank_accountControl.hasError('iban_mandatory')">
-        {{ 'errors.iban_mandatory' | translate }}
-      </mat-error>
-      <mat-error class="mat-error" *ngIf="bank_accountControl.hasError('swift_mandatory')">
-        {{ 'errors.swift_mandatory' | translate }}
-      </mat-error>
     </div>
 
     <!-- Swift code -->
@@ -541,11 +532,14 @@
                [readonly]="!visibility['swift']" 
                [formControl]="swiftControl" 
                [(ngModel)]="customer.swift"
-               (change)="validateCCC()">
+               (input)="validateSwift()">
+        <mat-error class="mat-error" *ngIf="swiftControl.hasError('field_required')">
+          {{ 'errors.field_required' | translate }}
+        </mat-error>
+        <mat-error class="mat-error" *ngIf="swiftControl.hasError('swift_wrong')">
+          {{ 'errors.swift_wrong' | translate }}
+        </mat-error>
       </mat-form-field>
-      <mat-error class="mat-error" *ngIf="swiftControl.hasError('swift_wrong')">
-        {{ 'errors.swift_wrong' | translate }}
-      </mat-error>
     </div>
 
     <!-- Bank details -->

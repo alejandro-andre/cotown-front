@@ -1,5 +1,5 @@
 // Core
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 
@@ -26,15 +26,14 @@ import { getAge } from 'src/app/utils/date.util';
   styleUrls: ['./myData.component.scss']
 })
 
-export class MyDataComponent implements OnInit {
+export class MyDataComponent implements OnInit, AfterViewInit {
 
   // Spinner
   public isLoading = false;
 
-  // Save bbutton enabled?
+  // Save button enabled?
   public isSaveEnabled: boolean = false;
   public isIbanOk: boolean = true;
-  public isBankAccountOk: boolean = true;
   public isSwiftOk: boolean = true;
 
   // Image file
@@ -59,9 +58,9 @@ export class MyDataComponent implements OnInit {
   public tutor_emailControl = new FormControl('');
   public tutor_phonesControl = new FormControl('');
   public ibanControl = new FormControl('');
+  public swiftControl = new FormControl('');
   public same_accountControl = new FormControl('');
   public bank_accountControl = new FormControl('');
-  public swiftControl = new FormControl('');
   public bank_holderControl = new FormControl('');
   public bank_nameControl = new FormControl('');
   public bank_addressControl = new FormControl('');
@@ -102,6 +101,10 @@ export class MyDataComponent implements OnInit {
     } else {
       this.phone.number = this.customerService.customer.phones;
     }
+  }
+
+  ngAfterViewInit(){
+    this.enableSave();
   }
 
   /**
@@ -216,11 +219,6 @@ export class MyDataComponent implements OnInit {
     this.enableSave();
   }
 
-  sameAccount(event: any) {
-    this.validateCCC();
-    this.validate();
-  }
-
   validateNotEmpty(control: AbstractControl): ValidationErrors | null {
     const value = control.value;
     if (typeof value === 'string') {
@@ -245,54 +243,49 @@ export class MyDataComponent implements OnInit {
     return null;
   }
 
+  // Validate Bank data filled
   validateBankData(control: any) {
-    if (!this.customer.same_account && !this.isBankAccountOk && (control.value || "") === "") {
+    control.setErrors(null);
+    if ((control.value || "") === "") {
       control.setErrors({ 'field_required': true });
       return;
     }
-    control.setErrors(null);
   }
 
-  async validateCCC() {
-    // CCC not filled
-    this.bank_accountControl.setErrors(null);
-    this.swiftControl.setErrors(null);
-    this.isBankAccountOk = true;
-    if (!this.customer.bank_account || this.customer.same_account) {
+  // Validate Swift
+  async validateSwift() {
+    // Swift not filled
+    this.isSwiftOk = false;
+    this.validateBankData(this.swiftControl);
+    if (!this.customer.swift) {
       this.enableSave();
       return;
     }
 
     // Validate Swift
-    this.isSwiftOk = false;
-    if (this.customer.swift) {
-      this.isSwiftOk = await this.axiosApi.validateSWIFT(this.customer.swift).then((res: any) => {
-        if (!res || res.data == "ko") {
-          this.swiftControl.setErrors({ 'swift_wrong': true });
-          return false;
-        }
-        return true;
-      });
-    }
-
-    // Validate CCC
-    this.isBankAccountOk = await this.axiosApi.validateIBAN(this.customer.bank_account).then((res: any) => {
-      if (!res || res.data.startsWith("!!!")) {
-        if (!this.isSwiftOk)
-          this.bank_accountControl.setErrors({ 'swift_mandatory': true });
+    this.isSwiftOk = await this.axiosApi.validateSWIFT(this.customer.swift).then((res: any) => {
+      if (!res || res.data == "ko") {
+        this.swiftControl.setErrors({ 'swift_wrong': true });
         return false;
       }
       return true;
     });
 
-    // CCC and SWIFT ok, check mandatory fields
+    // Enable save
     this.enableSave();
   }
 
   async validateIBAN() {
-    // CCC not filled
-    this.ibanControl.setErrors(null);
+    // IBAN not required
     this.isIbanOk = true;
+    this.validateBankData(this.ibanControl);
+    if (this.customer.payment_method_id != 2) {
+      this.enableSave();
+      return;
+    }
+
+    // IBAN not filled
+    this.isIbanOk = false;
     if (!this.customer.iban) {
       this.enableSave();
       return;
@@ -302,7 +295,6 @@ export class MyDataComponent implements OnInit {
     this.isIbanOk = await this.axiosApi.validateIBAN(this.customer.iban).then((res: any) => {
       if (!res || res.data.startsWith("!!!")) {
         this.ibanControl.setErrors({ 'iban_mandatory': true });
-        this.isSaveEnabled = false;
         return false;
       }
       return true;
@@ -320,6 +312,9 @@ export class MyDataComponent implements OnInit {
   // Validate
   validate() {
     // Validate bank data
+    if (this.isIbanOk) this.validateBankData(this.ibanControl)
+    if (this.isSwiftOk) this.validateBankData(this.swiftControl)
+    this.validateBankData(this.bank_accountControl);
     this.validateBankData(this.bank_holderControl);
     this.validateBankData(this.bank_nameControl);
     this.validateBankData(this.bank_addressControl);
@@ -341,6 +336,9 @@ export class MyDataComponent implements OnInit {
     this.tutor_nameControl.markAllAsTouched();
     this.tutor_emailControl.markAllAsTouched();
     this.tutor_phonesControl.markAllAsTouched();
+    this.ibanControl.markAllAsTouched();
+    this.swiftControl.markAllAsTouched();
+    this.bank_accountControl.markAllAsTouched();
     this.bank_holderControl.markAllAsTouched();
     this.bank_nameControl.markAllAsTouched();
     this.bank_addressControl.markAllAsTouched();
@@ -363,17 +361,16 @@ export class MyDataComponent implements OnInit {
       return false;
 
     // Bank fields
-    if (!this.isIbanOk || (!this.isBankAccountOk && !this.isSwiftOk))
+    if (!this.isIbanOk || !this.isSwiftOk)
       return false;
 
     // Mandatory bank fields
-    if (!this.customer.same_account &&
-        !this.isBankAccountOk && 
-       (!this.customer.bank_holder ||
+    if (!this.customer.bank_account ||
+        !this.customer.bank_holder ||
         !this.customer.bank_name ||
         !this.customer.bank_address ||
         !this.customer.bank_city ||
-        !this.customer.bank_country_id))
+        !this.customer.bank_country_id)
       return false;
 
     // Minor
@@ -394,7 +391,7 @@ export class MyDataComponent implements OnInit {
   async save() {
     // Enabled?
     await this.validateIBAN();
-    await this.validateCCC();
+    await this.validateSwift();
     this.validate();
     if (!this.isSaveEnabled)
       return;

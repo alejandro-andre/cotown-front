@@ -45,6 +45,7 @@ export class ReportsComponent {
     { name: 'descuentos',        cotown: true,  provider: false, icon: 'local_play',         filter: true,  text: 'Descuentos' },
     { name: 'contratos',         cotown: true,  provider: false, icon: 'playlist_add_check', filter: true,  text: 'Contratos' },
     { name: 'forecast',          cotown: true,  provider: false, icon: 'query_stats',        filter: true,  text: 'Plantilla Forecast' },
+    { name: 'stabilised',        cotown: true,  provider: false, icon: 'query_stats',        filter: false, text: 'Plantilla Stabilised' },
   ];
   down = [
     { name: 'downloadcontratos', cotown: true,  provider: true,  icon: 'attachment',         filter: true,  text: 'Contratos',           url: '/download/contratos' },

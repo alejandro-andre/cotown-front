@@ -14,7 +14,7 @@ import { LanguageService } from "src/app/services/language.service";
 import { ActivatedRoute } from "@angular/router";
 import { HOLIDAYS_QUERY } from "src/app/schemas/query-definitions/lookup.query";
 import { MatCheckboxChange } from "@angular/material/checkbox";
-import { BOOKING_UPDATE } from "src/app/schemas/query-definitions/booking.query";
+import { BOOKING_UPDATE, BOOKING_GROUP_UPDATE } from "src/app/schemas/query-definitions/booking.query";
 
 @Component({ 
   selector: "app-dashboard-operations",
@@ -309,7 +309,9 @@ export class OperationsDashboardComponent implements OnInit {
 
         // Previous bookings
         if (this.op == "nextin") {
-          const prev = res.data[0].find((d: any) => (d.id == row.id));
+          console.log(res.data[0])
+          console.log(row)
+          const prev = res.data[0].find((d: any) => (d.id === row.id && d.Line === row.Line));
           if (prev) {
             const d = new Date(prev.Prev_date);
             let labordays = 0;
@@ -480,17 +482,22 @@ export class OperationsDashboardComponent implements OnInit {
 
     // Check-out?
     else if (["checkout", "revision"].includes(row["Status"]) && row["Check_out"][0] && !row["Check_out"][1]) {
-      row["Status"] = "revision";
+      if (row["Booking_type"] === 'B2C')
+        row["Status"] = "revision";
     }
 
     // Revision Ok?
     else if (["checkout", "revision"].includes(row["Status"]) && row["Check_out_revision_ok"][0] && !row["Check_out_revision_ok"][1]) {
-      row["Status"] = "devolvergarantia";
+      if (row["Booking_type"] === 'B2C')
+        row["Status"] = "devolvergarantia";
+      else
+        row["Status"] = "revisada";
     }
 
     // GraphQL variables
     const variables: any = {
       id: row.id,
+      line: row.Line,
       status: row["Status"],
       checkinroomok: row.Check_in_room_ok[0],
       checkinkeysok: row.Check_in_keys_ok[0],
@@ -506,7 +513,8 @@ export class OperationsDashboardComponent implements OnInit {
     
     // Update
     this.isLoading = true;
-    this.apollo.setData(BOOKING_UPDATE, variables).subscribe({
+    const q = (row["Booking_type"] === 'B2C') ? BOOKING_UPDATE : BOOKING_GROUP_UPDATE 
+    this.apollo.setData(q, variables).subscribe({
       next: (res) => {
         this.isLoading = false;
         row["Check_in_room_ok"][1]     = row["Check_in_room_ok"][0];

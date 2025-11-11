@@ -113,6 +113,33 @@ export const BOOKING_UPDATE = `mutation(
   ) { id }
 }`;
 
+export const BOOKING_GROUP_UPDATE = `mutation(
+  $line: Int!
+  $status: Auxiliar_Rooming_statusEnumType!
+  $checkinroomok: Boolean!
+  $checkinkeysok: Boolean!
+  $checkinkeylessok: Boolean!
+  $checkoutkeysok: Boolean!
+  $checkoutkeylessok: Boolean!
+  $checkoutrevisionok: Boolean!
+  $issues_ok: Boolean!
+  $damages_ok: Boolean!
+) {
+  data: Booking_BookingGroupRoomingUpdate( where: { id: { EQ: $line } }
+    entity:{
+      Status: $status
+      Check_in_room_ok: $checkinroomok
+      Check_in_keys_ok: $checkinkeysok
+      Check_in_keyless_ok: $checkinkeylessok
+      Check_out_keys_ok: $checkoutkeysok
+      Check_out_keyless_ok: $checkoutkeylessok
+      Check_out_revision_ok: $checkoutrevisionok
+      Issues_ok: $issues_ok
+      Damages_ok: $damages_ok   
+    }
+  ) { id }
+}`;
+
 export const BOOKING_OTHER_UPDATE_DEV = `mutation ($id: Int!, $date: String) {
   updated: Booking_Booking_otherUpdate(
     where: { id: { EQ: $id } }

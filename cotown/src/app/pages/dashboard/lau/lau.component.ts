@@ -60,7 +60,6 @@ export class LauDashboardComponent implements OnInit {
 
   // Table info
   public rows: any[] = [];
-  public prevnext: any[][] = [];
   public header: { key: string, value: string, sort: string, type: string } [] = [];
   public headerFields: { key: string, value: string, sort: string, type: string, filter: string[] }[] = [
     { key:"id",                    value:"#",                         sort:"", type: "text",    filter: [] },

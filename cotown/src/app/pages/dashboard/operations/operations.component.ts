@@ -256,9 +256,10 @@ export class OperationsDashboardComponent implements OnInit {
 
         // Return data
         return {
-          "Booking_type": o.b2c_b2b,
           "id": o.id,
           "ids": o.id + indicator,
+          "Line": o.Line,
+          "Booking_type": o.b2c_b2b,
           "Name": o.Name + "<br>" + (o.Email || "") + "<br>" + (o.Phones || ""),
           "Status": o.Status,
           "Date": holiday,
@@ -353,9 +354,10 @@ export class OperationsDashboardComponent implements OnInit {
       this.sort("Date_out", "up")
   }
 
-  goBooking(id: string, bookingType: string) { 
-    const g = bookingType !== 'B2C' ? '' : '_group';
-    const link = "/admin/Booking.Booking" + g + "/" + id + "/view";
+  goBooking(id: string, line: string, bookingType: string) { 
+    let link = "/admin/Booking.Booking/" + id + "/view";
+    if (bookingType === 'B2B')
+      link = "/admin/Booking.Booking_group_rooming/" + line + "/view"
     if (window.opener && !this.parent)
       this.parent = window.opener.parent;
     else if (parent && !this.parent)

@@ -107,10 +107,10 @@
       <tr *ngFor="let r of rows" class="link" [class.warning]="r['Warning']" [class.holiday]="isHoliday(r['Date'])">
         <td *ngFor="let h of header">
           <!-- Status field -->
-          <span *ngIf="h.type === 'status'" (click)="goBooking(r.id, r.bookingType)">{{ getLabel(r[h.key]) }}</span>
+          <span *ngIf="h.type === 'status'" (click)="goBooking(r.id, r.Line, r.Booking_type)">{{ getLabel(r[h.key]) }}</span>
           <!-- Text/Date/Input fields -->
-          <span *ngIf="h.type === 'text'"   (click)="goBooking(r.id, r.bookingType)" [innerHtml]="r[h.key] | safe"></span>
-          <span *ngIf="h.type === 'date'"   (click)="goBooking(r.id, r.bookingType)" [innerHtml]="r[h.key] | safe"></span>
+          <span *ngIf="h.type === 'text'"   (click)="goBooking(r.id, r.Line, r.Booking_type)" [innerHtml]="r[h.key] | safe"></span>
+          <span *ngIf="h.type === 'date'"   (click)="goBooking(r.id, r.Line, r.Booking_type)" [innerHtml]="r[h.key] | safe"></span>
           <span *ngIf="h.type === 'input'"  [innerHtml]="r[h.key] | safe"></span>
           <!-- Boolean fields -->
           <span *ngIf="h.type === 'bool'" >

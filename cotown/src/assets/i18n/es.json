@@ -13,5 +13,6 @@
   "nothing": "Ninguna",
   "close": "Cerrar",
   "select": "Seleccionar",
-  "flat-type": "Tipo de piso"
+  "flat-type": "Tipo de piso",
+  "booking-type": "B2B/B2C"
 }

@@ -13,5 +13,6 @@
   "nothing": "Nothing",
   "close": "Close",
   "select": "Select",
-  "flat-type": "Flat type"
+  "flat-type": "Flat type",
+  "booking-type": "B2B/B2C"
 }

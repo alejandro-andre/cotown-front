@@ -40,6 +40,14 @@ export class OperationsDashboardComponent implements OnInit {
   ];
   public dashboardId: number = 1;
 
+  // Booking types
+  public bookingType = 'b2c_b2b';
+  public bookingTypes: any[] = [
+    {id: 'b2c_b2b', name: 'Ambos'},
+    {id: 'b2c', name: 'B2C'},
+    {id: 'b2b', name: 'B2B'},
+  ];
+
   // Cities
   public cities: City [] = [] as City[]; // Cities
   public cityId: number = Constants.allStaticNumericValue; // Current city
@@ -69,6 +77,7 @@ export class OperationsDashboardComponent implements OnInit {
   public prevnext: any[][] = [];
   public header: { key: string, value: string, sort: string, type: string } [] = [];
   public headerFields: { key: string, value: string, sort: string, type: string, filter: string[] }[] = [
+    { key:"Booking_type",          value:"Tipo",               sort:"", type: "text",   filter: [] },
     { key:"ids",                   value:"#",                  sort:"", type: "text",   filter: [] },
     { key:"Confirmation_date",     value:"Fecha confirmación", sort:"", type: "date",   filter: ["nextin"] }, 
     { key:"Name",                  value:"Residente",          sort:"", type: "text",   filter: [] },
@@ -188,6 +197,9 @@ export class OperationsDashboardComponent implements OnInit {
     if (this.buildingIds.length > 0)
       params["building"] = this.buildingIds;
 
+    // Booking type
+    params["b2c_b2b"] = this.bookingType;
+
     // Date range
     params["date_from"] = this.datePipe.transform(this.range.get("start")?.value, "yyyy-MM-dd");
     params["date_to"] = this.datePipe.transform(this.range.get("end")?.value, "yyyy-MM-dd")
@@ -244,6 +256,7 @@ export class OperationsDashboardComponent implements OnInit {
 
         // Return data
         return {
+          "Booking_type": o.b2c_b2b,
           "id": o.id,
           "ids": o.id + indicator,
           "Name": o.Name + "<br>" + (o.Email || "") + "<br>" + (o.Phones || ""),
@@ -340,8 +353,9 @@ export class OperationsDashboardComponent implements OnInit {
       this.sort("Date_out", "up")
   }
 
-  goBooking(id: string) { 
-    const link = "/admin/Booking.Booking/" + id + "/view";
+  goBooking(id: string, bookingType: string) { 
+    const g = bookingType !== 'B2C' ? '' : '_group';
+    const link = "/admin/Booking.Booking" + g + "/" + id + "/view";
     if (window.opener && !this.parent)
       this.parent = window.opener.parent;
     else if (parent && !this.parent)
@@ -377,6 +391,11 @@ export class OperationsDashboardComponent implements OnInit {
 
   // Building change
   onBuilding(): void {
+    this.getBookings();
+  }
+
+  // Booking type change
+  onBookingType(): void {
     this.getBookings();
   }
 

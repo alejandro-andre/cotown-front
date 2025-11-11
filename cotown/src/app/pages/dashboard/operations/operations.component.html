@@ -61,6 +61,19 @@
           </mat-form-field>
         </div>
 
+        <div class="pure-u-3-24">
+          <mat-form-field class="field" appearance="fill" >
+            <mat-label>{{ 'booking-type' | translate}}</mat-label>
+            <mat-select name="bookingType"
+              [(ngModel)]="bookingType"
+              (selectionChange)="onBookingType()">
+              <mat-option *ngFor="let item of bookingTypes" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
         <div class="pure-u-5-24" *ngIf="['nextin','nextout','issues'].includes(op)">
           <mat-form-field class="field" appearance="fill" >
             <mat-label>{{ 'date range' | translate }}</mat-label>
@@ -94,10 +107,10 @@
       <tr *ngFor="let r of rows" class="link" [class.warning]="r['Warning']" [class.holiday]="isHoliday(r['Date'])">
         <td *ngFor="let h of header">
           <!-- Status field -->
-          <span *ngIf="h.type === 'status'" (click)="goBooking(r.id)">{{ getLabel(r[h.key]) }}</span>
+          <span *ngIf="h.type === 'status'" (click)="goBooking(r.id, r.bookingType)">{{ getLabel(r[h.key]) }}</span>
           <!-- Text/Date/Input fields -->
-          <span *ngIf="h.type === 'text'"   (click)="goBooking(r.id)" [innerHtml]="r[h.key] | safe"></span>
-          <span *ngIf="h.type === 'date'"   (click)="goBooking(r.id)" [innerHtml]="r[h.key] | safe"></span>
+          <span *ngIf="h.type === 'text'"   (click)="goBooking(r.id, r.bookingType)" [innerHtml]="r[h.key] | safe"></span>
+          <span *ngIf="h.type === 'date'"   (click)="goBooking(r.id, r.bookingType)" [innerHtml]="r[h.key] | safe"></span>
           <span *ngIf="h.type === 'input'"  [innerHtml]="r[h.key] | safe"></span>
           <!-- Boolean fields -->
           <span *ngIf="h.type === 'bool'" >
@@ -111,7 +124,7 @@
           <span *ngIf="h.type === 'check' && r[h.key] === false"><mat-icon style="padding-top:8px;" fontIcon="clear"></mat-icon></span>
         </td>
         <td>
-          <button mat-raised-button color="primary" [disabled]="!r['Changed']" (click)="save(r)">Guardar</button>
+          <button mat-raised-button color="primary" *ngIf="r['Booking_type']==='B2C'" [disabled]="!r['Changed']" (click)="save(r)">Guardar</button>
         </td>
       </tr>
     </tbody>

@@ -260,7 +260,7 @@ export class OperationsDashboardComponent implements OnInit {
           "ids": o.id + indicator,
           "Line": o.Line,
           "Booking_type": o.b2c_b2b,
-          "Name": o.Name + "<br>" + (o.Email || "") + "<br>" + (o.Phones || ""),
+          "Name": o.Name + "<br>" + (o.Email || "-") + (o.Phones ? "<br>" + o.Phones : "") + (o.Resident_name ? "<br>[" + (o.Resident_name) + "]": ""),
           "Status": o.Status,
           "Date": holiday,
           "D_in": new Date(o.Date_in),

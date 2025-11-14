@@ -124,7 +124,7 @@
           <span *ngIf="h.type === 'check' && r[h.key] === false"><mat-icon style="padding-top:8px;" fontIcon="clear"></mat-icon></span>
         </td>
         <td>
-          <button mat-raised-button color="primary" *ngIf="r['Booking_type']==='B2C'" [disabled]="!r['Changed']" (click)="save(r)">Guardar</button>
+          <button mat-raised-button color="primary" [disabled]="!r['Changed']" (click)="save(r)">Guardar</button>
         </td>
       </tr>
     </tbody>

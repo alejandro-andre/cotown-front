@@ -137,20 +137,22 @@ export class ReportsComponent {
   // Execute report
   execute (data: string) {
 
+    const token = localStorage.getItem('access_token') || '';
+
     // Default
     let l = 'javascript:void(0)';
 
     // Rooming
     if (data == "rooming") {
     const id = this.bookingIdControl.value;
-    l = environment.backURL + '/export/rooming?id=' + id + '&access_token=' + this.apolloApi.token;
+    l = environment.backURL + '/export/rooming?id=' + id + '&access_token=' + token;
 
     // AC
     } else if (data == 'ac') {
     const from = moment(this.dateControl.value);
     l = environment.backURL + '/export/' + data
       + '?fdesde=' + from.format('YYYY-MM-DD') 
-      + '&access_token=' + this.apolloApi.token;
+      + '&access_token=' + token;
 
     // Reservas y contratos
   } else if (data == "descuentos" || data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "marketplaces" || data == "pagosrecibidos" || data == "contratos" || data == "forecast") {
@@ -159,7 +161,7 @@ export class ReportsComponent {
     l = environment.backURL + '/export/' + data
       + '?fdesde=' + from.format('YYYY-MM-DD') 
       + '&fhasta=' + to.format('YYYY-MM-DD') 
-      + '&access_token=' + this.apolloApi.token;
+      + '&access_token=' + token;
 
     // Pagos e ingresos
     } else if (data == "pagosemitidos" || data == "ingresos") {
@@ -172,7 +174,7 @@ export class ReportsComponent {
         + '&fhasta=' + to.format('YYYY-MM-DD') 
         + '&pdesde=' + prov_from
         + '&phasta=' + prov_to
-        + '&access_token=' + this.apolloApi.token;
+        + '&access_token=' + token;
 
     // Contratos PDF
     } else if (data == "downloadcontratos") {
@@ -189,7 +191,7 @@ export class ReportsComponent {
         + '&phasta=' + prov_to
         + '&bdesde=' + building_from
         + '&bhasta=' + building_to
-        + '&access_token=' + this.apolloApi.token;
+        + '&access_token=' + token;
 
     // Facturas PDF
     } else if (data == "downloadfacturas") {
@@ -202,7 +204,7 @@ export class ReportsComponent {
         + '&fhasta=' + to.format('YYYY-MM-DD') 
         + '&pdesde=' + prov_from
         + '&phasta=' + prov_to
-        + '&access_token=' + this.apolloApi.token;
+        + '&access_token=' + token;
     }
 
     // Report

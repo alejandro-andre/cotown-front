@@ -95,9 +95,10 @@ export class LauDashboardComponent implements OnInit {
   async ngOnInit() { 
     // Get cities, buildings and labels
     this.isLoading  = true;
+    const token = localStorage.getItem('access_token') || '';
     await this.getCities();
     await this.getBuildings();
-    await axiosApi.getLabels(7, "es_ES", this.apollo.token).then((res) => { 
+    await axiosApi.getLabels(7, "es_ES", token).then((res) => { 
       this.labels = res.data;
       this.isLoading  = false;
     });
@@ -174,7 +175,8 @@ export class LauDashboardComponent implements OnInit {
 
     // Get bookings
     const params: any = this.get_params();
-    await axiosApi.getLauBookings(this.op, this.apollo.token, params).then((res) => { 
+    const token = localStorage.getItem('access_token') || '';
+    await axiosApi.getLauBookings(this.op, token, params).then((res) => { 
       this.rows = res.data.map((o: any) => { 
 
         // Return data

@@ -128,10 +128,11 @@ export class OperationsDashboardComponent implements OnInit {
   async ngOnInit() { 
     // Get cities, buildings and labels
     this.isLoading  = true;
+    const token = localStorage.getItem('access_token') || '';
     await this.getHolidays();
     await this.getCities();
     await this.getBuildings();
-    await axiosApi.getLabels(7, "es_ES", this.apollo.token).then((res) => { 
+    await axiosApi.getLabels(7, "es_ES", token).then((res) => { 
       this.labels = res.data;
       this.isLoading  = false;
     });
@@ -218,7 +219,8 @@ export class OperationsDashboardComponent implements OnInit {
 
     // Get bookings
     const params: any = this.get_params();
-    await axiosApi.getOperationsBookings(this.op, this.apollo.token, params).then((res) => { 
+    const token = localStorage.getItem('access_token') || '';
+    await axiosApi.getOperationsBookings(this.op, token, params).then((res) => { 
       this.rows = res.data.map((o: any) => { 
 
         // Warning style
@@ -304,7 +306,7 @@ export class OperationsDashboardComponent implements OnInit {
     });      
 
     // Get previous and next bookings
-    await axiosApi.getOperationsPrevNext(this.apollo.token, params).then((res) => {
+    await axiosApi.getOperationsPrevNext(token, params).then((res) => {
       this.rows.forEach((row: any) => {
 
         // Previous bookings
@@ -545,8 +547,9 @@ export class OperationsDashboardComponent implements OnInit {
     if (!this.op || !this.cityId)
       return;
     const params: any = this.get_params();
+    const token = localStorage.getItem('access_token') || '';
     let queryString = Object.keys(params).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
-    return environment.backURL + '/report/' + this.op + '?access_token=' + this.apollo.token + '&' + queryString;
+    return environment.backURL + '/report/' + this.op + '?access_token=' + token + '&' + queryString;
   }
 
 }

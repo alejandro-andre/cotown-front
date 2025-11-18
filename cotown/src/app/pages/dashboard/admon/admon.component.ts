@@ -95,10 +95,11 @@ export class AdmonDashboardComponent implements OnInit {
 
   async ngOnInit() { 
     // Get cities, buildings and labels
+    const token = localStorage.getItem('access_token') || '';
     this.isLoading  = true;
     await this.getCities();
     await this.getBuildings();
-    await axiosApi.getLabels(7, "es_ES", this.apollo.token).then((res) => { 
+    await axiosApi.getLabels(7, "es_ES", token).then((res) => { 
       this.labels = res.data;
       this.isLoading  = false;
     });
@@ -169,8 +170,9 @@ export class AdmonDashboardComponent implements OnInit {
 
     // Get payments
     const params: any = this.get_params();
+    const token = localStorage.getItem('access_token') || '';
     if (this.op == 'pay')
-      await axiosApi.getPayments(this.apollo.token, params).then((res) => { 
+      await axiosApi.getPayments(token, params).then((res) => { 
         this.rows = res.data.map((o: any) => { 
           return {
             "id": o.id,
@@ -189,7 +191,7 @@ export class AdmonDashboardComponent implements OnInit {
       });      
 
     else
-      await axiosApi.getDeposits(this.apollo.token, params).then((res) => { 
+      await axiosApi.getDeposits(token, params).then((res) => { 
         this.rows = res.data.map((o: any) => { 
           return {
             "id": o.Booking_id,
@@ -379,8 +381,9 @@ export class AdmonDashboardComponent implements OnInit {
 
   export() {
     const params: any = this.get_params();
+    const token = localStorage.getItem('access_token') || '';
     let queryString = Object.keys(params).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
-    return environment.backURL + '/report/' + this.op + '?access_token=' + this.apollo.token + '&' + queryString;
+    return environment.backURL + '/report/' + this.op + '?access_token=' + token + '&' + queryString;
   }
 
 }

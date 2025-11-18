@@ -72,9 +72,10 @@ export class GeneralDashboardComponent implements OnInit {
 
   ngOnInit(): void { 
     this.isLoading  = true;
-    axiosApi.getOperations(this.apolloApi.token).then((res) => { 
+    const token = localStorage.getItem('access_token') || '';
+    axiosApi.getOperations(token).then((res) => { 
       this.dashboard = res.data;
-      axiosApi.getLabels(7, "es_ES", this.apolloApi.token).then((res) => { 
+      axiosApi.getLabels(7, "es_ES", token).then((res) => { 
         this.labels = res.data;
         this.isLoading  = false;
       }); 
@@ -84,7 +85,8 @@ export class GeneralDashboardComponent implements OnInit {
   getBookings(status: string): void { 
     this.status = status;
     this.rows = null;
-    axiosApi.getOperationsBookings(this.status, this.apolloApi.token, {}).then((res) => { 
+    const token = localStorage.getItem('access_token') || '';
+    axiosApi.getOperationsBookings(this.status, token, {}).then((res) => { 
       this.rows = res.data.map((o: any) => { 
         return {
           "id": o.id,
@@ -115,24 +117,26 @@ export class GeneralDashboardComponent implements OnInit {
   }
 
   link() { 
+    const token = localStorage.getItem('access_token') || '';
+
     // No status
     if (!this.status)
       return "javascript:void(0);";
 
     // Next checkins
     if (this.status == 'next') 
-      return environment.backURL + '/export/bookings_in?access_token=' + this.apolloApi.token;
+      return environment.backURL + '/export/bookings_in?access_token=' + token;
 
     // Next checkouts
     if (this.status == 'nextout') 
-      return environment.backURL + '/export/bookings_out?access_token=' + this.apolloApi.token;
+      return environment.backURL + '/export/bookings_out?access_token=' + token;
 
     // Confirmed bookings
     if (this.status == 'ok') 
-      return environment.backURL + '/export/bookings?status=firmacontrato,contrato,checkinconfirmado&access_token=' + this.apolloApi.token;
+      return environment.backURL + '/export/bookings?status=firmacontrato,contrato,checkinconfirmado&access_token=' + token;
 
     // Rest of status
-    return environment.backURL + '/export/bookings?status=' + this.status + ',' + this.status + '&access_token=' + this.apolloApi.token;
+    return environment.backURL + '/export/bookings?status=' + this.status + ',' + this.status + '&access_token=' + token;
   }
 
   goBooking(id: string) { 

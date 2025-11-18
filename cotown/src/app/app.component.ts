@@ -28,7 +28,7 @@ export class AppComponent {
       if (language) {
         this.language.lang = language.substring(0,2);
       }
-      this.apolloApi.token = access_token;
+      localStorage.setItem('access_token', access_token);
       this.setAppLanguage();
     });
   }

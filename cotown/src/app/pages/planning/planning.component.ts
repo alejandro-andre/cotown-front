@@ -128,9 +128,10 @@ export class PlanningComponent {
     await this.getResourcePlaceTypes();
 
     // Get labels
-    axiosApi.getLabels(7, "es_ES", this.apolloApi.token).then((res) => { 
+    const token = localStorage.getItem('access_token') || '';
+    axiosApi.getLabels(7, "es_ES", token).then((res) => { 
       this.labels = res.data;
-      axiosApi.getLabels(13, "es_ES", this.apolloApi.token).then((res) => { 
+      axiosApi.getLabels(13, "es_ES", token).then((res) => { 
         this.labels[0].push(...res.data[0])
         this.labels[1].push(...res.data[1])
         this.isLoading  = false;
@@ -817,7 +818,8 @@ export class PlanningComponent {
       }
 
       // Get availability
-      axiosApi.getAvailability(data, this.apolloApi.token).then((res) => {
+      const token = localStorage.getItem('access_token') || '';
+      axiosApi.getAvailability(data, token).then((res) => {
         this.availableResources = res.data;
         this.rows = [];
         for (const available of this.availableResources) {

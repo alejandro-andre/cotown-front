@@ -337,7 +337,6 @@ export class AdmonDashboardComponent implements OnInit {
   }
 
   emitCheck(event: MatCheckboxChange, key: string, row: any) {
-    console.log(key);
     row[key][0] = event.checked;
     row["Changed"] = false;
     if (row["Deposit_locked"][0] != row["Deposit_locked"][1]) row["Changed"] = true;

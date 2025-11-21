@@ -13,7 +13,6 @@ const uri = environment.graphqlURL;
 export function createApollo(httpLink: HttpLink, api: ApolloQueryApi) {
 
   const auth = setContext((operation, context) => {
-    console.log('Token un setContext: ' + api.token);
     return {
       headers: {
         Accept: 'charset=utf-8',

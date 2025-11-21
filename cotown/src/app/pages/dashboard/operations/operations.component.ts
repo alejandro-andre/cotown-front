@@ -311,8 +311,6 @@ export class OperationsDashboardComponent implements OnInit {
 
         // Previous bookings
         if (this.op == "nextin") {
-          console.log(res.data[0])
-          console.log(row)
           const prev = res.data[0].find((d: any) => (d.id === row.id && d.Line === row.Line));
           if (prev) {
             const d = new Date(prev.Prev_date);

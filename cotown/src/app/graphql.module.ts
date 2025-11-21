@@ -6,7 +6,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ApolloLink, InMemoryCache } from '@apollo/client/core';
 import { setContext } from '@apollo/client/link/context';
-import { ApolloQueryApi } from './services/apollo-api.service';
 
 const uri = environment.graphqlURL;
 
@@ -48,7 +47,7 @@ export function createApollo(httpLink: HttpLink) {
     {
       provide: APOLLO_OPTIONS,
       useFactory: createApollo,
-      deps: [HttpLink, ApolloQueryApi],
+      deps: [HttpLink],
     }
   ],
 })

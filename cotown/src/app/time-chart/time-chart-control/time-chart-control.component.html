@@ -61,7 +61,7 @@
 				{{row.code}}
 				<div class="tiptext" [innerHtml]="row.details | safe"></div>
 			</div>
-			<div class="timechart-row-first" [class.note]="row.notes">
+			<div class="timechart-row-first" [class.note]="row.notes" [class.highlight]="row.highlight">
 				{{row.info}}
 				<div class="tiptext">{{row.notes}}</div>
 			</div>

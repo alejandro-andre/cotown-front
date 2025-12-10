@@ -516,6 +516,7 @@ export class PlanningComponent {
               resource_place_type: e.place_type?.id || -1,
               resource_info: type || '',
               resource_notes: e.notes || '',
+              resource_area_woc: e.area_woc,
               resource_rate: e.pricing.multiplier,
               resource_prices: prices
             });
@@ -600,6 +601,7 @@ export class PlanningComponent {
       auxRow.code = r.resource_code;
       auxRow.info = r.resource_info;
       auxRow.notes = r.resource_notes;
+      auxRow.highlight = (r.resource_area_woc < 150) ? '' + r.resource_area_woc : '';
       auxRow.style = Constants.types[r.resource_type];
       if (this.rooms.includes(r.resource_code)) {
         auxRow.selected = true;

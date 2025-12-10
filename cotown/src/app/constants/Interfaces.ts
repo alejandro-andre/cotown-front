@@ -49,6 +49,7 @@ export interface Resource {
   resource_flat_type: number,
   resource_place_type: number,
   resource_notes: string,
+  resource_area_woc: number,
   resource_rate: number,
   resource_prices: any[]
 }

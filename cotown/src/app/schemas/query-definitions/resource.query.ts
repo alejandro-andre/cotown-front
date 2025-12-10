@@ -13,6 +13,7 @@ export const RESOURCES_QUERY = `{
     code: Code
     address: Address
     notes: Notes
+    area_woc: Area_woc
     DistrictViaDistrict_id (joinType: INNER where: { Location_id: { EQ: $cityId } } ) {
       id
     }

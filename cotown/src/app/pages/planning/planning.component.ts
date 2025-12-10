@@ -595,13 +595,16 @@ export class PlanningComponent {
     let auxRow!: TimeChartRow;
 
     // Generate rows
+    let highlight = null;
     for (const r of this.resources) {
+      if (r.resource_type === 'piso')
+        highlight = (r.resource_area_woc && r.resource_area_woc < 150) ? '' + r.resource_area_woc : null;
       auxRow = new TimeChartRow();
       auxRow.id = r.resource_id;
       auxRow.code = r.resource_code;
       auxRow.info = r.resource_info;
       auxRow.notes = r.resource_notes;
-      auxRow.highlight = (r.resource_area_woc < 150) ? '' + r.resource_area_woc : '';
+      auxRow.highlight = highlight;
       auxRow.style = Constants.types[r.resource_type];
       if (this.rooms.includes(r.resource_code)) {
         auxRow.selected = true;

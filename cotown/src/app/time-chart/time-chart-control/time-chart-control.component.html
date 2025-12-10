@@ -57,7 +57,7 @@
 					(change)="emitCheck($event, row)">
 				</mat-checkbox>
 			</div>			
-			<div class="timechart-row-first {{row.style}}" [class.highlight]="row.highlight" [class.details]="row.details">
+			<div class="timechart-row-first {{row.style}}" [class.highlight]="row.highlight !== null" [class.details]="row.details">
 				{{row.code}}
 				<div class="tiptext" [innerHtml]="row.details | safe"></div>
 			</div>

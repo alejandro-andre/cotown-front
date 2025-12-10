@@ -3,6 +3,7 @@ export const RESOURCES_QUERY = `{
   code: Code
   address: Address
   resource_type: Resource_type
+  area_woc: Area_woc
   notes: Notes
   building: BuildingViaBuilding_id (
     joinType: INNER 
@@ -13,7 +14,6 @@ export const RESOURCES_QUERY = `{
     code: Code
     address: Address
     notes: Notes
-    area_woc: Area_woc
     DistrictViaDistrict_id (joinType: INNER where: { Location_id: { EQ: $cityId } } ) {
       id
     }

@@ -598,7 +598,7 @@ export class PlanningComponent {
     let highlight = null;
     for (const r of this.resources) {
       if (r.resource_type === 'piso')
-        highlight = (r.resource_area_woc && r.resource_area_woc < 150) ? '' + r.resource_area_woc : null;
+        highlight = (this.selectedCityId === 1 && r.resource_area_woc && r.resource_area_woc < 150) ? '' + r.resource_area_woc : null;
       auxRow = new TimeChartRow();
       auxRow.id = r.resource_id;
       auxRow.code = r.resource_code;

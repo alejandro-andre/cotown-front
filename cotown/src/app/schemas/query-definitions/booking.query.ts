@@ -67,6 +67,7 @@ query BookingList([[params]]) {
     }
     group: Booking_groupViaBooking_group_id {
       id
+      master: Master
       customer: CustomerViaPayer_id {
         name: Name
         email: Email

@@ -42,7 +42,7 @@ export class ReportsComponent {
     { name: 'sepa',              cotown: true,  provider: false, icon: 'account_balance',    filter: false, text: 'SEPA' },
     { name: 'ingresos',          cotown: true,  provider: true,  icon: 'receipt',            filter: true,  text: 'Ingresos' },
     { name: 'ingresos_prop',     cotown: false, provider: true,  icon: 'receipt',            filter: true,  text: 'Ingresos' },
-    { name: 'mf',                cotown: false, provider: true,  icon: 'euro_symbol',        filter: true,  text: 'Management Fee' },
+    { name: 'mf',                cotown: true,  provider: true,  icon: 'euro_symbol',        filter: true,  text: 'Management Fee' },
     { name: 'descuentos',        cotown: true,  provider: false, icon: 'local_play',         filter: true,  text: 'Descuentos' },
     { name: 'contratos',         cotown: true,  provider: false, icon: 'playlist_add_check', filter: true,  text: 'Contratos' },
     { name: 'forecast',          cotown: true,  provider: false, icon: 'query_stats',        filter: true,  text: 'Plantilla Forecast' },

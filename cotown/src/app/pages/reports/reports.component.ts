@@ -42,6 +42,7 @@ export class ReportsComponent {
     { name: 'sepa',              cotown: true,  provider: false, icon: 'account_balance',    filter: false, text: 'SEPA' },
     { name: 'ingresos',          cotown: true,  provider: true,  icon: 'receipt',            filter: true,  text: 'Ingresos' },
     { name: 'ingresos_prop',     cotown: false, provider: true,  icon: 'receipt',            filter: true,  text: 'Ingresos' },
+    { name: 'mf',                cotown: false, provider: true,  icon: 'euro_symbol',        filter: true,  text: 'Management Fee' },
     { name: 'descuentos',        cotown: true,  provider: false, icon: 'local_play',         filter: true,  text: 'Descuentos' },
     { name: 'contratos',         cotown: true,  provider: false, icon: 'playlist_add_check', filter: true,  text: 'Contratos' },
     { name: 'forecast',          cotown: true,  provider: false, icon: 'query_stats',        filter: true,  text: 'Plantilla Forecast' },
@@ -119,7 +120,7 @@ export class ReportsComponent {
     } else if (data == "facturas") {
         if (this.billDateControl.value === '')
           return true;
-    } else if (data == "ingresos" || data == "pagosemitidos" || data == "downloadcontratos") {
+    } else if (data == "ingresos" || data == "pagosemitidos" || data == "downloadcontratos" || data == "mf") {
       if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end || 
           this.providerControl.value == null || this.providerControl.value < 0)
         return true
@@ -164,7 +165,7 @@ export class ReportsComponent {
       + '&access_token=' + token;
 
     // Pagos e ingresos
-    } else if (data == "pagosemitidos" || data == "ingresos") {
+    } else if (data == "pagosemitidos" || data == "ingresos" || data == "mf") {
       const from = moment(this.dateRangeControl.value.start);
       const to = moment(this.dateRangeControl.value.end).add(1,'d');
       const prov_from = this.providerControl.value;

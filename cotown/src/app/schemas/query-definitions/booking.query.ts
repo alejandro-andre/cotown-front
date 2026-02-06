@@ -117,6 +117,7 @@ export const BOOKING_UPDATE = `mutation(
 export const BOOKING_GROUP_UPDATE = `mutation(
   $line: Int!
   $status: Auxiliar_Rooming_statusEnumType
+  $checkin: Boolean!
   $checkinroomok: Boolean!
   $checkinkeysok: Boolean!
   $checkinkeylessok: Boolean!
@@ -129,6 +130,7 @@ export const BOOKING_GROUP_UPDATE = `mutation(
   data: Booking_Booking_group_roomingUpdate( where: { id: { EQ: $line } }
     entity:{
       Status: $status
+      Check_in_ok: $checkin
       Check_in_room_ok: $checkinroomok
       Check_in_keys_ok: $checkinkeysok
       Check_in_keyless_ok: $checkinkeylessok

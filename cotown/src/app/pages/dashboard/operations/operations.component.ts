@@ -499,6 +499,7 @@ export class OperationsDashboardComponent implements OnInit {
       id: row.id,
       line: row.Line,
       status: row["Status"],
+      checkin: row.Check_in[0],
       checkinroomok: row.Check_in_room_ok[0],
       checkinkeysok: row.Check_in_keys_ok[0],
       checkinkeylessok: row.Check_in_keyless_ok[0],
@@ -517,6 +518,7 @@ export class OperationsDashboardComponent implements OnInit {
     this.apollo.setData(q, variables).subscribe({
       next: (res) => {
         this.isLoading = false;
+        row["Check_in"][1]             = row["Check_in"][0];
         row["Check_in_room_ok"][1]     = row["Check_in_room_ok"][0];
         row["Check_in_keys_ok"][1]     = row["Check_in_keys_ok"][0];
         row["Check_in_keyless_ok"][1]  = row["Check_in_keyless_ok"][0];

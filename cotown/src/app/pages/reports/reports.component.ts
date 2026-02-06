@@ -47,10 +47,12 @@ export class ReportsComponent {
     { name: 'contratos',         cotown: true,  provider: false, icon: 'playlist_add_check', filter: true,  text: 'Contratos' },
     { name: 'forecast',          cotown: true,  provider: false, icon: 'query_stats',        filter: true,  text: 'Plantilla Forecast' },
     { name: 'stabilised',        cotown: true,  provider: false, icon: 'query_stats',        filter: false, text: 'Plantilla Stabilised' },
+    { name: 'nra',               cotown: true,  provider: false, icon: 'toc',                filter: true,  text: 'Datos formato N2' },
   ];
   down = [
     { name: 'downloadcontratos', cotown: true,  provider: true,  icon: 'attachment',         filter: true,  text: 'Contratos',           url: '/download/contratos' },
     { name: 'downloadfacturas',  cotown: true,  provider: true,  icon: 'attachment',         filter: true,  text: 'Facturas y recibos',  url: '/download/facturas' },
+    { name: 'downloadnra',       cotown: true,  provider: false, icon: 'attachment',         filter: true,  text: 'CSVs formato N2',     url: '/download/nra' },
   ];
   selectedItem: any = null;
 
@@ -58,6 +60,7 @@ export class ReportsComponent {
   public isLoading: boolean = false;
 
   // Form controls
+  public yearControl      = new FormControl<any>('', [ Validators.required ]);
   public bookingIdControl = new FormControl<any>('', [ Validators.required ]);
   public providerControl  = new FormControl(-1);
   public buildingControl  = new FormControl(-1);
@@ -114,6 +117,9 @@ export class ReportsComponent {
     } else if (data == "rooming") {
         if (!this.bookingIdControl.value)
           return true;
+    } else if (data == "nra" || data == "downloadnra") {
+        if (!this.yearControl.value)
+          return true;
     } else if (data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "pagosrecibidos") {
       if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end)
         return true;
@@ -156,13 +162,13 @@ export class ReportsComponent {
       + '&access_token=' + token;
 
     // Reservas y contratos
-  } else if (data == "descuentos" || data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "marketplaces" || data == "pagosrecibidos" || data == "contratos" || data == "forecast") {
-    const from = moment(this.dateRangeControl.value.start);
-    const to = moment(this.dateRangeControl.value.end).add(1,'d');
-    l = environment.backURL + '/export/' + data
-      + '?fdesde=' + from.format('YYYY-MM-DD') 
-      + '&fhasta=' + to.format('YYYY-MM-DD') 
-      + '&access_token=' + token;
+    } else if (data == "descuentos" || data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "marketplaces" || data == "pagosrecibidos" || data == "contratos" || data == "forecast") {
+      const from = moment(this.dateRangeControl.value.start);
+      const to = moment(this.dateRangeControl.value.end).add(1,'d');
+      l = environment.backURL + '/export/' + data
+        + '?fdesde=' + from.format('YYYY-MM-DD') 
+        + '&fhasta=' + to.format('YYYY-MM-DD') 
+        + '&access_token=' + token;
 
     // Pagos e ingresos
     } else if (data == "pagosemitidos" || data == "ingresos" || data == "mf") {
@@ -206,6 +212,16 @@ export class ReportsComponent {
         + '&pdesde=' + prov_from
         + '&phasta=' + prov_to
         + '&access_token=' + token;
+
+    // Download NRA
+    } else if (data == "downloadnra") {
+      const year = this.yearControl.value;
+      l = environment.backURL + '/download/nra?year=' + year + '&access_token=' + token;
+
+    // NRA report
+    } else if (data == "nra") {
+      const year = this.yearControl.value;
+      l = environment.backURL + '/export/nra?year=' + year + '&access_token=' + token;
     }
 
     // Report

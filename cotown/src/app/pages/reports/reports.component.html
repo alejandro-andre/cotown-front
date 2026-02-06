@@ -73,6 +73,13 @@
     </mat-form-field>
   </div>
 
+  <div class="pure-u-6-24" *ngIf="['nra','downloadnra'].includes(selectedItem)">
+    <mat-form-field>
+      <mat-label>Año</mat-label>
+      <input type="number" min="2024" max="2099" matInput [formControl]="yearControl" placeholder="Año">
+    </mat-form-field>
+  </div>
+
   <div class="pure-u-10-24" *ngIf="providers && providers.length > 1 && ['pagosemitidos', 'ingresos', 'mf', 'downloadcontratos', 'downloadfacturas'].includes(selectedItem)">
     <mat-form-field>
       <mat-label>Emisor</mat-label>

@@ -163,7 +163,7 @@ export class ReportsComponent {
       + '&access_token=' + token;
 
     // Reservas y contratos
-    } else if (data == "descuentos" || data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "marketplaces" || data == "pagosrecibidos" || data == "contratos" || data == "forecast") {
+    } else if (data == "descuentos" || data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "bookdocs" || data == "marketplaces" || data == "pagosrecibidos" || data == "contratos" || data == "forecast") {
       const from = moment(this.dateRangeControl.value.start);
       const to = moment(this.dateRangeControl.value.end).add(1,'d');
       l = environment.backURL + '/export/' + data

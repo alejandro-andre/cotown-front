@@ -36,6 +36,7 @@ export class ReportsComponent {
     { name: 'ac',                cotown: true,  provider: false, icon: 'send',               filter: true,  text: 'ActiveCampaign'},
     { name: 'rooming',           cotown: true,  provider: false, icon: 'people',             filter: true,  text: 'Rooming list' },
     { name: 'reservas',          cotown: true,  provider: false, icon: 'event',              filter: true,  text: 'Reservas' },
+    { name: 'bookdocs',          cotown: true,  provider: false, icon: 'insert_drive_file',  filter: true,  text: 'Docs reservas' },
     { name: 'marketplaces',      cotown: true,  provider: false, icon: 'public',             filter: true,  text: 'Marketplaces' },
     { name: 'pagosemitidos',     cotown: true,  provider: false, icon: 'local_atm',          filter: true,  text: 'Pagos emitidos' },
     { name: 'pagosrecibidos',    cotown: true,  provider: false, icon: 'local_atm',          filter: true,  text: 'Pagos recibidos' },
@@ -120,7 +121,7 @@ export class ReportsComponent {
     } else if (data == "nra" || data == "downloadnra") {
         if (!this.yearControl.value)
           return true;
-    } else if (data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "pagosrecibidos") {
+    } else if (data == "disponibilidad" || data == "occupancy" || data == "reservas" || data == "bookdocs" || data == "pagosrecibidos") {
       if (!this.dateRangeControl.value.start || !this.dateRangeControl.value.end)
         return true;
     } else if (data == "facturas") {

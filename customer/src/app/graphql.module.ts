@@ -6,17 +6,19 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ApolloLink, InMemoryCache } from '@apollo/client/core';
 import { setContext } from '@apollo/client/link/context';
-import { ApolloQueryApi } from './services/apollo-api.service';
+import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 
-const uri = environment.graphqlURL;
+const uri = environment.baseURL + 'graphql';
 
-export function createApollo(httpLink: HttpLink, api: ApolloQueryApi) {
+export function createApollo(httpLink: HttpLink, apolloQueryApi: ApolloQueryApi) {
+
+  console.log('ApolloQueryApi instance used by Apollo:', apolloQueryApi.instanceId);
 
   const auth = setContext((operation, context) => {
     return {
       headers: {
         Accept: 'charset=utf-8',
-        Authorization: api.token ? `Bearer ${api.token}` : '',
+        Authorization: apolloQueryApi.token ? `Bearer ${apolloQueryApi.token}` : '',
       },
     }
   });

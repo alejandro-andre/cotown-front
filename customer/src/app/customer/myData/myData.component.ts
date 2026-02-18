@@ -73,7 +73,7 @@ export class MyDataComponent implements OnInit, AfterViewInit {
     public lookupService: LookupService,
     public formBuilder: FormBuilder,
     private fileService: FileService,
-    private apolloApi: ApolloQueryApi,
+    private apolloQueryApi: ApolloQueryApi,
     private dateAdapter: DateAdapter<any>,
     private axiosApi: AxiosApi,
     private translate: TranslateService,
@@ -411,7 +411,7 @@ export class MyDataComponent implements OnInit, AfterViewInit {
 
     // Call Graphql API
     this.isLoading = true;
-    this.apolloApi.setData(UPDATE_CUSTOMER, variables).subscribe({
+    this.apolloQueryApi.setData(UPDATE_CUSTOMER, variables).subscribe({
 
       next: (res) => {
         const val = res.data;
@@ -467,7 +467,7 @@ export class MyDataComponent implements OnInit, AfterViewInit {
             thumbnail: imageSrc
           }
         };
-        this.apolloApi.setData(UPLOAD_CUSTOMER_PHOTO, variables).subscribe({
+        this.apolloQueryApi.setData(UPLOAD_CUSTOMER_PHOTO, variables).subscribe({
 
           next: (res: any) => {
             const val = res.data;

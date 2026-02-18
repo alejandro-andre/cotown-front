@@ -34,7 +34,7 @@ export class LayoutComponent implements OnInit {
     private authService: AuthService,
     private dateAdapter: DateAdapter<any>,
     private translate: TranslateService,
-    private apolloApi: ApolloQueryApi,
+    private apolloQueryApi: ApolloQueryApi,
     private breakpointObserver: BreakpointObserver,
     private customerService: CustomerService,
     private lookupService: LookupService
@@ -83,7 +83,7 @@ export class LayoutComponent implements OnInit {
 
     // Get data
     return new Promise((resolve) => {
-      this.apolloApi.getData(CUSTOMER_ID_QUERY).subscribe((res) => {
+      this.apolloQueryApi.getData(CUSTOMER_ID_QUERY).subscribe((res) => {
         this.isLoading = false;
         if (res.data && res.data.data) {
           if (res.data.data.length == 1) {
@@ -104,7 +104,7 @@ export class LayoutComponent implements OnInit {
 
     // Get data
     const variables = { id: this.userId }
-    this.apolloApi.getData(CUSTOMER_QUERY, variables).subscribe({
+    this.apolloQueryApi.getData(CUSTOMER_QUERY, variables).subscribe({
 
       next: (res) => {
         this.isLoading = false;

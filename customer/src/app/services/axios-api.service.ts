@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 
-import { ApolloQueryApi } from './apollo-api.service';
+import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { IPayloadFile } from '../constants/Interface';
 import { environment } from 'src/environments/environment';
 

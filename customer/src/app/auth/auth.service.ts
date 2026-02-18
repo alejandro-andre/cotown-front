@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Apollo } from 'apollo-angular';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakTokenParsed } from 'keycloak-js';
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
@@ -11,7 +12,8 @@ export class AuthService {
 
   constructor(
     private keycloakService: KeycloakService,
-    private apolloApi: ApolloQueryApi,
+    private apolloQueryApi: ApolloQueryApi,
+    private apollo: Apollo
   ) {}
 
   public getLoggedUser(): KeycloakTokenParsed | undefined {
@@ -59,12 +61,12 @@ export class AuthService {
         if(!token) {
           await this.login();
         }
-
         this.keycloakToken = token;
         this.loggedIn = true;
-        this.apolloApi.getData(`{ refreshToken(token:"${token}") }`).subscribe(res => {
+        this.apolloQueryApi.setData(`mutation RefreshToken($token: String!) { refreshToken(token: $token) }`, { token: token }).subscribe(res => {
           this.airflowsToken = res.data.refreshToken;
-          this.apolloApi.token = res.data.refreshToken;
+          this.apolloQueryApi.token = res.data.refreshToken;
+          this.apollo.client.resetStore();
           resolve();
         });
       })

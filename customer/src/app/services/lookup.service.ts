@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ICountry, IHoliday, ILookup, ILookupInt, IPaymentMethod as IPaymentMethod, IPdf } from '../constants/Interface';
-import { ApolloQueryApi } from './apollo-api.service';
+import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 
 import { CONTACT_TYPE_QUERY, COUNTRY_QUERY, REASONS_QUERY, GENDER_QUERY, ID_TYPE_QUERY, LANGUAGE_QUERY, SCHOOL_QUERY, STATUS_QUERY, RESOURCE_TYPE_QUERY, CHECKIN_OPTIONS_QUERY, CHECKOUT_OPTIONS_QUERY, PDFS_QUERY, PAYMENT_METHOD_QUERY, HOLIDAY_QUERY } from 'src/app/schemas/query-definitions/lookup.query';
 import { Constants } from '../constants/Constants';
@@ -29,7 +29,7 @@ export class LookupService {
   
   public appLangs = Constants.LANGUAGES;
   
-  constructor(private apolloApi: ApolloQueryApi) {}
+  constructor(private apolloQueryApi: ApolloQueryApi) {}
 
   // Load all
   load() {
@@ -51,7 +51,7 @@ export class LookupService {
   
   // Languages
   loadLanguages() {
-    this.apolloApi.getData(LANGUAGE_QUERY).subscribe((res) => {
+    this.apolloQueryApi.getData(LANGUAGE_QUERY).subscribe((res) => {
       const value = res.data;
       if (value && value.data) {
         this.languages = value.data;
@@ -61,7 +61,7 @@ export class LookupService {
 
   // Load holidays
   loadHolidays() {
-    this.apolloApi.getData(HOLIDAY_QUERY).subscribe((res) => {
+    this.apolloQueryApi.getData(HOLIDAY_QUERY).subscribe((res) => {
       const value = res.data;
       if (value && value.data) {
         this.holidays = value.data;
@@ -71,7 +71,7 @@ export class LookupService {
   
   // Load ID types
   loadIdTypes() {
-    this.apolloApi.getData(ID_TYPE_QUERY).subscribe((res) => {
+    this.apolloQueryApi.getData(ID_TYPE_QUERY).subscribe((res) => {
       const value = res.data;
       if (value && value.data) {
         this.idTypes = value.data;
@@ -81,7 +81,7 @@ export class LookupService {
   
   // Load genders
   loadGenders() {
-    this.apolloApi.getData(GENDER_QUERY).subscribe((res) => {
+    this.apolloQueryApi.getData(GENDER_QUERY).subscribe((res) => {
       const value = res.data;
       if (value && value.data) {
         this.genders = value.data;
@@ -91,7 +91,7 @@ export class LookupService {
 
   // Load countries
   loadCountries() {
-    this.apolloApi.getData(COUNTRY_QUERY).subscribe((res) => {
+    this.apolloQueryApi.getData(COUNTRY_QUERY).subscribe((res) => {
       const value = res.data;
       if (value && value.data) {
         this.countries = value.data;
@@ -102,7 +102,7 @@ export class LookupService {
 
   // Load contact types
   loadContactTypes() {
-    this.apolloApi.getData(CONTACT_TYPE_QUERY).subscribe((res) => {
+    this.apolloQueryApi.getData(CONTACT_TYPE_QUERY).subscribe((res) => {
       const value = res.data;
       if(value && value.data) {
         this.contactTypes = value.data;
@@ -112,7 +112,7 @@ export class LookupService {
 
   // Load schools
   loadSchools() {
-    this.apolloApi.getData(SCHOOL_QUERY).subscribe((res) => {
+    this.apolloQueryApi.getData(SCHOOL_QUERY).subscribe((res) => {
       const value = res.data;
       if(value && value.data && value.data.length) {
         this.schools = value.data;
@@ -122,7 +122,7 @@ export class LookupService {
 
   // Load reasons
   loadReasons() {
-    this.apolloApi.getData(REASONS_QUERY).subscribe((res) => {
+    this.apolloQueryApi.getData(REASONS_QUERY).subscribe((res) => {
       const value = res.data;
       if(value && value.data && value.data.length) {
         this.reasons = value.data;
@@ -132,7 +132,7 @@ export class LookupService {
 
   // Load payment methods
   loadPaymentMethods() {
-    this.apolloApi.getData(PAYMENT_METHOD_QUERY).subscribe((res) => {
+    this.apolloQueryApi.getData(PAYMENT_METHOD_QUERY).subscribe((res) => {
       const value = res.data;
       if(value && value.data && value.data.length) {
         this.paymentMethods = value.data;
@@ -142,7 +142,7 @@ export class LookupService {
 
   // Load checkin options
   loadCheckinOptions() {
-    this.apolloApi.getData(CHECKIN_OPTIONS_QUERY).subscribe((res) => {
+    this.apolloQueryApi.getData(CHECKIN_OPTIONS_QUERY).subscribe((res) => {
       const value = res.data;
       if(value && value.data && value.data.length) {
         this.checkinOptions = value.data;
@@ -152,7 +152,7 @@ export class LookupService {
 
   // Load checkout options
   loadCheckoutOptions() {
-    this.apolloApi.getData(CHECKOUT_OPTIONS_QUERY).subscribe((res) => {
+    this.apolloQueryApi.getData(CHECKOUT_OPTIONS_QUERY).subscribe((res) => {
       const value = res.data;
       if(value && value.data && value.data.length) {
         this.checkoutOptions = value.data;
@@ -182,7 +182,7 @@ export class LookupService {
       {code:'finalizada', name:'', name_en:''},
       {code:'revision', name:'', name_en:''}
     ]
-    this.apolloApi.getData(STATUS_QUERY).subscribe((res) => {
+    this.apolloQueryApi.getData(STATUS_QUERY).subscribe((res) => {
       const value = res.data;
       for (let i = 0; i < value.data[0].labels.length; i++) {
         if (value.data[0].locale == "es_ES") {
@@ -201,7 +201,7 @@ export class LookupService {
       {code:'piso', name:'', name_en:''},
       {code:'habitacion', name:'', name_en:''},
     ]
-    this.apolloApi.getData(RESOURCE_TYPE_QUERY).subscribe((res) => {
+    this.apolloQueryApi.getData(RESOURCE_TYPE_QUERY).subscribe((res) => {
       const value = res.data;
       for (let i = 0; i < value.data[0].labels.length; i++) {
         if (value.data[0].locale == "es_ES") {
@@ -217,7 +217,7 @@ export class LookupService {
 
   // PDFs
   loadPDFs() {
-    this.apolloApi.getData(PDFS_QUERY).subscribe((res) => {
+    this.apolloQueryApi.getData(PDFS_QUERY).subscribe((res) => {
       const value = res.data;
       if (value && value.data) {
         this.pdfs = value.data;

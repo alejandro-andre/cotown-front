@@ -10,7 +10,7 @@ export function initializer(keycloak: KeycloakService): () => Promise<boolean> {
         onLoad: 'check-sso', // 'login-required',
         checkLoginIframe: false
     },
-    bearerExcludedUrls: []
+    bearerExcludedUrls: [environment.baseURL + 'graphql']
   };
 
   return () => keycloak.init(options);

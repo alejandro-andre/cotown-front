@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +28,22 @@ export class ApolloQueryApi {
       mutation: gql`${query}`,
       variables: {...variables, authorization: `${token}`},
     })
+  }
+
+  login(username: string, password: string): Observable<string> {
+    return this.apollo.mutate<{ login: string }>({
+      mutation: gql`
+        mutation Login($username: String!, $password: String!) {
+          login(username: $username, password: $password)
+        }
+      `,
+      variables: { username, password }
+    }).pipe(
+      map(({ data }) => {
+        const token = data?.login ?? '';
+        localStorage.setItem('access_token', token);
+        return token;
+      })
+    );
   }
 }

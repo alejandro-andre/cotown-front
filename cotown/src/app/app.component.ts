@@ -30,6 +30,14 @@ export class AppComponent {
       }
       localStorage.setItem('access_token', access_token);
       this.setAppLanguage();
+      /*
+      this.apolloApi.login('modelsadmin', 'password').subscribe({
+        next: (token) => {
+          localStorage.setItem('access_token', token);
+        },
+        error: (err) => {}
+      });
+      */
     });
   }
 

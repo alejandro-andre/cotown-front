@@ -234,13 +234,13 @@ export class OperationsDashboardComponent implements OnInit {
 
         // CHA/ECO/EXT indicator
         let indicator = "";
-        if (o.Origin_id != null && (this.op == 'checkin' || this.op == 'nextin' || this.op == 'issues'))
+        if (o.Origin_id != null && (["checkin", "nextin", "issues"].includes(this.op)))
           indicator = "<br><strong style='color:teal;'>" + (o.Cha_ext||'').toUpperCase() + "</strong><br>" + o.Origin_id;
-        if (o.Destination_id != null && (this.op == 'checkout' || this.op == 'nextout'))
+        else if (o.Destination_id != null && (["checkout", "nextout", "revision"].includes(this.op)))
           indicator = "<br><strong style='color:teal;'>" + (o.Cha_ext||'').toUpperCase() + "</strong><br>" + o.Destination_id;
-        if (o.Old_check_out && o.New_check_out < o.Old_check_out && !o.Eco_ext_change_ok) 
+        else if (o.Old_check_out && o.New_check_out < o.Old_check_out && !o.Eco_ext_change_ok) 
           indicator = "<br><strong style='color:teal;'>ECO</strong><br>";
-        if (o.Old_check_out && o.New_check_out > o.Old_check_out && !o.Eco_ext_change_ok) 
+        else if (o.Old_check_out && o.New_check_out > o.Old_check_out && !o.Eco_ext_change_ok) 
           indicator = "<br><strong style='color:teal;'>EXT</strong><br>";
 
         // Asterisks

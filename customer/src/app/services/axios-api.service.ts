@@ -53,7 +53,7 @@ export class AxiosApi {
 
   getPdf(id: number, type: string) {
     const token = this.tokenService.token;
-    const url = `wopi/files/Booking/Booking_doc/${id}/${type}/contents?access_token=${token}`;
+    const url = `wopi/files/Booking/Booking_internal_doc/${id}/${type}/contents?access_token=${token}`;
     return airflowsInstance.get(url, { responseType: 'blob' });
   }
 

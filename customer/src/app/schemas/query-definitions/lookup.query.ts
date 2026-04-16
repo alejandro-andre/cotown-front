@@ -162,7 +162,7 @@ query get {
 }`
 
 export const PDFS_QUERY = `query get {
-  data: Booking_Booking_docList (
+  data: Booking_Booking_internal_docList (
     orderBy: [{attribute: id}]    
   ) {
     id

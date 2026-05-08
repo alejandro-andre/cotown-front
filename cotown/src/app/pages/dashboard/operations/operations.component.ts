@@ -174,12 +174,20 @@ export class OperationsDashboardComponent implements OnInit {
     
     // Start date range
     const start: Date = new Date();
-    start.setDate(start.getDate() + 1);
+    if (this.op !== 'issues') {
+      start.setDate(start.getDate() + 1);
+    } else {
+      start.setFullYear(start.getFullYear() - 1);
+    }
     this.range.get("start")?.setValue(start);
 
     // End date range
     const end: Date = new Date();
-    end.setDate(end.getDate() + (["nextout", "checkout"].includes(this.op) ? 30 : 15));
+    if (this.op !== 'issues') {
+      end.setDate(end.getDate() + (["nextout", "checkout"].includes(this.op) ? 30 : 15));
+    } else {
+      end.setDate(end.getDate() + 1);
+    }
     this.range.get("end")?.setValue(end);
 
     // Columns

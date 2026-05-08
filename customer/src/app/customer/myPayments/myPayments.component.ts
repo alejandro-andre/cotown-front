@@ -81,6 +81,7 @@ export class MyPaymentsComponent {
     // Is there a membership fee payment pending for the same booking?
     if (this.customerService.customer?.payments.find((e) => (
       (e.id != elem.id) && 
+      (e.booking) &&
       (e.booking.id == elem.booking.id) && 
       (e.payment_type == 'booking') && 
       (e.amount > 0) &&
@@ -99,6 +100,7 @@ export class MyPaymentsComponent {
       !['solicitud', 'solicitudpagada', 'alternativas', 'alternativaspagada'].includes(e.booking?.status || '')
       || e.booking == null
     ));
+    console.log(payments);
     return payments;
   }
 

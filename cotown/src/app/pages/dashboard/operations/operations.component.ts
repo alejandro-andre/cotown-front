@@ -543,6 +543,9 @@ export class OperationsDashboardComponent implements OnInit {
         if (this.op == "checkout" && row["Status"] != "checkout") {
           this.rows = this.rows.filter(r => r.id != row.id)
         }
+        if (this.op == "issues" && row["Issues_ok"]) {
+          this.rows = this.rows.filter(r => r.id != row.id)
+        }
         row["Changed"] = false;
       }, 
       error: (err)  => {

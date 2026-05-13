@@ -518,6 +518,13 @@ export class PlanningComponent {
               resource_notes: e.notes || '',
               resource_area_woc: e.area_woc,
               resource_rate: e.pricing.multiplier,
+              resource_limit_type: e.limit_type,
+              resource_max_rent: e.max_rent,
+              resource_max_services: e.max_services,
+              resource_max_expenses: e.max_expenses,
+              resource_max_furniture: e.max_furniture,
+              resource_max_utility: e.max_utility,
+              resource_lau_free_date: new Date(e.lau_free_date),
               resource_prices: prices
             });
           }
@@ -565,6 +572,7 @@ export class PlanningComponent {
             Booking_code: code,
             Booking_lock: booking.lock,
             Booking_status: booking.status,
+            Booking_type: booking.booking?.book_type || 'libre',
             Booking_date_from: booking.date_from,
             Booking_date_to: booking.date_to,
             Booking_check_in: booking.booking?.check_in,
@@ -599,9 +607,18 @@ export class PlanningComponent {
 
     // Generate rows
     let highlight = null;
+    let free_date = null;
     for (const r of this.resources) {
-      if (r.resource_type === 'piso')
-        highlight = (this.selectedCityId === 1 && r.resource_area_woc && r.resource_area_woc < 150) ? '' + r.resource_area_woc : null;
+      if (r.resource_type === 'piso') {
+        highlight = r.resource_limit_type;
+        free_date = r.resource_lau_free_date;
+        const nextyear = new Date();
+        nextyear.setFullYear(nextyear.getFullYear() + 1);
+        if (highlight === 'lau' && r.resource_lau_free_date < nextyear)
+          highlight = 'lau_soon';
+      }
+      console.log(r.resource_lau_free_date);
+      console.log(new Date());
       auxRow = new TimeChartRow();
       auxRow.id = r.resource_id;
       auxRow.code = r.resource_code;
@@ -613,8 +630,18 @@ export class PlanningComponent {
         auxRow.selected = true;
         auxRow.checked = true;
       }
+      let text = `<table><thead><th colspan=3>${r.resource_code}</th><th>${r.resource_limit_type}</th></thead>`;
+      if (r.resource_limit_type !== 'libre') {
+        text += `<tbody>` 
+        text += `<tr><th>Renta</th><td>${r.resource_max_rent}€</td><th>Gastos</th><td>${r.resource_max_expenses}€</td></tr>` 
+        text += `<tr><th>Mobiliario</th><td>${r.resource_max_furniture}€</td><th>Consumos</th><td>${r.resource_max_utility}€</td></tr>` 
+        text += `<tr><th>Servicios</th><td>${r.resource_max_services}€</td>` 
+        if (free_date && r.resource_limit_type !== 'indice')
+          text += `<th>Fecha fin</th><td>${formatDate(free_date, 'DMY')}</td>` 
+        text += `</tr></tbody>` 
+      }
       if (r.resource_prices.length) {
-        let text = "<table><thead><th>" + r.resource_code + "</th><th>Long</th><th>Medium</th><th>Short</th></thead><tbody>"
+        text += "<thead><th>Año</th><th>Long</th><th>Medium</th><th>Short</th></thead><tbody>"
         r.resource_prices.forEach(e => { 
           text = text  + "<tr><th>" + e.year   + "</th>" 
             + "<td>" + (e.long   + e.services) + "€</td>" 
@@ -622,9 +649,10 @@ export class PlanningComponent {
             + "<td>" + (e.short  + e.services) + "€</td>"
             + "</tr>"
         })
-        text += "</tbody></table>";
-        auxRow.details = text;
+        text += "</tbody>";
       }
+      text += "</table>";
+      auxRow.details = text;
       auxRows.push(auxRow);
     }
 
@@ -675,7 +703,11 @@ export class PlanningComponent {
           else
             bar.link = "/admin/Booking.Booking/" + bar.code + "/view";
         }
-        bar.text = b.Customer_name
+        bar.text = '';
+        if (b.Booking_type != 'libre') {
+          bar.text += '[' + b.Booking_type + '] '
+        }
+        bar.text += b.Customer_name
           + ' - ' + b.Customer_age
           + ' - ' + b.Customer_gender
           + ' - ' + b.Customer_nationality
@@ -688,6 +720,7 @@ export class PlanningComponent {
         bar.tooltip = `
           <table>
           <tr><th colspan="2">${b.Booking_code}</td></tr>
+          <tr><td><b>Tipo</b></td><td>${b.Booking_type}</td></tr>
           <tr><td><b>Status</b></td><td>${tip}</td></tr>
           <tr><td><b>Desde/Hasta</b></td><td>${dfrom} a ${dto}</td></tr>
           <tr><td><b>Check-in/out</b></td><td>${din} a ${dout}</td></tr>

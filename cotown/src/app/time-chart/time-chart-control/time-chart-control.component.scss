@@ -239,9 +239,17 @@
 	left: 20px;
 	z-index: 1;
 }
-.highlight {
+.indice {
 	position: relative;
-	border-left: 5px solid #FF566B;
+	border-left: 5px solid #0000ff;
+}
+.lau {
+	position: relative;
+	border-left: 5px solid #ff0000;
+}
+.lau_soon {
+	position: relative;
+	border-left: 5px solid #ff8080;
 }
 .note {
 	position: relative;

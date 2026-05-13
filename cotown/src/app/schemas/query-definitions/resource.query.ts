@@ -5,6 +5,13 @@ export const RESOURCES_QUERY = `{
   resource_type: Resource_type
   area_woc: Area_woc
   notes: Notes
+  limit_type: Limit_type
+  max_rent: Max_rent
+  max_services: Max_services
+  max_expenses: Max_expenses
+  max_furniture: Max_furniture
+  max_utility: Max_utility
+  lau_free_date: Last_LAU_free_date
   building: BuildingViaBuilding_id (
     joinType: INNER 
     where: { Active: { EQ: true } }
@@ -63,6 +70,7 @@ export const RESOURCE_FLAT_TYPES_QUERY = `query ResourceFlatQuery {
 
 export const PRICES_QUERY = `query PricingQuery {
   data: Billing_Pricing_detailList (
+    where: {Year: { GE: ${new Date().getFullYear()} }}
     orderBy: [{attribute: Building_id}, {attribute: Flat_type_id}, {attribute: Place_type_id}]
   ) {
     building: Building_id

@@ -51,6 +51,13 @@ export interface Resource {
   resource_notes: string,
   resource_area_woc: number,
   resource_rate: number,
+  resource_limit_type: string,
+  resource_max_rent: number,
+  resource_max_services: number,
+  resource_max_expenses: number,
+  resource_max_furniture: number,
+  resource_max_utility: number,
+  resource_lau_free_date: Date,
   resource_prices: any[]
 }
 

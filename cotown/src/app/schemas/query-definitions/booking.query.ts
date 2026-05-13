@@ -45,6 +45,7 @@ query BookingList([[params]]) {
       check_in: Check_in
       check_out: Check_out
       comments: Comments
+      book_type: Book_type
       customer: CustomerViaCustomer_id {
         name: Name
         birth_date: Birth_date
@@ -68,6 +69,7 @@ query BookingList([[params]]) {
     group: Booking_groupViaBooking_group_id {
       id
       master: Master
+      book_type: Book_type
       customer: CustomerViaPayer_id {
         name: Name
         email: Email

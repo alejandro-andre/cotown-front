@@ -509,6 +509,7 @@ export class PlanningComponent {
             const prices = this.calcPrices(e.building.id, e.flat_type.id, e.place_type?.id || 0, e.pricing.multiplier, amenities);
             this.resources.push({
               resource_id: e.id,
+              resource_nra: e.nra,
               resource_code: e.code,
               resource_type: e.resource_type,
               resource_building_id: e.building.id,
@@ -614,32 +615,29 @@ export class PlanningComponent {
         free_date = r.resource_lau_free_date;
         const nextyear = new Date();
         nextyear.setFullYear(nextyear.getFullYear() + 1);
-        if (highlight === 'lau' && r.resource_lau_free_date < nextyear)
-          highlight = 'lau_soon';
+        if (highlight === 'lau' && r.resource_lau_free_date < nextyear) highlight = 'lau_soon';
       }
-      console.log(r.resource_lau_free_date);
-      console.log(new Date());
       auxRow = new TimeChartRow();
       auxRow.id = r.resource_id;
       auxRow.code = r.resource_code;
       auxRow.info = r.resource_info;
       auxRow.notes = r.resource_notes;
-      auxRow.highlight = highlight;
+      auxRow.highlight = (highlight == 'libre' || r.resource_nra != null || r.resource_type == 'plaza') ? highlight : 'error';
       auxRow.style = Constants.types[r.resource_type];
       if (this.rooms.includes(r.resource_code)) {
         auxRow.selected = true;
         auxRow.checked = true;
       }
-      let text = `<table><thead><th colspan=3>${r.resource_code}</th><th>${r.resource_limit_type}</th></thead>`;
+      let text = `<table><thead><th colspan=3>${r.resource_code}</th><th>${r.resource_limit_type}</th></thead><tbody><tr><td style="font-size:10px;text-align:left;" colspan="4">${r.resource_nra || '-'}</td></tr>`;
       if (r.resource_limit_type !== 'libre') {
-        text += `<tbody>` 
         text += `<tr><th>Renta</th><td>${r.resource_max_rent}€</td><th>Gastos</th><td>${r.resource_max_expenses}€</td></tr>` 
         text += `<tr><th>Mobiliario</th><td>${r.resource_max_furniture}€</td><th>Consumos</th><td>${r.resource_max_utility}€</td></tr>` 
         text += `<tr><th>Servicios</th><td>${r.resource_max_services}€</td>` 
         if (free_date && r.resource_limit_type !== 'indice')
           text += `<th>Fecha fin</th><td>${formatDate(free_date, 'DMY')}</td>` 
-        text += `</tr></tbody>` 
+        text += `</tr>` 
       }
+      text += `</tbody>` 
       if (r.resource_prices.length) {
         text += "<thead><th>Año</th><th>Long</th><th>Medium</th><th>Short</th></thead><tbody>"
         r.resource_prices.forEach(e => { 

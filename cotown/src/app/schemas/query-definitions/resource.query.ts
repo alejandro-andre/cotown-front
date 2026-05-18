@@ -1,6 +1,7 @@
 export const RESOURCES_QUERY = `{
   id
   code: Code
+  nra: Registry_num
   address: Address
   resource_type: Resource_type
   area_woc: Area_woc

@@ -62,7 +62,7 @@
         </div>
 
         <div class="pure-u-5-24">
-          <mat-form-field class="field" appearance="fill" >
+          <mat-form-field *ngIf="op != 'inc'" class="field" appearance="fill" >
             <mat-label>{{ 'date range' | translate }}</mat-label>
             <mat-date-range-input [rangePicker]="picker" [formGroup]="range">
               <input matStartDate formControlName="start" [placeholder]="'from' | translate">

@@ -7,7 +7,7 @@ import { ApolloQueryApi } from "src/app/services/apollo-api.service";
 import { Building, City } from "src/app/constants/Interfaces";
 import { CITIES_QUERY } from "src/app/schemas/query-definitions/city.query";
 import { BUILDINGS_BY_LOCATION_QUERY, BUILDINGS_QUERY } from "src/app/schemas/query-definitions/building.query";
-import { PAYMENT_UPDATE, DEPOSIT_UPDATE } from "src/app/schemas/query-definitions/admon.query";
+import { PAYMENT_UPDATE, DEPOSIT_UPDATE, INCASOL_UPDATE } from "src/app/schemas/query-definitions/admon.query";
 import { Constants } from "src/app/constants/Constants";
 import { FormControl, FormGroup } from "@angular/forms";
 import { MatCheckboxChange } from "@angular/material/checkbox";
@@ -30,7 +30,8 @@ export class AdmonDashboardComponent implements OnInit {
   public op = 'pay';
   public dashboards: any[] = [
     {op: 'pay', name: 'Pagos pendientes'},
-    {op: 'dep', name: 'Garantías'}
+    {op: 'dep', name: 'Garantías'},
+    {op: 'inc', name: 'Incàsol'}
   ];
   public dashboardId: number = 1;
 
@@ -64,6 +65,7 @@ export class AdmonDashboardComponent implements OnInit {
     { key:"Resource",              value:"Recurso",                       sort:"", type: "text",    filter: [] }, 
     { key:"Customer",              value:"Cliente",                       sort:"", type: "text",    filter: [] }, 
     { key:"id",                    value:"Pago",                          sort:"", type: "number",  filter: ["pay"] },
+    { key:"Contract_signed",       value:"Contrato",                      sort:"", type: "date",    filter: ["inc"] }, 
     { key:"Issued_date",           value:"Emitido",                       sort:"", type: "date",    filter: ["pay"] }, 
     { key:"Amount",                value:"Importe",                       sort:"", type: "number",  filter: ["pay"] }, 
     { key:"Concept",               value:"Concepto/Facturas/Comentarios", sort:"", type: "text",    filter: ["pay"] }, 
@@ -76,6 +78,9 @@ export class AdmonDashboardComponent implements OnInit {
     { key:"Deposit_returned",      value:"Garantía devuelta",             sort:"", type: "numbctl", filter: ["dep"] }, 
     { key:"Date_deposit_returned", value:"Fecha devuelta",                sort:"", type: "datectl", filter: ["dep"] }, 
     { key:"Deposit_locked",        value:"Retenida temporalmente",        sort:"", type: "bool",    filter: ["dep"] }, 
+    { key:"Incasol_deposit",       value:"Depositada",                    sort:"", type: "bool",    filter: ["inc"] }, 
+    { key:"Incasol_reclaim",       value:"Reclamada",                     sort:"", type: "bool",    filter: ["inc"] }, 
+    { key:"Incasol_return",        value:"Devuelta",                      sort:"", type: "bool",    filter: ["inc"] }, 
   ];
 
   // Date control
@@ -168,9 +173,11 @@ export class AdmonDashboardComponent implements OnInit {
     if (!this.op || !this.cityId)
       return;
 
-    // Get payments
+    // Params
     const params: any = this.get_params();
     const token = localStorage.getItem('access_token') || '';
+
+    // Get payments
     if (this.op == 'pay')
       await axiosApi.getPayments(token, params).then((res) => { 
         this.rows = res.data.map((o: any) => { 
@@ -190,7 +197,8 @@ export class AdmonDashboardComponent implements OnInit {
         });
       });      
 
-    else
+    // Get deposits
+    else if (this.op == 'dep')
       await axiosApi.getDeposits(token, params).then((res) => { 
         this.rows = res.data.map((o: any) => { 
           return {
@@ -203,6 +211,26 @@ export class AdmonDashboardComponent implements OnInit {
             "Deposit_returned": new FormControl<any>(o.Deposit_returned),
             "Date_deposit_returned": new FormControl<any>(o.Date_deposit_returned),
             "Deposit_locked": [o.Deposit_locked == '1', o.Deposit_locked == '1'],
+          }
+        });
+      })
+
+    // Get incàsol
+    else
+      await axiosApi.getIncasol(token, params).then((res) => { 
+        this.rows = res.data.map((o: any) => {
+          const returned  = (o.Incasol_type === 'devuelta');
+          const reclaimed = (returned || o.Incasol_type === 'reclamada');
+          const deposited = (reclaimed || o.Incasol_type === 'depositada');
+          return {
+            "id": o.Booking_id,
+            "Booking": o.Booking_id + "<br>" + this.formatDate(o.Date_from) + "<br>" + this.formatDate(o.Date_to),
+            "Resource": o.Resource,
+            "Customer": o.Customer + "<br>" + o.Email,
+            "Contract_signed": o.Contract_signed ? this.formatDate(o.Contract_signed) : '(pendiente)',
+            "Incasol_deposit": [deposited, deposited],
+            "Incasol_reclaim": [reclaimed, reclaimed],
+            "Incasol_return":  [returned,  returned]
           }
         });
       });      
@@ -338,8 +366,14 @@ export class AdmonDashboardComponent implements OnInit {
 
   emitCheck(event: MatCheckboxChange, key: string, row: any) {
     row[key][0] = event.checked;
-    row["Changed"] = false;
-    if (row["Deposit_locked"][0] != row["Deposit_locked"][1]) row["Changed"] = true;
+    if (key == "Incasol_deposit") if (row["Incasol_deposit"][0]) {} else { row["Incasol_reclaim"][0] = false; row["Incasol_return"][0] = false };
+    if (key == "Incasol_reclaim") if (row["Incasol_reclaim"][0]) { row["Incasol_deposit"][0] = true } else { row["Incasol_return"][0] = false };
+    if (key == "Incasol_return" ) if (row["Incasol_return"][0])  { row["Incasol_deposit"][0] = true; row["Incasol_reclaim"][0] = true };
+    row["Changed"] = 
+      row[key][0] != row[key][1]
+      || (row["Incasol_deposit"][0] != row["Incasol_deposit"][1])
+      || (row["Incasol_reclaim"][0] != row["Incasol_reclaim"][1])
+      || (row["Incasol_return"][0]  != row["Incasol_return"][1])
     return row["Changed"];
   }
 
@@ -354,26 +388,38 @@ export class AdmonDashboardComponent implements OnInit {
       variables.warning_1 = this.datePipe.transform(row.Warning_1.value, "yyyy-MM-dd");
       variables.warning_2 = this.datePipe.transform(row.Warning_2.value, "yyyy-MM-dd");
       variables.warning_3 = this.datePipe.transform(row.Warning_3.value, "yyyy-MM-dd");
-    } else {
+    }
+    else if (this.op == 'dep') {
       query = DEPOSIT_UPDATE;
       variables.deposit_required = parseFloat(row.Deposit_required.value);
       variables.date_deposit_required = this.datePipe.transform(row.Date_deposit_required.value, "yyyy-MM-dd");
       variables.deposit_returned = parseFloat(row.Deposit_returned.value);
       variables.date_deposit_returned = this.datePipe.transform(row.Date_deposit_returned.value, "yyyy-MM-dd");
       variables.deposit_locked = row.Deposit_locked[0];
-      row.Deposit_locked[1] = row.Deposit_locked[0];
+      row["Deposit_locked"][1]  = row["Deposit_locked"][0];
     }
+    else if (this.op == 'inc') {
+      query = INCASOL_UPDATE;
+      variables.incasol_type = row["Incasol_return"][0] ? "devuelta" : (row["Incasol_reclaim"][0] ? "reclamada": (row["Incasol_deposit"][0] ? "depositada": "pendiente"));
+      row["Incasol_deposit"][1] = row["Incasol_deposit"][0];
+      row["Incasol_reclaim"][1] = row["Incasol_reclaim"][0];
+      row["Incasol_return"][1]  = row["Incasol_return"][0];
+      row["Changed"] = false;
+    }
+    else return;
 
     // Update
     this.isLoading = true;
+    console.log(query)
+    console.log(variables)
     this.apollo.setData(query, variables).subscribe({
       next: (res) => {
         this.isLoading = false;
-        row["Deposit_locked"][1] = row["Deposit_locked"][0];
-        row["Changed"] = false;
+        this.getRecords();
       }, 
       error: (err)  => {
         this.isLoading = false;
+        console.log(err)
       }
     })
   }

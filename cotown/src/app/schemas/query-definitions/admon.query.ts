@@ -31,3 +31,14 @@ export const DEPOSIT_UPDATE = `mutation(
     }
   ) { id }
 }`;
+
+export const INCASOL_UPDATE = `mutation(
+  $id: Int!
+  $incasol_type: Auxiliar_Incasol_typeEnumType!
+) {
+  data: Booking_BookingUpdate( where: { id: { EQ: $id } }
+    entity:{
+      Incasol_type: $incasol_type
+    }
+  ) { id }
+}`;

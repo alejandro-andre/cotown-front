@@ -622,7 +622,7 @@ export class PlanningComponent {
       auxRow.code = r.resource_code;
       auxRow.info = r.resource_info;
       auxRow.notes = r.resource_notes;
-      auxRow.highlight = (highlight == 'libre' || r.resource_nra != null || r.resource_type == 'plaza') ? highlight : 'error';
+      auxRow.highlight = (highlight == 'libre' || r.resource_nra != null || r.resource_type == 'plaza') ? highlight : highlight + ' error';
       auxRow.style = Constants.types[r.resource_type];
       if (this.rooms.includes(r.resource_code)) {
         auxRow.selected = true;

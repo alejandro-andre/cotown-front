@@ -61,26 +61,28 @@ export class AdmonDashboardComponent implements OnInit {
   public rows: any[] = [];
   public header: { key: string, value: string, sort: string, type: string } [] = [];
   public headerFields: { key: string, value: string, sort: string, type: string, filter: string[] }[] = [
-    { key:"Booking",               value:"Reserva",                       sort:"", type: "text",    filter: [] }, 
-    { key:"Resource",              value:"Recurso",                       sort:"", type: "text",    filter: [] }, 
-    { key:"Customer",              value:"Cliente",                       sort:"", type: "text",    filter: [] }, 
+    { key:"Booking",               value:"Reserva",                       sort:"", type: "text",    filter: [] },
+    { key:"Status",                value:"Estado",                        sort:"", type: "status", filter: [] },
+    { key:"Resource",              value:"Recurso",                       sort:"", type: "text",    filter: [] },
+    { key:"Customer",              value:"Cliente",                       sort:"", type: "text",    filter: [] },
     { key:"id",                    value:"Pago",                          sort:"", type: "number",  filter: ["pay"] },
-    { key:"Contract_signed",       value:"Contrato",                      sort:"", type: "date",    filter: ["inc"] }, 
-    { key:"Issued_date",           value:"Emitido",                       sort:"", type: "date",    filter: ["pay"] }, 
-    { key:"Amount",                value:"Importe",                       sort:"", type: "number",  filter: ["pay"] }, 
-    { key:"Concept",               value:"Concepto/Facturas/Comentarios", sort:"", type: "text",    filter: ["pay"] }, 
-    { key:"Payment",               value:"Método/Aut/Fecha pago",         sort:"", type: "text",    filter: ["pay"] }, 
-    { key:"Warning_1",             value:"Aviso 1",                       sort:"", type: "datectl", filter: ["pay"] }, 
-    { key:"Warning_2",             value:"Aviso 2",                       sort:"", type: "datectl", filter: ["pay"] }, 
-    { key:"Warning_3",             value:"Aviso 3",                       sort:"", type: "datectl", filter: ["pay"] }, 
-    { key:"Deposit_required",      value:"Garantía a devolver",           sort:"", type: "numbctl", filter: ["dep"] }, 
-    { key:"Date_deposit_required", value:"Fecha a devolver",              sort:"", type: "datectl", filter: ["dep"] }, 
-    { key:"Deposit_returned",      value:"Garantía devuelta",             sort:"", type: "numbctl", filter: ["dep"] }, 
-    { key:"Date_deposit_returned", value:"Fecha devuelta",                sort:"", type: "datectl", filter: ["dep"] }, 
-    { key:"Deposit_locked",        value:"Retenida temporalmente",        sort:"", type: "bool",    filter: ["dep"] }, 
-    { key:"Incasol_deposit",       value:"Depositada",                    sort:"", type: "bool",    filter: ["inc"] }, 
-    { key:"Incasol_reclaim",       value:"Reclamada",                     sort:"", type: "bool",    filter: ["inc"] }, 
-    { key:"Incasol_return",        value:"Devuelta",                      sort:"", type: "bool",    filter: ["inc"] }, 
+    { key:"Contract_signed",       value:"Contrato",                      sort:"", type: "date",    filter: ["inc"] },
+    { key:"Issued_date",           value:"Emitido",                       sort:"", type: "date",    filter: ["pay"] },
+    { key:"Amount",                value:"Importe",                       sort:"", type: "number",  filter: ["pay"] },
+    { key:"Concept",               value:"Concepto/Facturas/Comentarios", sort:"", type: "text",    filter: ["pay"] },
+    { key:"Payment",               value:"Método/Aut/Fecha pago",         sort:"", type: "text",    filter: ["pay"] },
+    { key:"Warning_1",             value:"Aviso 1",                       sort:"", type: "datectl", filter: ["pay"] },
+    { key:"Warning_2",             value:"Aviso 2",                       sort:"", type: "datectl", filter: ["pay"] },
+    { key:"Warning_3",             value:"Aviso 3",                       sort:"", type: "datectl", filter: ["pay"] },
+    { key:"Incasol_deposit",       value:"Fianza Incásol",                sort:"", type: "number",  filter: ["inc"] },
+    { key:"Deposit_required",      value:"Garantía a devolver",           sort:"", type: "numbctl", filter: ["dep"] },
+    { key:"Date_deposit_required", value:"Fecha a devolver",              sort:"", type: "datectl", filter: ["dep"] },
+    { key:"Deposit_returned",      value:"Garantía devuelta",             sort:"", type: "numbctl", filter: ["dep"] },
+    { key:"Date_deposit_returned", value:"Fecha devuelta",                sort:"", type: "datectl", filter: ["dep"] },
+    { key:"Deposit_locked",        value:"Retenida temporalmente",        sort:"", type: "bool",    filter: ["dep"] },
+    { key:"Incasol_deposited",     value:"Depositada",                    sort:"", type: "bool",    filter: ["inc"] },
+    { key:"Incasol_reclaimed",     value:"Reclamada",                     sort:"", type: "bool",    filter: ["inc"] },
+    { key:"Incasol_returned",      value:"Devuelta",                      sort:"", type: "bool",    filter: ["inc"] },
   ];
 
   // Date control
@@ -184,6 +186,7 @@ export class AdmonDashboardComponent implements OnInit {
           return {
             "id": o.id,
             "Booking": o.Booking_id + "<br>" + this.formatDate(o.Date_from) + "<br>" + this.formatDate(o.Date_to),
+            "Status": o.Status,
             "Resource": o.Resource,
             "Customer": o.Customer + "<br>" + o.Email,
             "Issued_date": this.formatDate(o.Issued_date),
@@ -204,6 +207,7 @@ export class AdmonDashboardComponent implements OnInit {
           return {
             "id": o.Booking_id,
             "Booking": o.Booking_id + "<br>" + this.formatDate(o.Date_from) + "<br>" + this.formatDate(o.Date_to),
+            "Status": o.Status,
             "Resource": o.Resource,
             "Customer": o.Customer + "<br>" + o.Email,
             "Deposit_required": new FormControl<any>(o.Deposit_required), 
@@ -225,12 +229,14 @@ export class AdmonDashboardComponent implements OnInit {
           return {
             "id": o.Booking_id,
             "Booking": o.Booking_id + "<br>" + this.formatDate(o.Date_from) + "<br>" + this.formatDate(o.Date_to),
+            "Status": o.Status,
             "Resource": o.Resource,
             "Customer": o.Customer + "<br>" + o.Email,
+            "Incasol_deposit": o.Incasol_deposit,
             "Contract_signed": o.Contract_signed ? this.formatDate(o.Contract_signed) : '(pendiente)',
-            "Incasol_deposit": [deposited, deposited],
-            "Incasol_reclaim": [reclaimed, reclaimed],
-            "Incasol_return":  [returned,  returned]
+            "Incasol_deposited": [deposited, deposited],
+            "Incasol_reclaimed": [reclaimed, reclaimed],
+            "Incasol_returned":  [returned,  returned]
           }
         });
       });      

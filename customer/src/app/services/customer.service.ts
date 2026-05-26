@@ -32,6 +32,7 @@ export class CustomerService {
 
   setCustomerData(customer: Customer): void {
     this.customer = customer;
+    console.log(customer.documents)
     this.setCustomerVisibility();
   }
 

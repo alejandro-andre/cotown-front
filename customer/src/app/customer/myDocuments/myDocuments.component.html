@@ -9,6 +9,11 @@
 <ng-template #thenBlock>
   <div *ngFor="let document of documents">
     <h2>{{ getDocumentName(document) }}</h2>
+    <mat-select>
+      <mat-option *ngFor="let option of document.doc_type?.options">
+      {{ option.name }}
+      </mat-option>
+    </mat-select>
     <div class="group">
 
       <div class="pure-g">

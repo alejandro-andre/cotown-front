@@ -61,6 +61,11 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
         name_en: Name_en
         images: Images
         expires: Expires
+        multiple: Multiple
+        mandatory: Mandatory
+        options: Customer_doc_optionListViaCustomer_doc_type_id {
+          name: Name
+        }
       }
     }
     bookings: BookingListViaCustomer_id {

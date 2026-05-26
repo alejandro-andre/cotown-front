@@ -89,7 +89,10 @@ export interface ICustomer extends IBase {
 export interface IDocType extends IBase {
   name_en: string,
   images: number,
-  expires: boolean
+  expires: boolean,
+  mandatory: string | null,
+  multiple: string | null,
+  options: any[]
 }
 export interface IDocument {
   id: number,

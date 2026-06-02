@@ -54,6 +54,8 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
       id
       expiry_date: Expiry_date
       doc_option_id: Customer_doc_option_id
+      booking_id: Booking_id
+      approved: Approved
       front: Document { name oid type size }
       back: Document_back { name oid type size }
       doc_type: Customer_doc_typeViaCustomer_doc_type_id {
@@ -285,6 +287,51 @@ export const UPDATE_CUSTOMER = `
       Bank_country_id: $bank_country_id
       Lang: $appLang
     }) {id}
+}`;
+
+export const CREATE_CUSTOMER_DOCUMENT = `mutation ($customer_id: Int!, $doc_type_id: Int!, $booking_id: Int, $fileFront: Models_DocumentTypeInputType, $date: String, $doc_option_id: Int) {
+  data: Customer_Customer_docCreate (
+    entity: {
+      Customer_id: $customer_id
+      Customer_doc_type_id: $doc_type_id
+      Booking_id: $booking_id
+      Expiry_date: $date
+      Document: $fileFront
+      Customer_doc_option_id: $doc_option_id
+    }
+  ) {
+    id
+    Document { oid name type size }
+  }
+}`;
+
+export const CREATE_CUSTOMER_FULL_DOCUMENTS = `mutation ($customer_id: Int!, $doc_type_id: Int!, $booking_id: Int, $fileFront: Models_DocumentTypeInputType, $fileBack: Models_DocumentTypeInputType, $date: String, $doc_option_id: Int) {
+  data: Customer_Customer_docCreate (
+    entity: {
+      Customer_id: $customer_id
+      Customer_doc_type_id: $doc_type_id
+      Booking_id: $booking_id
+      Expiry_date: $date
+      Document: $fileFront
+      Document_back: $fileBack
+      Customer_doc_option_id: $doc_option_id
+    }
+  ) {
+    id
+    Document { oid name type size }
+    Document_back { oid name type size }
+  }
+}`;
+
+export const UPDATE_CUSTOMER_DOC_OPTION = `mutation ($id: Int!, $date: String, $doc_option_id: Int) {
+  data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
+    entity: {
+      Expiry_date: $date
+      Customer_doc_option_id: $doc_option_id
+    }
+  ) {
+    id
+  }
 }`;
 
 export const UPLOAD_CUSTOMER_DOCUMENT = `mutation ($id: Int! $fileFront: Models_DocumentTypeInputType, $date: String, $doc_option_id: Int) {

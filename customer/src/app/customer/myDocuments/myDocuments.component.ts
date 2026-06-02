@@ -5,13 +5,12 @@ import { Constants } from 'src/app/constants/Constants';
 import { IDocFile, IDocument, IPayloadFile } from 'src/app/constants/Interface';
 import { Document } from 'src/app/models/Document.model';
 
-import { UPLOAD_CUSTOMER_DOCUMENT, UPLOAD_CUSTOMER_FULL_DOCUMENTS } from 'src/app/schemas/query-definitions/customer.query';
+import { CREATE_CUSTOMER_DOCUMENT, CREATE_CUSTOMER_FULL_DOCUMENTS, UPDATE_CUSTOMER_DOC_OPTION, UPLOAD_CUSTOMER_DOCUMENT, UPLOAD_CUSTOMER_FULL_DOCUMENTS } from 'src/app/schemas/query-definitions/customer.query';
 import { ApolloQueryApi } from 'src/app/services/apollo-api.service';
 import { AxiosApi } from 'src/app/services/axios-api.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { FileService } from 'src/app/services/file.service';
 import { ModalService } from 'src/app/services/modal.service';
-import { CustomDateAdapter } from 'src/app/utils/date-adapter';
 import { formatErrorBody } from 'src/app/utils/error.util';
 
 @Component({
@@ -30,12 +29,12 @@ export class MyDocumentsComponent implements OnInit {
 
   constructor(
     public customerService: CustomerService,
-    private fileService: FileService,
-    private datePipe: DatePipe,
-    private router: Router,
-    private axiosApi: AxiosApi,
-    private Apollo: ApolloQueryApi,
-    private modalService: ModalService
+    private readonly fileService: FileService,
+    private readonly datePipe: DatePipe,
+    private readonly router: Router,
+    private readonly axiosApi: AxiosApi,
+    private readonly Apollo: ApolloQueryApi,
+    private readonly modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -103,6 +102,8 @@ export class MyDocumentsComponent implements OnInit {
       this.documents.push(document);
     });
 
+    this.documents.sort((a, b) => (a.doc_type?.id || 0) - (b.doc_type?.id || 0));
+
   }
 
   async upload (event: any, field: string, document: IDocument) {
@@ -147,18 +148,33 @@ export class MyDocumentsComponent implements OnInit {
   }
 
   isReadOnly(document: IDocument) {
-    if (document.front && !document.frontFile)
-      return true;
-    if (document.back && !document.backFile)
-      return true;
-    return false;
+    return !!document.approved;
+  }
+
+  canAddMore(document: IDocument): boolean {
+    if (!document.doc_type?.multiple) return false;
+    if (!document.id || !document.front?.oid) return false;
+    return !this.documents.some(d => d.doc_type?.id === document.doc_type?.id && !d.id);
+  }
+
+  addMore(document: IDocument): void {
+    this.documents.push(new Document({
+      id: 0,
+      expiry_date: null,
+      doc_type: document.doc_type,
+      booking_id: document.booking_id
+    } as IDocument));
+  }
+
+  subtypeChanged(document: IDocument): boolean {
+    return document.doc_option_id !== document.original_doc_option_id;
   }
 
   isSaveEnabled(document: IDocument) {
-    if (!document.frontFile)
+    if (!document.frontFile && !this.subtypeChanged(document))
       return false;
     const images = document.doc_type?.images || 0;
-    if (images > 1 && !document.backFile)
+    if (images > 1 && !document.backFile && !this.subtypeChanged(document))
       return false;
     if ((document.doc_type?.options?.length || 0) >= 2 && !document.doc_option_id)
       return false;
@@ -172,13 +188,22 @@ export class MyDocumentsComponent implements OnInit {
     // Expiration date
     document.expiry_date = this.datePipe.transform(document.formDateControl.value, 'yyyy-MM-dd');
 
-    // Query
-    const query = document.doc_type?.images === 1 ? UPLOAD_CUSTOMER_DOCUMENT : UPLOAD_CUSTOMER_FULL_DOCUMENTS;
-    let variables: any = {
-      id: document.id,
-      date: document.expiry_date,
-      doc_option_id: document.doc_option_id ?? null
+    const isNew = !document.id;
+    const isFull = (document.doc_type?.images || 1) > 1;
+
+    let query;
+    let variables: any;
+    if (isNew) {
+      query = isFull ? CREATE_CUSTOMER_FULL_DOCUMENTS : CREATE_CUSTOMER_DOCUMENT;
+      variables = { customer_id: this.customerService.customer.id, doc_type_id: document.doc_type?.id, booking_id: document.booking_id ?? null, date: document.expiry_date, doc_option_id: document.doc_option_id ?? null };
+    } else if (document.frontFile) {
+      query = isFull ? UPLOAD_CUSTOMER_FULL_DOCUMENTS : UPLOAD_CUSTOMER_DOCUMENT;
+      variables = { id: document.id, date: document.expiry_date, doc_option_id: document.doc_option_id ?? null };
+    } else {
+      query = UPDATE_CUSTOMER_DOC_OPTION;
+      variables = { id: document.id, date: document.expiry_date, doc_option_id: document.doc_option_id ?? null };
     }
+
     if (document.frontFile) {
       variables.fileFront = {
         name: document.front?.name,
@@ -195,15 +220,18 @@ export class MyDocumentsComponent implements OnInit {
         thumbnail: document.back?.thumbnail
       }
     }
- 
+
     this.isLoading = true;
     this.Apollo.setData(query, variables).subscribe({
 
       next: (response) => {
         this.isLoading = false;
         const value = response.data;
-        if (value && value.data && value.data.length && value.data[0].id) {
+        const result = Array.isArray(value?.data) ? value.data[0] : value?.data;
+        if (result?.id) {
+          if (isNew) document.id = result.id;
           document.frontFile = undefined;
+          document.original_doc_option_id = document.doc_option_id;
         } else {
           this.modalService.openModal({title: 'Error', message: 'unknown_error', type: 'ok' });
         }

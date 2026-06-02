@@ -41,9 +41,14 @@ export class MyDocumentsComponent implements OnInit {
   ngOnInit(): void {
     this.getDocs();
   }
-  
+
+  // Check current language
+  get isSpanish(): boolean {
+    return this.customerService.customer.appLang === Constants.SPANISH.id
+  }
+
   getDocumentName(document: IDocument): string {
-    if (this.customerService.customer.appLang === 'es')
+    if (this.customerService.customer.appLang === Constants.SPANISH.id)
       return document.doc_type?.name || '';
     return document.doc_type?.name_en || '';
   }
@@ -54,6 +59,9 @@ export class MyDocumentsComponent implements OnInit {
     // New array
     this.documents = [];
 
+
+    console.log(this.customerService.customer.documents);
+    
     // Loop thru documents
     this.customerService.customer.documents.forEach((doc) => {
 
@@ -152,6 +160,10 @@ export class MyDocumentsComponent implements OnInit {
     const images = document.doc_type?.images || 0;
     if (images > 1 && !document.backFile)
       return false;
+    if ((document.doc_type?.options?.length || 0) >= 2 && !document.doc_option_id)
+      return false;
+    if (document.doc_type?.expires && !document.formDateControl.value)
+      return false;
     return true;
   }
 
@@ -164,7 +176,8 @@ export class MyDocumentsComponent implements OnInit {
     const query = document.doc_type?.images === 1 ? UPLOAD_CUSTOMER_DOCUMENT : UPLOAD_CUSTOMER_FULL_DOCUMENTS;
     let variables: any = {
       id: document.id,
-      date:document.expiry_date
+      date: document.expiry_date,
+      doc_option_id: document.doc_option_id ?? null
     }
     if (document.frontFile) {
       variables.fileFront = {

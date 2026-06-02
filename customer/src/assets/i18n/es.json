@@ -90,6 +90,7 @@
   "documents": "Mis documentos",
   "email": "Email",
   "expiry_date": "Fecha de caducidad",
+  "doc_subtype": "Tipo de documento",
   "flat_type": "Tipo de piso",
   "flight": "Nº de Vuelo/Tren",
   "from": "Desde",

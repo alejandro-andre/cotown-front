@@ -372,14 +372,18 @@ export class AdmonDashboardComponent implements OnInit {
 
   emitCheck(event: MatCheckboxChange, key: string, row: any) {
     row[key][0] = event.checked;
-    if (key == "Incasol_deposit") if (row["Incasol_deposit"][0]) {} else { row["Incasol_reclaim"][0] = false; row["Incasol_return"][0] = false };
-    if (key == "Incasol_reclaim") if (row["Incasol_reclaim"][0]) { row["Incasol_deposit"][0] = true } else { row["Incasol_return"][0] = false };
-    if (key == "Incasol_return" ) if (row["Incasol_return"][0])  { row["Incasol_deposit"][0] = true; row["Incasol_reclaim"][0] = true };
+    if (key == "Incasol_deposited") if (row["Incasol_deposited"][0]) {} else { row["Incasol_reclaimed"][0] = false; row["Incasol_returned"][0] = false };
+    if (key == "Incasol_reclaimed") if (row["Incasol_reclaimed"][0]) { row["Incasol_deposited"][0] = true } else { row["Incasol_returned"][0] = false };
+    if (key == "Incasol_returned" ) if (row["Incasol_returned"][0])  { row["Incasol_deposited"][0] = true; row["Incasol_reclaimed"][0] = true };
+    console.log(row[key][0])
+    console.log(row["Incasol_deposited"][0])
+    console.log(row["Incasol_reclaimed"][0])
+    console.log(row["Incasol_returned"][0])
     row["Changed"] = 
       row[key][0] != row[key][1]
-      || (row["Incasol_deposit"][0] != row["Incasol_deposit"][1])
-      || (row["Incasol_reclaim"][0] != row["Incasol_reclaim"][1])
-      || (row["Incasol_return"][0]  != row["Incasol_return"][1])
+      || (row["Incasol_deposited"][0] != row["Incasol_deposited"][1])
+      || (row["Incasol_reclaimed"][0] != row["Incasol_reclaimed"][1])
+      || (row["Incasol_returned"][0]  != row["Incasol_returned"][1])
     return row["Changed"];
   }
 
@@ -406,10 +410,10 @@ export class AdmonDashboardComponent implements OnInit {
     }
     else if (this.op == 'inc') {
       query = INCASOL_UPDATE;
-      variables.incasol_type = row["Incasol_return"][0] ? "devuelta" : (row["Incasol_reclaim"][0] ? "reclamada": (row["Incasol_deposit"][0] ? "depositada": "pendiente"));
-      row["Incasol_deposit"][1] = row["Incasol_deposit"][0];
-      row["Incasol_reclaim"][1] = row["Incasol_reclaim"][0];
-      row["Incasol_return"][1]  = row["Incasol_return"][0];
+      variables.incasol_type = row["Incasol_returned"][0] ? "devuelta" : (row["Incasol_reclaimed"][0] ? "reclamada": (row["Incasol_deposited"][0] ? "depositada": "pendiente"));
+      row["Incasol_deposited"][1] = row["Incasol_deposited"][0];
+      row["Incasol_reclaimed"][1] = row["Incasol_reclaimed"][0];
+      row["Incasol_returned"][1]  = row["Incasol_returned"][0];
       row["Changed"] = false;
     }
     else return;

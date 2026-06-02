@@ -86,18 +86,24 @@ export interface ICustomer extends IBase {
 };
 
 // Customer document
+export interface IDocOption {
+  id: number,
+  name: string,
+  name_en: string
+}
 export interface IDocType extends IBase {
   name_en: string,
   images: number,
   expires: boolean,
   mandatory: string | null,
   multiple: string | null,
-  options: any[]
+  options: IDocOption[]
 }
 export interface IDocument {
   id: number,
   expiry_date: string | null ,
   doc_type?: IDocType,
+  doc_option_id?: number,
   front?: IDocFile,
   back?: IDocFile,
   frontFile?: File,

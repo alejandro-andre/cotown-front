@@ -53,6 +53,7 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
     documents: Customer_docListViaCustomer_id {
       id
       expiry_date: Expiry_date
+      doc_option_id: Customer_doc_option_id
       front: Document { name oid type size }
       back: Document_back { name oid type size }
       doc_type: Customer_doc_typeViaCustomer_doc_type_id {
@@ -64,7 +65,9 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
         multiple: Multiple
         mandatory: Mandatory
         options: Customer_doc_optionListViaCustomer_doc_type_id {
+          id
           name: Name
+          name_en: Name_en
         }
       }
     }
@@ -284,28 +287,30 @@ export const UPDATE_CUSTOMER = `
     }) {id}
 }`;
 
-export const UPLOAD_CUSTOMER_DOCUMENT = `mutation ($id: Int! $fileFront: Models_DocumentTypeInputType, $date: String) {
+export const UPLOAD_CUSTOMER_DOCUMENT = `mutation ($id: Int! $fileFront: Models_DocumentTypeInputType, $date: String, $doc_option_id: Int) {
   data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
     entity: {
       Expiry_date: $date
       Document: $fileFront
+      Customer_doc_option_id: $doc_option_id
     }
-  ) { 
-    id 
+  ) {
+    id
     Document { oid name type size }
     Document_back { oid name type size }
   }
 }`;
 
-export const UPLOAD_CUSTOMER_FULL_DOCUMENTS = `mutation ($id: Int!, $fileFront: Models_DocumentTypeInputType, $fileBack: Models_DocumentTypeInputType, $date: String) {
+export const UPLOAD_CUSTOMER_FULL_DOCUMENTS = `mutation ($id: Int!, $fileFront: Models_DocumentTypeInputType, $fileBack: Models_DocumentTypeInputType, $date: String, $doc_option_id: Int) {
   data: Customer_Customer_docUpdate ( where: { id: {EQ: $id} }
     entity: {
       Expiry_date: $date
       Document: $fileFront
       Document_back: $fileBack
+      Customer_doc_option_id: $doc_option_id
     }
-  ) { 
-    id 
+  ) {
+    id
     Document { oid name type size }
     Document_back { oid name type size }
   }

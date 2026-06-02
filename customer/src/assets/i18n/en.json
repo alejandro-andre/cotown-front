@@ -90,6 +90,7 @@
   "documents": "My documents",
   "email": "Email",
   "expiry_date": "Expiry date",
+  "doc_subtype": "Document type",
   "flat_type": "Flat type",
   "flight": "Flight/Train Number",
   "from": "From",

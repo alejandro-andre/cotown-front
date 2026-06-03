@@ -171,10 +171,12 @@ export class MyDocumentsComponent implements OnInit {
   }
 
   isSaveEnabled(document: IDocument) {
-    if (!document.frontFile && !this.subtypeChanged(document))
+    const hasExisting = !!document.front?.oid;
+    const subtypeOnly = hasExisting && this.subtypeChanged(document);
+    if (!document.frontFile && !subtypeOnly)
       return false;
     const images = document.doc_type?.images || 0;
-    if (images > 1 && !document.backFile && !this.subtypeChanged(document))
+    if (images > 1 && !document.backFile && !subtypeOnly)
       return false;
     if ((document.doc_type?.options?.length || 0) >= 2 && !document.doc_option_id)
       return false;

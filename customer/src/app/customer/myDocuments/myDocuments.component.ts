@@ -153,7 +153,7 @@ export class MyDocumentsComponent implements OnInit {
 
   canAddMore(document: IDocument): boolean {
     if (!document.doc_type?.multiple) return false;
-    if (!document.id || !document.front?.oid) return false;
+    if (!document.id || !document.front?.oid || document.frontFile) return false;
     return !this.documents.some(d => d.doc_type?.id === document.doc_type?.id && !d.id);
   }
 

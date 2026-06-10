@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
   backURL: 'https://back.cotown.protozone.es/api/v1',
-  graphqlURL: 'https://experis.flows.ninja/graphql'
+  graphqlURL: 'https://cotown-dev.flows.ninja/graphql'
 };
   

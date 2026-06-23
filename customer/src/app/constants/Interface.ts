@@ -93,6 +93,8 @@ export interface IDocOption {
 }
 export interface IDocType extends IBase {
   name_en: string,
+  description: string | null,
+  description_en: string | null,
   images: number,
   expires: boolean,
   mandatory: string | null,

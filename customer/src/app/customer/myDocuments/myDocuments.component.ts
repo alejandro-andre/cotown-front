@@ -52,6 +52,12 @@ export class MyDocumentsComponent implements OnInit {
     return document.doc_type?.name_en || '';
   }
 
+  getDocumentDescription(document: IDocument): string {
+    if (this.customerService.customer.appLang === Constants.SPANISH.id)
+      return document.doc_type?.description || '';
+    return document.doc_type?.description_en || '';
+  }
+
   // Show document or image
   getDocs() {
 

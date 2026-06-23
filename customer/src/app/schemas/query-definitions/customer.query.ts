@@ -62,6 +62,8 @@ export const CUSTOMER_QUERY = `query customerQuery($id: Int) {
         id
         name: Name
         name_en: Name_en
+        description: Description
+        description_en: Description_en
         images: Images
         expires: Expires
         multiple: Multiple

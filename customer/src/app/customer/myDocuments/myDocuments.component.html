@@ -9,6 +9,7 @@
 <ng-template #thenBlock>
   <div *ngFor="let document of documents">
     <h2>{{ getDocumentName(document) }} <mat-icon *ngIf="document.approved" color="primary">check_circle</mat-icon></h2>
+    <p *ngIf="getDocumentDescription(document)" class="doc-description">{{ getDocumentDescription(document) }}</p>
     <mat-select>
       <mat-option *ngFor="let option of document.doc_type?.options">
       {{ option.name }}

@@ -38,6 +38,8 @@ import { AdmonDashboardComponent } from './pages/dashboard/admon/admon.component
 import { OperationsDashboardComponent } from './pages/dashboard/operations/operations.component';
 import { ConfirmationComponent } from './pages/confirmation/confirmation.component';
 import { GeneralDashboardComponent } from './pages/dashboard/general/general.component';
+import { DocumentsDashboardComponent } from './pages/dashboard/documents/documents.component';
+import { DocumentDialogComponent } from './pages/dashboard/documents/document-dialog.component';
 import { SharedModule } from './shared/shared.module';
 
 registerLocaleData(localeES, 'es-ES');
@@ -55,6 +57,8 @@ export function createTranslateLoader(http: HttpClient) {
     OperationsDashboardComponent,
     LauDashboardComponent,
     AdmonDashboardComponent,
+    DocumentsDashboardComponent,
+    DocumentDialogComponent,
     ReportsComponent,
     ConfirmationComponent,
     MonthYearPickerFormatDirective

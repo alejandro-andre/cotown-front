@@ -1,0 +1,127 @@
+<app-spinner-control *ngIf="isLoading"></app-spinner-control>
+
+<div class="container">
+
+  <div class="header">
+
+    <div class="pure-g">
+      <div class="pure-u-21-24">
+        <h1>Documentos</h1>
+      </div>
+      <div class="pure-u-1-24" style="margin-top:20px;text-align:right;">
+        <a [href]="export()"><mat-icon style="cursor:pointer;" fontIcon="cloud_download"></mat-icon></a>
+      </div>
+      <div class="pure-u-1-24" style="margin-top:20px;text-align:right;">
+        <mat-icon style="cursor:pointer;" onclick="window.open(window.location.href, '_blank');" fontIcon="open_in_new"></mat-icon>
+      </div>
+    </div>
+
+    <form>
+      <div class="pure-g">
+
+        <div class="pure-u-5-24">
+          <mat-form-field class="field" appearance="fill" >
+            <mat-label>{{ 'dashboard' | translate }}</mat-label>
+            <mat-select name="dashboards"
+              [(ngModel)]="op"
+              [placeholder]="'nothing' | translate"
+              (selectionChange)="reset()">
+              <mat-option *ngFor="let dashboard of dashboards" [value]="dashboard.op">
+                {{ dashboard.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="pure-u-5-24">
+          <mat-form-field class="field" appearance="fill" >
+            <mat-label>{{ 'city' | translate }}</mat-label>
+            <mat-select name="cities"
+              [(ngModel)]="cityId"
+              [placeholder]="'nothing' | translate"
+              (selectionChange)="onCity()">
+              <mat-option *ngFor="let city of cities" [value]="city.id">
+                {{ city.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="pure-u-5-24">
+          <mat-form-field class="field" appearance="fill" >
+            <mat-label>{{ 'building' | translate}}</mat-label>
+            <mat-select name="buildings" multiple
+              [(ngModel)]="buildingIds"
+              [placeholder]="'nothing' | translate"
+              (selectionChange)="onBuilding()">
+              <mat-option *ngFor="let building of buildings" [value]="building.id">
+                {{ building.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="pure-u-5-24">
+          <mat-form-field class="field" appearance="fill" >
+            <mat-label>{{ 'date range' | translate }}</mat-label>
+            <mat-date-range-input [rangePicker]="picker" [formGroup]="range">
+              <input matStartDate formControlName="start" [placeholder]="'from' | translate">
+              <input matEndDate formControlName="end" [placeholder]="'to' | translate" (dateChange)="onDates()">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </div>
+
+      </div>
+    </form>
+
+  </div>
+
+  <table *ngIf="rows">
+
+    <thead>
+      <tr>
+        <th *ngFor="let h of header" (click)="sort(h.key, null);" class="link">
+          <span [class.vertical]="h.type === 'bool'">{{h.value}}</span>
+          <svg class="arrow {{h.sort}}" focusable="false" viewBox="0 0 24 24"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"></path></svg>
+        </th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let r of rows" class="link">
+        <ng-container *ngFor="let h of header">
+          <!-- Booking-level columns: shown once per booking, spanning its documents -->
+          <td *ngIf="!h.group || r['_first']" [attr.rowspan]="h.group ? r['_span'] : null">
+            <!-- Status field -->
+            <span *ngIf="h.type === 'status'" (click)="goRecord(r.id)">{{ getLabel(r[h.key]) }}</span>
+            <!-- Text/Number/Date fields -->
+            <span *ngIf="h.type === 'text'"   (click)="goRecord(r.id)" [innerHtml]="r[h.key] | safe"></span>
+            <span *ngIf="h.type === 'number'" (click)="goRecord(r.id)" [innerHtml]="r[h.key] | safe"></span>
+            <span *ngIf="h.type === 'date'"   (click)="goRecord(r.id)" [innerHtml]="r[h.key] | safe"></span>
+            <!-- Document field: click on the name to view it -->
+            <span *ngIf="h.type === 'document'">
+              <a *ngIf="r['Uploaded']" class="link" style="text-decoration:underline;" (click)="viewDocument(r)">{{ r[h.key] }}</a>
+              <span *ngIf="!r['Uploaded']">{{ r[h.key] }}</span>
+            </span>
+            <!-- Boolean field -->
+            <span *ngIf="h.type === 'bool'">
+              <mat-checkbox
+                style="text-align: center;"
+                [checked]="r[h.key][0]"
+                (change)="emitCheck($event, h.key, r)">
+              </mat-checkbox>
+            </span>
+          </td>
+        </ng-container>
+        <td>
+          <button *ngIf="op === 'approve'" mat-raised-button color="primary" [disabled]="!r['Changed']" (click)="save(r)">Guardar</button>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+
+</div>

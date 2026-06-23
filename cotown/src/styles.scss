@@ -13,3 +13,6 @@ body { margin: 0; font-family: 'Roboto Flex',sans-serif; }
 h1 { font-size: 1.25rem; font-weight: 500; padding: 20px 15px 15px 25px; }
 a { color: #000; text-decoration: none; }
 mat-label { font-size: 15px; }
+
+/* Material dialogs/overlays must sit above the sticky dashboard header (z-index 9999) */
+.cdk-overlay-container { z-index: 100000; }

@@ -7,6 +7,7 @@ import { OperationsDashboardComponent } from './pages/dashboard/operations/opera
 import { ReportsComponent } from './pages/reports/reports.component';
 import { LauDashboardComponent } from './pages/dashboard/lau/lau.component';
 import { AdmonDashboardComponent } from './pages/dashboard/admon/admon.component';
+import { DocumentsDashboardComponent } from './pages/dashboard/documents/documents.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard' ,  pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'operations', component: OperationsDashboardComponent },
   { path: 'lau', component: LauDashboardComponent },
   { path: 'admon', component: AdmonDashboardComponent },
+  { path: 'documents', component: DocumentsDashboardComponent },
 ];
 
 @NgModule({

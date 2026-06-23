@@ -1,6 +1,12 @@
-import { AxiosResponse } from 'axios';
+import Axios, { AxiosResponse } from 'axios';
 import { axiosInstance } from '../plugins/axios.plugin';
 import { AvailabilityPayload } from '../constants/Interfaces';
+import { environment } from 'src/environments/environment';
+
+// Core / airflows server (serves files via wopi)
+const airflowsInstance = Axios.create({
+  baseURL: environment.baseURL,
+});
 
 export default {
 
@@ -40,6 +46,15 @@ export default {
   getIncasol(token: string, params: any): Promise<AxiosResponse> {
     params['access_token'] = token;
     return axiosInstance.get('dashboard/incasol', { params: params });
+  },
+
+  getDocuments(status: string, token: string, params: any): Promise<AxiosResponse> {
+    params['access_token'] = token;
+    return axiosInstance.get('dashboard/documents/' + status, { params: params });
+  },
+
+  getDocumentFile(id: number, field: string, token: string): Promise<AxiosResponse> {
+    return airflowsInstance.get('wopi/files/Customer/Customer_doc/' + id + '/' + field + '/contents?access_token=' + token, { responseType: 'blob' });
   },
 
   getLabels(id: number, locale: string, token: string): Promise<AxiosResponse> {

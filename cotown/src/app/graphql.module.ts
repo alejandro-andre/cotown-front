@@ -7,7 +7,7 @@ import { NgModule } from '@angular/core';
 import { ApolloLink, InMemoryCache } from '@apollo/client/core';
 import { setContext } from '@apollo/client/link/context';
 
-const uri = environment.graphqlURL;
+const uri = environment.baseURL + 'graphql';
 
 export function createApollo(httpLink: HttpLink) {
 

@@ -91,7 +91,7 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let r of rows" class="link">
+      <tr *ngFor="let r of rows" class="link" [class.urgent]="r['Warning']">
         <ng-container *ngFor="let h of header">
           <!-- Booking-level columns: shown once per booking, spanning its documents -->
           <td *ngIf="!h.group || r['_first']" [attr.rowspan]="h.group ? r['_span'] : null">

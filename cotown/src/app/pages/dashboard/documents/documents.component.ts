@@ -66,6 +66,7 @@ export class DocumentsDashboardComponent implements OnInit {
     { key:"Booking_type", value:"Tipo",    sort:"", type: "text",     filter: [],          group: true  },
     { key:"Status",   value:"Estado",    sort:"", type: "status",     filter: [],          group: true  },
     { key:"Dates",    value:"Fechas",    sort:"", type: "text",       filter: [],          group: true  },
+    { key:"Deadline", value:"Entrega máx.", sort:"", type: "date",     filter: [],          group: true  },
     { key:"Resource", value:"Recurso",   sort:"", type: "text",       filter: [],          group: true  },
     { key:"Customer", value:"Cliente",   sort:"", type: "text",       filter: [],          group: true  },
     { key:"Document", value:"Documento", sort:"", type: "document",   filter: [],          group: false },
@@ -178,6 +179,8 @@ export class DocumentsDashboardComponent implements OnInit {
           "Resource": o.Resource + "<br>" + o.Building,
           "Customer": o.Customer + "<br>" + (o.Email || "-") + (o.Phones ? "<br>" + o.Phones : ""),
           "Dates": this.formatDate(o.Date_from) + "<br>" + this.formatDate(o.Date_to),
+          "Deadline": this.formatDate(o.Documentation_limit),
+          "Warning": this.daysUntil(o.Date_from) < 14,
           "Document": o.Document,
           "Uploaded": o.Uploaded === true,
           "Approved": [o.Approved === true, o.Approved === true],
@@ -320,6 +323,17 @@ export class DocumentsDashboardComponent implements OnInit {
       return this.datePipe.transform(date, "dd/MM/yyyy")
     }
     return "-"
+  }
+
+  // Days from today until the given date (negative if already past)
+  daysUntil(date: string): number {
+    if (!date)
+      return Infinity;
+    const target = new Date(date);
+    const today = new Date();
+    target.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    return Math.round((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
   }
 
   change(event: any, row: any) {

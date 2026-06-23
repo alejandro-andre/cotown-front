@@ -9,6 +9,7 @@ export class TimeChartBar {
     dateto: Date = new Date();
     checkIn: Date | null = null;
     checkOut: Date | null = null;
+    lastCleaning: Date | null = null;
     type: string = '';
     text: string = '';
     tooltip: string = '';
@@ -19,5 +20,6 @@ export class TimeChartBar {
     to: number = 0;
     in: number = 0;
     out: number = 0;
+    cleaning: number = 0;
     styles: string = '';
 }

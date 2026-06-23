@@ -526,6 +526,7 @@ export class PlanningComponent {
               resource_max_furniture: e.max_furniture,
               resource_max_utility: e.max_utility,
               resource_lau_free_date: new Date(e.lau_free_date),
+              resource_last_cleaning: e.last_cleaning ? new Date(e.last_cleaning) : null,
               resource_prices: prices
             });
           }
@@ -629,6 +630,7 @@ export class PlanningComponent {
         auxRow.checked = true;
       }
       let text = `<table><thead><th colspan=3>${r.resource_code}</th><th>${r.resource_limit_type}</th></thead><tbody><tr><td style="font-size:10px;text-align:left;" colspan="4">${r.resource_nra || '-'}</td></tr>`;
+      text += `<tr><th colspan="2">Última limpieza</th><td colspan="2">${r.resource_last_cleaning ? formatDate(r.resource_last_cleaning, 'DMY') : '-'}</td></tr>`;
       if (r.resource_limit_type !== 'libre') {
         text += `<tr><th>Renta</th><td>${r.resource_max_rent}€</td><th>Gastos</th><td>${r.resource_max_expenses}€</td></tr>` 
         text += `<tr><th>Mobiliario</th><td>${r.resource_max_furniture}€</td><th>Consumos</th><td>${r.resource_max_utility}€</td></tr>` 
@@ -695,6 +697,9 @@ export class PlanningComponent {
           bar.checkIn = new Date(b.Booking_check_in);
         if (b.Booking_check_out != null)
           bar.checkOut = new Date(b.Booking_check_out);
+        const res = this.resources.find((x) => x.resource_code === b.Resource_code);
+        if (res && res.resource_last_cleaning)
+          bar.lastCleaning = res.resource_last_cleaning;
         if (!this.isSelectButtonVisible) {
           if (typeof bar.code != 'number')
             bar.link = "/admin/Booking.Booking_group/" + bar.code.substring(1) + "/view";

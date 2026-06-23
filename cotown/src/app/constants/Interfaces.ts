@@ -59,6 +59,7 @@ export interface Resource {
   resource_max_furniture: number,
   resource_max_utility: number,
   resource_lau_free_date: Date,
+  resource_last_cleaning: Date | null,
   resource_prices: any[]
 }
 

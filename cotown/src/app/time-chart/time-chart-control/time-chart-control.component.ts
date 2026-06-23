@@ -125,6 +125,7 @@ export class TimeChartControlComponent implements OnChanges {
         // Set checkin/out dates
         bar.in = 0;
         bar.out = 0;
+        bar.cleaning = 0;
         if (bar.checkIn) {
           let din = 1 + Math.floor(bar.checkIn.getTime() / (this.ONEDAY) - now);
           if (dfrom > 0 && dfrom <= 70 && din > 70)
@@ -136,6 +137,11 @@ export class TimeChartControlComponent implements OnChanges {
           let dout = 1 + Math.floor(bar.checkOut.getTime() / (this.ONEDAY) - now);
           if (bar.from < dout && bar.from < 70 && dout > 0 && dout < 71)
             bar.out = dout;
+        }
+        if (bar.lastCleaning) {
+          let dcle = 1 + Math.floor(bar.lastCleaning.getTime() / (this.ONEDAY) - now);
+          if (dcle > 0 && dcle < 71)
+            bar.cleaning = dcle;
         }
 
         // Hide bar

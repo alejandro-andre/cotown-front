@@ -13,6 +13,7 @@ export const RESOURCES_QUERY = `{
   max_furniture: Max_furniture
   max_utility: Max_utility
   lau_free_date: Last_LAU_free_date
+  last_cleaning: Last_cleaning
   building: BuildingViaBuilding_id (
     joinType: INNER 
     where: { Active: { EQ: true } }

@@ -361,8 +361,11 @@ export class DocumentsDashboardComponent implements OnInit {
         row["Approved"][1] = row["Approved"][0];
         row["Changed"] = false;
         // Once approved, the document leaves the pending list
-        if (row["Approved"][0])
+        if (row["Approved"][0]) {
           this.rows = this.rows.filter(r => r.Doc_id != row.Doc_id);
+          // Recompute groups so the booking header stays on the new first row
+          this.groupByBooking();
+        }
       },
       error: (err) => {
         this.isLoading = false;

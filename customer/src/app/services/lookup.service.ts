@@ -180,7 +180,8 @@ export class LookupService {
       {code:'checkout', name:'', name_en:''},
       {code:'devolvergarantia', name:'', name_en:''},
       {code:'finalizada', name:'', name_en:''},
-      {code:'revision', name:'', name_en:''}
+      {code:'revision', name:'', name_en:''},
+      {code:'documentacionok', name:'', name_en:''}
     ]
     this.apolloQueryApi.getData(STATUS_QUERY).subscribe((res) => {
       const value = res.data;

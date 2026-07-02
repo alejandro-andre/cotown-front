@@ -145,13 +145,6 @@ export const BOOKING_GROUP_UPDATE = `mutation(
   ) { id }
 }`;
 
-export const RESOURCE_LAST_CLEANING_UPDATE = `mutation ($id: Int!, $last_cleaning: String) {
-  data: Resource_ResourceUpdate(
-    where: { id: { EQ: $id } }
-    entity: { Last_cleaning: $last_cleaning }
-  ) { id }
-}`;
-
 export const BOOKING_OTHER_UPDATE_DEV = `mutation ($id: Int!, $date: String) {
   updated: Booking_Booking_otherUpdate(
     where: { id: { EQ: $id } }

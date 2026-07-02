@@ -87,7 +87,8 @@
 					style.grid-area="2/{{bar.out}}/2/{{bar.out}}">
 				</span>
 				<span *ngIf="bar.cleaning > 0"
-					style="position:relative;height:26px;left:-10%;margin-top:-30px;border:3px dotted blue;"
+					style="position:relative;height:26px;left:-10%;margin-top:-30px;margin-left:2px;"
+						[style.border]="bar.lastCleaningPlanned ? '3px dotted orange' : '3px dotted blue'"
 					style.grid-area="2/{{bar.cleaning}}/2/{{bar.cleaning}}">
 				</span>
 				</ng-container>

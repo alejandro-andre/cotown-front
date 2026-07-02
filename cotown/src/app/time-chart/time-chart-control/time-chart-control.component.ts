@@ -139,11 +139,10 @@ export class TimeChartControlComponent implements OnChanges {
             bar.out = dout;
         }
         if (bar.lastCleaning) {
-          let dcle = 1 + Math.floor(bar.lastCleaning.getTime() / (this.ONEDAY) - now);
+          let dcle = 1 + Math.floor(new Date(bar.lastCleaning).getTime() / (this.ONEDAY) - now);
           if (dcle > 0 && dcle < 71)
             bar.cleaning = dcle;
         }
-
         // Hide bar
         if ((bar.to - bar.from) < 1)
           bar.styles = 'hide';

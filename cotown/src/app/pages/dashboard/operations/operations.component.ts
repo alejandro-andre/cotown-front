@@ -14,7 +14,7 @@ import { LanguageService } from "src/app/services/language.service";
 import { ActivatedRoute } from "@angular/router";
 import { HOLIDAYS_QUERY } from "src/app/schemas/query-definitions/lookup.query";
 import { MatCheckboxChange } from "@angular/material/checkbox";
-import { BOOKING_UPDATE, BOOKING_GROUP_UPDATE, RESOURCE_LAST_CLEANING_UPDATE } from "src/app/schemas/query-definitions/booking.query";
+import { BOOKING_UPDATE, BOOKING_GROUP_UPDATE } from "src/app/schemas/query-definitions/booking.query";
 
 @Component({ 
   selector: "app-dashboard-operations",
@@ -111,7 +111,6 @@ export class OperationsDashboardComponent implements OnInit {
     { key:"Damages",               value:"Desperfectos",       sort:"", type: "input",  filter: ["revision","ecoext"] },
     { key:"Damages_ok",            value:"Gestionados",        sort:"", type: "bool",   filter: ["revision","ecoext"] },
     { key:"Check_out_revision_ok", value:"Revisión ok",        sort:"", type: "bool",   filter: ["revision"] },
-    { key:"Last_cleaning",         value:"Última limpieza",    sort:"", type: "datectl", filter: ["checkout"] },
   ];
 
   // Constructor
@@ -311,8 +310,6 @@ export class OperationsDashboardComponent implements OnInit {
           "Prev": "",
           "Next": "",
           "Days": "",
-          "Last_cleaning": new FormControl<any>(o.Last_cleaning),
-          "Last_cleaning_read": this.datePipe.transform(o.Last_cleaning, "yyyy-MM-dd"),
         }
       });
     });      
@@ -545,17 +542,6 @@ export class OperationsDashboardComponent implements OnInit {
         row["Eco_ext_change_ok"][1]    = row["Eco_ext_change_ok"][0];
         row["Issues_ok"][1]            = row["Issues_ok"][0];
         row["Damages_ok"][1]           = row["Damages_ok"][0];
-        if (this.op == "checkout" && row["Resource_id"]) {
-          const last_cleaning = this.datePipe.transform(row["Last_cleaning"].value, "yyyy-MM-dd");
-          if (last_cleaning != row["Last_cleaning_read"]) {
-            this.apollo.setData(RESOURCE_LAST_CLEANING_UPDATE, {
-              id: row["Resource_id"],
-              last_cleaning: last_cleaning,
-            }).subscribe(() => {
-              row["Last_cleaning_read"] = last_cleaning;
-            });
-          }
-        }
         if (this.op == "checkin" && row["Status"] == "inhouse") {
           this.rows = this.rows.filter(r => r.id != row.id)
         }

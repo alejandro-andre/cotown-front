@@ -10,6 +10,7 @@ export class TimeChartBar {
     checkIn: Date | null = null;
     checkOut: Date | null = null;
     lastCleaning: Date | null = null;
+    lastCleaningPlanned: boolean = false;
     type: string = '';
     text: string = '';
     tooltip: string = '';

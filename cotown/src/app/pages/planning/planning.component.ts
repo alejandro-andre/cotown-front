@@ -575,7 +575,7 @@ export class PlanningComponent {
             Booking_code: code,
             Booking_lock: booking.lock,
             Booking_status: booking.status,
-            Booking_type: booking.booking?.book_type || 'libre',
+            Booking_type: booking.booking?.book_type || booking.group?.book_type || 'libre',
             Booking_date_from: booking.date_from,
             Booking_date_to: booking.date_to,
             Booking_check_in: booking.booking?.check_in,

@@ -72,6 +72,8 @@
 				<li class="tooltip {{bar.styles}}"
 					style.background-color="{{bar.color}}"
 					style.grid-column="{{bar.from}}/{{bar.to}}"
+					style.grid-row="{{bar.lane}}"
+					[style.--span]="bar.to - bar.from"
 					(click)="go_booking(bar.link);">
 					<div *ngIf="bar.code != '' && (bar.to - bar.from) > 1 " class="bar">
 						<span class="tag">{{bar.code}}<div class="tiptext" [innerHtml]="bar.tooltip | safe"></div></span>

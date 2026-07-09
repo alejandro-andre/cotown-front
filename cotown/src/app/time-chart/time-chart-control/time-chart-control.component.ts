@@ -147,6 +147,19 @@ export class TimeChartControlComponent implements OnChanges {
         if ((bar.to - bar.from) < 1)
           bar.styles = 'hide';
       }
+
+      // Assign lanes (grid rows)
+      const visible = row.bars
+        .filter(bar => bar.styles != 'hide')
+        .sort((a, b) => (a.from - b.from) || (a.to - b.to));
+      const laneEnds: number[] = [];
+      for (const bar of visible) {
+        let lane = laneEnds.findIndex(end => bar.from >= end - 1);
+        if (lane == -1)
+          lane = laneEnds.length;
+        bar.lane = lane + 1; // grid-row is 1-based
+        laneEnds[lane] = Math.max(laneEnds[lane] || 0, bar.to);
+      }
     }
   }
 

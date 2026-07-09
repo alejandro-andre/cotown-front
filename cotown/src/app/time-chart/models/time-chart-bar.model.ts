@@ -19,6 +19,7 @@ export class TimeChartBar {
     // Calculated
     from: number = 0;
     to: number = 0;
+    lane: number = 1;
     in: number = 0;
     out: number = 0;
     cleaning: number = 0;

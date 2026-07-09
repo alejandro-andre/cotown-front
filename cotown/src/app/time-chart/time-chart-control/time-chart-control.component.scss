@@ -211,6 +211,60 @@
 	text-overflow: ellipsis;
 }
 
+/* ---------------------------------------------------------------------------
+   DIAGONAL BAR ENDS — disabled, kept for later use.
+
+   Draws every bar as a parallelogram instead of a rounded rectangle, so it reads
+   as nights sold rather than whole days: the top edge is shifted one day to the
+   right, leaving the morning of the first day empty (check-in in the afternoon)
+   and the evening of the last day empty (check-out in the morning). Because all
+   bars lean the same way, a booking that ends the day another one starts
+   tessellates with it along the diagonal instead of overlapping.
+
+   `--span` is the number of grid cells (days) the bar spans; it is already bound
+   in the template as [style.--span]="bar.to - bar.from", so `100% / var(--span)`
+   is exactly one day. `.bar` needs the left padding so the clip does not cut the
+   text. `continue-left`/`continue-right` mark bars cut off by the visible range,
+   where there is no real check-in/out, so that edge stays straight.
+
+   To enable: uncomment this block, and drop `border-radius: 15px` from
+   `.timechart-row-bars li` plus the `border-radius` overrides in
+   `.timechart-row-bars li.continue-left` / `.continue-right` above.
+
+.timechart-row-bars li {
+	--span: 2;
+	border-radius: 0;
+	clip-path: polygon(
+		calc(100% / var(--span)) 0,
+		100% 0,
+		calc(100% - 100% / var(--span)) 100%,
+		0 100%
+	);
+}
+.timechart-row-bars li.continue-right {
+	clip-path: polygon(
+		calc(100% / var(--span)) 0,
+		100% 0,
+		100% 100%,
+		0 100%
+	);
+}
+.timechart-row-bars li.continue-left {
+	clip-path: polygon(
+		0 0,
+		100% 0,
+		calc(100% - 100% / var(--span)) 100%,
+		0 100%
+	);
+}
+.timechart-row-bars li.continue-left.continue-right {
+	clip-path: none;
+}
+.bar {
+	padding-left: 10px;
+}
+--------------------------------------------------------------------------- */
+
 /* Tooltips */
 .tooltip {
 	position: relative;

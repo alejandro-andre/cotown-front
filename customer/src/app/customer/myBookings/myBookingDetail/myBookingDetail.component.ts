@@ -11,6 +11,7 @@ import { CustomerService } from 'src/app/services/customer.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { formatErrorBody } from 'src/app/utils/error.util';
+import { parseLocalDate } from 'src/app/utils/date.util';
 
 //Queries & constants
 import { Constants } from 'src/app/constants/Constants';
@@ -443,14 +444,12 @@ export class MyBookingDetailComponent {
 
     // Checkin date
     this.checkinControl = new FormControl(
-      this.booking.check_in !== null ?
-      new Date(this.booking.check_in) : null
+      parseLocalDate(this.booking.check_in)
     );
 
     // Checkout date
     this.checkoutControl = new FormControl(
-      this.booking.check_out !== null ?
-      new Date(this.booking.check_out) : null
+      parseLocalDate(this.booking.check_out)
     )
 
     // Reason

@@ -14,6 +14,7 @@ import { Constants } from 'src/app/constants/Constants';
 import { ICustomer, IPayloadFile, IPhone } from 'src/app/constants/Interface';
 import { UPDATE_CUSTOMER, UPLOAD_CUSTOMER_PHOTO } from 'src/app/schemas/query-definitions/customer.query';
 import { formatErrorBody } from 'src/app/utils/error.util';
+import { parseLocalDate } from 'src/app/utils/date.util';
 import { LookupService } from 'src/app/services/lookup.service';
 import { AbstractControl, FormBuilder, FormControl, ValidationErrors, Validators } from '@angular/forms';
 import { FileService } from 'src/app/services/file.service';
@@ -88,8 +89,7 @@ export class MyDataComponent implements OnInit, AfterViewInit {
     
     // Birth date
     if (this.customerService.customer.birth_date) {
-      const date = new Date(this.customerService.customer.birth_date + 'T23:59:00');
-      this.birth_dateControl.setValue(date);
+      this.birth_dateControl.setValue(parseLocalDate(this.customerService.customer.birth_date));
     }
 
     // Phone

@@ -1,5 +1,6 @@
 import { FormControl } from '@angular/forms';
 import { IDocFile, IDocType, IDocument } from '../constants/Interface';
+import { parseLocalDate } from '../utils/date.util';
 
 export class Document implements IDocument {
 
@@ -26,7 +27,7 @@ export class Document implements IDocument {
     this.original_doc_option_id = this.doc_option_id;
     this.booking_id = data.booking_id;
     this.approved = data.approved;
-    this.formDateControl = new FormControl({ value: data.expiry_date ?? null, disabled: !!data.approved });
+    this.formDateControl = new FormControl({ value: parseLocalDate(data.expiry_date ?? null), disabled: !!data.approved });
   }
 
 };

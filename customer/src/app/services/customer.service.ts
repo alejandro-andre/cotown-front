@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IBooking, IContact } from '../constants/Interface';
 import { Customer } from '../models/Customer.model';
+import { parseLocalDate } from '../utils/date.util';
 
 @Injectable({
   providedIn: 'root'
@@ -96,14 +97,16 @@ export class CustomerService {
     this.readOnly['check_in_time'] = (booking.check_in_time === null);
     this.readOnly['check_in_option_id'] = (booking.check_in_option_id === null);
 
-    // Checkout
-    const date_to = new Date(booking.date_to);
+    // Checkout: editable desde 10 dias antes del fin del contrato
+    const checkout_from = parseLocalDate(booking.date_to);
+    checkout_from?.setDate(checkout_from.getDate() - 10);
     const date_now = new Date();
-    date_to.setDate(date_now.getDate() - 10);
-    this.readOnly['check_out'] = (booking.check_out === null && date_now > date_to);
-    this.readOnly['flight_out'] = (booking.flight_out === null && date_now > date_to);
-    this.readOnly['check_out_time'] = (booking.check_out_time === null && date_now > date_to);
-    this.readOnly['check_out_option_id'] = (booking.check_out_option_id === null && date_now > date_to);
+    date_now.setHours(0, 0, 0, 0);
+    const canCheckout = (checkout_from !== null && date_now >= checkout_from);
+    this.readOnly['check_out'] = (booking.check_out === null && canCheckout);
+    this.readOnly['flight_out'] = (booking.flight_out === null && canCheckout);
+    this.readOnly['check_out_time'] = (booking.check_out_time === null && canCheckout);
+    this.readOnly['check_out_option_id'] = (booking.check_out_option_id === null && canCheckout);
   }
 
 }

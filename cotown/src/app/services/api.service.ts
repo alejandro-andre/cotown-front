@@ -57,7 +57,7 @@ export default {
     return airflowsInstance.get('wopi/files/Customer/Customer_doc/' + id + '/' + field + '/contents?access_token=' + token, { responseType: 'blob' });
   },
 
-  getLabels(id: number, locale: string, token: string): Promise<AxiosResponse> {
+  getLabels(id: number | string, locale: string, token: string): Promise<AxiosResponse> {
     return axiosInstance.get('labels/' + id + '/' + locale, { params: { 'access_token': token } } );
   }
 

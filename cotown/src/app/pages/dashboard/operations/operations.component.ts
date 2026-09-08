@@ -97,6 +97,7 @@ export class OperationsDashboardComponent implements OnInit {
     { key:"Option_out",            value:"Opción/Comentarios", sort:"", type: "text",   filter: ["nextout","checkout"] },
     { key:"Issues",                value:"Incidencias",        sort:"", type: "text",   filter: ["issues"] },
     { key:"Issues_ok",             value:"Gestionadas",        sort:"", type: "bool",   filter: ["issues"] },
+    { key:"Contract_ok",           value:"Contrato firmado",   sort:"", type: "check",  filter: ["nextin","checkin"] },
     { key:"Check_in_payed",        value:"Check-in pagado",    sort:"", type: "check",  filter: ["nextin","checkin"] },
     { key:"Check_in_notice_ok",    value:"Aviso comp.",        sort:"", type: "check",  filter: ["nextin","checkin"] },
     { key:"Check_in_room_ok",      value:"Limpieza ok",        sort:"", type: "bool",   filter: ["nextin","checkin"] },
@@ -134,8 +135,21 @@ export class OperationsDashboardComponent implements OnInit {
     await this.getBuildings();
     await axiosApi.getLabels(7, "es_ES", token).then((res) => { 
       this.labels = res.data;
-      this.isLoading  = false;
     });
+    // B2B lines use their own enums (rooming line, and group while the line has no status yet)
+    for (const enumType of ["Auxiliar.Rooming_status", "Auxiliar.Group_status"]) {
+      await axiosApi.getLabels(enumType, "es_ES", token).then((res) => { 
+        if (res.data && this.labels) {
+          res.data[0].forEach((value: string, i: number) => {
+            if (!this.labels[0].includes(value)) {
+              this.labels[0].push(value);
+              this.labels[1].push(res.data[1][i]);
+            }
+          });
+        }
+      });
+    }
+    this.isLoading  = false;
   }
 
   // Load holidays
@@ -272,6 +286,7 @@ export class OperationsDashboardComponent implements OnInit {
           "Booking_type": o.b2c_b2b,
           "Name": o.Name + "<br>" + (o.Email || "-") + (o.Phones ? "<br>" + o.Phones : "") + (o.Resident_name ? "<br>[" + (o.Resident_name) + "]": ""),
           "Status": o.Status,
+          "Group_status": o.Group_status,
           "Date": holiday,
           "D_in": new Date(o.Date_in),
           "D_out": new Date(o.Date_out),
@@ -288,6 +303,7 @@ export class OperationsDashboardComponent implements OnInit {
           "Flight": (o.Flight || "-"),
           "Option_in": (o.Option_in || "-") + "<br>" + (o.Comments || ""),
           "Option_out": (o.Option_out || "-") + "<br>" + (o.Comments || ""),
+          "Contract_ok": o.Contract_status === "completed",
           "Check_in_payed": o.Payment_id ? o.Payment_date != null : null,
           "Check_in_notice_ok": o.Check_in_notice_ok,
           "Check_in_room_ok": [o.Check_in_room_ok, o.Check_in_room_ok],
@@ -383,6 +399,11 @@ export class OperationsDashboardComponent implements OnInit {
     }
   }
 
+  // B2B lines have no status of their own until check-in day, fall back to the group status
+  statusLabel(row: any) {
+    return this.getLabel(row["Status"] || row["Group_status"]);
+  }
+
   getLabel(code: string) {
     if (!this.labels)
       return "";
@@ -437,6 +458,10 @@ export class OperationsDashboardComponent implements OnInit {
     this.rows = this.rows.sort((a:any, b:any) => {
       let va = String(a[key]);
       let vb = String(b[key]);
+      if (type == "status") {
+        va = this.statusLabel(a);
+        vb = this.statusLabel(b);
+      }
       if (type == "date") {
         va = va.substring(6, 10) + va.substring(3, 5) + va.substring(0, 2);
         vb = vb.substring(6, 10) + vb.substring(3, 5) + vb.substring(0, 2);
